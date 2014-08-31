@@ -12,10 +12,12 @@ export powermean, qD
 ##
 ## Returns:
 ## - weighted power mean
-function powermean(values::Vector,
-                   order = 1,
-                   weights::Vector = ones(FloatingPoint, size(values)))
+function powermean{S <: Number, T <: Number, U <: Number}(values::Vector{S},
+                   order::T = 1,
+                   weights::Vector{U} = ones(FloatingPoint, size(values)))
     ## Normalise weights to sum to 1 (as per Rényi)
+    length(values) == length(values) ||
+    throw(DimensionMismatch("weight and value vectors must be the same length"))
     proportions = weights / sum(weights)
     power = convert(FloatingPoint, order)
     present = filter(x -> !isapprox(x[1], 0), zip(proportions, values))
@@ -42,12 +44,22 @@ end
 ## - proportions - relative proportions of different individuals /
 ##                 species in population
 ## - q - order of diversity measurement
-function qD(proportions::Vector, q::Number)
+function qD{S <: FloatingPoint, T <: Number}(proportions::Vector{S},
+                                             q::T)
   1. / powermean(proportions, q - 1., proportions)
 end
 
-function qD(proportions::Vector, qs::Vector)
-    map((q) ->  1. / powermean(proportions, q - 1., proportions), qs)
+## qD - calculate Hill number / naive diversity of order q of a
+## population with given relative proportions
+##
+## Arguments:
+## - proportions - relative proportions of different individuals /
+##                 species in population
+## - qs - vector of orders of diversity measurement
+function qD{S <: FloatingPoint, T <: Number}(proportions::Vector{S},
+                                             qs::Vector{T})
+    map((q) ->  qD(proportions, q), qs)
+end
 end
 
 end # module
