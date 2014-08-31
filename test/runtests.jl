@@ -27,3 +27,8 @@ weights = weights / sum(weights);
 @test_approx_eq qD(weights, Inf) 1. / maximum(weights)
 
 @test_approx_eq qD(weights, [1, 2]) [qD(weights, 1), qD(weights, 2)]
+
+# General Leinster-Cobbold diversity calculation
+
+@test_approx_eq qDZ(weights, [1, 2]) qD(weights, [1, 2])
+@test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf], ones(typeof(weights[1]), (length(weights), length(weights)))) [1, 1, 1, 1, 1]

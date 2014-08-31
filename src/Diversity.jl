@@ -1,6 +1,6 @@
 module Diversity
 
-export powermean, qD
+export powermean, qD, qDZ
 
 ## powermean - Calculate order-th power mean of values, weighted by weights
 ## By default, weights are equal and order is 1, so this is just the arithmetic mean
@@ -60,6 +60,37 @@ function qD{S <: FloatingPoint, T <: Number}(proportions::Vector{S},
                                              qs::Vector{T})
     map((q) ->  qD(proportions, q), qs)
 end
+
+## qDZ - calculate Leinster-Cobbold general diversity of order q of a
+## population with given relative proportions, and similarity matrix Z
+##
+## Arguments:
+## - proportions - relative proportions of different individuals /
+##                 species in population
+## - q - order of diversity measurement
+## - Z - similarity matrix
+function qDZ{S <: FloatingPoint,
+             T <: Number}(proportions::Vector{S}, q::T,
+                          Z::Matrix{S} = eye(length(proportions)))
+    l = length(proportions)
+    size(Z) == (l, l) ||
+    throw(DimensionMismatch("Similarity matrix does not match species counts"))
+    1. / powermean(Z * proportions, q - 1., proportions)
+end
+
+## qDZ - calculate general Leinster-Cobbold diversity of >= 1 order q
+## of a population with given relative proportions, and similarity
+## matrix Z
+##
+## Arguments:
+## - proportions - relative proportions of different individuals /
+##                 species in population
+## - qs - vector of orders of diversity measurement
+## - Z - similarity matrix
+function qDZ{S <: FloatingPoint,
+             T <: Number}(proportions::Vector{S}, qs::Vector{T},
+                          Z::Matrix{S} = eye(length(proportions)))
+    map((q) ->  qDZ(proportions, q, Z), qs)
 end
 
 end # module
