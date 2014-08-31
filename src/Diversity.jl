@@ -20,10 +20,10 @@ function powermean(values::Array,
     power = convert(FloatingPoint, order)
     present = filter(x -> !isapprox(x[1], 0), zip(proportions, values))
     if (isinf(power))
-        if (power > 0) # Maximum
-            println(reduce((a, b) -> a[2] > b[2] ? a : b, present)[2])
-        else # Minimum
-            println(reduce((a, b) -> a[2] < b[2] ? a : b, present)[2])
+        if (power > 0) # +Inf -> Maximum
+            reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
+        else # -Inf -> Minimum
+            reduce((a, b) -> a[2] < b[2] ? a : b, present)[2]
         end
     else
         if (isapprox(power, 0))
