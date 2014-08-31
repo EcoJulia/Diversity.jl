@@ -25,3 +25,5 @@ weights = weights / sum(weights);
 @test_approx_eq qD(weights, 1) prod(weights .^ -weights)
 @test_approx_eq qD(weights, 2) 1. / sum(weights .^ 2)
 @test_approx_eq qD(weights, Inf) 1. / maximum(weights)
+
+@test_approx_eq qD(weights, [1, 2]) [qD(weights, 1), qD(weights, 2)]

@@ -12,9 +12,9 @@ export powermean, qD
 ##
 ## Returns:
 ## - weighted power mean
-function powermean(values::Array,
+function powermean(values::Vector,
                    order = 1,
-                   weights::Array = ones(FloatingPoint, size(values)))
+                   weights::Vector = ones(FloatingPoint, size(values)))
     ## Normalise weights to sum to 1 (as per Rényi)
     proportions = weights / sum(weights)
     power = convert(FloatingPoint, order)
@@ -31,7 +31,7 @@ function powermean(values::Array,
         else
             mapreduce(pair -> pair[1] * pair[2] ^ power, +,
                       present) ^ (1 / power)
-        end 
+        end
     end
 end
 
@@ -42,8 +42,12 @@ end
 ## - proportions - relative proportions of different individuals /
 ##                 species in population
 ## - q - order of diversity measurement
-function qD(proportions, q)
+function qD(proportions::Vector, q::Number)
   1. / powermean(proportions, q - 1., proportions)
+end
+
+function qD(proportions::Vector, qs::Vector)
+    map((q) ->  1. / powermean(proportions, q - 1., proportions), qs)
 end
 
 end # module
