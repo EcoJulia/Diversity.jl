@@ -1,6 +1,6 @@
 module Diversity
 
-export powermean
+export powermean, qD
 
 ## powermean - Calculate order-th power mean of values, weighted by weights
 ## By default, weights are equal and order is 1, so this is just the arithmetic mean
@@ -33,6 +33,17 @@ function powermean(values::Array,
                       present) ^ (1 / power)
         end 
     end
+end
+
+## qD - calculate Hill number / naive diversity of order q of a
+## population with given relative proportions
+##
+## Arguments:
+## - proportions - relative proportions of different individuals /
+##                 species in population
+## - q - order of diversity measurement
+function qD(proportions, q)
+  1. / powermean(proportions, q - 1., proportions)
 end
 
 end # module
