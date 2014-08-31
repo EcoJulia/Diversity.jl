@@ -16,8 +16,8 @@ function powermean{S <: Number, T <: Number, U <: Number}(values::Vector{S},
                    order::T = 1,
                    weights::Vector{U} = ones(FloatingPoint, size(values)))
     ## Normalise weights to sum to 1 (as per Rényi)
-    length(values) == length(values) ||
-    throw(DimensionMismatch("weight and value vectors must be the same length"))
+    length(values) == length(weights) ||
+    error("Weight and value vectors must be the same length")
     proportions = weights / sum(weights)
     power = convert(FloatingPoint, order)
     present = filter(x -> !isapprox(x[1], 0), zip(proportions, values))
@@ -74,7 +74,7 @@ function qDZ{S <: FloatingPoint,
                           Z::Matrix{S} = eye(length(proportions)))
     l = length(proportions)
     size(Z) == (l, l) ||
-    throw(DimensionMismatch("Similarity matrix does not match species counts"))
+    error("Similarity matrix size does not match species number")
     1. / powermean(Z * proportions, q - 1., proportions)
 end
 
