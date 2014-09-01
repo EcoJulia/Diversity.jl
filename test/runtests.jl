@@ -62,3 +62,9 @@ even = ones((len, cols)) / (len * cols);
 qs = [0, 1, 2, 3, 4, 5, 6, Inf];
 @test_approx_eq Ā(even, qs) len * ones((1, length(qs)))
 @test_approx_eq A(even, qs) len * cols * ones((1, length(qs)))
+
+probs = reshape(mapslices(sum, communities, 2), (size(communities)[1]));
+@test_approx_eq G(communities, qs) Ḡ(communities, qs)
+@test_approx_eq G(communities, qs) qD(probs, qs)
+@test_approx_eq G(communities, qs, Z1) qDZ(probs, qs, Z1)
+

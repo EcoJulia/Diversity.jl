@@ -2,6 +2,7 @@ module Diversity
 
 export powermean, qD, qDZ
 export ᾱ, communityalphabar, α, communityalpha, A, ecosystemA, Ā, ecosystemAbar
+export γ̄, communitygammabar, γ, communitygamma, G, ecosystemG, Ḡ, ecosystemGbar
 
 ## powermean - Calculate order-th power mean of values, weighted by weights
 ## By default, weights are equal and order is 1, so this is just the arithmetic mean
@@ -186,5 +187,95 @@ function Ā{S <: FloatingPoint}(proportions::Matrix{S}, qs,
 end
 
 ecosystemAbar = Ā
+
+## γ̄ - Normalised similarity-sensitive sub-community gamma diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function γ̄{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    Zp = Z * reshape(mapslices(sum, proportions, 2),
+                     (size(proportions)[1])) / sum(proportions)
+    mapslices((p) ->  powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
+end
+
+communitygammabar = γ̄
+
+## γ - Raw similarity-sensitive sub-community gamma diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function γ{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    Zp = Z * reshape(mapslices(sum, proportions, 2),
+                     (size(proportions)[1]))
+    mapslices((p) ->  powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
+end
+
+communitygamma = γ
+
+## G - Raw similarity-sensitive ecosystem gamma diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - vector of diversities representing values of q
+function G{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    ca = γ(proportions, qs, Z)
+    indices = 1:length(qs)
+    weights = reshape(mapslices(sum, proportions, 1), (size(proportions)[2]))
+    map((i) -> powermean(reshape(ca[i, :], (size(proportions)[2])),
+                         1 - qs[i], weights), indices)
+end
+
+ecosystemG = G
+
+## Ḡ - Normalised similarity-sensitive ecosystem gamma diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - vector of diversities representing values of q
+function Ḡ{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    ca = γ̄(proportions, qs, Z)
+    indices = 1:length(qs)
+    weights = reshape(mapslices(sum, proportions, 1), (size(proportions)[2]))
+    map((i) -> powermean(reshape(ca[i, :], (size(proportions)[2])),
+                         1 - qs[i], weights), indices)
+end
+
+ecosystemGbar = Ḡ
 
 end # module
