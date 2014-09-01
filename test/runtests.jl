@@ -30,11 +30,9 @@ weights = weights / sum(weights);
 @test_approx_eq qD(weights, [1, 2]) [qD(weights, 1), qD(weights, 2)]
 
 # General Leinster-Cobbold diversity calculation
-
+Z1 = ones(typeof(weights[1]), (length(weights), length(weights)))
 @test_approx_eq qDZ(weights, [1, 2]) qD(weights, [1, 2])
-@test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf],
-                    ones(typeof(weights[1]),
-                         (length(weights), length(weights)))) [1, 1, 1, 1, 1]
+@test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf], Z1) [1, 1, 1, 1, 1]
 
 cols = 10;
 manyweights = rand(len, cols);
@@ -60,6 +58,7 @@ communities /= sum(communities);
 @test_approx_eq α(communities, 0) len * mapslices(v -> 1. / sum(v),
                                                   communities, 1)
 
-even = ones((len, cols)) / (len * cols)
-@test_approx_eq Ā(even, [0, 1, 2, 3, 4, 5, 6, Inf]) len * ones((1, 8))
-@test_approx_eq A(even, [0, 1, 2, 3, 4, 5, 6, Inf]) len * cols * ones((1, 8))
+even = ones((len, cols)) / (len * cols);
+qs = [0, 1, 2, 3, 4, 5, 6, Inf];
+@test_approx_eq Ā(even, qs) len * ones((1, length(qs)))
+@test_approx_eq A(even, qs) len * cols * ones((1, length(qs)))
