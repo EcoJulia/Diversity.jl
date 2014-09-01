@@ -85,3 +85,21 @@ allthesame = probs * colweights';
 
 @test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
 @test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1
+
+# Now some even communities, should see that raw and normalised
+# diversities are the same
+smoothed = communities ./ mapslices(sum, communities, 1);
+smoothed /= cols;
+@test_approx_eq contributions(smoothed, [0:5, Inf], α, true) contributions(smoothed, [0:5, Inf], ᾱ, true)
+@test_approx_eq contributions(smoothed, [0:5, Inf], β, true) contributions(smoothed, [0:5, Inf], β̄, true)
+@test_approx_eq contributions(smoothed, [0:5, Inf], γ, true) contributions(smoothed, [0:5, Inf], γ̄, true)
+@test_approx_eq contributions(smoothed, [0:5, Inf], α, false) contributions(smoothed, [0:5, Inf], ᾱ, false)
+@test_approx_eq contributions(smoothed, [0:5, Inf], β, false) contributions(smoothed, [0:5, Inf], β̄, false)
+@test_approx_eq contributions(smoothed, [0:5, Inf], γ, false) contributions(smoothed, [0:5, Inf], γ̄, false)
+
+@test_approx_eq contributions(smoothed, [0:5, Inf], α, true) contributions(smoothed, [0:5, Inf], α, false) * cols
+@test_approx_eq contributions(smoothed, [0:5, Inf], β, true) contributions(smoothed, [0:5, Inf], β, false) * cols
+@test_approx_eq contributions(smoothed, [0:5, Inf], γ, true) contributions(smoothed, [0:5, Inf], γ, false) * cols
+@test_approx_eq contributions(smoothed, [0:5, Inf], ᾱ, true) contributions(smoothed, [0:5, Inf], ᾱ, false) * cols
+@test_approx_eq contributions(smoothed, [0:5, Inf], β̄, true) contributions(smoothed, [0:5, Inf], β̄, false) * cols
+@test_approx_eq contributions(smoothed, [0:5, Inf], γ̄, true) contributions(smoothed, [0:5, Inf], γ̄, false) * cols
