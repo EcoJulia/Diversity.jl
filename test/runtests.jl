@@ -68,3 +68,5 @@ probs = reshape(mapslices(sum, communities, 2), (size(communities)[1]));
 @test_approx_eq G(communities, qs) qD(probs, qs)
 @test_approx_eq G(communities, qs, Z1) qDZ(probs, qs, Z1)
 
+Z = rand(length(weights), length(weights));
+@test_approx_eq G(communities, qs, Z) qDZ(probs, qs, Z)
