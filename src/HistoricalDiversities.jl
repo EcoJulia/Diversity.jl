@@ -10,7 +10,7 @@
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - diversities
+## - diversity (at ecosystem level) or diversities (of sub-communities)
 function generalisedrichness{S <: FloatingPoint}(proportions::Matrix{S},
                                                  measure::Function = ᾱ,
                                                  Z::Matrix{S} = eye(size(proportions)[1]))
@@ -25,7 +25,7 @@ end
 ## - proportions - population proportions
 ##
 ## Returns:
-## - diversity(ies)
+## - diversities of sub-communities
 function richness{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedrichness(proportions, ᾱ)
 end
@@ -42,7 +42,7 @@ end
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - diversity(ies)
+## - entropy (at ecosystem level) or entropies (of sub-communities)
 function generalisedshannon{S <: FloatingPoint}(proportions::Matrix{S},
                                                 measure::Function = ᾱ,
                                                 Z::Matrix{S} = eye(size(proportions)[1]))
@@ -57,7 +57,7 @@ end
 ## - proportions - population proportions
 ##
 ## Returns:
-## - entrop(ies)
+## - entropies of sub-communities
 function shannon{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedshannon(proportions, ᾱ)
 end
@@ -74,7 +74,7 @@ end
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - concentration(s)
+## - concentration (at ecosystem level) or conscentrations (of sub-communities)
 function generalisedsimpson{S <: FloatingPoint}(proportions::Matrix{S},
                                                 measure::Function = ᾱ,
                                                 Z::Matrix{S} = eye(size(proportions)[1]))
@@ -91,7 +91,7 @@ end
 ## - proportions - population proportions
 ##
 ## Returns:
-## - concentration(s)
+## - conscentrations of sub-communities
 function simpson{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedsimpson(proportions, ᾱ)
 end
