@@ -1,6 +1,7 @@
 module Diversity
 
-export powermean, qD, qDZ, ᾱ, communityalphabar, α, communityalpha
+export powermean, qD, qDZ
+export ᾱ, communityalphabar, α, communityalpha, A, ecosystemA, Ā, ecosystemAbar
 
 ## powermean - Calculate order-th power mean of values, weighted by weights
 ## By default, weights are equal and order is 1, so this is just the arithmetic mean
@@ -160,4 +161,54 @@ function α{S <: FloatingPoint}(proportions::Matrix{S}, qs,
 end
 
 communityalpha = α
+
+## A - Raw similarity-sensitive ecosystem alpha diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function A{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    ca = α(proportions, qs, Z)
+    indices = 1:length(qs)
+    weights = reshape(mapslices(sum, proportions, 1),
+                      (size(proportions)[2]))
+    map((i) -> powermean(reshape(ca[i, :], (size(proportions)[2])),
+                         qs[i], weights), indices)
+end
+
+ecosystemA = A
+
+## Ā - Normalised similarity-sensitive ecosystem alpha diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function Ā{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    ca = ᾱ(proportions, qs, Z)
+    indices = 1:length(qs)
+    weights = reshape(mapslices(sum, proportions, 1), (size(proportions)[2]))
+    map((i) -> powermean(reshape(ca[i, :], (size(proportions)[2])),
+                         qs[i], weights), indices)
+end
+
+ecosystemAbar = Ā
+
 end # module

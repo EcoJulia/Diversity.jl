@@ -59,3 +59,7 @@ communities /= sum(communities);
 
 @test_approx_eq α(communities, 0) len * mapslices(v -> 1. / sum(v),
                                                   communities, 1)
+
+even = ones((len, cols)) / (len * cols)
+@test_approx_eq Ā(even, [0, 1, 2, 3, 4, 5, 6, Inf]) len * ones((1, 8))
+@test_approx_eq A(even, [0, 1, 2, 3, 4, 5, 6, Inf]) len * cols * ones((1, 8))
