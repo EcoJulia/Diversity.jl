@@ -61,6 +61,17 @@ function qD{S <: FloatingPoint, T <: Number}(proportions::Vector{S},
     map((q) ->  qD(proportions, q), qs)
 end
 
+## qD - calculate Hill number / naive diversity of order q of a
+## population with given relative proportions
+##
+## Arguments:
+## - proportions - relative proportions of different individuals /
+##                 species in population
+## - qs - single number or vector of orders of diversity measurement
+function qD{S <: FloatingPoint}(proportions::Matrix{S}, qs)
+    mapslices((p) ->  qD(p, qs), proportions, 1)
+end
+
 ## qDZ - calculate Leinster-Cobbold general diversity of order q of a
 ## population with given relative proportions, and similarity matrix Z
 ##
@@ -91,6 +102,20 @@ function qDZ{S <: FloatingPoint,
              T <: Number}(proportions::Vector{S}, qs::Vector{T},
                           Z::Matrix{S} = eye(length(proportions)))
     map((q) ->  qDZ(proportions, q, Z), qs)
+end
+
+## qDZ - calculate general Leinster-Cobbold diversity of >= 1 order q
+## of a population with given relative proportions, and similarity
+## matrix Z
+##
+## Arguments:
+## - proportions - relative proportions of different individuals /
+##                 species in population
+## - qs - single number or vector of orders of diversity measurement
+## - Z - similarity matrix
+function qDZ{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                                 Z::Matrix{S} = eye(size(proportions)[1]))
+    mapslices((p) ->  qDZ(p, qs, Z), proportions, 1)
 end
 
 end # module

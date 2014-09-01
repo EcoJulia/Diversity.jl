@@ -35,3 +35,14 @@ weights = weights / sum(weights);
 @test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf],
                     ones(typeof(weights[1]),
                          (length(weights), length(weights)))) [1, 1, 1, 1, 1]
+
+cols = 10;
+manyweights = rand(len, cols);
+manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
+                             (cols)));
+
+@test_approx_eq qD(manyweights, 0) len * ones((1, size(manyweights)[2]))
+@test_approx_eq qD(manyweights, [0]) len * ones((1, size(manyweights)[2]))
+@test_approx_eq qDZ(manyweights, [0, 1, 2, Inf],
+                    ones((size(manyweights)[1],
+                          size(manyweights)[1]))) ones((4, size(manyweights)[2]))
