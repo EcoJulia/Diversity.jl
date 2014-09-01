@@ -30,7 +30,7 @@ weights = weights / sum(weights);
 @test_approx_eq qD(weights, [1, 2]) [qD(weights, 1), qD(weights, 2)]
 
 # General Leinster-Cobbold diversity calculation
-Z1 = ones(typeof(weights[1]), (length(weights), length(weights)))
+Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 @test_approx_eq qDZ(weights, [1, 2]) qD(weights, [1, 2])
 @test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf], Z1) [1, 1, 1, 1, 1]
 
@@ -70,3 +70,7 @@ probs = reshape(mapslices(sum, communities, 2), (size(communities)[1]));
 
 Z = rand(length(weights), length(weights));
 @test_approx_eq G(communities, qs, Z) qDZ(probs, qs, Z)
+
+allthesame = probs * weights';
+@test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
+@test_approx_eq B(allthesame, qs) powermean(weights, 1 - qs, weights)

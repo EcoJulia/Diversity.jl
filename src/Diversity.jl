@@ -2,6 +2,7 @@ module Diversity
 
 export powermean, qD, qDZ
 export ᾱ, communityalphabar, α, communityalpha, A, ecosystemA, Ā, ecosystemAbar
+export β̄, communitybetabar, β, communitybeta, B, ecosystemB, B̄, ecosystemBbar
 export γ̄, communitygammabar, γ, communitygamma, G, ecosystemG, Ḡ, ecosystemGbar
 
 ## powermean - Calculate order-th power mean of values, weighted by weights
@@ -187,6 +188,98 @@ function Ā{S <: FloatingPoint}(proportions::Matrix{S}, qs,
 end
 
 ecosystemAbar = Ā
+
+## β̄ - Normalised similarity-sensitive sub-community beta diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function β̄{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    Zp = Z * reshape(mapslices(sum, proportions, 2),
+                     (size(proportions)[1])) / sum(proportions)
+    mapslices((p) ->  powermean((Z * p) ./ Zp, qs - 1., p),
+              proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
+                                                    proportions, 1),
+                                          (size(proportions)[2]))), 1)
+end
+
+communitybetabar = β̄
+
+## β - Raw similarity-sensitive sub-community beta diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function β{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions)[1]))
+    mapslices((p) ->  powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
+end
+
+communitybeta = β
+
+## B - Raw similarity-sensitive ecosystem beta diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - vector of diversities representing values of q
+function B{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    ca = β(proportions, qs, Z)
+    indices = 1:length(qs)
+    weights = reshape(mapslices(sum, proportions, 1), (size(proportions)[2]))
+    map((i) -> powermean(reshape(ca[i, :], (size(proportions)[2])),
+                         1 - qs[i], weights), indices)
+end
+
+ecosystemB = B
+
+## B̄ - Normalised similarity-sensitive ecosystem beta diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - vector of diversities representing values of q
+function B̄{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    ca = β̄(proportions, qs, Z)
+    indices = 1:length(qs)
+    weights = reshape(mapslices(sum, proportions, 1), (size(proportions)[2]))
+    map((i) -> powermean(reshape(ca[i, :], (size(proportions)[2])),
+                         1 - qs[i], weights), indices)
+end
+
+ecosystemBbar = B̄
 
 ## γ̄ - Normalised similarity-sensitive sub-community gamma diversity.
 ## Calculates diversity of a series of columns representing
