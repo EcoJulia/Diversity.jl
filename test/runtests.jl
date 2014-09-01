@@ -51,9 +51,8 @@ communities /= sum(communities);
 @test_approx_eq ᾱ(communities, 0) len * ones((1, size(communities)[2]))
 @test_approx_eq communityalphabar(communities,
                                   [0]) len * ones((1, size(communities)[2]))
-@test_approx_eq ᾱ(communities, [0, 1, 2, Inf],
-                    ones((size(communities)[1],
-                          size(communities)[1]))) ones((4, size(communities)[2]))
+@test_approx_eq ᾱ(communities,
+                  [0, 1, 2, Inf], Z1) ones((4, size(communities)[2]))
 
 @test_approx_eq α(communities, 0) len * mapslices(v -> 1. / sum(v),
                                                   communities, 1)
@@ -74,3 +73,13 @@ Z = rand(length(weights), length(weights));
 allthesame = probs * weights';
 @test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
 @test_approx_eq B(allthesame, qs) powermean(weights, 1 - qs, weights)
+
+# Looking at relations to historical measures
+@test_approx_eq richness(communities) ᾱ(communities, 0)
+@test_approx_eq generalisedrichness(communities, Ḡ, Z1) 1
+
+@test_approx_eq shannon(communities) log(ᾱ(communities, 1))
+@test_approx_eq generalisedshannon(communities, Ḡ, Z1) 0
+
+@test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
+@test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1
