@@ -124,7 +124,7 @@ end
 ## a vector of qs
 ##
 ## Arguments:
-## - populations - population counts or proportions
+## - population proportions
 ## - qs - vector of values of parameter q
 ## - Z - similarity matrix
 ##
@@ -147,10 +147,9 @@ communityalphabar = ᾱ
 ## a vector of qs
 ##
 ## Arguments:
-## - populations - population counts or proportions
+## - population proportions
 ## - qs - vector of values of parameter q
 ## - Z - similarity matrix
-## - normalise - normalise probability distribution to sum to 1
 ##
 ## Returns:
 ## - array of diversities, first dimension representing sub-communities, and
