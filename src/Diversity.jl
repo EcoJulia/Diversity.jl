@@ -1,6 +1,6 @@
 module Diversity
 
-export powermean, qD, qDZ
+export powermean, qD, qDZ, ᾱ, communityalphabar, α, communityalpha
 
 ## powermean - Calculate order-th power mean of values, weighted by weights
 ## By default, weights are equal and order is 1, so this is just the arithmetic mean
@@ -118,4 +118,47 @@ function qDZ{S <: FloatingPoint}(proportions::Matrix{S}, qs,
     mapslices((p) ->  qDZ(p, qs, Z), proportions, 1)
 end
 
+## ᾱ - Normalised similarity-sensitive sub-community alpha diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - populations - population counts or proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function ᾱ{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    mapslices((p) ->  qDZ(p, qs, Z),
+              proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
+                                                    proportions, 1),
+                                          (size(proportions)[2]))), 1)
+end
+
+communityalphabar = ᾱ
+
+## α - Raw similarity-sensitive sub-community alpha diversity.
+## Calculates diversity of a series of columns representing
+## independent community counts, for a series of orders, repesented as
+## a vector of qs
+##
+## Arguments:
+## - populations - population counts or proportions
+## - qs - vector of values of parameter q
+## - Z - similarity matrix
+## - normalise - normalise probability distribution to sum to 1
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function α{S <: FloatingPoint}(proportions::Matrix{S}, qs,
+                               Z::Matrix{S} = eye(size(proportions)[1]))
+    mapslices((p) ->  qDZ(p, qs, Z),  proportions, 1)
+end
+
+communityalpha = α
 end # module

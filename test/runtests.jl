@@ -46,3 +46,16 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 @test_approx_eq qDZ(manyweights, [0, 1, 2, Inf],
                     ones((size(manyweights)[1],
                           size(manyweights)[1]))) ones((4, size(manyweights)[2]))
+
+# Sub-community alpha diversities
+communities = rand(len, cols);
+communities /= sum(communities);
+@test_approx_eq ᾱ(communities, 0) len * ones((1, size(communities)[2]))
+@test_approx_eq communityalphabar(communities,
+                                  [0]) len * ones((1, size(communities)[2]))
+@test_approx_eq ᾱ(communities, [0, 1, 2, Inf],
+                    ones((size(communities)[1],
+                          size(communities)[1]))) ones((4, size(communities)[2]))
+
+@test_approx_eq α(communities, 0) len * mapslices(v -> 1. / sum(v),
+                                                  communities, 1)
