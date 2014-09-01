@@ -12,9 +12,9 @@ numbers = [1, 2, 4, 8, 16];
 len = 100;
 fragments = rand(len);
 weights = rand(len);
-weights = weights / sum(weights);
+weights /= sum(weights);
 @test_throws ErrorException powermean(numbers, 0, weights)
-@test_approx_eq powermean(fragments, 0) prod(fragments .^ (1/len))
+@test_approx_eq powermean(fragments, 0) prod(fragments .^ (1. / len))
 @test_approx_eq powermean(fragments, 1) mean(fragments)
 @test_approx_eq powermean(fragments, Inf) maximum(fragments)
 @test_approx_eq powermean(fragments, 0, weights) prod(fragments .^ weights)
@@ -34,7 +34,7 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 @test_approx_eq qDZ(weights, [1, 2]) qD(weights, [1, 2])
 @test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf], Z1) [1, 1, 1, 1, 1]
 
-cols = 10;
+cols = 8;
 manyweights = rand(len, cols);
 manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
                              (cols)));
@@ -70,9 +70,11 @@ probs = reshape(mapslices(sum, communities, 2), (size(communities)[1]));
 Z = rand(length(weights), length(weights));
 @test_approx_eq G(communities, qs, Z) qDZ(probs, qs, Z)
 
-allthesame = probs * weights';
+colweights = rand(cols);
+colweights /= sum(colweights);
+allthesame = probs * colweights';
 @test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
-@test_approx_eq B(allthesame, qs) powermean(weights, 1 - qs, weights)
+@test_approx_eq B(allthesame, qs) powermean(colweights, 1 - qs, colweights)
 
 # Looking at relations to historical measures
 @test_approx_eq richness(communities) ᾱ(communities, 0)
