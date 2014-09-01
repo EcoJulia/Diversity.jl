@@ -7,8 +7,8 @@ export β̄, communitybetabar, β, communitybeta, B, ecosystemB, B̄, ecosystemB
 export γ̄, communitygammabar, γ, communitygamma, G, ecosystemG, Ḡ, ecosystemGbar
 
 include("EffectiveNumbers.jl")
-#include("GeneralisedDiversities.jl")
-#include("Comparable.jl")
+include("GeneralisedDiversities.jl")
+#include("CommunityContributions.jl")
 #include("Historical.jl")
 
 end # module
