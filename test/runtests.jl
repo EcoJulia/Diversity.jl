@@ -90,7 +90,8 @@ allthesame = probs * colweights';
 # diversities are the same
 smoothed = communities ./ mapslices(sum, communities, 1);
 smoothed /= numcommunities;
-@test_approx_eq contributions(smoothed, [0:5, Inf], α, true) contributions(smoothed, [0:5, Inf], ᾱ, true)
+# Just for completeness, check one for q=-Inf - we currently have no use for this, but it is coded.
+@test_approx_eq contributions(smoothed, [-Inf, 0:5, Inf], α, true) contributions(smoothed, [-Inf, 0:5, Inf], ᾱ, true)
 @test_approx_eq contributions(smoothed, [0:5, Inf], β, true) contributions(smoothed, [0:5, Inf], β̄, true)
 @test_approx_eq contributions(smoothed, [0:5, Inf], γ, true) contributions(smoothed, [0:5, Inf], γ̄, true)
 @test_approx_eq contributions(smoothed, [0:5, Inf], α, false) contributions(smoothed, [0:5, Inf], ᾱ, false)
