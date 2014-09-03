@@ -124,3 +124,7 @@ using Diversity.Compatibility
 
 @test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
 @test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1
+# Checking Hill numbers
+using Diversity.Hill
+
+@test hillnumber == qD

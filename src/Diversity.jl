@@ -21,4 +21,11 @@ export generalisedsimpson, simpson
 
 end # sub-module Compatibility
 
+module Hill
+
+include("Hill.jl")
+export hillnumber
+
+end # sub-module Hill
+
 end # module
