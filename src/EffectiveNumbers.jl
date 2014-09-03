@@ -16,7 +16,7 @@ function powermean{S <: Number,
                                 weights::Vector{U} = ones(values) * 1.)
     ## Normalise weights to sum to 1 (as per Rényi)
     length(values) == length(weights) ||
-    error("Weight and value vectors must be the same length")
+    error("powermean: Weight and value vectors must be the same length")
     proportions = weights / sum(weights)
     present = filter(x -> !isapprox(x[1], 0.), zip(proportions, values))
     if (isinf(order))
@@ -75,7 +75,7 @@ qD{S <: FloatingPoint,
 ## - Diversity of order qs (single number or vector of diversities)
 qD{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
-       mapslices(p ->  qD(p, qs), proportions, 1)
+       mapslices(p -> qD(p, qs), proportions, 1)
        
 ## qDZ - calculates Leinster-Cobbold general diversity of >= 1 order q
 ## of a population with given relative proportions, and similarity
@@ -94,7 +94,7 @@ function qDZ{S <: FloatingPoint,
                           Z::Matrix{S} = eye(length(proportions)))
     l = length(proportions)
     size(Z) == (l, l) ||
-    error("Similarity matrix size does not match species number")
+    error("qDZ: Similarity matrix size does not match species number")
     powermean(Z * proportions, qs - 1., proportions) .^ -1
 end
 
@@ -113,4 +113,4 @@ end
 qDZ{S <: FloatingPoint,
     T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                  Z::Matrix{S} = eye(size(proportions, 1))) =
-                     mapslices(p ->  qDZ(p, qs, Z), proportions, 1)
+                     mapslices(p -> qDZ(p, qs, Z), proportions, 1)

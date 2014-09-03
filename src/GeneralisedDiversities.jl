@@ -81,7 +81,7 @@ end
 ᾱ{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
-                   mapslices((p) ->  qDZ(p, qs, Z),
+                   mapslices(p -> qDZ(p, qs, Z),
                              proportions *
                              diagm(reshape(mapslices(v -> 1. / sum(v),
                                                      proportions, 1),
@@ -170,7 +170,7 @@ function β̄{S <: FloatingPoint,
                         Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1))) / sum(proportions)
-    mapslices((p) ->  powermean((Z * p) ./ Zp, qs - 1., p),
+    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p),
               proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
                                                     proportions, 1),
                                           (size(proportions, 2)))), 1)
@@ -196,7 +196,7 @@ function β{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
-    mapslices((p) ->  powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
+    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
 end
 
 communitybeta = β
@@ -260,7 +260,7 @@ function γ̄{S <: FloatingPoint,
                         Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1))) / sum(proportions)
-    mapslices((p) ->  powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
+    mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
 end
 
 communitygammabar = γ̄
@@ -284,7 +284,7 @@ function γ{S <: FloatingPoint,
                         Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1)))
-    mapslices((p) ->  powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
+    mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
 end
 
 communitygamma = γ
