@@ -8,17 +8,16 @@
 ## Arguments:
 ## - measure - the diversity to be used (one of α, ᾱ, β, β̄, γ or γ̄)
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ## - returnecosystem - boolean describing whether to return the
 ##                     ecosystem diversity
 ## - returncommunity - boolean describing whether to return the
 ##                     community diversities
-## - returnweights - boolean describing whether to return community
-## weights
+## - returnweights   - boolean describing whether to return community weights
 ##
 ## Returns:
-## - either or both (as tuple) of:
+## - some or all (as tuple) of:
 ##   - vector of ecosystem diversities representing values of q
 ##   - array of diversities, first dimension representing sub-communities, and
 ##     last representing values of q
@@ -34,32 +33,30 @@ function diversity{S <: FloatingPoint,
     ## Make sure we actually want to calculate the diversity before
     ## going any further!
     if (!returnecosystem && !returncommunity)
-        return returnweights ? reshape(mapslices(sum, proportions, 1),
-                                       (size(proportions)[2])) : nothing
+        return returnweights ? mapslices(sum, proportions, 1) : nothing
     end
 
     ## We need our qs to be a vector of floating points
-    qsvec = convert(Vector{S}, [qs])
+    powers = 1. - convert(Vector{S}, [qs])
     
     ## We'll definitely need to calculate sub-community diversity first
-    cd = measure(proportions, qsvec, Z)
+    cd = measure(proportions, qs, Z)
 
     ## But do we need to calculate anything else?
     if (returnecosystem || returnweights)
-        weights = reshape(mapslices(sum, proportions, 1),
-                          (size(proportions)[2]))
+        w = mapslices(sum, proportions, 1)
         if (returnecosystem)
-            ed = zeros(qsvec)
-            for (i in 1:length(qsvec))
-                ed[i] = powermean(reshape(cd[i, :], (size(proportions)[2])),
-                                  1 - qsvec[i], weights)
+            ed = zeros(powers)
+            for (i in 1:length(powers))
+                ed[i] = powermean(reshape(cd[i, :], size(proportions, 2)),
+                                  powers[i], reshape(w, size(proportions, 2)))
             end
             # must be returning ecosystem, but what else?
             return (returncommunity ?
-                    (returnweights ? (ed, cd, weights) : (ed, cd)) :
-                    (returnweights ? (ed, weights) : (ed)))
+                    (returnweights ? (ed, cd, w) : (ed, cd)) :
+                    (returnweights ? (ed, w) : (ed)))
         else # must be returning community and weights
-            return (cd, weights)
+            return (cd, w)
         end
     else
         # must just be returning community

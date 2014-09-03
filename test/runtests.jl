@@ -98,19 +98,19 @@ ed, cd, w = diversity(γ, communities, qs, Z, true, true, true)
 smoothed = communities ./ mapslices(sum, communities, 1);
 smoothed /= numcommunities;
 # Just for completeness, check one for q=-Inf - we currently have no use for this, but it is coded.
-@test_approx_eq contributions(smoothed, [-Inf, 0:5, Inf], α, true) contributions(smoothed, [-Inf, 0:5, Inf], ᾱ, true)
-@test_approx_eq contributions(smoothed, [0:5, Inf], β, true) contributions(smoothed, [0:5, Inf], β̄, true)
-@test_approx_eq contributions(smoothed, [0:5, Inf], γ, true) contributions(smoothed, [0:5, Inf], γ̄, true)
-@test_approx_eq contributions(smoothed, [0:5, Inf], α, false) contributions(smoothed, [0:5, Inf], ᾱ, false)
-@test_approx_eq contributions(smoothed, [0:5, Inf], β, false) contributions(smoothed, [0:5, Inf], β̄, false)
-@test_approx_eq contributions(smoothed, [0:5, Inf], γ, false) contributions(smoothed, [0:5, Inf], γ̄, false)
+@test_approx_eq contributions(α, smoothed, [-Inf, 0:5, Inf], true) contributions(ᾱ, smoothed, [-Inf, 0:5, Inf], true)
+@test_approx_eq contributions(β, smoothed, [0:5, Inf], true) contributions(β̄, smoothed, [0:5, Inf], true)
+@test_approx_eq contributions(γ, smoothed, [0:5, Inf], true) contributions(γ̄, smoothed, [0:5, Inf], true)
+@test_approx_eq contributions(α, smoothed, [0:5, Inf], false) contributions(ᾱ, smoothed, [0:5, Inf], false)
+@test_approx_eq contributions(β, smoothed, [0:5, Inf], false) contributions(β̄, smoothed, [0:5, Inf], false)
+@test_approx_eq contributions(γ, smoothed, [0:5, Inf], false) contributions(γ̄, smoothed, [0:5, Inf], false)
 
-@test_approx_eq contributions(smoothed, [0:5, Inf], α, true) contributions(smoothed, [0:5, Inf], α, false) * numcommunities
-@test_approx_eq contributions(smoothed, [0:5, Inf], β, true) contributions(smoothed, [0:5, Inf], β, false) * numcommunities
-@test_approx_eq contributions(smoothed, [0:5, Inf], γ, true) contributions(smoothed, [0:5, Inf], γ, false) * numcommunities
-@test_approx_eq contributions(smoothed, [0:5, Inf], ᾱ, true) contributions(smoothed, [0:5, Inf], ᾱ, false) * numcommunities
-@test_approx_eq contributions(smoothed, [0:5, Inf], β̄, true) contributions(smoothed, [0:5, Inf], β̄, false) * numcommunities
-@test_approx_eq contributions(smoothed, [0:5, Inf], γ̄, true) contributions(smoothed, [0:5, Inf], γ̄, false) * numcommunities
+@test_approx_eq contributions(α, smoothed, [0:5, Inf], true) contributions(α, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(β, smoothed, [0:5, Inf], true) contributions(β, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(γ, smoothed, [0:5, Inf], true) contributions(γ, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(ᾱ, smoothed, [0:5, Inf], true) contributions(ᾱ, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(β̄, smoothed, [0:5, Inf], true) contributions(β̄, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(γ̄, smoothed, [0:5, Inf], true) contributions(γ̄, smoothed, [0:5, Inf], false) * numcommunities
 
 # Looking at relations to historical measures, updated with similarity
 # and partitioning

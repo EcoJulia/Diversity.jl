@@ -208,3 +208,41 @@ function diversity (measure::Function, proportions::Matrix, qs, Z::Matrix,
                     returncommunity::Bool,
                     returnweights::Bool)
 ```
+
+And to :
+
+```julia
+## contributions () - Calculate diversity contributions from sub-communities
+##
+## Calculates proportions that sub-communities each contribute to
+## ecosystem diversity per sub-community (perindividual = false), or
+## per individual (perindividual = true) - in the latter case scaled
+## so that the total # of individuals is 1, since we only have
+## relative abundances.
+##
+## Arguments:
+## - measure - diversity measure to use
+## - proportions - population proportions
+## - qs - single number or vector of values of parameter q
+## - perindividual - do we measure per individual in population (true)
+##                   or per sub-community (false)
+## - Z - similarity matrix
+## - returnecosystem - boolean describing whether to return the
+##                     ecosystem diversity
+## - returncommunity - boolean describing whether to return the
+##                     community diversities
+## - returnweights   - boolean describing whether to return community weights
+##
+## Returns:
+## - contributions of sub-communities to ecosystem diversity (of type measure)
+## - and none, some or all (in a tuple) of:
+##   - vector of ecosystem diversities representing values of q
+##   - array of diversities, first dimension representing sub-communities, and
+##     last representing values of q
+##   - vector of community weights
+function contributions (measure::Function, proportions::Matrix, qs,
+                        perindividual::Bool, Z::Matrix,
+                        returnecosystem::Bool,
+                        returncommunity::Bool,
+                        returnweights::Bool)
+```
