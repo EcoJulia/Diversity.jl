@@ -78,6 +78,21 @@ allthesame = probs * colweights';
 @test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
 @test_approx_eq B(allthesame, qs) powermean(colweights, 1 - qs, colweights)
 
+# Need to check the diversity() function
+@test_approx_eq diversity(B̄, allthesame, qs, Z, false, false, true) colweights
+@test_approx_eq diversity(β̄, communities, qs, Z,
+                          false, true, false) β̄(communities, qs, Z)
+@test_approx_eq diversity(β̄, communities, qs, Z,
+                          true, false, false) B̄(communities, qs, Z)
+@test_approx_eq diversity(ᾱ, communities, qs, Z,
+                          true, true, false)[1] Ā(communities, qs, Z)
+@test_approx_eq diversity(α, allthesame, qs, Z,
+                          true, true, true)[2] α(allthesame, qs, Z)
+ed, cd, w = diversity(γ, communities, qs, Z, true, true, true)
+@test_approx_eq diversity(γ̄, communities, qs, Z, true, false, true)[1] ed 
+@test_approx_eq diversity(γ̄, communities, qs, Z, false, true, true)[1] cd
+@test_approx_eq diversity(α, allthesame, qs, Z, true, true, true)[3] colweights
+
 # Now some even communities, should see that raw and normalised
 # diversities are the same
 smoothed = communities ./ mapslices(sum, communities, 1);
