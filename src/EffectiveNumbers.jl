@@ -8,36 +8,44 @@
 ##
 ## Returns:
 ## - weighted power mean
-function powermean{S <: Number, T <: Number, U <: Number}(values::Vector{S},
-                   order::T = 1,
-                   weights::Vector{U} = ones(FloatingPoint, size(values)))
+function powermean{S <: Number,
+                   T <: FloatingPoint,
+                   U <: Number}(values::Vector{S},
+                                order::T = 1.,
+                                weights::Vector{U} = ones(values) * 1.)
     ## Normalise weights to sum to 1 (as per Rényi)
     length(values) == length(weights) ||
     error("Weight and value vectors must be the same length")
     proportions = weights / sum(weights)
-    power = convert(FloatingPoint, order)
-    present = filter(x -> !isapprox(x[1], 0), zip(proportions, values))
-    if (isinf(power))
-        if (power > 0) # +Inf -> Maximum
+    present = filter(x -> !isapprox(x[1], 0.), zip(proportions, values))
+    if (isinf(order))
+        if (order > 0.) # +Inf -> Maximum
             reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
         else # -Inf -> Minimum
             reduce((a, b) -> a[2] < b[2] ? a : b, present)[2]
         end
     else
-        if (isapprox(power, 0))
-            mapreduce((pair) -> pair[2] ^ pair[1], *, present)
+        if (isapprox(order, 0))
+            mapreduce(pair -> pair[2] ^ pair[1], *, present)
         else
-            mapreduce(pair -> pair[1] * pair[2] ^ power, +,
-                      present) ^ (1 / power)
+            mapreduce(pair -> pair[1] * pair[2] ^ order, +,
+                      present) ^ (1. / order)
         end
     end
 end
 
-function powermean{S <: Number, T <: Number, U <: Number}(values::Vector{S},
-                   orders::Vector{T},
-                   weights::Vector{U} = ones(FloatingPoint, size(values)))
-    map((order) ->  powermean(values, order, weights), orders)
-end
+## We need to handle lack of automatic promotion between ints and floats in Julia
+powermean{T <: Integer,
+          U <: Number}(values, order::T,
+                       weights::Vector{U} = ones(values) * 1.) =
+                           powermean(values, convert(U, order), weights)
+                           
+## Handle the likelihood of multiple orders of the mean being needed
+powermean{S <: Number}(values::Vector{S}, orders::Vector,
+                       weights::Vector = ones(values) * 1.) =
+                           map(order ->
+                               powermean(values, order * 1., weights * 1.),
+                               orders)
 
 ## qD - calculate Hill number / naive diversity of order q of a
 ## population with given relative proportions
