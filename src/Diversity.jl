@@ -19,6 +19,6 @@ export generalisedrichness, richness
 export generalisedshannon, shannon
 export generalisedsimpson, simpson
 
-end
+end # sub-module Compatibility
 
 end # module

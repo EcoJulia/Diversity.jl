@@ -112,9 +112,10 @@ smoothed /= numcommunities;
 @test_approx_eq contributions(smoothed, [0:5, Inf], β̄, true) contributions(smoothed, [0:5, Inf], β̄, false) * numcommunities
 @test_approx_eq contributions(smoothed, [0:5, Inf], γ̄, true) contributions(smoothed, [0:5, Inf], γ̄, false) * numcommunities
 
+# Looking at relations to historical measures, updated with similarity
+# and partitioning
 using Diversity.Compatibility
 
-# Looking at relations to historical measures
 @test_approx_eq richness(communities) ᾱ(communities, 0)
 @test_approx_eq generalisedrichness(communities, Ḡ, Z1) 1
 
