@@ -14,11 +14,34 @@
 
 ## Usage
 
+Accessing the main functionality in the package is simple:
+
 ```julia
 using Diversity
+...
+diversities = ᾱ(proportions, [0, 1, 2, Inf], Z)
 ```
 
-It provides basic diversity measures (from [Hill, 1973](http://www.jstor.org/stable/1934352)):
+The package also provides sub-modules with other diversity measures:
+
+```julia
+using Diversity.Compatibility
+...
+simp = simpson(proportions)
+rich = richness(proportions)
+shan = shannon(proportions)
+
+using Diversity.Hill
+...
+diversities = hillnumber(proportions, [0, 1, 2, Inf])
+
+using Diversity.Jost
+...
+diversities = jostbeta(proportions, [0, 1, 2, Inf])
+```
+
+The main package provides basic diversity measures (from
+[Hill, 1973](http://www.jstor.org/stable/1934352)):
 
 ```julia
 ## qD () - calculate Hill number / naive diversity of order q of
