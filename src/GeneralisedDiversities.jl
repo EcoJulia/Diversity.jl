@@ -104,10 +104,14 @@ communityalphabar = ᾱ
 ## Returns:
 ## - array of diversities, first dimension representing sub-communities, and
 ##   last representing values of q
-α{S <: FloatingPoint,
-  T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions, 1))) =
-                   mapslices((p) ->  qDZ(p, qs, Z),  proportions, 1)
+function α{S <: FloatingPoint,
+           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                        Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("α: Similarity matrix size does not match species number")
+    mapslices(p -> powermean(Z * p, qs - 1., p) .^ -1,  proportions, 1)
+end
 
 communityalpha = α
 
@@ -168,6 +172,10 @@ ecosystemAbar = Ā
 function β̄{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("β̄: Similarity matrix size does not match species number")
+
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1))) / sum(proportions)
     mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p),
@@ -195,6 +203,10 @@ communitybetabar = β̄
 function β{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("β: Similarity matrix size does not match species number")
+
     Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
     mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
 end
@@ -258,6 +270,10 @@ ecosystemBbar = B̄
 function γ̄{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("γ̄: Similarity matrix size does not match species number")
+
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1))) / sum(proportions)
     mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
@@ -282,6 +298,10 @@ communitygammabar = γ̄
 function γ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("γ: Similarity matrix size does not match species number")
+
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1)))
     mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)

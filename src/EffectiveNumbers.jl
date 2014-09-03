@@ -58,10 +58,15 @@ powermean{S <: Number}(values::Vector{S}, orders::Vector,
 ##
 ## Returns:
 ## - Diversity of order qs (single number or vector of diversities)
-qD{S <: FloatingPoint,
-   T <: Number}(proportions::Vector{S},
-                qs::Union(T, Vector{T})) =
-                    powermean(proportions, qs - 1., proportions) .^ -1
+function qD{S <: FloatingPoint,
+            T <: Number}(proportions::Vector{S},
+                         qs::Union(T, Vector{T}))
+    if !isapprox(sum(proportions), 1.)
+        warn("qD: Population proportions don't sum to 1, fixing...")
+        proportions /= sum(proportions)
+    end
+    powermean(proportions, qs - 1., proportions) .^ -1
+end
 
 ## qD - calculates Hill number / naive diversity of order q of a
 ## population with given relative proportions
@@ -92,6 +97,11 @@ qD{S <: FloatingPoint,
 function qDZ{S <: FloatingPoint,
              T <: Number}(proportions::Vector{S}, qs::Union(T, Vector{T}),
                           Z::Matrix{S} = eye(length(proportions)))
+    if !isapprox(sum(proportions), 1.)
+        warn("qDZ: Population proportions don't sum to 1, fixing...")
+        proportions /= sum(proportions)
+    end
+
     l = length(proportions)
     size(Z) == (l, l) ||
     error("qDZ: Similarity matrix size does not match species number")
