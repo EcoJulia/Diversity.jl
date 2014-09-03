@@ -6,7 +6,7 @@
 ## matrix.
 ##
 ## Arguments:
-## - messure - the diversity to be used (one of α, ᾱ, β, β̄, γ or γ̄)
+## - measure - the diversity to be used (one of α, ᾱ, β, β̄, γ or γ̄)
 ## - proportions - population proportions
 ## - qs - vector of values of parameter q
 ## - Z - similarity matrix

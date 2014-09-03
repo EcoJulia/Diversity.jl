@@ -187,7 +187,7 @@ series of sub-community relative abundances:
 ## matrix.
 ##
 ## Arguments:
-## - messure - the diversity to be used - one of α , ᾱ , β , β̄ , γ or γ̄
+## - measure - the diversity to be used - one of α , ᾱ , β , β̄ , γ or γ̄
 ## - proportions - population proportions
 ## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
