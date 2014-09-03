@@ -54,9 +54,10 @@ powermean{S <: Number}(values::Vector{S}, orders::Vector,
 ## - proportions - relative proportions of different individuals /
 ##                 species in population
 ## - qs - single number or vector of orders of diversity measurement
-function qD{S <: FloatingPoint}(proportions::Vector{S}, qs)
-  powermean(proportions, qs - 1., proportions) .^ -1
-end
+qD{S <: FloatingPoint,
+   T <: Number}(proportions::Vector{S},
+                qs::Union(T, Vector{T})) =
+                    powermean(proportions, qs - 1., proportions) .^ -1
 
 ## qD - calculate Hill number / naive diversity of order q of a
 ## population with given relative proportions
@@ -65,10 +66,10 @@ end
 ## - proportions - relative proportions of different individuals /
 ##                 species in population
 ## - qs - single number or vector of orders of diversity measurement
-function qD{S <: FloatingPoint}(proportions::Matrix{S}, qs)
-    mapslices((p) ->  qD(p, qs), proportions, 1)
-end
-
+qD{S <: FloatingPoint,
+   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
+       mapslices(p ->  qD(p, qs), proportions, 1)
+       
 ## qDZ - calculate Leinster-Cobbold general diversity of >= 1 order q
 ## of a population with given relative proportions, and similarity
 ## matrix Z
@@ -78,8 +79,9 @@ end
 ##                 species in population
 ## - qs - single number or vector of orders of diversity measurement
 ## - Z - similarity matrix
-function qDZ{S <: FloatingPoint}(proportions::Vector{S}, qs,
-                                 Z::Matrix{S} = eye(length(proportions)))
+function qDZ{S <: FloatingPoint,
+             T <: Number}(proportions::Vector{S}, qs::Union(T, Vector{T}),
+                          Z::Matrix{S} = eye(length(proportions)))
     l = length(proportions)
     size(Z) == (l, l) ||
     error("Similarity matrix size does not match species number")
@@ -95,7 +97,7 @@ end
 ##                 species in population
 ## - qs - single number or vector of orders of diversity measurement
 ## - Z - similarity matrix
-function qDZ{S <: FloatingPoint}(proportions::Matrix{S}, qs,
-                                 Z::Matrix{S} = eye(size(proportions)[1]))
-    mapslices((p) ->  qDZ(p, qs, Z), proportions, 1)
-end
+qDZ{S <: FloatingPoint,
+    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                 Z::Matrix{S} = eye(size(proportions)[1])) =
+                     mapslices(p ->  qDZ(p, qs, Z), proportions, 1)
