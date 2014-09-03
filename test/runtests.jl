@@ -78,16 +78,6 @@ allthesame = probs * colweights';
 @test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
 @test_approx_eq B(allthesame, qs) powermean(colweights, 1 - qs, colweights)
 
-# Looking at relations to historical measures
-@test_approx_eq richness(communities) ᾱ(communities, 0)
-@test_approx_eq generalisedrichness(communities, Ḡ, Z1) 1
-
-@test_approx_eq shannon(communities) log(ᾱ(communities, 1))
-@test_approx_eq generalisedshannon(communities, Ḡ, Z1) 0
-
-@test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
-@test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1
-
 # Now some even communities, should see that raw and normalised
 # diversities are the same
 smoothed = communities ./ mapslices(sum, communities, 1);
@@ -106,3 +96,15 @@ smoothed /= numcommunities;
 @test_approx_eq contributions(smoothed, [0:5, Inf], ᾱ, true) contributions(smoothed, [0:5, Inf], ᾱ, false) * numcommunities
 @test_approx_eq contributions(smoothed, [0:5, Inf], β̄, true) contributions(smoothed, [0:5, Inf], β̄, false) * numcommunities
 @test_approx_eq contributions(smoothed, [0:5, Inf], γ̄, true) contributions(smoothed, [0:5, Inf], γ̄, false) * numcommunities
+
+using Diversity.Compatibility
+
+# Looking at relations to historical measures
+@test_approx_eq richness(communities) ᾱ(communities, 0)
+@test_approx_eq generalisedrichness(communities, Ḡ, Z1) 1
+
+@test_approx_eq shannon(communities) log(ᾱ(communities, 1))
+@test_approx_eq generalisedshannon(communities, Ḡ, Z1) 0
+
+@test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
+@test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1

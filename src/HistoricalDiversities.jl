@@ -1,3 +1,5 @@
+using Diversity
+
 ## generalisedrichness - Calculate a generalised version of richness
 ## Calculates (species) richness of a series of columns representing
 ## independent community counts, which is diversity at q = 0 for any

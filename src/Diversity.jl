@@ -11,9 +11,13 @@ export γ̄, communitygammabar, γ, communitygamma, G, ecosystemG, Ḡ, ecosyste
 include("CommunityContributions.jl")
 export contributions
 
+module Compatibility
+
 include("HistoricalDiversities.jl")
 export generalisedrichness, richness
 export generalisedshannon, shannon
 export generalisedsimpson, simpson
+
+end
 
 end # module
