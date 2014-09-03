@@ -17,16 +17,16 @@ function contributions{S <: FloatingPoint}(proportions::Matrix{S}, qs,
     diversities = measure(proportions, qs, Z)
     indices = 1:length(qs)
     weights = mapslices(sum, proportions, 1)
-    results = 0. .* diversities
+    results = zeros(diversities)
     for (i in indices)
         power = 1. - qs[i]
         if (isinf(power))
             if (power > 0) # +Inf -> Maximum, so 1 for top otherwise 0
-                mx = 0. * diversities[i, :]
+                mx = zeros(diversities[i, :])
                 mx[indmax(diversities[i, :])] = 1.
                 results[i, :] = mx
             else # -Inf -> Minimum, so 1 for bottom otherwise 0
-                mn = 0. * diversities[i, :]
+                mn = zeros(diversities[i, :])
                 mn[indmin(diversities[i, :])] = 1.
                 results[i, :] = mn
             end
