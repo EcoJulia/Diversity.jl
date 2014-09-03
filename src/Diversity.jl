@@ -1,7 +1,6 @@
 module Diversity
 
 include("EffectiveNumbers.jl")
-export powermean
 export qD, qDZ
 
 include("GeneralisedDiversities.jl")
