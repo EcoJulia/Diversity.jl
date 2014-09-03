@@ -21,6 +21,13 @@ export generalisedsimpson, simpson
 
 end # sub-module Compatibility
 
+module Jost
+
+include("Jost.jl")
+export jostD, jostbeta, jostβ
+
+end # sub-module Jost
+
 module Hill
 
 include("Hill.jl")

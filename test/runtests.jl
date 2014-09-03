@@ -124,6 +124,15 @@ using Diversity.Compatibility
 
 @test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
 @test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1
+
+# Checking Jost's diversities
+using Diversity.Jost
+
+@test jostD == qD
+@test jostβ == jostbeta
+@test_approx_eq jostbeta(communities, 1) B̄(communities, 1)
+@test_approx_eq jostbeta(allthesame, qs) ones(qs)
+
 # Checking Hill numbers
 using Diversity.Hill
 
