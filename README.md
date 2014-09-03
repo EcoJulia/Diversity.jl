@@ -179,7 +179,7 @@ We also provide a general function for extract any diversity measure for a
 series of sub-community relative abundances:
 
 ```julia
-## diversity() - calculates sub-community and ecosystem diversities
+## diversity () - calculates sub-community and ecosystem diversities
 ##
 ## Calculates any diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
@@ -195,11 +195,10 @@ series of sub-community relative abundances:
 ##                     ecosystem diversity
 ## - returncommunity - boolean describing whether to return the
 ##                     community diversities
-## - returnweights   - boolean describing whether to return the
-##                     community weights
+## - returnweights   - boolean describing whether to return community weights
 ##
 ## Returns:
-## - any or all (as tuple) of:
+## - some or all (as tuple) of:
 ##   - vector of ecosystem diversities representing values of q
 ##   - array of diversities, first dimension representing sub-communities, and
 ##     last representing values of q
