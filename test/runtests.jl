@@ -1,7 +1,9 @@
 using Diversity
 using Base.Test
 
-# Simple power means
+# Simple power means - we no longer export these, but we should check
+# them anyway as everything relies on them
+using Diversity.powermean
 numbers = [1, 2, 4, 8, 16];
 @test_approx_eq powermean(numbers, 0) 4
 @test_approx_eq powermean(numbers, 1) 6.2
