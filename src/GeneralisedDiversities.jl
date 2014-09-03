@@ -1,7 +1,9 @@
-## diversity - calculates sub-community and ecosystem diversities
-## Calculates diversity of a series of columns representing
+## diversity() - calculates sub-community and ecosystem diversities
+##
+## Calculates any diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs, with similarity matrix Z, by default the (naïve) identity
+## matrix.
 ##
 ## Arguments:
 ## - messure - the diversity to be used (one of α, ᾱ, β, β̄, γ or γ̄)
@@ -65,14 +67,15 @@ function diversity{S <: FloatingPoint,
     end
 end
 
-## ᾱ - Normalised similarity-sensitive sub-community alpha diversity.
+## ᾱ() - Normalised similarity-sensitive sub-community alpha diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
 ## a vector of qs
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -90,14 +93,15 @@ end
 
 communityalphabar = ᾱ
 
-## α - Raw similarity-sensitive sub-community alpha diversity.
+## α() - Raw similarity-sensitive sub-community alpha diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -110,14 +114,15 @@ communityalphabar = ᾱ
 
 communityalpha = α
 
-## A - Raw similarity-sensitive ecosystem alpha diversity.
+## A() - Raw similarity-sensitive ecosystem alpha diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -129,14 +134,15 @@ A{S <: FloatingPoint,
 
 ecosystemA = A
 
-## Ā - Normalised similarity-sensitive ecosystem alpha diversity.
+## Ā() - Normalised similarity-sensitive ecosystem alpha diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -148,14 +154,15 @@ Ā{S <: FloatingPoint,
 
 ecosystemAbar = Ā
 
-## β̄ - Normalised similarity-sensitive sub-community beta diversity.
+## β̄() - Normalised similarity-sensitive sub-community beta diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -174,14 +181,15 @@ end
 
 communitybetabar = β̄
 
-## β - Raw similarity-sensitive sub-community beta diversity.
+## β() - Raw similarity-sensitive sub-community beta diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -196,14 +204,15 @@ end
 
 communitybeta = β
 
-## B - Raw similarity-sensitive ecosystem beta diversity.
+## B() - Raw similarity-sensitive ecosystem beta diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -215,14 +224,15 @@ B{S <: FloatingPoint,
 
 ecosystemB = B
 
-## B̄ - Normalised similarity-sensitive ecosystem beta diversity.
+## B̄() - Normalised similarity-sensitive ecosystem beta diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -234,14 +244,15 @@ B̄{S <: FloatingPoint,
 
 ecosystemBbar = B̄
 
-## γ̄ - Normalised similarity-sensitive sub-community gamma diversity.
+## γ̄() - Normalised similarity-sensitive sub-community gamma diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -257,14 +268,15 @@ end
 
 communitygammabar = γ̄
 
-## γ - Raw similarity-sensitive sub-community gamma diversity.
+## γ() - Raw similarity-sensitive sub-community gamma diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -280,14 +292,15 @@ end
 
 communitygamma = γ
 
-## G - Raw similarity-sensitive ecosystem gamma diversity.
+## G() - Raw similarity-sensitive ecosystem gamma diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
@@ -299,14 +312,15 @@ G{S <: FloatingPoint,
 
 ecosystemG = G
 
-## Ḡ - Normalised similarity-sensitive ecosystem gamma diversity.
+## Ḡ() - Normalised similarity-sensitive ecosystem gamma diversity.
+##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
-## a vector of qs
+## a vector of qs (or a single number)
 ##
 ## Arguments:
 ## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
 ##
 ## Returns:
