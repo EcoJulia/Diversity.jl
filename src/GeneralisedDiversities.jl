@@ -27,7 +27,7 @@ function diversity{S <: FloatingPoint,
                    T <: Number}(measure::Function,
                                 proportions::Matrix{S},
                                 qs::Union(T, Vector{T}),
-                                Z::Matrix{S} = eye(size(proportions)[1]),
+                                Z::Matrix{S} = eye(size(proportions, 1)),
                                 returnecosystem::Bool = true,
                                 returncommunity::Bool = true,
                                 returnweights::Bool = true)
@@ -83,12 +83,12 @@ end
 ##   last representing values of q
 ᾱ{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    mapslices((p) ->  qDZ(p, qs, Z),
                              proportions *
                              diagm(reshape(mapslices(v -> 1. / sum(v),
                                                      proportions, 1),
-                                           (size(proportions)[2]))),
+                                           (size(proportions, 2)))),
                              1)
 
 communityalphabar = ᾱ
@@ -109,7 +109,7 @@ communityalphabar = ᾱ
 ##   last representing values of q
 α{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    mapslices((p) ->  qDZ(p, qs, Z),  proportions, 1)
 
 communityalpha = α
@@ -129,7 +129,7 @@ communityalpha = α
 ## - vector of diversities representing values of q
 A{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(α, proportions, qs, Z, true, false, false)
 
 ecosystemA = A
@@ -149,7 +149,7 @@ ecosystemA = A
 ## - vector of diversities representing values of q
 Ā{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(ᾱ, proportions, qs, Z, true, false, false)
 
 ecosystemAbar = Ā
@@ -170,13 +170,13 @@ ecosystemAbar = Ā
 ##   last representing values of q
 function β̄{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                        Z::Matrix{S} = eye(size(proportions)[1]))
+                        Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions)[1])) / sum(proportions)
+                     (size(proportions, 1))) / sum(proportions)
     mapslices((p) ->  powermean((Z * p) ./ Zp, qs - 1., p),
               proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
                                                     proportions, 1),
-                                          (size(proportions)[2]))), 1)
+                                          (size(proportions, 2)))), 1)
 end
 
 communitybetabar = β̄
@@ -197,8 +197,8 @@ communitybetabar = β̄
 ##   last representing values of q
 function β{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                        Z::Matrix{S} = eye(size(proportions)[1]))
-    Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions)[1]))
+                        Z::Matrix{S} = eye(size(proportions, 1)))
+    Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
     mapslices((p) ->  powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
 end
 
@@ -219,7 +219,7 @@ communitybeta = β
 ## - vector of diversities representing values of q
 B{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(β, proportions, qs, Z, true, false, false)
 
 ecosystemB = B
@@ -239,7 +239,7 @@ ecosystemB = B
 ## - vector of diversities representing values of q
 B̄{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(β̄, proportions, qs, Z, true, false, false)
 
 ecosystemBbar = B̄
@@ -260,9 +260,9 @@ ecosystemBbar = B̄
 ##   last representing values of q
 function γ̄{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                        Z::Matrix{S} = eye(size(proportions)[1]))
+                        Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions)[1])) / sum(proportions)
+                     (size(proportions, 1))) / sum(proportions)
     mapslices((p) ->  powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
 end
 
@@ -284,9 +284,9 @@ communitygammabar = γ̄
 ##   last representing values of q
 function γ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                        Z::Matrix{S} = eye(size(proportions)[1]))
+                        Z::Matrix{S} = eye(size(proportions, 1)))
     Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions)[1]))
+                     (size(proportions, 1)))
     mapslices((p) ->  powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
 end
 
@@ -307,7 +307,7 @@ communitygamma = γ
 ## - vector of diversities representing values of q
 G{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(γ, proportions, qs, Z, true, false, false)
 
 ecosystemG = G
@@ -327,7 +327,7 @@ ecosystemG = G
 ## - vector of diversities representing values of q
 Ḡ{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-               Z::Matrix{S} = eye(size(proportions)[1])) =
+               Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(γ̄, proportions, qs, Z, true, false, false)
 
 ecosystemGbar = Ḡ

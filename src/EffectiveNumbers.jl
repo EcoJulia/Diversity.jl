@@ -112,5 +112,5 @@ end
 ## - Diversity of order qs (single number or vector of diversities)
 qDZ{S <: FloatingPoint,
     T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                 Z::Matrix{S} = eye(size(proportions)[1])) =
+                 Z::Matrix{S} = eye(size(proportions, 1))) =
                      mapslices(p ->  qDZ(p, qs, Z), proportions, 1)
