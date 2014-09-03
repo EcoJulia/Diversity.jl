@@ -119,12 +119,12 @@ communityalpha = α
 function A (proportions::Matrix, qs, Z::Matrix)
 ecosystemA = A
 
-## β ̄() - Normalised similarity-sensitive sub-community beta diversity.
-function β (proportions::Matrix, qs, Z::Matrix)
+## β̄ () - Normalised similarity-sensitive sub-community beta diversity.
+function β̄ (proportions::Matrix, qs, Z::Matrix)
 communitybetabar = β̄
 
-## B ̄() - Normalised similarity-sensitive ecosystem beta diversity.
-function B (proportions::Matrix, qs, Z::Matrix)
+## B̄ () - Normalised similarity-sensitive ecosystem beta diversity.
+function B̄ (proportions::Matrix, qs, Z::Matrix)
 ecosystemBbar = B̄
 
 ## β () - Raw similarity-sensitive sub-community beta diversity.
@@ -135,8 +135,8 @@ communitybeta = β
 function B (proportions::Matrix, qs, Z::Matrix)
 ecosystemB = B
 
-## γ ̄() - Normalised similarity-sensitive sub-community gamma diversity.
-function γ (proportions::Matrix, qs, Z::Matrix)
+## γ̄ () - Normalised similarity-sensitive sub-community gamma diversity.
+function γ̄ (proportions::Matrix, qs, Z::Matrix)
 communitygammabar = γ̄
 
 ## Ḡ () - Normalised similarity-sensitive ecosystem gamma diversity.
@@ -164,7 +164,7 @@ series of sub-community relative abundances:
 ## matrix.
 ##
 ## Arguments:
-## - messure - the diversity to be used (one of α, ᾱ, β, β̄, γ or γ̄)
+## - messure - the diversity to be used - one of α , ᾱ , β , β̄ , γ or γ̄
 ## - proportions - population proportions
 ## - qs - single number or vector of values of parameter q
 ## - Z - similarity matrix
@@ -181,8 +181,8 @@ series of sub-community relative abundances:
 ##   - array of diversities, first dimension representing sub-communities, and
 ##     last representing values of q
 ##   - vector of community weights
-function diversity(measure::Function, proportions::Matrix, qs, Z::Matrix,
-                   returnecosystem::Bool,
-                   returncommunity::Bool,
-                   returnweights::Bool)
+function diversity (measure::Function, proportions::Matrix, qs, Z::Matrix,
+                    returnecosystem::Bool,
+                    returncommunity::Bool,
+                    returnweights::Bool)
 ```
