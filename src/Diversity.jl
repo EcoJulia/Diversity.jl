@@ -7,6 +7,7 @@ include("GeneralisedDiversities.jl")
 export ᾱ, communityalphabar, α, communityalpha, A, ecosystemA, Ā, ecosystemAbar
 export β̄, communitybetabar, β, communitybeta, B, ecosystemB, B̄, ecosystemBbar
 export γ̄, communitygammabar, γ, communitygamma, G, ecosystemG, Ḡ, ecosystemGbar
+export diversity
 
 include("CommunityContributions.jl")
 export contributions
