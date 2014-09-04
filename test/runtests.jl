@@ -122,13 +122,13 @@ smoothed /= numcommunities;
 using Diversity.Compatibility
 
 @test_approx_eq richness(communities) ᾱ(communities, 0)
-@test_approx_eq generalisedrichness(communities, Ḡ, Z1) 1
+@test_approx_eq generalisedrichness(Ḡ, communities, Z1) 1
 
 @test_approx_eq shannon(communities) log(ᾱ(communities, 1))
-@test_approx_eq generalisedshannon(communities, Ḡ, Z1) 0
+@test_approx_eq generalisedshannon(Ḡ, communities, Z1) 0
 
 @test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
-@test_approx_eq generalisedsimpson(communities, Ḡ, Z1) 1
+@test_approx_eq generalisedsimpson(Ḡ, communities, Z1) 1
 
 # Checking Jost's diversities
 using Diversity.Jost
