@@ -8,15 +8,16 @@ using Diversity
 ## a similarity matrix for the species
 ##
 ## Arguments:
+## - measure - diversity measure to use (one of α, ᾱ, β, β̄, γ or γ̄)
 ## - proportions - population proportions
-## - measure - diversity measure to use, by default ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
 ## - diversity (at ecosystem level) or diversities (of sub-communities)
-function generalisedrichness{S <: FloatingPoint}(proportions::Matrix{S},
-                                                 measure::Function = ᾱ,
-                                                 Z::Matrix{S} = eye(size(proportions)[1]))
+function generalisedrichness{S <: FloatingPoint}(measure::Function,
+                                                 proportions::Matrix{S},
+                                                 Z::Matrix{S} =
+                                                 eye(size(proportions, 1)))
     measure(proportions, 0, Z)
 end
 
@@ -31,7 +32,7 @@ end
 ## Returns:
 ## - diversities of sub-communities
 function richness{S <: FloatingPoint}(proportions::Matrix{S})
-    generalisedrichness(proportions, ᾱ)
+    generalisedrichness(ᾱ, proportions)
 end
 
 ## generalisedshannon() - Calculate a generalised version of Shannon entropy
@@ -42,15 +43,16 @@ end
 ## includes a similarity matrix for the species
 ##
 ## Arguments:
+## - measure - diversity measure to use (one of α, ᾱ, β, β̄, γ or γ̄)
 ## - proportions - population proportions
-## - measure - diversity measure to use, by default ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
 ## - entropy (at ecosystem level) or entropies (of sub-communities)
-function generalisedshannon{S <: FloatingPoint}(proportions::Matrix{S},
-                                                measure::Function = ᾱ,
-                                                Z::Matrix{S} = eye(size(proportions)[1]))
+function generalisedshannon{S <: FloatingPoint}(measure::Function,
+                                                proportions::Matrix{S},
+                                                Z::Matrix{S} =
+                                                eye(size(proportions)[1]))
     log(measure(proportions, 1, Z))
 end
 
@@ -65,7 +67,7 @@ end
 ## Returns:
 ## - entropies of sub-communities
 function shannon{S <: FloatingPoint}(proportions::Matrix{S})
-    generalisedshannon(proportions, ᾱ)
+    generalisedshannon(ᾱ, proportions)
 end
 
 ## generalisedsimpson() - Calculate a generalised version of Simpson's index
@@ -76,15 +78,16 @@ end
 ## includes a similarity matrix for the species
 ##
 ## Arguments:
+## - measure - diversity measure to use (one of α, ᾱ, β, β̄, γ or γ̄)
 ## - proportions - population proportions
-## - measure - diversity measure to use, by default ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
 ## - concentration (at ecosystem level) or concentrations (of sub-communities)
-function generalisedsimpson{S <: FloatingPoint}(proportions::Matrix{S},
-                                                measure::Function = ᾱ,
-                                                Z::Matrix{S} = eye(size(proportions)[1]))
+function generalisedsimpson{S <: FloatingPoint}(measure::Function ,
+                                                proportions::Matrix{S},
+                                                Z::Matrix{S} =
+                                                eye(size(proportions)[1]))
     measure(proportions, 2, Z) .^ -1
 end
 
@@ -100,6 +103,6 @@ end
 ## Returns:
 ## - concentrations of sub-communities
 function simpson{S <: FloatingPoint}(proportions::Matrix{S})
-    generalisedsimpson(proportions, ᾱ)
+    generalisedsimpson(ᾱ, proportions)
 end
 

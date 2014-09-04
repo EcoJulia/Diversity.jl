@@ -204,7 +204,7 @@ contribute to ecosystem diversity per sub-community or per individual:
 ## relative abundances.
 ##
 ## Arguments:
-## - measure - diversity measure to use
+## - measure - diversity measure to use - one of α , ᾱ , β , β̄ , γ or γ̄
 ## - proportions - population proportions
 ## - qs - single number or vector of values of parameter q
 ## - perindividual - do we measure per individual in population (true)
@@ -291,14 +291,14 @@ diverse):
 ## a similarity matrix for the species
 ##
 ## Arguments:
+## - measure - diversity measure to use - one of α , ᾱ , β , β̄ , γ or γ̄ 
 ## - proportions - population proportions
-## - measure - diversity measure to use, by default ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
 ## - diversity (at ecosystem level) or diversities (of sub-communities)
-function generalisedrichness (proportions::Matrix,
-                              measure::Function = ᾱ,
+function generalisedrichness (measure::Function,
+                              proportions::Matrix,
                               Z::Matrix)
 
 ## generalisedshannon () - Calculate a generalised version of Shannon entropy
@@ -309,14 +309,14 @@ function generalisedrichness (proportions::Matrix,
 ## includes a similarity matrix for the species
 ##
 ## Arguments:
+## - measure - diversity measure to use - one of α , ᾱ , β , β̄ , γ or γ̄ 
 ## - proportions - population proportions
-## - measure - diversity measure to use, by default ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
 ## - entropy (at ecosystem level) or entropies (of sub-communities)
-function generalisedshannon (proportions::Matrix,
-                             measure::Function = ᾱ,
+function generalisedshannon (measure::Function,
+                             proportions::Matrix,
                              Z::Matrix)
 
 ## generalisedsimpson () - Calculate a generalised version of Simpson's index
@@ -327,14 +327,14 @@ function generalisedshannon (proportions::Matrix,
 ## includes a similarity matrix for the species
 ##
 ## Arguments:
+## - measure - diversity measure to use - one of α , ᾱ , β , β̄ , γ or γ̄ 
 ## - proportions - population proportions
-## - measure - diversity measure to use, by default ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
 ## - concentration (at ecosystem level) or concentrations (of sub-communities)
-function generalisedsimpson (proportions::Matrix,
-                             measure::Function = ᾱ,
+function generalisedsimpson (measure::Function,
+                             proportions::Matrix,
                              Z::Matrix)
 ```
 
