@@ -1,24 +1,31 @@
 using Diversity
 
-## jostD - calculate naive diversity of order q of a population with
-## given relative proportions
+## jostD () - calculate Hill number / naive diversity of order q of
+## population(s) with given relative proportions
 ##
 ## Arguments:
-## - proportions - relative proportions of different individuals /
-##                 species in population
+## - proportions - relative proportions of different individuals / species
+##                 in population (vector, or matrix where columns are
+##                 individual populations) 
 ## - qs - single number or vector of orders of diversity measurement
+##
+## Returns:
+## - Diversity of order qs (single number or vector of diversities)
 jostD = qD
 
 
-## jostbeta - calculate Jost's beta diversity of multiple sub-communities
-## Calculates Jost's beta diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
-## a vector of qs. This is just the naive gamma diversity divided by
-## the naive alpha diversity
+## jostbeta () - calculate Jost's beta diversity of multiple sub-communities
+##
+## Calculates Jost's beta diversity of a series of columns
+## representing independent community counts, for a series of orders,
+## repesented as a vector of qs. This is just the naive gamma
+## diversity divided by the naive alpha diversity
 ##
 ## Arguments:
-## - proportions - population proportions
-## - qs - vector of values of parameter q
+## - proportions - relative proportions of different individuals / species
+##                 in population (vector, or matrix where columns are
+##                 for individual sub-communities)
+## - qs - single number or vector of orders of diversity measurement
 ##
 ## Returns:
 ## - array of diversities, first dimension representing sub-communities, and

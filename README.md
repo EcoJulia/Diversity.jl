@@ -22,24 +22,6 @@ using Diversity
 diversities = ᾱ(proportions, [0, 1, 2, Inf], Z)
 ```
 
-The package also provides sub-modules with other diversity measures:
-
-```julia
-using Diversity.Compatibility
-...
-simp = simpson(proportions)
-rich = richness(proportions)
-shan = shannon(proportions)
-
-using Diversity.Hill
-...
-diversities = hillnumber(proportions, [0, 1, 2, Inf])
-
-using Diversity.Jost
-...
-diversities = jostbeta(proportions, [0, 1, 2, Inf])
-```
-
 The main package provides basic diversity measures (from
 [Hill, 1973](http://www.jstor.org/stable/1934352)):
 
@@ -209,7 +191,8 @@ function diversity (measure::Function, proportions::Matrix, qs, Z::Matrix,
                     returnweights::Bool)
 ```
 
-And to :
+And we can calculate the proportions that sub-communities each
+contribute to ecosystem diversity per sub-community or per individual:
 
 ```julia
 ## contributions () - Calculate diversity contributions from sub-communities
@@ -246,3 +229,168 @@ function contributions (measure::Function, proportions::Matrix, qs,
                         returncommunity::Bool,
                         returnweights::Bool)
 ```
+
+The package also provides sub-modules with other diversity measures.
+Old diversity measures are found in the .Compatibility sub-module:
+
+```julia
+using Diversity.Compatibility
+
+## richness() - Calculate species richness of populations
+##
+## Calculates (species) richness of a series of columns representing
+## independent community counts, which is diversity at q = 0
+##
+## Arguments:
+## - proportions - population proportions
+##
+## Returns:
+## - diversities of sub-communities
+function richness(proportions)
+
+## shannon() - Calculate shannon entropy of populations
+##
+## Calculates shannon entropy of a series of columns representing
+## independent community counts, which is log(diversity) at q = 1
+##
+## Arguments:
+## - proportions - population proportions
+##
+## Returns:
+## - entropies of sub-communities
+function shannon(proportions)
+
+## simpson() - Calculate Simpson's index
+##
+## Calculates Simpson's index of a series of columns representing
+## independent community counts, which is 1 / diversity (or
+## concentration) at q = 2
+##
+## Arguments:
+## - proportions - population proportions
+##
+## Returns:
+## - concentrations of sub-communities
+function simpson(proportions)
+```
+
+We have also developed generalised version of these measures that
+relate to our general measures of alpha, beta and gamma diversity at
+sub-community and ecosystem measures. They are the only standard
+measures whose sub-community components sum directly to the
+corresponding ecosystem measure (although note that Simpson's index
+decreases for increased diversity, so small components are more
+diverse):
+
+```julia
+## generalisedrichness () - Calculate a generalised version of richness
+##
+## Calculates (species) richness of a series of columns representing
+## independent community counts, which is diversity at q = 0 for any
+## diversity measure (passed as the second argument). It also includes
+## a similarity matrix for the species
+##
+## Arguments:
+## - proportions - population proportions
+## - measure - diversity measure to use, by default ᾱ
+## - Z - similarity matrix
+##
+## Returns:
+## - diversity (at ecosystem level) or diversities (of sub-communities)
+function generalisedrichness (proportions::Matrix,
+                              measure::Function = ᾱ,
+                              Z::Matrix)
+
+## generalisedshannon () - Calculate a generalised version of Shannon entropy
+##
+## Calculates Shannon entropy of a series of columns representing
+## independent community counts, which is log(diversity) at q = 1 for
+## any diversity measure (passed as the second argument). It also
+## includes a similarity matrix for the species
+##
+## Arguments:
+## - proportions - population proportions
+## - measure - diversity measure to use, by default ᾱ
+## - Z - similarity matrix
+##
+## Returns:
+## - entropy (at ecosystem level) or entropies (of sub-communities)
+function generalisedshannon (proportions::Matrix,
+                             measure::Function = ᾱ,
+                             Z::Matrix)
+
+## generalisedsimpson () - Calculate a generalised version of Simpson's index
+##
+## Calculates Simpson's index of a series of columns representing
+## independent community counts, which is 1 / diversity at q = 2 for
+## any diversity measure (passed as the second argument). It also
+## includes a similarity matrix for the species
+##
+## Arguments:
+## - proportions - population proportions
+## - measure - diversity measure to use, by default ᾱ
+## - Z - similarity matrix
+##
+## Returns:
+## - concentration (at ecosystem level) or concentrations (of sub-communities)
+function generalisedsimpson (proportions::Matrix,
+                             measure::Function = ᾱ,
+                             Z::Matrix)
+```
+
+Hill numbers are found in the .Hill sub-module:
+
+```julia
+using Diversity.Hill
+
+## hillnumber () - calculate Hill number / naive diversity of order q of
+## population(s) with given relative proportions
+##
+## Arguments:
+## - proportions - relative proportions of different individuals / species
+##                 in population (vector, or matrix where columns are
+##                 individual populations) 
+## - qs - single number or vector of orders of diversity measurement
+##
+## Returns:
+## - Diversity of order qs (single number or vector of diversities)
+function hillnumber (proportions, qs)
+```
+
+And Jost's diversity measures are found in the .Jost sub-module:
+
+```julia
+using Diversity.Jost
+
+## jostD () - calculate Hill number / naive diversity of order q of
+## population(s) with given relative proportions
+##
+## Arguments:
+## - proportions - relative proportions of different individuals / species
+##                 in population (vector, or matrix where columns are
+##                 individual populations) 
+## - qs - single number or vector of orders of diversity measurement
+##
+## Returns:
+## - Diversity of order qs (single number or vector of diversities)
+function jostD (proportions, qs)
+
+## jostbeta () - calculate Jost's beta diversity of multiple sub-communities
+##
+## Calculates Jost's beta diversity of a series of columns
+## representing independent community counts, for a series of orders,
+## repesented as a vector of qs. This is just the naive gamma
+## diversity divided by the naive alpha diversity
+##
+## Arguments:
+## - proportions - relative proportions of different individuals / species
+##                 in population (vector, or matrix where columns are
+##                 for individual sub-communities)
+## - qs - single number or vector of orders of diversity measurement
+##
+## Returns:
+## - array of diversities, first dimension representing sub-communities, and
+##   last representing values of q
+function jostbeta (proportions, qs)
+```
+
