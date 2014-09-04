@@ -47,6 +47,11 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
                     ones((size(manyweights)[1],
                           size(manyweights)[1]))) ones((4, size(manyweights)[2]))
 
+# Generate warnings, but normalise and calculate diversities
+warn("We now generate two warnings for code coverage completeness...")
+@test_approx_eq qD([0.1, 0.1], 1) 2.
+@test_approx_eq qDZ([0.1, 0.1], 1) 2.
+
 # Sub-community alpha diversities
 communities = rand(numspecies, numcommunities);
 communities /= sum(communities);
