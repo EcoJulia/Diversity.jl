@@ -358,9 +358,10 @@ using Diversity.Hill
 function hillnumber (proportions, qs)
 ```
 
-And [Jost's](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
-[diversity](http://www.esajournals.org/doi/abs/10.1890/06-1736.1)
-measures are found in the .Jost sub-module:
+And Jost's
+[diversity](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
+[measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
+found in the .Jost sub-module:
 
 ```julia
 using Diversity.Jost
