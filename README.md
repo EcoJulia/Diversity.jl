@@ -272,15 +272,28 @@ function shannon(proportions)
 ## Returns:
 ## - concentrations of sub-communities
 function simpson(proportions)
+
+## jaccard() - Calculate Jaccard index
+##
+## Calculates Jaccard index (Jaccard similarity coefficient) of two
+## columns representing independent community counts, which is
+## A(proportions, 0) / G(proportions, 0) - 1
+##
+## Arguments:
+## - proportions - population proportions
+##
+## Returns:
+## - Jaccard index
+function jaccard(proportions::Matrix)
 ```
 
-We have also developed generalised version of these measures that
-relate to our general measures of alpha, beta and gamma diversity at
-sub-community and ecosystem measures. They are the only standard
-measures whose sub-community components sum directly to the
-corresponding ecosystem measure (although note that Simpson's index
-decreases for increased diversity, so small components are more
-diverse):
+We have also developed generalised version of the richness, Shannon
+and Simpson measures that relate to our general measures of alpha,
+beta and gamma diversity at sub-community and ecosystem measures. They
+are the only standard measures whose sub-community components sum
+directly to the corresponding ecosystem measure (although note that
+Simpson's index decreases for increased diversity, so small components
+are more diverse):
 
 ```julia
 ## generalisedrichness () - Calculate a generalised version of richness

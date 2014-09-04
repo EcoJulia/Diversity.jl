@@ -106,3 +106,19 @@ function simpson{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedsimpson(ᾱ, proportions)
 end
 
+## jaccard() - Calculate Jaccard index
+##
+## Calculates Jaccard index (Jaccard similarity coefficient) of two
+## columns representing independent community counts, which is
+## A(proportions, 0) / G(proportions, 0) - 1
+##
+## Arguments:
+## - proportions - population proportions
+##
+## Returns:
+## - Jaccard index
+function jaccard{S <: FloatingPoint}(proportions::Matrix{S})
+    size(proportions, 2) == 2 ||
+    error("Can only calculate Jaccard index for 2 communities")
+    A(proportions, 0)[1] / G(proportions, 0)[1] - 1.
+end
