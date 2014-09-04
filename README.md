@@ -338,7 +338,8 @@ function generalisedsimpson (proportions::Matrix,
                              Z::Matrix)
 ```
 
-Hill numbers are found in the .Hill sub-module:
+[Hill numbers](http://www.jstor.org/stable/1934352) are found in the
+.Hill sub-module:
 
 ```julia
 using Diversity.Hill
@@ -357,7 +358,9 @@ using Diversity.Hill
 function hillnumber (proportions, qs)
 ```
 
-And Jost's diversity measures are found in the .Jost sub-module:
+And [Jost's](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
+[diversity](http://www.esajournals.org/doi/abs/10.1890/06-1736.1)
+measures are found in the .Jost sub-module:
 
 ```julia
 using Diversity.Jost
@@ -392,5 +395,6 @@ function jostD (proportions, qs)
 ## - array of diversities, first dimension representing sub-communities, and
 ##   last representing values of q
 function jostbeta (proportions, qs)
+jostβ = jostbeta
 ```
 

@@ -13,7 +13,6 @@ using Diversity
 ## - Diversity of order qs (single number or vector of diversities)
 jostD = qD
 
-
 ## jostbeta () - calculate Jost's beta diversity of multiple sub-communities
 ##
 ## Calculates Jost's beta diversity of a series of columns
