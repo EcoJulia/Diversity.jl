@@ -47,9 +47,9 @@ function diversity{S <: FloatingPoint,
         w = mapslices(sum, proportions, 1)
         if (returnecosystem)
             ed = zeros(powers)
-            for (i in 1:length(powers))
+            for (i, power) in enumerate(powers)
                 ed[i] = powermean(reshape(cd[i, :], size(proportions, 2)),
-                                  powers[i], reshape(w, size(proportions, 2)))
+                                  power, reshape(w, size(proportions, 2)))
             end
             # must be returning ecosystem, but what else?
             return (returncommunity ?

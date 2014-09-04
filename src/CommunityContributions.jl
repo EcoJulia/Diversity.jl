@@ -43,9 +43,9 @@ function contributions{S <: FloatingPoint,
 
     ## And calculate the contributions
     results = zeros(cd)
-    for (i in 1:length(powers))
-        if (isinf(powers[i]))
-            if (powers[i] > 0) # +Inf -> Maximum, so 1 for top otherwise 0
+    for (i, power) in enumerate(powers)
+        if (isinf(power))
+            if (power > 0) # +Inf -> Maximum, so 1 for top otherwise 0
                 results[i, indmax(cd[i, :])] = 1.
             else # -Inf -> Minimum, so 1 for bottom otherwise 0
                 results[i, indmin(cd[i, :])] = 1.
@@ -55,12 +55,12 @@ function contributions{S <: FloatingPoint,
             ## get everything relative to total and find out
             ## contribution per individual or community rather than
             ## any kind of actual value
-            if (isapprox(powers[i], 0))
+            if (isapprox(power, 0))
                 results[i, :] = w .* log(cd[i, :])
                 ## IS THIS THE RIGHT WAY TO NORMALISE UNDER LOG?
                 results[i, :] -= w .* sum(results[i, :])
             else
-                results[i, :] = w .* (cd[i, :] .^ powers[i])
+                results[i, :] = w .* (cd[i, :] .^ power)
                 results[i, :] /= sum(results[i, :])
             end
         end
