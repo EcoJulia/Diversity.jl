@@ -132,8 +132,10 @@ using Diversity.Compatibility
 
 @test_approx_eq jaccard([1 0; 0 1; 0 1.]) 0
 @test_approx_eq jaccard([1 0; 0 1; 1 1.]) 1 / 3
-@test_approx_eq jaccard([1 1; 1 1; 1 1.]) 1
 @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1.])
+
+@test_approx_eq generalisedjaccard([1 0; 0 1; 1 1.], [0, Inf]) [1/3, 1]
+@test_approx_eq generalisedjaccard([1 1; 1 1; 1 1.], [0, 1]) [1, 1]
 
 # Checking Jost's diversities
 using Diversity.Jost

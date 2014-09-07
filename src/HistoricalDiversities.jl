@@ -106,7 +106,29 @@ function simpson{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedsimpson(ᾱ, proportions)
 end
 
-## jaccard() - Calculate Jaccard index
+## generalisedjaccard() - Calculate a generalised version of Jaccard's index
+##
+## Calculates a generalisation of Jaccard's index of a series of
+## columns representing sub-community counts. This evaluates to is G /
+## A for a series of orders, repesented as a vector of qs (or a single
+## number). It also includes a similarity matrix for the species. This
+## gives measure of the average distinctiveness of the sub-communities.
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - single number or vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - Jaccard-related distinctivess measures
+function generalisedjaccard(proportions::Matrix, qs,
+                            Z::Matrix = eye(size(proportions, 1)))
+    size(proportions, 2) == 2 ||
+    error("Can only calculate Jaccard index for 2 communities")
+    A(proportions, qs, Z) ./ G(proportions, qs, Z) - 1
+end
+
+    ## jaccard() - Calculate Jaccard index
 ##
 ## Calculates Jaccard index (Jaccard similarity coefficient) of two
 ## columns representing independent community counts, which is
@@ -118,7 +140,6 @@ end
 ## Returns:
 ## - Jaccard index
 function jaccard{S <: FloatingPoint}(proportions::Matrix{S})
-    size(proportions, 2) == 2 ||
-    error("Can only calculate Jaccard index for 2 communities")
-    A(proportions, 0)[1] / G(proportions, 0)[1] - 1.
+    generalisedjaccard(proportions, 0)[1]
 end
+

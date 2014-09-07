@@ -18,7 +18,7 @@ include("HistoricalDiversities.jl")
 export generalisedrichness, richness
 export generalisedshannon, shannon
 export generalisedsimpson, simpson
-export jaccard
+export generalisedjaccard, jaccard
 
 end # sub-module Compatibility
 

@@ -287,13 +287,13 @@ function simpson(proportions)
 function jaccard(proportions::Matrix)
 ```
 
-We have also developed generalised version of the richness, Shannon
-and Simpson measures that relate to our general measures of alpha,
-beta and gamma diversity at sub-community and ecosystem measures. They
-are the only standard measures whose sub-community components sum
-directly to the corresponding ecosystem measure (although note that
-Simpson's index decreases for increased diversity, so small components
-are more diverse):
+We have also developed generalised version of these that relate to our
+general measures of alpha, beta and gamma diversity at sub-community
+and ecosystem measures. The generalisations of the richness, Shannon
+and Simpson are the only standard measures we are aware of whose
+sub-community components sum directly to the corresponding ecosystem
+measure (although note that Simpson's index decreases for increased
+diversity, so small components are more diverse):
 
 ```julia
 ## generalisedrichness () - Calculate a generalised version of richness
@@ -348,6 +348,25 @@ function generalisedshannon (measure::Function,
 ## - concentration (at ecosystem level) or concentrations (of sub-communities)
 function generalisedsimpson (measure::Function,
                              proportions::Matrix,
+                             Z::Matrix)
+
+## generalisedjaccard () - Calculate a generalised version of Jaccard's index
+##
+## Calculates a generalisation of Jaccard's index of two columns
+## representing sub-community counts. This evaluates to is A / G - 1
+## for a series of orders, repesented as a vector of qs (or a single
+## number). It also includes a similarity matrix for the species. This
+## gives measure of the average distinctiveness of the
+## sub-communities.
+##
+## Arguments:
+## - proportions - population proportions
+## - qs - single number or vector of values of parameter q
+## - Z - similarity matrix
+##
+## Returns:
+## - Jaccard-related distinctivess measures
+function generalisedjaccard (proportions::Matrix, qs,
                              Z::Matrix)
 ```
 
