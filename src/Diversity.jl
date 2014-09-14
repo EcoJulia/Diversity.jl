@@ -6,6 +6,8 @@ export qD, qDZ
 include("GeneralisedDiversities.jl")
 export ᾱ, subcommunityalphabar, α, subcommunityalpha, A, ecosystemA, Ā, ecosystemAbar
 export β̄, subcommunitybetabar, β, subcommunitybeta, B, ecosystemB, B̄, ecosystemBbar
+export ρ̄, subcommunityrhobar, ρ, subcommunityrho, R, ecosystemR, R̄, ecosystemRbar
+export ϵ, subcommunityevenness, subcommunityredundancy, ecosystemevenness, ecosystemredundancy
 export γ̄, subcommunitygammabar, γ, subcommunitygamma, G, ecosystemG, Ḡ, ecosystemGbar
 export diversity
 

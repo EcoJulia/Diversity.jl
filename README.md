@@ -85,7 +85,7 @@ described here:
 ## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function ᾱ (proportions::Matrix, qs, Z::Matrix)
-communityalphabar = ᾱ
+subcommunityalphabar = ᾱ
 
 ## Ā () - Normalised similarity-sensitive ecosystem alpha diversity.
 ##
@@ -107,12 +107,12 @@ ecosystemAbar = Ā
 There are also matching normalised and raw, alpha, beta and gamma diversities
 at both the subcommunity and ecosystem level. The functions exist both with
 unicode names (e.g. ᾱ ()), and with matching ascii names (e.g.
-communityalphabar ()):
+subcommunityalphabar ()):
 
 ```julia
 ## ᾱ () - Normalised similarity-sensitive subcommunity alpha diversity.
 function ᾱ (proportions::Matrix, qs, Z::Matrix)
-communityalphabar = ᾱ
+subcommunityalphabar = ᾱ
 
 ## Ā () - Normalised similarity-sensitive ecosystem alpha diversity.
 function Ā (proportions::Matrix, qs, Z::Matrix)
@@ -120,31 +120,49 @@ ecosystemAbar = Ā
 
 ## α () - Raw similarity-sensitive subcommunity alpha diversity.
 function α (proportions::Matrix, qs, Z::Matrix)
-communityalpha = α
+subcommunityalpha = α
 
 ## A () - Raw similarity-sensitive ecosystem alpha diversity.
 function A (proportions::Matrix, qs, Z::Matrix)
 ecosystemA = A
 
-## β̄ () - Normalised similarity-sensitive subcommunity beta diversity.
-function β̄ (proportions::Matrix, qs, Z::Matrix)
-communitybetabar = β̄
+## ϵ = ρ̄ () - Normalised similarity-sensitive subcommunity beta diversity.
+β̄ is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to
+be the more fundamental measure.  This is the evenness of the
+subcommunity.
+function ϵ (proportions::Matrix, qs, Z::Matrix)
+subcommunityevenness = ϵ
+subcommunityrhobar = ρ̄ = ϵ
+subcommunitybetabar = β̄
 
-## B̄ () - Normalised similarity-sensitive ecosystem beta diversity.
-function B̄ (proportions::Matrix, qs, Z::Matrix)
+## E = R̄ () - Normalised similarity-sensitive ecosystem beta diversity.
+B̄ is retained for compatibility (= 1 / E), but we believe E (or R̄) to
+be the more fundamental measure.  This is the average evenness of the
+subcommunities.
+function E (proportions::Matrix, qs, Z::Matrix)
+ecosystemevenness = E
+ecosystemRbar = R̄ = E
 ecosystemBbar = B̄
 
-## β () - Raw similarity-sensitive subcommunity beta diversity.
-function β (proportions::Matrix, qs, Z::Matrix)
-communitybeta = β
+## ρ () - Raw similarity-sensitive subcommunity beta diversity.
+β is retained for compatibility (= 1 / ρ), but we believe ρ to
+be the more fundamental measure.  This is the dedundancy of the
+subcommunity.
+function ρ (proportions::Matrix, qs, Z::Matrix)
+subcommunityredundancy = subcommunityrho = ρ
+subcommunitybeta = β
 
-## B () - Raw similarity-sensitive ecosystem beta diversity.
-function B (proportions::Matrix, qs, Z::Matrix)
+## R () - Raw similarity-sensitive ecosystem beta diversity.
+B is retained for compatibility (= 1 / R), but we believe R to
+be the more fundamental measure.  This is the average redundancy of
+the subcommunities.
+function R (proportions::Matrix, qs, Z::Matrix)
+ecosystemredundancy = ecosystemR = R
 ecosystemB = B
 
 ## γ̄ () - Normalised similarity-sensitive subcommunity gamma diversity.
 function γ̄ (proportions::Matrix, qs, Z::Matrix)
-communitygammabar = γ̄
+subcommunitygammabar = γ̄
 
 ## Ḡ () - Normalised similarity-sensitive ecosystem gamma diversity.
 function Ḡ (proportions::Matrix, qs, Z::Matrix)
@@ -152,7 +170,7 @@ ecosystemGbar = Ḡ
 
 ## γ () - Raw similarity-sensitive subcommunity gamma diversity.
 function γ (proportions::Matrix, qs, Z::Matrix)
-communitygamma = γ
+subcommunitygamma = γ
 
 ## G () - Raw similarity-sensitive ecosystem gamma diversity.
 function G (proportions::Matrix, qs, Z::Matrix)

@@ -155,7 +155,11 @@ Ā{S <: FloatingPoint,
 
 ecosystemAbar = Ā
 
-## β̄() - Normalised similarity-sensitive subcommunity beta diversity.
+## ϵ or ρ̄() - Normalised similarity-sensitive subcommunity beta diversity.
+##
+## β̄ is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to
+## be the more fundamental measure.  This is the evenness of the
+## subcommunity.
 ##
 ## Calculates diversity of a series of columns representing
 ## independent subcommunity counts, for a series of orders, repesented as
@@ -169,7 +173,7 @@ ecosystemAbar = Ā
 ## Returns:
 ## - array of diversities, first dimension representing sub-communities, and
 ##   last representing values of q
-function β̄{S <: FloatingPoint,
+function ϵ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
@@ -178,15 +182,21 @@ function β̄{S <: FloatingPoint,
 
     Zp = Z * reshape(mapslices(sum, proportions, 2),
                      (size(proportions, 1))) / sum(proportions)
-    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p),
+    mapslices(p -> powermean(Zp ./ (Z * p), 1. - qs, p),
               proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
                                                     proportions, 1),
                                           (size(proportions, 2)))), 1)
 end
-
+subcommunityevenness = ϵ
+subcommunityrhobar = ρ̄ = ϵ
+function β̄{S <: FloatingPoint,
+           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                        Z::Matrix{S} = eye(size(proportions, 1)))
+    1. ./ ϵ(proportions, qs, Z)
+end
 subcommunitybetabar = β̄
 
-## β() - Raw similarity-sensitive sub-community beta diversity.
+## ρ() - Raw similarity-sensitive sub-community beta diversity.
 ##
 ## Calculates diversity of a series of columns representing
 ## independent community counts, for a series of orders, repesented as
@@ -200,7 +210,7 @@ subcommunitybetabar = β̄
 ## Returns:
 ## - array of diversities, first dimension representing sub-communities, and
 ##   last representing values of q
-function β{S <: FloatingPoint,
+function ρ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
@@ -208,12 +218,18 @@ function β{S <: FloatingPoint,
     error("β: Similarity matrix size does not match species number")
 
     Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
-    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
+    mapslices(p -> powermean(Zp ./ (Z * p), 1. - qs, p), proportions, 1)
 end
-
+subcommunityredundancy = subcommunityrho = ρ
+    
+function β{S <: FloatingPoint,
+           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                        Z::Matrix{S} = eye(size(proportions, 1)))
+    1. ./ ρ(proportions, qs, Z)
+end
 subcommunitybeta = β
 
-## B() - Raw similarity-sensitive ecosystem beta diversity.
+## R() - Raw similarity-sensitive ecosystem beta diversity.
 ##
 ## Calculates diversity of a series of columns representing
 ## independent subcommunity counts, for a series of orders, repesented as
@@ -226,14 +242,24 @@ subcommunitybeta = β
 ##
 ## Returns:
 ## - vector of diversities representing values of q
-B{S <: FloatingPoint,
+R{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
-                   diversity(β, proportions, qs, Z, true, false, false)
-
+                   diversity(ρ, proportions, qs, Z, true, false, false)
+ecosystemredundancy = ecosystemR = R
+    
+function B{S <: FloatingPoint,
+           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                        Z::Matrix{S} = eye(size(proportions, 1)))
+    1. ./ R(proportions, qs, Z)
+end
 ecosystemB = B
 
-## B̄() - Normalised similarity-sensitive ecosystem beta diversity.
+## E() - Normalised similarity-sensitive ecosystem beta diversity.
+##
+## B̄ is retained for compatibility (= 1 / E), but we believe E (or R̄) to
+## be the more fundamental measure.  This is the average evenness of the
+## subcommunities.
 ##
 ## Calculates diversity of a series of columns representing
 ## independent subcommunity counts, for a series of orders, repesented as
@@ -246,11 +272,18 @@ ecosystemB = B
 ##
 ## Returns:
 ## - vector of diversities representing values of q
-B̄{S <: FloatingPoint,
+E{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
-                   diversity(β̄, proportions, qs, Z, true, false, false)
+                   diversity(ϵ, proportions, qs, Z, true, false, false)
+ecosystemevenness = E
+ecosystemRbar = R̄ = E
 
+function B̄{S <: FloatingPoint,
+           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                        Z::Matrix{S} = eye(size(proportions, 1)))
+    1. ./ R̄(proportions, qs, Z)
+end
 ecosystemBbar = B̄
 
 ## γ̄() - Normalised similarity-sensitive subcommunity gamma diversity.

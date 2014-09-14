@@ -81,14 +81,15 @@ colweights = rand(numcommunities);
 colweights /= sum(colweights);
 allthesame = probs * colweights';
 @test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
-@test_approx_eq B(allthesame, qs) powermean(colweights, 1 - qs, colweights)
+@test_approx_eq R̄(allthesame, qs, Z) ones((1, length(qs)))
+@test_approx_eq R(allthesame, qs) qD(colweights, qs)
 
 # Need to check the diversity() function
-@test_approx_eq diversity(B̄, allthesame, qs, Z, false, false, true) colweights
-@test_approx_eq diversity(β̄, communities, qs, Z,
-                          false, true, false) β̄(communities, qs, Z)
-@test_approx_eq diversity(β̄, communities, qs, Z,
-                          true, false, false) B̄(communities, qs, Z)
+@test_approx_eq diversity(R̄, allthesame, qs, Z, false, false, true) colweights
+@test_approx_eq diversity(ρ̄, communities, qs, Z,
+                          false, true, false) ρ̄(communities, qs, Z)
+@test_approx_eq diversity(ρ̄, communities, qs, Z,
+                          true, false, false) R̄(communities, qs, Z)
 @test_approx_eq diversity(ᾱ, communities, qs, Z,
                           true, true, false)[1] Ā(communities, qs, Z)
 @test_approx_eq diversity(α, allthesame, qs, Z,
@@ -104,17 +105,17 @@ smoothed = communities ./ mapslices(sum, communities, 1);
 smoothed /= numcommunities;
 # Just for completeness, check one for q=-Inf - we currently have no use for this, but it is coded.
 @test_approx_eq contributions(α, smoothed, [-Inf, 0:5, Inf], true) contributions(ᾱ, smoothed, [-Inf, 0:5, Inf], true)
-@test_approx_eq contributions(β, smoothed, [0:5, Inf], true) contributions(β̄, smoothed, [0:5, Inf], true)
+@test_approx_eq contributions(ρ, smoothed, [0:5, Inf], true) contributions(ρ̄, smoothed, [0:5, Inf], true)
 @test_approx_eq contributions(γ, smoothed, [0:5, Inf], true) contributions(γ̄, smoothed, [0:5, Inf], true)
 @test_approx_eq contributions(α, smoothed, [0:5, Inf], false) contributions(ᾱ, smoothed, [0:5, Inf], false)
-@test_approx_eq contributions(β, smoothed, [0:5, Inf], false) contributions(β̄, smoothed, [0:5, Inf], false)
+@test_approx_eq contributions(ρ, smoothed, [0:5, Inf], false) contributions(ρ̄, smoothed, [0:5, Inf], false)
 @test_approx_eq contributions(γ, smoothed, [0:5, Inf], false) contributions(γ̄, smoothed, [0:5, Inf], false)
 
 @test_approx_eq contributions(α, smoothed, [0:5, Inf], true) contributions(α, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(β, smoothed, [0:5, Inf], true) contributions(β, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(ρ, smoothed, [0:5, Inf], true) contributions(ρ, smoothed, [0:5, Inf], false) * numcommunities
 @test_approx_eq contributions(γ, smoothed, [0:5, Inf], true) contributions(γ, smoothed, [0:5, Inf], false) * numcommunities
 @test_approx_eq contributions(ᾱ, smoothed, [0:5, Inf], true) contributions(ᾱ, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(β̄, smoothed, [0:5, Inf], true) contributions(β̄, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(ρ̄, smoothed, [0:5, Inf], true) contributions(ρ̄, smoothed, [0:5, Inf], false) * numcommunities
 @test_approx_eq contributions(γ̄, smoothed, [0:5, Inf], true) contributions(γ̄, smoothed, [0:5, Inf], false) * numcommunities
 
 # Looking at relations to historical measures, updated with similarity
@@ -142,7 +143,7 @@ using Diversity.Jost
 
 @test jostD == qD
 @test jostβ == jostbeta
-@test_approx_eq jostbeta(communities, 1) B̄(communities, 1)
+@test_approx_eq jostbeta(communities, 1) 1 ./ R̄(communities, 1)
 @test_approx_eq jostbeta(allthesame, qs) ones(qs)
 
 # Checking Hill numbers
