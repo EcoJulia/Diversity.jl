@@ -126,27 +126,27 @@ subcommunityalpha = α
 function A (proportions::Matrix, qs, Z::Matrix)
 ecosystemA = A
 
-## ϵ = ρ̄ () - Normalised similarity-sensitive subcommunity beta diversity.
-β̄ is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to
+## ϵ = ρ̄  () - Normalised similarity-sensitive subcommunity beta diversity.
+β̄  is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to
 be the more fundamental measure.  This is the evenness of the
 subcommunity.
 function ϵ (proportions::Matrix, qs, Z::Matrix)
 subcommunityevenness = ϵ
-subcommunityrhobar = ρ̄ = ϵ
+subcommunityrhobar = ρ̄  = ϵ
 subcommunitybetabar = β̄
 
-## E = R̄ () - Normalised similarity-sensitive ecosystem beta diversity.
-B̄ is retained for compatibility (= 1 / E), but we believe E (or R̄) to
+## E = R̄  () - Normalised similarity-sensitive ecosystem beta diversity.
+B̄  is retained for compatibility (= 1 / E), but we believe E (or R̄) to
 be the more fundamental measure.  This is the average evenness of the
 subcommunities.
 function E (proportions::Matrix, qs, Z::Matrix)
 ecosystemevenness = E
-ecosystemRbar = R̄ = E
+ecosystemRbar = R̄  = E
 ecosystemBbar = B̄
 
 ## ρ () - Raw similarity-sensitive subcommunity beta diversity.
 β is retained for compatibility (= 1 / ρ), but we believe ρ to
-be the more fundamental measure.  This is the dedundancy of the
+be the more fundamental measure.  This is the redundancy of the
 subcommunity.
 function ρ (proportions::Matrix, qs, Z::Matrix)
 subcommunityredundancy = subcommunityrho = ρ
