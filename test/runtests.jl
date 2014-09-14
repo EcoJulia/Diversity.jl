@@ -56,8 +56,8 @@ warn("We now generate two warnings for code coverage completeness...")
 communities = rand(numspecies, numcommunities);
 communities /= sum(communities);
 @test_approx_eq ᾱ(communities, 0) numspecies * ones((1, size(communities)[2]))
-@test_approx_eq communityalphabar(communities,
-                                  [0]) numspecies * ones((1, size(communities)[2]))
+@test_approx_eq subcommunityalphabar(communities,
+                                     [0]) numspecies * ones((1, size(communities)[2]))
 @test_approx_eq ᾱ(communities,
                   [0, 1, 2, Inf], Z1) ones((4, size(communities)[2]))
 
