@@ -1,7 +1,7 @@
-## diversity() - calculates sub-community and ecosystem diversities
+## diversity() - calculates subcommunity and ecosystem diversities
 ##
 ## Calculates any diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs, with similarity matrix Z, by default the (naïve) identity
 ## matrix.
 ##
@@ -21,7 +21,7 @@
 ##   - vector of ecosystem diversities representing values of q
 ##   - array of diversities, first dimension representing sub-communities, and
 ##     last representing values of q
-##   - vector of community weights
+##   - vector of subcommunity weights
 function diversity{S <: FloatingPoint,
                    T <: Number}(measure::Function,
                                 proportions::Matrix{S},
@@ -55,19 +55,19 @@ function diversity{S <: FloatingPoint,
             return (returncommunity ?
                     (returnweights ? (ed, cd, w) : (ed, cd)) :
                     (returnweights ? (ed, w) : (ed)))
-        else # must be returning community and weights
+        else # must be returning subcommunity and weights
             return (cd, w)
         end
     else
-        # must just be returning community
+        # must just be returning subcommunity
         return (cd)
     end
 end
 
-## ᾱ() - Normalised similarity-sensitive sub-community alpha diversity.
+## ᾱ() - Normalised similarity-sensitive subcommunity alpha diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs
 ##
 ## Arguments:
@@ -88,12 +88,12 @@ end
                                            (size(proportions, 2)))),
                              1)
 
-communityalphabar = ᾱ
+subcommunityalphabar = ᾱ
 
-## α() - Raw similarity-sensitive sub-community alpha diversity.
+## α() - Raw similarity-sensitive subcommunity alpha diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -113,12 +113,12 @@ function α{S <: FloatingPoint,
     mapslices(p -> powermean(Z * p, qs - 1., p) .^ -1,  proportions, 1)
 end
 
-communityalpha = α
+subcommunityalpha = α
 
 ## A() - Raw similarity-sensitive ecosystem alpha diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -138,7 +138,7 @@ ecosystemA = A
 ## Ā() - Normalised similarity-sensitive ecosystem alpha diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -155,10 +155,10 @@ Ā{S <: FloatingPoint,
 
 ecosystemAbar = Ā
 
-## β̄() - Normalised similarity-sensitive sub-community beta diversity.
+## β̄() - Normalised similarity-sensitive subcommunity beta diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -184,7 +184,7 @@ function β̄{S <: FloatingPoint,
                                           (size(proportions, 2)))), 1)
 end
 
-communitybetabar = β̄
+subcommunitybetabar = β̄
 
 ## β() - Raw similarity-sensitive sub-community beta diversity.
 ##
@@ -211,12 +211,12 @@ function β{S <: FloatingPoint,
     mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
 end
 
-communitybeta = β
+subcommunitybeta = β
 
 ## B() - Raw similarity-sensitive ecosystem beta diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -236,7 +236,7 @@ ecosystemB = B
 ## B̄() - Normalised similarity-sensitive ecosystem beta diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -253,10 +253,10 @@ B̄{S <: FloatingPoint,
 
 ecosystemBbar = B̄
 
-## γ̄() - Normalised similarity-sensitive sub-community gamma diversity.
+## γ̄() - Normalised similarity-sensitive subcommunity gamma diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -279,12 +279,12 @@ function γ̄{S <: FloatingPoint,
     mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
 end
 
-communitygammabar = γ̄
+subcommunitygammabar = γ̄
 
-## γ() - Raw similarity-sensitive sub-community gamma diversity.
+## γ() - Raw similarity-sensitive subcommunity gamma diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -307,12 +307,12 @@ function γ{S <: FloatingPoint,
     mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
 end
 
-communitygamma = γ
+subcommunitygamma = γ
 
 ## G() - Raw similarity-sensitive ecosystem gamma diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -332,7 +332,7 @@ ecosystemG = G
 ## Ḡ() - Normalised similarity-sensitive ecosystem gamma diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:

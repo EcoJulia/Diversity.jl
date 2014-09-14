@@ -2,11 +2,13 @@
 
 *Diversity* is a [Julia](http://www.julialang.org) package that provides
  functionality for measuring alpha, beta and gamma diversity of
- communities and ecosystems. It uses the diversity measures described
+ subcommunities and ecosystems. It uses the diversity measures described
  in the arXiv paper [arXiv:1404.6520
  (q-bio.QM)](http://arxiv.org/abs/1404.6520), *How to partition
  diversity*. It also provides a series of other related and older diversity
- measures through sub-modules for compatibility.
+ measures through sub-modules for compatibility. This package is still
+ in alpha, and so we do not guarantee its correctness, although we are
+ aware of no issues with it. Please raise an issue if you find any problems.
 
 ## Install
 
@@ -68,10 +70,10 @@ level of the ecosystem and its component subcommunities (from [Reeve et al,
 described here:
 
 ```julia
-## ᾱ () - Normalised similarity-sensitive sub-community alpha diversity.
+## ᾱ () - Normalised similarity-sensitive subcommunity alpha diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -80,7 +82,7 @@ described here:
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function ᾱ (proportions::Matrix, qs, Z::Matrix)
 communityalphabar = ᾱ
@@ -88,7 +90,7 @@ communityalphabar = ᾱ
 ## Ā () - Normalised similarity-sensitive ecosystem alpha diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -103,12 +105,12 @@ ecosystemAbar = Ā
 ```
 
 There are also matching normalised and raw, alpha, beta and gamma diversities
-at both the sub-community and ecosystem level. The functions exist both with
+at both the subcommunity and ecosystem level. The functions exist both with
 unicode names (e.g. ᾱ ()), and with matching ascii names (e.g.
 communityalphabar ()):
 
 ```julia
-## ᾱ () - Normalised similarity-sensitive sub-community alpha diversity.
+## ᾱ () - Normalised similarity-sensitive subcommunity alpha diversity.
 function ᾱ (proportions::Matrix, qs, Z::Matrix)
 communityalphabar = ᾱ
 
@@ -116,7 +118,7 @@ communityalphabar = ᾱ
 function Ā (proportions::Matrix, qs, Z::Matrix)
 ecosystemAbar = Ā
 
-## α () - Raw similarity-sensitive sub-community alpha diversity.
+## α () - Raw similarity-sensitive subcommunity alpha diversity.
 function α (proportions::Matrix, qs, Z::Matrix)
 communityalpha = α
 
@@ -124,7 +126,7 @@ communityalpha = α
 function A (proportions::Matrix, qs, Z::Matrix)
 ecosystemA = A
 
-## β̄ () - Normalised similarity-sensitive sub-community beta diversity.
+## β̄ () - Normalised similarity-sensitive subcommunity beta diversity.
 function β̄ (proportions::Matrix, qs, Z::Matrix)
 communitybetabar = β̄
 
@@ -132,7 +134,7 @@ communitybetabar = β̄
 function B̄ (proportions::Matrix, qs, Z::Matrix)
 ecosystemBbar = B̄
 
-## β () - Raw similarity-sensitive sub-community beta diversity.
+## β () - Raw similarity-sensitive subcommunity beta diversity.
 function β (proportions::Matrix, qs, Z::Matrix)
 communitybeta = β
 
@@ -140,7 +142,7 @@ communitybeta = β
 function B (proportions::Matrix, qs, Z::Matrix)
 ecosystemB = B
 
-## γ̄ () - Normalised similarity-sensitive sub-community gamma diversity.
+## γ̄ () - Normalised similarity-sensitive subcommunity gamma diversity.
 function γ̄ (proportions::Matrix, qs, Z::Matrix)
 communitygammabar = γ̄
 
@@ -148,7 +150,7 @@ communitygammabar = γ̄
 function Ḡ (proportions::Matrix, qs, Z::Matrix)
 ecosystemGbar = Ḡ
 
-## γ () - Raw similarity-sensitive sub-community gamma diversity.
+## γ () - Raw similarity-sensitive subcommunity gamma diversity.
 function γ (proportions::Matrix, qs, Z::Matrix)
 communitygamma = γ
 
@@ -158,13 +160,13 @@ ecosystemG = G
 ```
 
 We also provide a general function for extract any diversity measure for a
-series of sub-community relative abundances:
+series of subcommunity relative abundances:
 
 ```julia
-## diversity () - calculates sub-community and ecosystem diversities
+## diversity () - calculates subcommunity and ecosystem diversities
 ##
 ## Calculates any diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs, with similarity matrix Z, by default the (naïve) identity
 ## matrix.
 ##
@@ -176,29 +178,29 @@ series of sub-community relative abundances:
 ## - returnecosystem - boolean describing whether to return the
 ##                     ecosystem diversity
 ## - returncommunity - boolean describing whether to return the
-##                     community diversities
-## - returnweights   - boolean describing whether to return community weights
+##                     subcommunity diversities
+## - returnweights   - boolean describing whether to return subcommunity weights
 ##
 ## Returns:
 ## - some or all (as tuple) of:
 ##   - vector of ecosystem diversities representing values of q
-##   - array of diversities, first dimension representing sub-communities, and
+##   - array of diversities, first dimension representing subcommunities, and
 ##     last representing values of q
-##   - vector of community weights
+##   - vector of subcommunity weights
 function diversity (measure::Function, proportions::Matrix, qs, Z::Matrix,
                     returnecosystem::Bool,
                     returncommunity::Bool,
                     returnweights::Bool)
 ```
 
-And we can calculate the proportions that sub-communities each
-contribute to ecosystem diversity per sub-community or per individual:
+And we can calculate the proportions that subcommunities each
+contribute to ecosystem diversity per subcommunity or per individual:
 
 ```julia
-## contributions () - Calculate diversity contributions from sub-communities
+## contributions () - Calculate diversity contributions from subcommunities
 ##
-## Calculates proportions that sub-communities each contribute to
-## ecosystem diversity per sub-community (perindividual = false), or
+## Calculates proportions that subcommunities each contribute to
+## ecosystem diversity per subcommunity (perindividual = false), or
 ## per individual (perindividual = true) - in the latter case scaled
 ## so that the total # of individuals is 1, since we only have
 ## relative abundances.
@@ -208,21 +210,21 @@ contribute to ecosystem diversity per sub-community or per individual:
 ## - proportions - population proportions
 ## - qs - single number or vector of values of parameter q
 ## - perindividual - do we measure per individual in population (true)
-##                   or per sub-community (false)
+##                   or per subcommunity (false)
 ## - Z - similarity matrix
 ## - returnecosystem - boolean describing whether to return the
 ##                     ecosystem diversity
 ## - returncommunity - boolean describing whether to return the
-##                     community diversities
-## - returnweights   - boolean describing whether to return community weights
+##                     subcommunity diversities
+## - returnweights   - boolean describing whether to return subcommunity weights
 ##
 ## Returns:
-## - contributions of sub-communities to ecosystem diversity (of type measure)
+## - contributions of subcommunities to ecosystem diversity (of type measure)
 ## - and none, some or all (in a tuple) of:
 ##   - vector of ecosystem diversities representing values of q
-##   - array of diversities, first dimension representing sub-communities, and
+##   - array of diversities, first dimension representing subcommunities, and
 ##     last representing values of q
-##   - vector of community weights
+##   - vector of subcommunity weights
 function contributions (measure::Function, proportions::Matrix, qs,
                         perindividual::Bool, Z::Matrix,
                         returnecosystem::Bool,
@@ -239,44 +241,44 @@ using Diversity.Compatibility
 ## richness() - Calculate species richness of populations
 ##
 ## Calculates (species) richness of a series of columns representing
-## independent community counts, which is diversity at q = 0
+## independent subcommunity counts, which is diversity at q = 0
 ##
 ## Arguments:
 ## - proportions - population proportions
 ##
 ## Returns:
-## - diversities of sub-communities
+## - diversities of subcommunities
 function richness(proportions)
 
 ## shannon() - Calculate shannon entropy of populations
 ##
 ## Calculates shannon entropy of a series of columns representing
-## independent community counts, which is log(diversity) at q = 1
+## independent subcommunity counts, which is log(diversity) at q = 1
 ##
 ## Arguments:
 ## - proportions - population proportions
 ##
 ## Returns:
-## - entropies of sub-communities
+## - entropies of subcommunities
 function shannon(proportions)
 
 ## simpson() - Calculate Simpson's index
 ##
 ## Calculates Simpson's index of a series of columns representing
-## independent community counts, which is 1 / diversity (or
+## independent subcommunity counts, which is 1 / diversity (or
 ## concentration) at q = 2
 ##
 ## Arguments:
 ## - proportions - population proportions
 ##
 ## Returns:
-## - concentrations of sub-communities
+## - concentrations of subcommunities
 function simpson(proportions)
 
 ## jaccard() - Calculate Jaccard index
 ##
 ## Calculates Jaccard index (Jaccard similarity coefficient) of two
-## columns representing independent community counts, which is
+## columns representing independent subcommunity counts, which is
 ## A(proportions, 0) / G(proportions, 0) - 1
 ##
 ## Arguments:
@@ -288,10 +290,10 @@ function jaccard(proportions::Matrix)
 ```
 
 We have also developed generalised version of these that relate to our
-general measures of alpha, beta and gamma diversity at sub-community
+general measures of alpha, beta and gamma diversity at subcommunity
 and ecosystem measures. The generalisations of the richness, Shannon
 and Simpson are the only standard measures we are aware of whose
-sub-community components sum directly to the corresponding ecosystem
+subcommunity components sum directly to the corresponding ecosystem
 measure (although note that Simpson's index decreases for increased
 diversity, so small components are more diverse):
 
@@ -299,7 +301,7 @@ diversity, so small components are more diverse):
 ## generalisedrichness () - Calculate a generalised version of richness
 ##
 ## Calculates (species) richness of a series of columns representing
-## independent community counts, which is diversity at q = 0 for any
+## independent subcommunity counts, which is diversity at q = 0 for any
 ## diversity measure (passed as the second argument). It also includes
 ## a similarity matrix for the species
 ##
@@ -309,7 +311,7 @@ diversity, so small components are more diverse):
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - diversity (at ecosystem level) or diversities (of sub-communities)
+## - diversity (at ecosystem level) or diversities (of subcommunities)
 function generalisedrichness (measure::Function,
                               proportions::Matrix,
                               Z::Matrix)
@@ -317,7 +319,7 @@ function generalisedrichness (measure::Function,
 ## generalisedshannon () - Calculate a generalised version of Shannon entropy
 ##
 ## Calculates Shannon entropy of a series of columns representing
-## independent community counts, which is log(diversity) at q = 1 for
+## independent subcommunity counts, which is log(diversity) at q = 1 for
 ## any diversity measure (passed as the second argument). It also
 ## includes a similarity matrix for the species
 ##
@@ -327,7 +329,7 @@ function generalisedrichness (measure::Function,
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - entropy (at ecosystem level) or entropies (of sub-communities)
+## - entropy (at ecosystem level) or entropies (of subcommunities)
 function generalisedshannon (measure::Function,
                              proportions::Matrix,
                              Z::Matrix)
@@ -335,7 +337,7 @@ function generalisedshannon (measure::Function,
 ## generalisedsimpson () - Calculate a generalised version of Simpson's index
 ##
 ## Calculates Simpson's index of a series of columns representing
-## independent community counts, which is 1 / diversity at q = 2 for
+## independent subcommunity counts, which is 1 / diversity at q = 2 for
 ## any diversity measure (passed as the second argument). It also
 ## includes a similarity matrix for the species
 ##
@@ -345,7 +347,7 @@ function generalisedshannon (measure::Function,
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - concentration (at ecosystem level) or concentrations (of sub-communities)
+## - concentration (at ecosystem level) or concentrations (of subcommunities)
 function generalisedsimpson (measure::Function,
                              proportions::Matrix,
                              Z::Matrix)
@@ -353,11 +355,11 @@ function generalisedsimpson (measure::Function,
 ## generalisedjaccard () - Calculate a generalised version of Jaccard's index
 ##
 ## Calculates a generalisation of Jaccard's index of two columns
-## representing sub-community counts. This evaluates to is A / G - 1
+## representing subcommunity counts. This evaluates to is A / G - 1
 ## for a series of orders, repesented as a vector of qs (or a single
 ## number). It also includes a similarity matrix for the species. This
 ## gives measure of the average distinctiveness of the
-## sub-communities.
+## subcommunities.
 ##
 ## Arguments:
 ## - proportions - population proportions
@@ -411,21 +413,21 @@ using Diversity.Jost
 ## - Diversity of order qs (single number or vector of diversities)
 function jostD (proportions, qs)
 
-## jostbeta () - calculate Jost's beta diversity of multiple sub-communities
+## jostbeta () - calculate Jost's beta diversity of multiple subcommunities
 ##
 ## Calculates Jost's beta diversity of a series of columns
-## representing independent community counts, for a series of orders,
+## representing independent subcommunity counts, for a series of orders,
 ## repesented as a vector of qs. This is just the naive gamma
 ## diversity divided by the naive alpha diversity
 ##
 ## Arguments:
 ## - proportions - relative proportions of different individuals / species
 ##                 in population (vector, or matrix where columns are
-##                 for individual sub-communities)
+##                 for individual subcommunities)
 ## - qs - single number or vector of orders of diversity measurement
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function jostbeta (proportions, qs)
 jostβ = jostbeta
