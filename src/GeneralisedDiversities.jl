@@ -13,13 +13,13 @@
 ## - returnecosystem - boolean describing whether to return the
 ##                     ecosystem diversity
 ## - returncommunity - boolean describing whether to return the
-##                     community diversities
-## - returnweights   - boolean describing whether to return community weights
+##                     subcommunity diversities
+## - returnweights   - boolean describing whether to return subcommunity weights
 ##
 ## Returns:
 ## - some or all (as tuple) of:
 ##   - vector of ecosystem diversities representing values of q
-##   - array of diversities, first dimension representing sub-communities, and
+##   - array of diversities, first dimension representing subcommunities, and
 ##     last representing values of q
 ##   - vector of subcommunity weights
 function diversity{S <: FloatingPoint,
@@ -39,7 +39,7 @@ function diversity{S <: FloatingPoint,
     ## We need our qs to be a vector of floating points
     powers = 1. - convert(Vector{S}, [qs])
     
-    ## We'll definitely need to calculate sub-community diversity first
+    ## We'll definitely need to calculate subcommunity diversity first
     cd = measure(proportions, qs, Z)
 
     ## But do we need to calculate anything else?
@@ -76,7 +76,7 @@ end
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 ᾱ{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
@@ -102,7 +102,7 @@ subcommunityalphabar = ᾱ
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function α{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
@@ -171,7 +171,7 @@ ecosystemAbar = Ā
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function ϵ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
@@ -196,10 +196,10 @@ function β̄{S <: FloatingPoint,
 end
 subcommunitybetabar = β̄
 
-## ρ() - Raw similarity-sensitive sub-community beta diversity.
+## ρ() - Raw similarity-sensitive subcommunity beta diversity.
 ##
 ## Calculates diversity of a series of columns representing
-## independent community counts, for a series of orders, repesented as
+## independent subcommunity counts, for a series of orders, repesented as
 ## a vector of qs (or a single number)
 ##
 ## Arguments:
@@ -208,7 +208,7 @@ subcommunitybetabar = β̄
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function ρ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
@@ -298,7 +298,7 @@ ecosystemBbar = B̄
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function γ̄{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
@@ -326,7 +326,7 @@ subcommunitygammabar = γ̄
 ## - Z - similarity matrix
 ##
 ## Returns:
-## - array of diversities, first dimension representing sub-communities, and
+## - array of diversities, first dimension representing subcommunities, and
 ##   last representing values of q
 function γ{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
