@@ -14,7 +14,7 @@ export diversity
 include("CommunityContributions.jl")
 export contributions
 
-module Compatibility
+module Ecology
 
 include("HistoricalDiversities.jl")
 export generalisedrichness, richness
@@ -22,7 +22,7 @@ export generalisedshannon, shannon
 export generalisedsimpson, simpson
 export generalisedjaccard, jaccard
 
-end # sub-module Compatibility
+end # sub-module Ecology
 
 module Jost
 

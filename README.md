@@ -251,10 +251,10 @@ function contributions (measure::Function, proportions::Matrix, qs,
 ```
 
 The package also provides sub-modules with other diversity measures.
-Old diversity measures are found in the .Compatibility sub-module:
+Old ecological diversity measures are found in the .Ecology sub-module:
 
 ```julia
-using Diversity.Compatibility
+using Diversity.Ecology
 
 ## richness() - Calculate species richness of populations
 ##
