@@ -1,4 +1,4 @@
-# Diversity [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl) [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
+# Diversity [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl) [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Diversity](http://pkg.julialang.org/badges/Diversity_release.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=release)
 
 *Diversity* is a [Julia](http://www.julialang.org) package that provides
  functionality for measuring alpha, beta and gamma diversity of
@@ -6,9 +6,11 @@
  in the arXiv paper [arXiv:1404.6520
  (q-bio.QM)](http://arxiv.org/abs/1404.6520), *How to partition
  diversity*. It also provides a series of other related and older diversity
- measures through sub-modules for compatibility. This package is still
- in alpha, and so we do not guarantee its correctness, although we are
- aware of no issues with it. Please raise an issue if you find any problems.
+ measures through sub-modules. Currently these are all ecological diversity
+ measures, but this will be expanded through interfacing to BioJulia.
+ This package is still in alpha, and so we do not guarantee its correctness,
+ although we are aware of no issues with it. Please raise an issue if you 
+ find any problems.
 
 ## Install
 
