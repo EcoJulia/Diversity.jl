@@ -37,16 +37,42 @@ end
 
 ## We need to handle lack of automatic promotion between ints and floats in Julia
 powermean{T <: Integer,
-          U <: Number}(values, order::T,
+          U <: Number}(values::Vector{U}, order::T,
                        weights::Vector{U} = ones(values) * 1.) =
                            powermean(values, convert(U, order), weights)
                            
 ## Handle the likelihood of multiple orders of the mean being needed
-powermean{S <: Number}(values::Vector{S}, orders::Vector,
-                       weights::Vector = ones(values) * 1.) =
-                           map(order ->
-                               powermean(values, order * 1., weights * 1.),
-                               orders)
+function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
+                                orders::Vector,
+                                weights::Union(Vector, Matrix) =
+                                ones(values) * 1.)
+    (size(values) == size(weights)) ||
+    error("Values and weights are not the same size")
+    map(order -> powermean(values, order * 1., weights * 1.), orders)
+end
+
+## Handle several subcommunities, species or the whole ecosystem simultaneously
+function powermean{S <: FloatingPoint}(values::Matrix{S},
+                                       order::S,
+                                       weights::Matrix{S},
+                                       sumtuple::Tuple = subcommunity())
+    dims = size(values)
+    full = Array(S, dims..., 2)
+    full[:,:,1] = values
+    full[:,:,2] = weights
+    if length(sumtuple) == 2
+        mapslices(set -> powermean(reshape(set[:,:,1], length(set[:,:,1])),
+                                   order,
+                                   reshape(set[:,:,2], length(set[:,:,2]))),
+                  full, [sumtuple..., 3])
+    elseif length(sumtuple) == 1
+        mapslices(set -> powermean([set[:,1]], order, [set[:,2]]),
+                  full, [sumtuple..., 3])
+    else
+        mapslices(set -> powermean([set[1]], order, [set[2]]),
+                  full, [sumtuple..., 3])
+    end
+end
 
 ## qD - calculates Hill number / naive diversity of order q of a
 ## population with given relative proportions

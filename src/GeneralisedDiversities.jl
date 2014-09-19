@@ -1,3 +1,19 @@
+function ecosystem()
+    return (1,2)
+end
+
+function subcommunity()
+    return (1,)
+end
+
+function species()
+    return (2,)
+end
+
+function individual()
+    return ()
+end
+
 ## diversity() - calculates subcommunity and ecosystem diversities
 ##
 ## Calculates any diversity of a series of columns representing
