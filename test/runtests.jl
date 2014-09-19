@@ -120,7 +120,7 @@ smoothed /= numcommunities;
 
 # Looking at relations to historical measures, updated with similarity
 # and partitioning
-using Diversity.Compatibility
+using Diversity.Ecology
 
 @test_approx_eq richness(communities) ᾱ(communities, 0)
 @test_approx_eq generalisedrichness(Ḡ, communities, Z1) 1
