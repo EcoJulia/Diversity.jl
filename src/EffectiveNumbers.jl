@@ -47,7 +47,7 @@ the arithmetic mean.""" -> powermean
 powermean{T <: Integer,
           U <: Number}(values::Vector{U}, order::T,
                        weights::Vector{U} = ones(values) * 1.) =
-                           powermean(values, convert(U, order), weights)
+                           powermean(values, order * 1., weights)
                            
 @doc """
 ### powermean()
