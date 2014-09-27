@@ -69,7 +69,7 @@ function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
                                 ones(values) * 1.)
     (size(values) == size(weights)) ||
     error("Values and weights are not the same size")
-    map(order -> powermean(values, order * 1., weights * 1.), orders)
+    map(order -> powermean(values * 1., order * 1., weights * 1.), orders)
 end
 
 ## Handle several subcommunities, species or the whole ecosystem simultaneously
