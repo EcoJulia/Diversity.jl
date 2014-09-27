@@ -1,14 +1,17 @@
-## powermean - Calculates order-th power mean of values, weighted by
-## weights By default, weights are equal and order is 1, so this is
-## just the arithmetic mean
-##
-## Arguments:
-## - values - values for which to calculate mean
-## - order - order of power mean
-## - weights - weights of elements, normalised to 1 inside function
-##
-## Returns:
-## - weighted power mean
+@doc """
+### powermean()
+
+Calculates *order*th power mean of *values*, weighted by
+*weights*. By default, *weights* are equal and *order*
+is 1, so this is just the arithmetic mean.
+
+### Arguments:
+* values: values for which to calculate mean
+* order: order of power mean
+* weights: weights of elements, normalised to 1 inside function
+
+### Returns:
+* weighted power mean""" ->
 function powermean{S <: Number,
                    T <: FloatingPoint,
                    U <: Number}(values::Vector{S},
@@ -35,13 +38,31 @@ function powermean{S <: Number,
     end
 end
 
+@doc """
+Calculates *order*th power mean of *values*, weighted by *weights*.
+By default *weights* are equal, and *order* is 1, so this is just
+the arithmetic mean.""" -> powermean
+
 ## We need to handle lack of automatic promotion between ints and floats in Julia
 powermean{T <: Integer,
           U <: Number}(values::Vector{U}, order::T,
                        weights::Vector{U} = ones(values) * 1.) =
                            powermean(values, convert(U, order), weights)
                            
-## Handle the likelihood of multiple orders of the mean being needed
+@doc """
+### powermean()
+
+Calculates power mean of *values* of order *orders*, weighted by
+*weights*. By default, *weights* are equal and *order* is 1, so this
+is just the arithmetic mean.
+
+### Arguments:
+* values: values for which to calculate mean
+* orders: vector of orders of power mean
+* weights: weights of elements, normalised to 1 inside function
+
+### Returns:
+* weighted power means""" ->
 function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
                                 orders::Vector,
                                 weights::Union(Vector, Matrix) =
@@ -52,6 +73,23 @@ function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
 end
 
 ## Handle several subcommunities, species or the whole ecosystem simultaneously
+@doc """
+### powermean()
+
+Calculates *order*th power mean of first dimension of *values*,
+possibly summing over some of the other dimensions, weighted by
+*weights*. By default, *weights* are equal and *order*
+is 1, so this is just the arithmetic mean.
+
+### Arguments:
+* values: values for which to calculate mean
+* order: order of power mean
+* weights: weights of elements, normalised to 1 inside function
+* sumtuple: which dimensions are we going to sum over before we
+            calculate means (default subcommunity())
+
+### Returns:
+* weighted power mean(s)""" ->
 function powermean{S <: FloatingPoint}(values::Matrix{S},
                                        order::S,
                                        weights::Matrix{S},
