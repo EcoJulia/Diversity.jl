@@ -112,16 +112,19 @@ function powermean{S <: FloatingPoint}(values::Matrix{S},
     end
 end
 
-## qD - calculates Hill number / naive diversity of order q of a
-## population with given relative proportions
-##
-## Arguments:
-## - proportions - relative proportions of different individuals /
-##                 species in population
-## - qs - single number or vector of orders of diversity measurement
-##
-## Returns:
-## - Diversity of order qs (single number or vector of diversities)
+@doc """
+### qD()
+
+Calculates Hill number or naive diversity of order(s) *qs* of a
+population with given relative proportions.
+
+### Arguments:
+* proportions: relative proportions of different individuals /
+               species in population
+* qs: single number or vector of orders of diversity measurement
+
+### Returns:
+* Diversity of order qs (single number or vector of diversities)""" ->
 function qD{S <: FloatingPoint,
             T <: Number}(proportions::Vector{S},
                          qs::Union(T, Vector{T}))
@@ -132,16 +135,26 @@ function qD{S <: FloatingPoint,
     powermean(proportions, qs - 1., proportions) .^ -1
 end
 
-## qD - calculates Hill number / naive diversity of order q of a
-## population with given relative proportions
-##
-## Arguments:
-## - proportions - relative proportions of different individuals /
-##                 species in population
-## - qs - single number or vector of orders of diversity measurement
-##
-## Returns:
-## - Diversity of order qs (single number or vector of diversities)
+@doc """
+### qD()
+
+Calculates Hill number or naive diversity of orders *qs* of a
+population or series of subpopulations with given relative
+*proportions*.""" -> qD
+
+@doc """
+### qD()
+
+Calculates Hill number or naive diversity of order(s) *qs* of a series
+of subpopulations with given relative *proportions*.
+
+### Arguments:
+* proportions - relative proportions of different individuals /
+                species in a series of subpopulations
+* qs - single number or vector of orders of diversity measurement
+
+### Returns:
+* Diversities of order qs (single number or vector of diversities)""" ->
 qD{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
        mapslices(p -> qD(p, qs), proportions, 1)
