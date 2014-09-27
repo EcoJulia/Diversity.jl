@@ -141,7 +141,7 @@ using Diversity.Ecology
 # Checking Jost's diversities
 using Diversity.Jost
 
-@test jostD == qD
+@test_approx_eq jostD(manyweights, 0) numspecies * ones((1, size(manyweights)[2]))
 @test jostβ == jostbeta
 @test_approx_eq jostbeta(communities, 1) 1 ./ R̄(communities, 1)
 @test_approx_eq jostbeta(allthesame, qs) ones(qs)
@@ -149,4 +149,4 @@ using Diversity.Jost
 # Checking Hill numbers
 using Diversity.Hill
 
-@test hillnumber == qD
+@test_approx_eq hillnumber(manyweights, 0) numspecies * ones((1, size(manyweights)[2]))
