@@ -158,19 +158,22 @@ of subpopulations with given relative *proportions*.
 qD{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
        mapslices(p -> qD(p, qs), proportions, 1)
-       
-## qDZ - calculates Leinster-Cobbold general diversity of >= 1 order q
-## of a population with given relative proportions, and similarity
-## matrix Z
-##
-## Arguments:
-## - proportions - relative proportions of different individuals /
-##                 species in population
-## - qs - single number or vector of orders of diversity measurement
-## - Z - similarity matrix
-##
-## Returns:
-## - Diversity of order qs (single number or vector of diversities)
+
+@doc """
+### qDZ()
+
+Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
+a population with given relative *proportions*, and similarity matrix
+*Z*.
+
+### Arguments:
+* proportions: relative proportions of different individuals /
+               species in population
+* qs: single number or vector of orders of diversity measurement
+* Z: similarity matrix
+
+### Returns:
+* Diversity of order qs (single number or vector of diversities)""" ->
 function qDZ{S <: FloatingPoint,
              T <: Number}(proportions::Vector{S}, qs::Union(T, Vector{T}),
                           Z::Matrix{S} = eye(length(proportions)))
@@ -185,18 +188,28 @@ function qDZ{S <: FloatingPoint,
     powermean(Z * proportions, qs - 1., proportions) .^ -1
 end
 
-## qDZ - calculates general Leinster-Cobbold diversity of >= 1 order q
-## of a population with given relative proportions, and similarity
-## matrix Z
-##
-## Arguments:
-## - proportions - relative proportions of different individuals /
-##                 species in population
-## - qs - single number or vector of orders of diversity measurement
-## - Z - similarity matrix
-##
-## Returns:
-## - Diversity of order qs (single number or vector of diversities)
+@doc """
+### qDZ()
+
+Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
+a population of series of subpopulations with given relative
+*proportions*, and similarity matrix *Z*.""" -> qDZ
+
+@doc """
+### qDZ()
+
+Calculates Leinster-Cobbold general diversity of >= 1 order *qs* of a
+series of subpopulations with given relative *proportions*, and
+similarity matrix *Z*.
+
+### Arguments:
+* proportions - relative proportions of different individuals /
+                species in a series of subpopulations
+* qs: single number or vector of orders of diversity measurement
+* Z: similarity matrix
+
+### Returns:
+* Diversities of order qs (single number or vector of diversities)""" ->
 qDZ{S <: FloatingPoint,
     T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                  Z::Matrix{S} = eye(size(proportions, 1))) =
