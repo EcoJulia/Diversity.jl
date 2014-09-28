@@ -93,7 +93,7 @@ is 1, so this is just the arithmetic mean.
 function powermean{S <: FloatingPoint}(values::Matrix{S},
                                        order::S,
                                        weights::Matrix{S},
-                                       sumvec::Vector[Integer] = subcommunity())
+                                       sumvec::Vector{Integer} = subcommunity())
     dims = size(values)
     full = Array(S, dims..., 2)
     full[:,:,1] = values
