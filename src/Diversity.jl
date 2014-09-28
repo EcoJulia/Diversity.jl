@@ -20,7 +20,7 @@ module Ecology
 using Docile
 @docstrings [ :manual => ["../doc/ecology.md"] ]
 
-include("HistoricalDiversities.jl")
+include("Ecology.jl")
 export generalisedrichness, richness
 export generalisedshannon, shannon
 export generalisedsimpson, simpson
