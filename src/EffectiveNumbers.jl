@@ -85,7 +85,7 @@ is 1, so this is just the arithmetic mean.
 * values: values for which to calculate mean
 * order: order of power mean
 * weights: weights of elements, normalised to 1 inside function
-* sumtuple: which dimensions are we going to sum over before we
+* sumvec: which dimensions are we going to sum over before we
             calculate means (default subcommunity())
 
 ### Returns:
@@ -93,22 +93,22 @@ is 1, so this is just the arithmetic mean.
 function powermean{S <: FloatingPoint}(values::Matrix{S},
                                        order::S,
                                        weights::Matrix{S},
-                                       sumtuple::Tuple = subcommunity())
+                                       sumvec::Vector[Integer] = subcommunity())
     dims = size(values)
     full = Array(S, dims..., 2)
     full[:,:,1] = values
     full[:,:,2] = weights
-    if length(sumtuple) == 2
+    if length(sumvec) == 2
         mapslices(set -> powermean(reshape(set[:,:,1], length(set[:,:,1])),
                                    order,
                                    reshape(set[:,:,2], length(set[:,:,2]))),
-                  full, [sumtuple..., 3])
-    elseif length(sumtuple) == 1
+                  full, [sumvec..., 3])
+    elseif length(sumvec) == 1
         mapslices(set -> powermean([set[:,1]], order, [set[:,2]]),
-                  full, [sumtuple..., 3])
+                  full, [sumvec..., 3])
     else
         mapslices(set -> powermean([set[1]], order, [set[2]]),
-                  full, [sumtuple..., 3])
+                  full, [sumvec..., 3])
     end
 end
 
