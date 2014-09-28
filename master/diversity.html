@@ -40,7 +40,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <li >
 <a href='#powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2})'>powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumtuple::(Any...,))'>powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumtuple::(Any...,))</a></li>
+<a href='#powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumvec::Array{Integer,1})'>powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumvec::Array{Integer,1})</a></li>
 <li >
 <a href='#powermean{S<:Number,T<:FloatingPoint,U<:Number}(values::Array{S<:Number,1},order::T<:FloatingPoint,weights::Array{U<:Number,1})'>powermean{S<:Number,T<:FloatingPoint,U<:Number}(values::Array{S<:Number,1},order::T<:FloatingPoint,weights::Array{U<:Number,1})</a></li>
 <li >
@@ -50,7 +50,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <li >
 <a href='#powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1})'>powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1})</a></li>
 <li >
-<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))'>powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))</a></li>
+<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))'>powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))</a></li>
 <li >
 <a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
@@ -96,7 +96,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L44'>Diversity/src/EffectiveNumbers.jl:44</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L44'>Diversity/src/EffectiveNumbers.jl:44</a></code></td>
 </tr>
 </table>
 </div>
@@ -113,7 +113,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L143'>Diversity/src/EffectiveNumbers.jl:143</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L143'>Diversity/src/EffectiveNumbers.jl:143</a></code></td>
 </tr>
 </table>
 </div>
@@ -130,7 +130,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L196'>Diversity/src/EffectiveNumbers.jl:196</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L196'>Diversity/src/EffectiveNumbers.jl:196</a></code></td>
 </tr>
 </table>
 </div>
@@ -144,35 +144,35 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <h3>powermean()</h3>
 <p>Calculates <em>order</em>th power mean of first dimension of <em>values</em>, possibly summing over some of the other dimensions, weighted by <em>weights</em>. By default, <em>weights</em> are equal and <em>order</em> is 1, so this is just the arithmetic mean.</p>
 <h3>Arguments:</h3>
-<ul><li>values: values for which to calculate mean</li><li>order: order of power mean</li><li>weights: weights of elements, normalised to 1 inside function</li><li>sumtuple: which dimensions are we going to sum over before we calculate means (default subcommunity())</li></ul>
+<ul><li>values: values for which to calculate mean</li><li>order: order of power mean</li><li>weights: weights of elements, normalised to 1 inside function</li><li>sumvec: which dimensions are we going to sum over before we calculate means (default subcommunity())</li></ul>
 <h3>Returns:</h3>
 <ul><li>weighted power mean(s)</li></ul><div class='entry-meta'>
 <strong>Details:</strong>
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></code></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumtuple::(Any...,))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumtuple::(Any...,))
+<div id='powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumvec::Array{Integer,1})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2},sumvec::Array{Integer,1})
 </div>
 <div class='entry-body'>
 <h3>powermean()</h3>
 <p>Calculates <em>order</em>th power mean of first dimension of <em>values</em>, possibly summing over some of the other dimensions, weighted by <em>weights</em>. By default, <em>weights</em> are equal and <em>order</em> is 1, so this is just the arithmetic mean.</p>
 <h3>Arguments:</h3>
-<ul><li>values: values for which to calculate mean</li><li>order: order of power mean</li><li>weights: weights of elements, normalised to 1 inside function</li><li>sumtuple: which dimensions are we going to sum over before we calculate means (default subcommunity())</li></ul>
+<ul><li>values: values for which to calculate mean</li><li>order: order of power mean</li><li>weights: weights of elements, normalised to 1 inside function</li><li>sumvec: which dimensions are we going to sum over before we calculate means (default subcommunity())</li></ul>
 <h3>Returns:</h3>
 <ul><li>weighted power mean(s)</li></ul><div class='entry-meta'>
 <strong>Details:</strong>
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></code></td>
 </tr>
 </table>
 </div>
@@ -193,7 +193,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></code></td>
 </tr>
 </table>
 </div>
@@ -214,7 +214,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></code></td>
 </tr>
 </table>
 </div>
@@ -235,7 +235,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></code></td>
 </tr>
 </table>
 </div>
@@ -256,15 +256,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></code></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))
+<div id='powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))
 </div>
 <div class='entry-body'>
 <h3>powermean()</h3>
@@ -277,7 +277,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></code></td>
 </tr>
 </table>
 </div>
@@ -298,7 +298,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></code></td>
 </tr>
 </table>
 </div>
@@ -319,7 +319,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></code></td>
 </tr>
 </table>
 </div>
@@ -340,7 +340,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></code></td>
 </tr>
 </table>
 </div>
@@ -361,7 +361,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></code></td>
 </tr>
 </table>
 </div>
@@ -382,7 +382,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L127'>Diversity/src/EffectiveNumbers.jl:127</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L127'>Diversity/src/EffectiveNumbers.jl:127</a></code></td>
 </tr>
 </table>
 </div>
@@ -403,7 +403,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/EffectiveNumbers.jl#L157'>Diversity/src/EffectiveNumbers.jl:157</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/EffectiveNumbers.jl#L157'>Diversity/src/EffectiveNumbers.jl:157</a></code></td>
 </tr>
 </table>
 </div>
@@ -429,7 +429,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/Collection.jl#L117'>Diversity/src/Collection.jl:117</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Collection.jl#L117'>Diversity/src/Collection.jl:117</a></code></td>
 </tr>
 </table>
 </div>
@@ -448,7 +448,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/Collection.jl#L41'>Diversity/src/Collection.jl:41</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Collection.jl#L41'>Diversity/src/Collection.jl:41</a></code></td>
 </tr>
 </table>
 </div>
@@ -465,7 +465,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/Collection.jl#L75'>Diversity/src/Collection.jl:75</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Collection.jl#L75'>Diversity/src/Collection.jl:75</a></code></td>
 </tr>
 </table>
 </div>
@@ -482,7 +482,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/Collection.jl#L7'>Diversity/src/Collection.jl:7</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Collection.jl#L7'>Diversity/src/Collection.jl:7</a></code></td>
 </tr>
 </table>
 </div>
@@ -499,7 +499,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/Collection.jl#L25'>Diversity/src/Collection.jl:25</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Collection.jl#L25'>Diversity/src/Collection.jl:25</a></code></td>
 </tr>
 </table>
 </div>
@@ -516,7 +516,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/c8fa9ed7dafb09faad0391d07c8059e28f2528fa/src/Collection.jl#L15'>Diversity/src/Collection.jl:15</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Collection.jl#L15'>Diversity/src/Collection.jl:15</a></code></td>
 </tr>
 </table>
 </div>
