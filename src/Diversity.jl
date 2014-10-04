@@ -11,11 +11,11 @@ include("EffectiveNumbers.jl")
 export qD, qDZ
 
 include("GeneralisedDiversities.jl")
-export ᾱ, subcommunityalphabar, α, subcommunityalpha, A, ecosystemA, Ā, ecosystemAbar
-export β̄, subcommunitybetabar, β, subcommunitybeta, B, ecosystemB, B̄, ecosystemBbar
-export ρ̄, subcommunityrhobar, ρ, subcommunityrho, R, ecosystemR, R̄, ecosystemRbar
-export ϵ, subcommunityevenness, subcommunityredundancy, ecosystemevenness, ecosystemredundancy
-export γ̄, subcommunitygammabar, γ, subcommunitygamma, G, ecosystemG, Ḡ, ecosystemGbar
+export subcommunityalphabar, subcommunityalpha, ecosystemA, ecosystemAbar
+export subcommunitybetabar, subcommunitybeta, ecosystemB, ecosystemBbar
+export subcommunitygammabar, subcommunitygamma, ecosystemG, ecosystemGbar
+export Dᾱ, Dα, Dβ̄, Dβ, Dϵ, Dρ̄, Dρ, Dγ̄, Dγ
+export DĀ, DA, DB̄, DB, DE, DR̄, DR, DḠ, DG
 export diversity
 
 include("CommunityContributions.jl")
