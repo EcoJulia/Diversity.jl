@@ -55,81 +55,81 @@ warn("We now generate two warnings for code coverage completeness...")
 # Sub-community alpha diversities
 communities = rand(numspecies, numcommunities);
 communities /= sum(communities);
-@test_approx_eq ᾱ(communities, 0) numspecies * ones((1, size(communities)[2]))
+@test_approx_eq Dᾱ(communities, 0) numspecies * ones((1, size(communities)[2]))
 @test_approx_eq subcommunityalphabar(communities,
                                      [0]) numspecies * ones((1, size(communities)[2]))
-@test_approx_eq ᾱ(communities,
+@test_approx_eq Dᾱ(communities,
                   [0, 1, 2, Inf], Z1) ones((4, size(communities)[2]))
 
-@test_approx_eq α(communities, 0) numspecies * mapslices(v -> 1. / sum(v),
+@test_approx_eq Dα(communities, 0) numspecies * mapslices(v -> 1. / sum(v),
                                                   communities, 1)
 
 even = ones((numspecies, numcommunities)) / (numspecies * numcommunities);
 qs = [0, 1, 2, 3, 4, 5, 6, Inf];
-@test_approx_eq Ā(even, qs) numspecies * ones((1, length(qs)))
-@test_approx_eq A(even, qs) numspecies * numcommunities * ones((1, length(qs)))
+@test_approx_eq DĀ(even, qs) numspecies * ones((1, length(qs)))
+@test_approx_eq DA(even, qs) numspecies * numcommunities * ones((1, length(qs)))
 
 probs = reshape(mapslices(sum, communities, 2), (size(communities)[1]));
-@test_approx_eq G(communities, qs) Ḡ(communities, qs)
-@test_approx_eq G(communities, qs) qD(probs, qs)
-@test_approx_eq G(communities, qs, Z1) qDZ(probs, qs, Z1)
+@test_approx_eq DG(communities, qs) DḠ(communities, qs)
+@test_approx_eq DG(communities, qs) qD(probs, qs)
+@test_approx_eq DG(communities, qs, Z1) qDZ(probs, qs, Z1)
 
 Z = rand(numspecies, numspecies);
-@test_approx_eq G(communities, qs, Z) qDZ(probs, qs, Z)
+@test_approx_eq DG(communities, qs, Z) qDZ(probs, qs, Z)
 
 colweights = rand(numcommunities);
 colweights /= sum(colweights);
 allthesame = probs * colweights';
-@test_approx_eq B̄(allthesame, qs, Z) ones((1, length(qs)))
-@test_approx_eq R̄(allthesame, qs, Z) ones((1, length(qs)))
-@test_approx_eq R(allthesame, qs) qD(colweights, qs)
+@test_approx_eq DB̄(allthesame, qs, Z) ones((1, length(qs)))
+@test_approx_eq DR̄(allthesame, qs, Z) ones((1, length(qs)))
+@test_approx_eq DR(allthesame, qs) qD(colweights, qs)
 
 # Need to check the diversity() function
-@test_approx_eq diversity(R̄, allthesame, qs, Z, false, false, true) colweights
-@test_approx_eq diversity(ρ̄, communities, qs, Z,
-                          false, true, false) ρ̄(communities, qs, Z)
-@test_approx_eq diversity(ρ̄, communities, qs, Z,
-                          true, false, false) R̄(communities, qs, Z)
-@test_approx_eq diversity(ᾱ, communities, qs, Z,
-                          true, true, false)[1] Ā(communities, qs, Z)
-@test_approx_eq diversity(α, allthesame, qs, Z,
-                          true, true, true)[2] α(allthesame, qs, Z)
-ed, cd, w = diversity(γ, communities, qs, Z, true, true, true)
-@test_approx_eq diversity(γ̄, communities, qs, Z, true, false, true)[1] ed 
-@test_approx_eq diversity(γ̄, communities, qs, Z, false, true, true)[1] cd
-@test_approx_eq diversity(α, allthesame, qs, Z, true, true, true)[3] colweights
+@test_approx_eq diversity(DR̄, allthesame, qs, Z, false, false, true) colweights
+@test_approx_eq diversity(Dρ̄, communities, qs, Z,
+                          false, true, false) Dρ̄(communities, qs, Z)
+@test_approx_eq diversity(Dρ̄, communities, qs, Z,
+                          true, false, false) DR̄(communities, qs, Z)
+@test_approx_eq diversity(Dᾱ, communities, qs, Z,
+                          true, true, false)[1] DĀ(communities, qs, Z)
+@test_approx_eq diversity(Dα, allthesame, qs, Z,
+                          true, true, true)[2] Dα(allthesame, qs, Z)
+ed, cd, w = diversity(Dγ, communities, qs, Z, true, true, true)
+@test_approx_eq diversity(Dγ̄, communities, qs, Z, true, false, true)[1] ed 
+@test_approx_eq diversity(Dγ̄, communities, qs, Z, false, true, true)[1] cd
+@test_approx_eq diversity(Dα, allthesame, qs, Z, true, true, true)[3] colweights
 
 # Now some even communities, should see that raw and normalised
 # diversities are the same
 smoothed = communities ./ mapslices(sum, communities, 1);
 smoothed /= numcommunities;
 # Just for completeness, check one for q=-Inf - we currently have no use for this, but it is coded.
-@test_approx_eq contributions(α, smoothed, [-Inf, 0:5, Inf], true) contributions(ᾱ, smoothed, [-Inf, 0:5, Inf], true)
-@test_approx_eq contributions(ρ, smoothed, [0:5, Inf], true) contributions(ρ̄, smoothed, [0:5, Inf], true)
-@test_approx_eq contributions(γ, smoothed, [0:5, Inf], true) contributions(γ̄, smoothed, [0:5, Inf], true)
-@test_approx_eq contributions(α, smoothed, [0:5, Inf], false) contributions(ᾱ, smoothed, [0:5, Inf], false)
-@test_approx_eq contributions(ρ, smoothed, [0:5, Inf], false) contributions(ρ̄, smoothed, [0:5, Inf], false)
-@test_approx_eq contributions(γ, smoothed, [0:5, Inf], false) contributions(γ̄, smoothed, [0:5, Inf], false)
+@test_approx_eq contributions(Dα, smoothed, [-Inf, 0:5, Inf], true) contributions(Dᾱ, smoothed, [-Inf, 0:5, Inf], true)
+@test_approx_eq contributions(Dρ, smoothed, [0:5, Inf], true) contributions(Dρ̄, smoothed, [0:5, Inf], true)
+@test_approx_eq contributions(Dγ, smoothed, [0:5, Inf], true) contributions(Dγ̄, smoothed, [0:5, Inf], true)
+@test_approx_eq contributions(Dα, smoothed, [0:5, Inf], false) contributions(Dᾱ, smoothed, [0:5, Inf], false)
+@test_approx_eq contributions(Dρ, smoothed, [0:5, Inf], false) contributions(Dρ̄, smoothed, [0:5, Inf], false)
+@test_approx_eq contributions(Dγ, smoothed, [0:5, Inf], false) contributions(Dγ̄, smoothed, [0:5, Inf], false)
 
-@test_approx_eq contributions(α, smoothed, [0:5, Inf], true) contributions(α, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(ρ, smoothed, [0:5, Inf], true) contributions(ρ, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(γ, smoothed, [0:5, Inf], true) contributions(γ, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(ᾱ, smoothed, [0:5, Inf], true) contributions(ᾱ, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(ρ̄, smoothed, [0:5, Inf], true) contributions(ρ̄, smoothed, [0:5, Inf], false) * numcommunities
-@test_approx_eq contributions(γ̄, smoothed, [0:5, Inf], true) contributions(γ̄, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(Dα, smoothed, [0:5, Inf], true) contributions(Dα, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(Dρ, smoothed, [0:5, Inf], true) contributions(Dρ, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(Dγ, smoothed, [0:5, Inf], true) contributions(Dγ, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(Dᾱ, smoothed, [0:5, Inf], true) contributions(Dᾱ, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(Dρ̄, smoothed, [0:5, Inf], true) contributions(Dρ̄, smoothed, [0:5, Inf], false) * numcommunities
+@test_approx_eq contributions(Dγ̄, smoothed, [0:5, Inf], true) contributions(Dγ̄, smoothed, [0:5, Inf], false) * numcommunities
 
 # Looking at relations to historical measures, updated with similarity
 # and partitioning
 using Diversity.Ecology
 
-@test_approx_eq richness(communities) ᾱ(communities, 0)
-@test_approx_eq generalisedrichness(Ḡ, communities, Z1) 1
+@test_approx_eq richness(communities) Dᾱ(communities, 0)
+@test_approx_eq generalisedrichness(DḠ, communities, Z1) 1
 
-@test_approx_eq shannon(communities) log(ᾱ(communities, 1))
-@test_approx_eq generalisedshannon(Ḡ, communities, Z1) 0
+@test_approx_eq shannon(communities) log(Dᾱ(communities, 1))
+@test_approx_eq generalisedshannon(DḠ, communities, Z1) 0
 
-@test_approx_eq simpson(communities) ᾱ(communities, 2) .^ -1
-@test_approx_eq generalisedsimpson(Ḡ, communities, Z1) 1
+@test_approx_eq simpson(communities) Dᾱ(communities, 2) .^ -1
+@test_approx_eq generalisedsimpson(DḠ, communities, Z1) 1
 
 @test_approx_eq jaccard([1 0; 0 1; 0 1.]) 0
 @test_approx_eq jaccard([1 0; 0 1; 1 1.]) 1 / 3
@@ -143,7 +143,7 @@ using Diversity.Jost
 
 @test_approx_eq jostD(manyweights, 0) numspecies * ones((1, size(manyweights)[2]))
 @test jostβ == jostbeta
-@test_approx_eq jostbeta(communities, 1) 1 ./ R̄(communities, 1)
+@test_approx_eq jostbeta(communities, 1) 1 ./ DR̄(communities, 1)
 @test_approx_eq jostbeta(allthesame, qs) ones(qs)
 
 # Checking Hill numbers
