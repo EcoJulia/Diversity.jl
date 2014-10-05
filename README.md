@@ -44,6 +44,8 @@ alphabar()). We also provide a general function for extract any
 diversity measure for a series of subcommunity relative abundances.
 And we can calculate the proportions that subcommunities each
 contribute to ecosystem diversity per subcommunity or per individual.
+The full documentation can be found
+[here](http://richardreeve.github.io/Diversity.jl/stable/diversity.html).
 
 The package also provides sub-modules with other diversity measures:
 
@@ -57,11 +59,15 @@ standard measures we are aware of whose subcommunity components sum
 directly to the corresponding ecosystem measure (although note that
 Simpson's index decreases for increased diversity, so small components
 are more diverse).
+Documentation for these diversity measures can be found
+[here](http://richardreeve.github.io/Diversity.jl/stable/ecology.html).
 
 #### Diversity.Hill
 
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 .Hill sub-module.
+Documentation for these diversity measures can be found
+[here](http://richardreeve.github.io/Diversity.jl/stable/hill.html).
 
 #### Diversity.Jost
 
@@ -69,6 +75,8 @@ Lou Jost's
 [diversity](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
 found in the .Jost sub-module.
+Documentation for these diversity measures is
+[here](http://richardreeve.github.io/Diversity.jl/stable/jost.html).
 
 ## Documentation
 
@@ -93,6 +101,15 @@ query(qDZ)
 ```
 
 However, the documentation is also available online.
+
+### Stable branch
+
+The online documentation for the current stable branch is here:
+
+* [Diversity](http://richardreeve.github.io/Diversity.jl/stable/diversity.html)
+* [Diversity.Ecology](http://richardreeve.github.io/Diversity.jl/stable/ecology.html)
+* [Diversity.Hill](http://richardreeve.github.io/Diversity.jl/stable/hill.html)
+* [Diversity.Jost](http://richardreeve.github.io/Diversity.jl/stable/jost.html)
 
 ### Master branch
 
