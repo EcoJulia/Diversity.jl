@@ -9,7 +9,7 @@ diversity measure (passed as the second argument). It also includes a
 similarity matrix for the species
 
 ### Arguments:
-*measure* diversity measure to use (one of Dα, Dᾱ, D, Dβ̄, Dγ or Dγ̄)
+*measure* diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
 
 *proportions* population proportions
 
@@ -48,7 +48,7 @@ any diversity measure (passed as the second argument). It also
 includes a similarity matrix for the species
 
 ### Arguments:
-*measure* diversity measure to use (one of α, ᾱ, β, β̄, γ or γ̄)
+*measure* diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
 
 *proportions* population proportions
 

@@ -38,9 +38,9 @@ component subcommunities (these are extended from
 [Reeve et al, 2014](http://arxiv.org/abs/1404.6520)).
 There are also matching normalised and raw, alpha, beta and gamma
 diversities at both the subcommunity and ecosystem level. The
-functions exist both with unicode names which are not exported (e.g.
-Diversity.ᾱ()), and with matching exported ascii names (e.g.
-alphabar()). We also provide a general function for extract any
+functions exist both with unicode names preceded by D (e.g.
+Dᾱ()), and with matching ascii names (e.g.
+subcommunityalphabar()). We also provide a general function for extract any
 diversity measure for a series of subcommunity relative abundances.
 And we can calculate the proportions that subcommunities each
 contribute to ecosystem diversity per subcommunity or per individual.
