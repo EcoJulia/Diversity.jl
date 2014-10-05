@@ -27,8 +27,8 @@ Accessing the main functionality in the package is simple:
 ```julia
 using Diversity
 ...
-diversities = Diversity.ᾱ(proportions, [0, 1, 2, Inf], Z)
-diversities = beta(proportions, 2, Z)
+diversities = Dρ̄(proportions, [0, 1, 2, Inf], Z)
+diversities = subcommunityalphabar(proportions, 2, Z)
 ```
 
 The main package provides basic diversity measures (from
