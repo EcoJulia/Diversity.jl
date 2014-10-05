@@ -17,7 +17,305 @@
 <pre><code>using Diversity.Ecology
 ...
 diversities = simpson(proportions)
-diversities = generalisedjaccard(proportions, [0, 1, 2], Z)</code></pre>
+diversities = generalisedjaccard(proportions, [0, 1, 2], Z)</code></pre><h1 id='module-reference'>Reference</h1>
+<ul class='index'>
+<li >
+<strong>methods:</strong>
+</li>
+<li >
+<ul >
+<li >
+<a href='#generalisedjaccard(proportions::Array{T,2},qs)'>generalisedjaccard(proportions::Array{T,2},qs)</a></li>
+<li >
+<a href='#generalisedjaccard(proportions::Array{T,2},qs,Z::Array{T,2})'>generalisedjaccard(proportions::Array{T,2},qs,Z::Array{T,2})</a></li>
+<li >
+<a href='#generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})'>generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})'>generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})'>generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})'>generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})'>generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})'>generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#jaccard{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})'>jaccard{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#richness{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})'>richness{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#shannon{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})'>shannon{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})</a></li>
+<li >
+<a href='#simpson{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})'>simpson{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})</a></li>
+</ul>
+</li>
+</ul>
+<div class='entries'>
+<div class='entry'>
+<div id='generalisedjaccard(proportions::Array{T,2},qs)' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedjaccard(proportions::Array{T,2},qs)
+</div>
+<div class='entry-body'>
+<h3>generalisedjaccard() - Calculate a generalised version of Jaccard's index</h3>
+<p>Calculates a generalisation of Jaccard's index of a series of columns representing subcommunity counts. This evaluates to is DG / DA for a series of orders, repesented as a vector of qs (or a single number). It also includes a similarity matrix for the species. This gives measure of the average distinctiveness of the subcommunities.</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions <em>qs</em> single number or vector of values of parameter q <em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>Jaccard-related distinctivess measures</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L135'>Diversity/src/Ecology.jl:135</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedjaccard(proportions::Array{T,2},qs,Z::Array{T,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedjaccard(proportions::Array{T,2},qs,Z::Array{T,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedjaccard() - Calculate a generalised version of Jaccard's index</h3>
+<p>Calculates a generalisation of Jaccard's index of a series of columns representing subcommunity counts. This evaluates to is DG / DA for a series of orders, repesented as a vector of qs (or a single number). It also includes a similarity matrix for the species. This gives measure of the average distinctiveness of the subcommunities.</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions <em>qs</em> single number or vector of values of parameter q <em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>Jaccard-related distinctivess measures</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L135'>Diversity/src/Ecology.jl:135</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedrichness() - Calculate a generalised version of richness</h3>
+<p>Calculates (species) richness of a series of columns representing independent subcommunity counts, which is diversity at q = 0 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<h3>Arguments:</h3>
+<p><em>measure</em> diversity measure to use (one of Dα, Dᾱ, D, Dβ̄, Dγ or Dγ̄)</p>
+<p><em>proportions</em> population proportions</p>
+<p><em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>diversity (at ecosystem level) or diversities (of subcommunities)</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L19'>Diversity/src/Ecology.jl:19</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedrichness{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedrichness() - Calculate a generalised version of richness</h3>
+<p>Calculates (species) richness of a series of columns representing independent subcommunity counts, which is diversity at q = 0 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<h3>Arguments:</h3>
+<p><em>measure</em> diversity measure to use (one of Dα, Dᾱ, D, Dβ̄, Dγ or Dγ̄)</p>
+<p><em>proportions</em> population proportions</p>
+<p><em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>diversity (at ecosystem level) or diversities (of subcommunities)</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L19'>Diversity/src/Ecology.jl:19</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedshannon() - Calculate a generalised version of Shannon entropy</h3>
+<p>Calculates Shannon entropy of a series of columns representing independent subcommunity counts, which is log(diversity) at q = 1 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<h3>Arguments:</h3>
+<p><em>measure</em> diversity measure to use (one of α, ᾱ, β, β̄, γ or γ̄)</p>
+<p><em>proportions</em> population proportions</p>
+<p><em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>entropy (at ecosystem level) or entropies (of subcommunities)</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L58'>Diversity/src/Ecology.jl:58</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedshannon{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedshannon() - Calculate a generalised version of Shannon entropy</h3>
+<p>Calculates Shannon entropy of a series of columns representing independent subcommunity counts, which is log(diversity) at q = 1 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<h3>Arguments:</h3>
+<p><em>measure</em> diversity measure to use (one of α, ᾱ, β, β̄, γ or γ̄)</p>
+<p><em>proportions</em> population proportions</p>
+<p><em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>entropy (at ecosystem level) or entropies (of subcommunities)</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L58'>Diversity/src/Ecology.jl:58</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedsimpson() - Calculate a generalised version of Simpson's index</h3>
+<p>Calculates Simpson's index of a series of columns representing independent subcommunity counts, which is 1 / diversity at q = 2 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<h3>Arguments:</h3>
+<p><em>measure</em> diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)</p>
+<p><em>proportions</em> population proportions <em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>concentration (at ecosystem level) or concentrations (of subcommunities)</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L96'>Diversity/src/Ecology.jl:96</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> generalisedsimpson{S<:FloatingPoint}(measure::Function,proportions::Array{S<:FloatingPoint,2},Z::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>generalisedsimpson() - Calculate a generalised version of Simpson's index</h3>
+<p>Calculates Simpson's index of a series of columns representing independent subcommunity counts, which is 1 / diversity at q = 2 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<h3>Arguments:</h3>
+<p><em>measure</em> diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)</p>
+<p><em>proportions</em> population proportions <em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>concentration (at ecosystem level) or concentrations (of subcommunities)</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L96'>Diversity/src/Ecology.jl:96</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='jaccard{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> jaccard{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>jaccard() - Calculate Jaccard index</h3>
+<p>Calculates Jaccard index (Jaccard similarity coefficient) of two columns representing independent subcommunity counts, which is DA(proportions, 0) / DG(proportions, 0) - 1</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions</p>
+<h3>Returns:</h3>
+<ul><li>Jaccard index</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L154'>Diversity/src/Ecology.jl:154</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='richness{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> richness{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>richness() - Calculate species richness of populations</h3>
+<p>Calculates (species) richness of a series of columns representing independent subcommunity counts, which is diversity at q = 0</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions</p>
+<h3>Returns:</h3>
+<ul><li>diversities of subcommunities</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L37'>Diversity/src/Ecology.jl:37</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='shannon{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> shannon{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>shannon() - Calculate shannon entropy of populations</h3>
+<p>Calculates shannon entropy of a series of columns representing independent subcommunity counts, which is log(diversity) at q = 1</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions</p>
+<h3>Returns:</h3>
+<ul><li>entropies of subcommunities</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L76'>Diversity/src/Ecology.jl:76</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='simpson{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> simpson{S<:FloatingPoint}(proportions::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>simpson() - Calculate Simpson's index</h3>
+<p>Calculates Simpson's index of a series of columns representing independent subcommunity counts, which is 1 / diversity (or concentration) at q = 2</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions</p>
+<h3>Returns:</h3>
+<ul><li>concentrations of subcommunities</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Ecology.jl#L115'>Diversity/src/Ecology.jl:115</a></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.5.0/codemirror.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.5.0/mode/julia/julia.min.js"></script>

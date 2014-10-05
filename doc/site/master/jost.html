@@ -36,17 +36,18 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <div class='category'>[method] &mdash; </div> jostD(proportions,qs)
 </div>
 <div class='entry-body'>
-<h2>jostD()</h2>
+<h3>jostD()</h3>
 <p>Calculates Hill number of order q of population(s) with given relative proportions.</p>
 <h3>Arguments:</h3>
-<ul><li>proportions: relative proportions of different individuals / species in population (vector, or matrix where columns are individual populations) </li><li>qs: single number or vector of orders of diversity measurement</li></ul>
+<p><em>proportions</em> relative proportions of different individuals / species               in population (vector, or matrix where columns are               individual populations)</p>
+<p><em>qs</em> single number or vector of orders of diversity measurement</p>
 <h3>Returns:</h3>
 <ul><li>Diversity of order qs (single number or vector of diversities)</li></ul><div class='entry-meta'>
 <strong>Details:</strong>
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Jost.jl#L16'>Diversity/src/Jost.jl:16</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Jost.jl#L17'>Diversity/src/Jost.jl:17</a></code></td>
 </tr>
 </table>
 </div>
@@ -57,17 +58,18 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <div class='category'>[method] &mdash; </div> jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
-<h2>jostbeta() (or jostβ())</h2>
+<h3>jostbeta() (or jostβ())</h3>
 <p>Calculates Jost's beta diversity of a series of columns representing independent community counts, for a series of orders, repesented as a vector of qs. This is just the naive gamma diversity divided by the naive alpha diversity</p>
 <h3>Arguments:</h3>
-<ul><li>proportions: relative proportions of different individuals / species in population (vector, or matrix where columns are for individual sub-communities)</li><li>qs: single number or vector of orders of diversity measurement</li></ul>
+<p><em>proportions</em> relative proportions of different individuals / species               in population (vector, or matrix where columns are               for individual sub-communities)</p>
+<p><em>qs</em> single number or vector of orders of diversity measurement</p>
 <h3>Returns:</h3>
 <ul><li>array of diversities, first dimension representing sub-communities, and last representing values of q</li></ul><div class='entry-meta'>
 <strong>Details:</strong>
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/5ec71356fa8e78a12af8e3f2f2f95134f2953c04/src/Jost.jl#L37'>Diversity/src/Jost.jl:37</a></code></td>
+<code><a href='https://github.com/richardreeve/Diversity.jl/tree/a8c8a305bbf03ddad87fc28eabd99bc7a72c8293/src/Jost.jl#L39'>Diversity/src/Jost.jl:39</a></code></td>
 </tr>
 </table>
 </div>
