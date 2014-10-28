@@ -152,9 +152,9 @@ subcommunityalphabar = Dᾱ
 @doc """
 ### DA() - Raw similarity-sensitive ecosystem alpha diversity
 
-Calculates diversity of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
+Calculates naive-community diversity of a series of columns
+representing independent subcommunity counts, for a series of orders,
+represented as a vector of qs.
 
 ### Arguments:
 

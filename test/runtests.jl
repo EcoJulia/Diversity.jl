@@ -156,6 +156,13 @@ using Diversity.Jost
 @test_approx_eq jostbeta(communities, 1) 1 ./ DR̄(communities, 1)
 @test_approx_eq jostbeta(allthesame, qs) ones(qs)
 
+## Check Jost's alpha diversity works for all the same subcommunity
+@test jostα == jostalpha
+@test_approx_eq jostalpha(allthesame, qs) DĀ(allthesame, qs)
+## And for all different subcommunities with the same sizes
+evendistinct = mapslices((x) -> x / (sum(x) * numcommunities), distinct, 1)
+@test_approx_eq jostalpha(evendistinct, qs) DĀ(evendistinct, qs)
+
 # Checking Hill numbers
 using Diversity.Hill
 
