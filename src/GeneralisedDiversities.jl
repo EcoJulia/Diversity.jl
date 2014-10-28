@@ -405,13 +405,13 @@ ecosystemevenness = DE
 ecosystemRbar = DR̄ = DE
 
 @doc """
-### DB() - Normalised similarity-sensitive ecosystem beta diversity
+### DB̄() - Normalised similarity-sensitive ecosystem beta diversity
 
 Calculates average diversity of a series of columns representing
 independent subcommunity counts, for a series of orders, represented
 as a vector of qs.
 
-DB̄ is retained for compatibility (= 1 / DE), but we believe DE (or DR̄)
+DB̄ is retained for compatibility, but we believe DE (or DR̄)
 to be the more fundamental measure - it is the average evenness of the
 subcommunities.
 
@@ -429,7 +429,7 @@ subcommunities.
 function DB̄{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
-    1. ./ DR̄(proportions, qs, Z)
+    diversity(Dβ̄, proportions, qs, Z, true, false, false)
 end
 ecosystemBbar = DB̄
 
