@@ -26,6 +26,8 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <li >
 <a href='#jostD(proportions,qs)'>jostD(proportions,qs)</a></li>
 <li >
+<a href='#jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<li >
 <a href='#jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
 </ul>
 </li>
@@ -47,7 +49,29 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/3a522cc920796f81651d94b65d820037ce85786a/src/Jost.jl#L17'>Diversity/src/Jost.jl:17</a></code></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Jost.jl#L17'>Diversity/src/Jost.jl:17</a></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+</div>
+<div class='entry-body'>
+<h3>jostalpha() (or jostα())</h3>
+<p>Calculates Jost's alpha diversity of a series of columns representing independent community counts, for a series of orders, repesented as a vector of qs. This is just the naive-community ecosystem diversity divided by the naive-community beta diversity.</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> relative proportions of different individuals / species               in population (vector, or matrix where columns are               for individual sub-communities)</p>
+<p><em>qs</em> single number or vector of orders of diversity measurement</p>
+<h3>Returns:</h3>
+<ul><li>array of diversities, first dimension representing sub-communities, and last representing values of q</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Jost.jl#L39'>Diversity/src/Jost.jl:39</a></td>
 </tr>
 </table>
 </div>
@@ -69,7 +93,7 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<code><a href='https://github.com/richardreeve/Diversity.jl/tree/3a522cc920796f81651d94b65d820037ce85786a/src/Jost.jl#L39'>Diversity/src/Jost.jl:39</a></code></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Jost.jl#L65'>Diversity/src/Jost.jl:65</a></td>
 </tr>
 </table>
 </div>
