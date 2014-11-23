@@ -1,6 +1,6 @@
 module Diversity
 using Docile
-@docstrings [ :manual => ["../doc/diversity.md"] ]
+@docstrings(manual = ["../doc/diversity.md"])
 
 include("Collection.jl")
 export Collection, Ecosystem, Community
@@ -23,7 +23,7 @@ export contributions
 
 module Ecology
 using Docile
-@docstrings [ :manual => ["../doc/ecology.md"] ]
+@docstrings(manual = ["../doc/ecology.md"])
 
 include("Ecology.jl")
 export generalisedrichness, richness
@@ -35,7 +35,7 @@ end # sub-module Ecology
 
 module Jost
 using Docile
-@docstrings [ :manual => ["../doc/jost.md"] ]
+@docstrings(manual = ["../doc/jost.md"])
 
 include("Jost.jl")
 export jostD, jostbeta, jostβ, jostalpha, jostα
@@ -44,7 +44,7 @@ end # sub-module Jost
 
 module Hill
 using Docile
-@docstrings [ :manual => ["../doc/hill.md"] ]
+@docstrings(manual = ["../doc/hill.md"])
 
 include("Hill.jl")
 export hillnumber
