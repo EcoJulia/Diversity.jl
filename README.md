@@ -94,10 +94,10 @@ using Diversity
 using Lexicon
 
 # Returns any documentation for the qDZ function and all qDZ methods
-query(qDZ)
+?qDZ
 
 # Returns the specific documentation for that qD method call
-@query qD([0.1, 0.2, 0.7], 2)
+?qD([0.1, 0.2, 0.7], 2)
 ```
 
 However, the documentation is also available online.
