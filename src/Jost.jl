@@ -50,7 +50,7 @@ jostα = jostalpha
 
 Calculates Jost's beta diversity of a series of columns representing
 independent community counts, for a series of orders, repesented as a
-vector of qs. This is just the naive gamma diversity divided by the
+vector of qs. This is just the naive gamma diversity divided by
 Jost's alpha diversity
 
 ### Arguments:
