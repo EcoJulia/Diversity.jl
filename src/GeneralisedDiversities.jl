@@ -237,8 +237,7 @@ Calculates diversities of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-Dβ is retained for compatibility (= 1 / Dρ), but we believe ρ to be the
-more fundamental measure - it is the redundancies of the subcommunity.
+Dβ is the average concentration of species in a subcommunity.
 
 ### Arguments:
 
@@ -252,12 +251,17 @@ more fundamental measure - it is the redundancies of the subcommunity.
 
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q""" ->
-function β{S <: FloatingPoint,
-           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                        Z::Matrix{S} = eye(size(proportions, 1)))
-    1. ./ ρ(proportions, qs, Z)
+function Dβ{S <: FloatingPoint,
+            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                         Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("Dβ: Similarity matrix size does not match species number")
+    
+    Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
+    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
 end
-subcommunitybeta = β
+subcommunitybeta = Dβ
 
 @doc """
 ### Dϵ or Dρ̄() - Normalised similarity-sensitive subcommunity beta diversity / evenness
@@ -303,9 +307,7 @@ Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-Dβ̄ is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to
-be the more fundamental measure - it is the evenness of the
-subcommunity.
+Dβ̄ is the number of distinct subcommunities like subcommunity j.
 
 ### Arguments:
 
@@ -320,9 +322,18 @@ subcommunity.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q""" ->
 function Dβ̄{S <: FloatingPoint,
-           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
-                        Z::Matrix{S} = eye(size(proportions, 1)))
-    1. ./ Dϵ(proportions, qs, Z)
+            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+                         Z::Matrix{S} = eye(size(proportions, 1)))
+    l = size(proportions, 1)
+    size(Z) == (l, l) ||
+    error("Dβ̄: Similarity matrix size does not match species number")
+    
+    Zp = Z * reshape(mapslices(sum, proportions, 2),
+                     (size(proportions, 1))) / sum(proportions)
+    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p),
+              proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
+                                                    proportions, 1),
+                                          (size(proportions, 2)))), 1)
 end
 subcommunitybetabar = Dβ̄
 
@@ -357,9 +368,7 @@ Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-DB is retained for compatibility (= 1 / DR), but we believe DR to be
-the more fundamental measure - it is the average redundancy of the
-subcommunities.
+DB is average concentration of species in the subcommunities.
 
 ### Arguments:
 
@@ -375,7 +384,7 @@ subcommunities.
 function DB{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
-    1. ./ DR(proportions, qs, Z)
+    diversity(Dβ, proportions, qs, Z, true, false, false)
 end
 ecosystemB = DB
 
@@ -411,9 +420,7 @@ Calculates average diversity of a series of columns representing
 independent subcommunity counts, for a series of orders, represented
 as a vector of qs.
 
-DB̄ is retained for compatibility, but we believe DE (or DR̄)
-to be the more fundamental measure - it is the average evenness of the
-subcommunities.
+DB̄ is the effective number of distinct subcommunities.
 
 ### Arguments:
 
