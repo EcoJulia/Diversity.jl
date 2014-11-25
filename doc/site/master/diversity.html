@@ -70,6 +70,10 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <li >
 <a href='#Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
+<a href='#Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<li >
+<a href='#Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<li >
 <a href='#Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
 <li >
 <a href='#Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
@@ -120,7 +124,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <li >
 <a href='#powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1})'>powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1})</a></li>
 <li >
-<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))'>powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))</a></li>
+<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))'>powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))</a></li>
 <li >
 <a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
 <li >
@@ -133,10 +137,6 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <a href='#qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))'>qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
 <li >
 <a href='#qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
-<li >
-<a href='#β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
-<li >
-<a href='#β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
 </ul>
 </li>
 <li >
@@ -170,7 +170,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L44'>Diversity/src/EffectiveNumbers.jl:44</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L44'>Diversity/src/EffectiveNumbers.jl:44</a></td>
 </tr>
 </table>
 </div>
@@ -187,7 +187,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L143'>Diversity/src/EffectiveNumbers.jl:143</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L143'>Diversity/src/EffectiveNumbers.jl:143</a></td>
 </tr>
 </table>
 </div>
@@ -204,7 +204,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L196'>Diversity/src/EffectiveNumbers.jl:196</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L196'>Diversity/src/EffectiveNumbers.jl:196</a></td>
 </tr>
 </table>
 </div>
@@ -227,7 +227,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L169'>Diversity/src/GeneralisedDiversities.jl:169</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L169'>Diversity/src/GeneralisedDiversities.jl:169</a></td>
 </tr>
 </table>
 </div>
@@ -250,7 +250,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L169'>Diversity/src/GeneralisedDiversities.jl:169</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L169'>Diversity/src/GeneralisedDiversities.jl:169</a></td>
 </tr>
 </table>
 </div>
@@ -263,7 +263,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <div class='entry-body'>
 <h3>DB() - Raw similarity-sensitive ecosystem beta diversity</h3>
 <p>Calculates diversity of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>DB is retained for compatibility (= 1 / DR), but we believe DR to be the more fundamental measure - it is the average redundancy of the subcommunities.</p>
+<p>DB is average concentration of species in the subcommunities.</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> population proportions</p>
 <p><em>qs</em> single number or vector of values of parameter q</p>
@@ -274,7 +274,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L374'>Diversity/src/GeneralisedDiversities.jl:374</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L383'>Diversity/src/GeneralisedDiversities.jl:383</a></td>
 </tr>
 </table>
 </div>
@@ -287,7 +287,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <div class='entry-body'>
 <h3>DB() - Raw similarity-sensitive ecosystem beta diversity</h3>
 <p>Calculates diversity of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>DB is retained for compatibility (= 1 / DR), but we believe DR to be the more fundamental measure - it is the average redundancy of the subcommunities.</p>
+<p>DB is average concentration of species in the subcommunities.</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> population proportions</p>
 <p><em>qs</em> single number or vector of values of parameter q</p>
@@ -298,7 +298,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L374'>Diversity/src/GeneralisedDiversities.jl:374</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L383'>Diversity/src/GeneralisedDiversities.jl:383</a></td>
 </tr>
 </table>
 </div>
@@ -311,7 +311,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <div class='entry-body'>
 <h3>DB̄() - Normalised similarity-sensitive ecosystem beta diversity</h3>
 <p>Calculates average diversity of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>DB̄ is retained for compatibility, but we believe DE (or DR̄) to be the more fundamental measure - it is the average evenness of the subcommunities.</p>
+<p>DB̄ is the effective number of distinct subcommunities.</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> population proportions</p>
 <p><em>qs</em> single number or vector of values of parameter q</p>
@@ -322,7 +322,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L428'>Diversity/src/GeneralisedDiversities.jl:428</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L435'>Diversity/src/GeneralisedDiversities.jl:435</a></td>
 </tr>
 </table>
 </div>
@@ -335,7 +335,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <div class='entry-body'>
 <h3>DB̄() - Normalised similarity-sensitive ecosystem beta diversity</h3>
 <p>Calculates average diversity of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>DB̄ is retained for compatibility, but we believe DE (or DR̄) to be the more fundamental measure - it is the average evenness of the subcommunities.</p>
+<p>DB̄ is the effective number of distinct subcommunities.</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> population proportions</p>
 <p><em>qs</em> single number or vector of values of parameter q</p>
@@ -346,7 +346,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L428'>Diversity/src/GeneralisedDiversities.jl:428</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L435'>Diversity/src/GeneralisedDiversities.jl:435</a></td>
 </tr>
 </table>
 </div>
@@ -369,7 +369,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L399'>Diversity/src/GeneralisedDiversities.jl:399</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L408'>Diversity/src/GeneralisedDiversities.jl:408</a></td>
 </tr>
 </table>
 </div>
@@ -392,7 +392,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L399'>Diversity/src/GeneralisedDiversities.jl:399</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L408'>Diversity/src/GeneralisedDiversities.jl:408</a></td>
 </tr>
 </table>
 </div>
@@ -415,7 +415,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L519'>Diversity/src/GeneralisedDiversities.jl:519</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L526'>Diversity/src/GeneralisedDiversities.jl:526</a></td>
 </tr>
 </table>
 </div>
@@ -438,7 +438,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L519'>Diversity/src/GeneralisedDiversities.jl:519</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L526'>Diversity/src/GeneralisedDiversities.jl:526</a></td>
 </tr>
 </table>
 </div>
@@ -461,7 +461,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L346'>Diversity/src/GeneralisedDiversities.jl:346</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L357'>Diversity/src/GeneralisedDiversities.jl:357</a></td>
 </tr>
 </table>
 </div>
@@ -484,7 +484,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L346'>Diversity/src/GeneralisedDiversities.jl:346</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L357'>Diversity/src/GeneralisedDiversities.jl:357</a></td>
 </tr>
 </table>
 </div>
@@ -507,7 +507,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L194'>Diversity/src/GeneralisedDiversities.jl:194</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L194'>Diversity/src/GeneralisedDiversities.jl:194</a></td>
 </tr>
 </table>
 </div>
@@ -530,7 +530,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L194'>Diversity/src/GeneralisedDiversities.jl:194</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L194'>Diversity/src/GeneralisedDiversities.jl:194</a></td>
 </tr>
 </table>
 </div>
@@ -553,7 +553,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L109'>Diversity/src/GeneralisedDiversities.jl:109</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L109'>Diversity/src/GeneralisedDiversities.jl:109</a></td>
 </tr>
 </table>
 </div>
@@ -576,7 +576,55 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L109'>Diversity/src/GeneralisedDiversities.jl:109</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L109'>Diversity/src/GeneralisedDiversities.jl:109</a></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+</div>
+<div class='entry-body'>
+<h3>Dβ() - Raw similarity-sensitive subcommunity beta diversity</h3>
+<p>Calculates diversities of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
+<p>Dβ is the average concentration of species in a subcommunity.</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions</p>
+<p><em>qs</em> single number or vector of values of parameter q</p>
+<p><em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>array of diversities, first dimension representing subcommunities, and last representing values of q</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L253'>Diversity/src/GeneralisedDiversities.jl:253</a></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class='entry'>
+<div id='Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+</div>
+<div class='entry-body'>
+<h3>Dβ() - Raw similarity-sensitive subcommunity beta diversity</h3>
+<p>Calculates diversities of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
+<p>Dβ is the average concentration of species in a subcommunity.</p>
+<h3>Arguments:</h3>
+<p><em>proportions</em> population proportions</p>
+<p><em>qs</em> single number or vector of values of parameter q</p>
+<p><em>Z</em> similarity matrix</p>
+<h3>Returns:</h3>
+<ul><li>array of diversities, first dimension representing subcommunities, and last representing values of q</li></ul><div class='entry-meta'>
+<strong>Details:</strong>
+<table class='meta-table'>
+<tr >
+<td><strong>source:</strong></td><td >
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L253'>Diversity/src/GeneralisedDiversities.jl:253</a></td>
 </tr>
 </table>
 </div>
@@ -589,7 +637,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <div class='entry-body'>
 <h3>Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity</h3>
 <p>Calculates diversity of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>Dβ̄ is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to be the more fundamental measure - it is the evenness of the subcommunity.</p>
+<p>Dβ̄ is the number of distinct subcommunities like subcommunity j.</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> population proportions</p>
 <p><em>qs</em> single number or vector of values of parameter q</p>
@@ -600,7 +648,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L321'>Diversity/src/GeneralisedDiversities.jl:321</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L323'>Diversity/src/GeneralisedDiversities.jl:323</a></td>
 </tr>
 </table>
 </div>
@@ -613,7 +661,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <div class='entry-body'>
 <h3>Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity</h3>
 <p>Calculates diversity of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>Dβ̄ is retained for compatibility (= 1 / ϵ), but we believe ϵ (or ρ̄) to be the more fundamental measure - it is the evenness of the subcommunity.</p>
+<p>Dβ̄ is the number of distinct subcommunities like subcommunity j.</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> population proportions</p>
 <p><em>qs</em> single number or vector of values of parameter q</p>
@@ -624,7 +672,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L321'>Diversity/src/GeneralisedDiversities.jl:321</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L323'>Diversity/src/GeneralisedDiversities.jl:323</a></td>
 </tr>
 </table>
 </div>
@@ -647,7 +695,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L454'>Diversity/src/GeneralisedDiversities.jl:454</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L461'>Diversity/src/GeneralisedDiversities.jl:461</a></td>
 </tr>
 </table>
 </div>
@@ -670,7 +718,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L454'>Diversity/src/GeneralisedDiversities.jl:454</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L461'>Diversity/src/GeneralisedDiversities.jl:461</a></td>
 </tr>
 </table>
 </div>
@@ -693,7 +741,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L487'>Diversity/src/GeneralisedDiversities.jl:487</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L494'>Diversity/src/GeneralisedDiversities.jl:494</a></td>
 </tr>
 </table>
 </div>
@@ -716,7 +764,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L487'>Diversity/src/GeneralisedDiversities.jl:487</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L494'>Diversity/src/GeneralisedDiversities.jl:494</a></td>
 </tr>
 </table>
 </div>
@@ -739,7 +787,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L220'>Diversity/src/GeneralisedDiversities.jl:220</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L220'>Diversity/src/GeneralisedDiversities.jl:220</a></td>
 </tr>
 </table>
 </div>
@@ -762,7 +810,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L220'>Diversity/src/GeneralisedDiversities.jl:220</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L220'>Diversity/src/GeneralisedDiversities.jl:220</a></td>
 </tr>
 </table>
 </div>
@@ -785,7 +833,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L280'>Diversity/src/GeneralisedDiversities.jl:280</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L284'>Diversity/src/GeneralisedDiversities.jl:284</a></td>
 </tr>
 </table>
 </div>
@@ -808,7 +856,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L280'>Diversity/src/GeneralisedDiversities.jl:280</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L284'>Diversity/src/GeneralisedDiversities.jl:284</a></td>
 </tr>
 </table>
 </div>
@@ -831,7 +879,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L544'>Diversity/src/GeneralisedDiversities.jl:544</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L551'>Diversity/src/GeneralisedDiversities.jl:551</a></td>
 </tr>
 </table>
 </div>
@@ -854,7 +902,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L544'>Diversity/src/GeneralisedDiversities.jl:544</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L551'>Diversity/src/GeneralisedDiversities.jl:551</a></td>
 </tr>
 </table>
 </div>
@@ -877,7 +925,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L139'>Diversity/src/GeneralisedDiversities.jl:139</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L139'>Diversity/src/GeneralisedDiversities.jl:139</a></td>
 </tr>
 </table>
 </div>
@@ -900,7 +948,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L139'>Diversity/src/GeneralisedDiversities.jl:139</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L139'>Diversity/src/GeneralisedDiversities.jl:139</a></td>
 </tr>
 </table>
 </div>
@@ -930,7 +978,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
 </tr>
 </table>
 </div>
@@ -960,7 +1008,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
 </tr>
 </table>
 </div>
@@ -990,7 +1038,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
 </tr>
 </table>
 </div>
@@ -1020,7 +1068,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
 </tr>
 </table>
 </div>
@@ -1050,7 +1098,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
 </tr>
 </table>
 </div>
@@ -1071,7 +1119,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
 </tr>
 </table>
 </div>
@@ -1092,7 +1140,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
 </tr>
 </table>
 </div>
@@ -1113,7 +1161,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
 </tr>
 </table>
 </div>
@@ -1134,7 +1182,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
 </tr>
 </table>
 </div>
@@ -1155,7 +1203,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
 </tr>
 </table>
 </div>
@@ -1176,15 +1224,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,1},Array{T,2}))
+<div id='powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))
 </div>
 <div class='entry-body'>
 <h3>powermean()</h3>
@@ -1197,7 +1245,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
 </tr>
 </table>
 </div>
@@ -1218,7 +1266,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
 </tr>
 </table>
 </div>
@@ -1239,7 +1287,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
 </tr>
 </table>
 </div>
@@ -1260,7 +1308,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
 </tr>
 </table>
 </div>
@@ -1281,7 +1329,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
 </tr>
 </table>
 </div>
@@ -1302,7 +1350,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L127'>Diversity/src/EffectiveNumbers.jl:127</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L127'>Diversity/src/EffectiveNumbers.jl:127</a></td>
 </tr>
 </table>
 </div>
@@ -1323,55 +1371,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/EffectiveNumbers.jl#L157'>Diversity/src/EffectiveNumbers.jl:157</a></td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class='entry'>
-<div id='β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
-</div>
-<div class='entry-body'>
-<h3>Dβ() - Raw similarity-sensitive subcommunity beta diversity</h3>
-<p>Calculates diversities of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>Dβ is retained for compatibility (= 1 / Dρ), but we believe ρ to be the more fundamental measure - it is the redundancies of the subcommunity.</p>
-<h3>Arguments:</h3>
-<p><em>proportions</em> population proportions</p>
-<p><em>qs</em> single number or vector of values of parameter q</p>
-<p><em>Z</em> similarity matrix</p>
-<h3>Returns:</h3>
-<ul><li>array of diversities, first dimension representing subcommunities, and last representing values of q</li></ul><div class='entry-meta'>
-<strong>Details:</strong>
-<table class='meta-table'>
-<tr >
-<td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L254'>Diversity/src/GeneralisedDiversities.jl:254</a></td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class='entry'>
-<div id='β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> β{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
-</div>
-<div class='entry-body'>
-<h3>Dβ() - Raw similarity-sensitive subcommunity beta diversity</h3>
-<p>Calculates diversities of a series of columns representing independent subcommunity counts, for a series of orders, represented as a vector of qs.</p>
-<p>Dβ is retained for compatibility (= 1 / Dρ), but we believe ρ to be the more fundamental measure - it is the redundancies of the subcommunity.</p>
-<h3>Arguments:</h3>
-<p><em>proportions</em> population proportions</p>
-<p><em>qs</em> single number or vector of values of parameter q</p>
-<p><em>Z</em> similarity matrix</p>
-<h3>Returns:</h3>
-<ul><li>array of diversities, first dimension representing subcommunities, and last representing values of q</li></ul><div class='entry-meta'>
-<strong>Details:</strong>
-<table class='meta-table'>
-<tr >
-<td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/GeneralisedDiversities.jl#L254'>Diversity/src/GeneralisedDiversities.jl:254</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/EffectiveNumbers.jl#L157'>Diversity/src/EffectiveNumbers.jl:157</a></td>
 </tr>
 </table>
 </div>
@@ -1397,7 +1397,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Collection.jl#L117'>Diversity/src/Collection.jl:117</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/Collection.jl#L117'>Diversity/src/Collection.jl:117</a></td>
 </tr>
 </table>
 </div>
@@ -1416,7 +1416,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Collection.jl#L41'>Diversity/src/Collection.jl:41</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/Collection.jl#L41'>Diversity/src/Collection.jl:41</a></td>
 </tr>
 </table>
 </div>
@@ -1433,7 +1433,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Collection.jl#L75'>Diversity/src/Collection.jl:75</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/Collection.jl#L75'>Diversity/src/Collection.jl:75</a></td>
 </tr>
 </table>
 </div>
@@ -1450,7 +1450,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Collection.jl#L7'>Diversity/src/Collection.jl:7</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/Collection.jl#L7'>Diversity/src/Collection.jl:7</a></td>
 </tr>
 </table>
 </div>
@@ -1467,7 +1467,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Collection.jl#L25'>Diversity/src/Collection.jl:25</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/Collection.jl#L25'>Diversity/src/Collection.jl:25</a></td>
 </tr>
 </table>
 </div>
@@ -1484,7 +1484,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/60120afa47688588532ba8b2c9e2bde4dd2aecc2/src/Collection.jl#L15'>Diversity/src/Collection.jl:15</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/186b6a3e9f55fcda051ae038db77281befba3266/src/Collection.jl#L15'>Diversity/src/Collection.jl:15</a></td>
 </tr>
 </table>
 </div>
