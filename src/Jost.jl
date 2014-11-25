@@ -51,7 +51,7 @@ jostα = jostalpha
 Calculates Jost's beta diversity of a series of columns representing
 independent community counts, for a series of orders, repesented as a
 vector of qs. This is just the naive gamma diversity divided by the
-naive alpha diversity
+Jost's alpha diversity
 
 ### Arguments:
 *proportions* relative proportions of different individuals / species
@@ -65,7 +65,7 @@ naive alpha diversity
   last representing values of q""" ->
 function jostbeta{S <: FloatingPoint,
                   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}))
-    DḠ(proportions, qs) ./ DĀ(proportions, qs)
+    DḠ(proportions, qs) ./ jostalpha(proportions, qs)
 end
 
 jostβ = jostbeta
