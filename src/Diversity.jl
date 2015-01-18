@@ -38,7 +38,7 @@ using Docile
 @docstrings(manual = ["../doc/jost.md"])
 
 include("Jost.jl")
-export jostD, jostbeta, jostβ, jostalpha, jostα
+export jostbeta, jostβ, jostalpha, jostα
 
 end # sub-module Jost
 
