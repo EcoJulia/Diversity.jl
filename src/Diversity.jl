@@ -2,10 +2,10 @@ module Diversity
 using Docile
 @docstrings(manual = ["../doc/diversity.md"])
 
-include("Collection.jl")
-export Collection, Ecosystem, Community
-export Subcommunity, Onecommunity
-export Unique, Species, Taxonomy
+#include("Collection.jl")
+#export Collection, Ecosystem, Community
+#export Subcommunity, Onecommunity
+#export Unique, Species, Taxonomy
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
