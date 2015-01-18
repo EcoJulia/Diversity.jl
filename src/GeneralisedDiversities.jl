@@ -1,15 +1,3 @@
-function ecosystem()
-    return [1,2]
-end
-
-function subcommunity()
-    return [1]
-end
-
-function individual()
-    return []
-end
-
 @doc """
 ### diversity() - calculates subcommunity and ecosystem diversities
 
