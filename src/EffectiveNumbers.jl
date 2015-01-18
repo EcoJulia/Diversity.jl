@@ -72,46 +72,6 @@ function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
     map(order -> powermean(values * 1., order * 1., weights * 1.), orders)
 end
 
-## Handle several subcommunities, species or the whole ecosystem simultaneously
-@doc """
-### powermean()
-
-Calculates *order*th power mean of first dimension of *values*,
-possibly summing over some of the other dimensions, weighted by
-*weights*. By default, *weights* are equal and *order*
-is 1, so this is just the arithmetic mean.
-
-### Arguments:
-* values: values for which to calculate mean
-* order: order of power mean
-* weights: weights of elements, normalised to 1 inside function
-* sumvec: which dimensions are we going to sum over before we
-            calculate means (default subcommunity())
-
-### Returns:
-* weighted power mean(s)""" ->
-function powermean{S <: FloatingPoint}(values::Matrix{S},
-                                       order::S,
-                                       weights::Matrix{S},
-                                       sumvec::Vector{Integer} = subcommunity())
-    dims = size(values)
-    full = Array(S, dims..., 2)
-    full[:,:,1] = values
-    full[:,:,2] = weights
-    if length(sumvec) == 2
-        mapslices(set -> powermean(reshape(set[:,:,1], length(set[:,:,1])),
-                                   order,
-                                   reshape(set[:,:,2], length(set[:,:,2]))),
-                  full, [sumvec..., 3])
-    elseif length(sumvec) == 1
-        mapslices(set -> powermean([set[:,1]], order, [set[:,2]]),
-                  full, [sumvec..., 3])
-    else
-        mapslices(set -> powermean([set[1]], order, [set[2]]),
-                  full, [sumvec..., 3])
-    end
-end
-
 @doc """
 ### qD()
 
