@@ -11,13 +11,13 @@
 
 <h1 class='package-header'>Diversity</h1>
 
-<p>The <strong>Diversity</strong> package provides functionality for measuring alpha, beta and gamma diversity of subcommunities and ecosystems. It uses diversity measures extended from those described in the arXiv paper <a href="http://arxiv.org/abs/1404.6520">arXiv:1404.6520 (q-bio.QM)</a>, <em>How to partition diversity</em>.</p>
+<p>The <strong>Diversity</strong> package provides functionality for measuring alpha, beta and gamma diversity of subcommunities and ecosystems. It uses diversity measures extended from those described in the arXiv paper <a href="http://arxiv.org/abs/1404.6520">arXiv:1404.6520 (q-bio.QM)</a>, <em>How to partition diversity</em>. The alpha, beta and gamma diversities in the paper are supplemented by beta diversity measures related to evenness, DE, and redundancy, DR, of ecosystems, and their associated subcommunities (Dϵ and Dρ, respectively).</p>
 <h1>Usage</h1>
 <p>Accessing the functionality in the package is simple:</p>
 <pre><code>using Diversity
 ...
-diversities = Diversity.ᾱ(proportions, [0, 1, 2, Inf], Z)
-diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-reference'>Reference</h1>
+diversities = Dᾱ(proportions, [0, 1, 2, Inf], Z)
+diversities = Dγ(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-reference'>Reference</h1>
 <ul class='index'>
 <li >
 <strong>functions:</strong>
@@ -38,79 +38,79 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <li >
 <ul >
 <li >
-<a href='#DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)</a></li>
+<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)</a></li>
 <li >
-<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)</a></li>
+<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)</a></li>
 <li >
-<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)</a></li>
+<a href='#diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)'>diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)</a></li>
 <li >
 <a href='#powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2})'>powermean{S<:FloatingPoint}(values::Array{S<:FloatingPoint,2},order::S<:FloatingPoint,weights::Array{S<:FloatingPoint,2})</a></li>
 <li >
@@ -122,21 +122,21 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <li >
 <a href='#powermean{S<:Number}(values::Array{S<:Number,1})'>powermean{S<:Number}(values::Array{S<:Number,1})</a></li>
 <li >
-<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1})'>powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1})</a></li>
+<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1})'>powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1})</a></li>
 <li >
-<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))'>powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))</a></li>
+<a href='#powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))'>powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))</a></li>
 <li >
-<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})</a></li>
+<a href='#qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})'>qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})</a></li>
 <li >
-<a href='#qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))'>qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))'>qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 </ul>
 </li>
 <li >
@@ -170,7 +170,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L44'>Diversity/src/EffectiveNumbers.jl:44</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L44'>Diversity/src/EffectiveNumbers.jl:44</a></td>
 </tr>
 </table>
 </div>
@@ -187,7 +187,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L143'>Diversity/src/EffectiveNumbers.jl:143</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L143'>Diversity/src/EffectiveNumbers.jl:143</a></td>
 </tr>
 </table>
 </div>
@@ -204,15 +204,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L196'>Diversity/src/EffectiveNumbers.jl:196</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L196'>Diversity/src/EffectiveNumbers.jl:196</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DA() - Raw similarity-sensitive ecosystem alpha diversity</h3>
@@ -227,15 +227,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L169'>Diversity/src/GeneralisedDiversities.jl:169</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L157'>Diversity/src/GeneralisedDiversities.jl:157</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DA{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DA() - Raw similarity-sensitive ecosystem alpha diversity</h3>
@@ -250,15 +250,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L169'>Diversity/src/GeneralisedDiversities.jl:169</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L157'>Diversity/src/GeneralisedDiversities.jl:157</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DB() - Raw similarity-sensitive ecosystem beta diversity</h3>
@@ -274,15 +274,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L383'>Diversity/src/GeneralisedDiversities.jl:383</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L371'>Diversity/src/GeneralisedDiversities.jl:371</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DB{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DB() - Raw similarity-sensitive ecosystem beta diversity</h3>
@@ -298,15 +298,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L383'>Diversity/src/GeneralisedDiversities.jl:383</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L371'>Diversity/src/GeneralisedDiversities.jl:371</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DB̄() - Normalised similarity-sensitive ecosystem beta diversity</h3>
@@ -322,15 +322,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L435'>Diversity/src/GeneralisedDiversities.jl:435</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L423'>Diversity/src/GeneralisedDiversities.jl:423</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DB̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DB̄() - Normalised similarity-sensitive ecosystem beta diversity</h3>
@@ -346,15 +346,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L435'>Diversity/src/GeneralisedDiversities.jl:435</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L423'>Diversity/src/GeneralisedDiversities.jl:423</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DE() or DR̄() - Normalised similarity-sensitive ecosystem beta diversity / evenness</h3>
@@ -369,15 +369,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L408'>Diversity/src/GeneralisedDiversities.jl:408</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L396'>Diversity/src/GeneralisedDiversities.jl:396</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DE{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DE() or DR̄() - Normalised similarity-sensitive ecosystem beta diversity / evenness</h3>
@@ -392,15 +392,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L408'>Diversity/src/GeneralisedDiversities.jl:408</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L396'>Diversity/src/GeneralisedDiversities.jl:396</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DG() - Raw similarity-sensitive ecosystem gamma diversity</h3>
@@ -415,15 +415,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L526'>Diversity/src/GeneralisedDiversities.jl:526</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L514'>Diversity/src/GeneralisedDiversities.jl:514</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DG{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DG() - Raw similarity-sensitive ecosystem gamma diversity</h3>
@@ -438,15 +438,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L526'>Diversity/src/GeneralisedDiversities.jl:526</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L514'>Diversity/src/GeneralisedDiversities.jl:514</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DR() - Raw similarity-sensitive ecosystem beta diversity / redundancy</h3>
@@ -461,15 +461,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L357'>Diversity/src/GeneralisedDiversities.jl:357</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L345'>Diversity/src/GeneralisedDiversities.jl:345</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DR{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DR() - Raw similarity-sensitive ecosystem beta diversity / redundancy</h3>
@@ -484,15 +484,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L357'>Diversity/src/GeneralisedDiversities.jl:357</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L345'>Diversity/src/GeneralisedDiversities.jl:345</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DĀ() - Normalised similarity-sensitive ecosystem alpha diversity</h3>
@@ -507,15 +507,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L194'>Diversity/src/GeneralisedDiversities.jl:194</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L182'>Diversity/src/GeneralisedDiversities.jl:182</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DĀ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DĀ() - Normalised similarity-sensitive ecosystem alpha diversity</h3>
@@ -530,15 +530,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L194'>Diversity/src/GeneralisedDiversities.jl:194</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L182'>Diversity/src/GeneralisedDiversities.jl:182</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dα() - Raw similarity-sensitive subcommunity alpha diversity</h3>
@@ -553,15 +553,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L109'>Diversity/src/GeneralisedDiversities.jl:109</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L97'>Diversity/src/GeneralisedDiversities.jl:97</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dα{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dα() - Raw similarity-sensitive subcommunity alpha diversity</h3>
@@ -576,15 +576,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L109'>Diversity/src/GeneralisedDiversities.jl:109</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L97'>Diversity/src/GeneralisedDiversities.jl:97</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dβ() - Raw similarity-sensitive subcommunity beta diversity</h3>
@@ -600,15 +600,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L253'>Diversity/src/GeneralisedDiversities.jl:253</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L241'>Diversity/src/GeneralisedDiversities.jl:241</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dβ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dβ() - Raw similarity-sensitive subcommunity beta diversity</h3>
@@ -624,15 +624,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L253'>Diversity/src/GeneralisedDiversities.jl:253</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L241'>Diversity/src/GeneralisedDiversities.jl:241</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity</h3>
@@ -648,15 +648,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L323'>Diversity/src/GeneralisedDiversities.jl:323</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L311'>Diversity/src/GeneralisedDiversities.jl:311</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dβ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity</h3>
@@ -672,15 +672,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L323'>Diversity/src/GeneralisedDiversities.jl:323</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L311'>Diversity/src/GeneralisedDiversities.jl:311</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dγ() - Raw similarity-sensitive subcommunity gamma diversity</h3>
@@ -695,15 +695,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L461'>Diversity/src/GeneralisedDiversities.jl:461</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L449'>Diversity/src/GeneralisedDiversities.jl:449</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dγ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dγ() - Raw similarity-sensitive subcommunity gamma diversity</h3>
@@ -718,15 +718,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L461'>Diversity/src/GeneralisedDiversities.jl:461</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L449'>Diversity/src/GeneralisedDiversities.jl:449</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dγ̄() - Normalised similarity-sensitive subcommunity gamma diversity</h3>
@@ -741,15 +741,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L494'>Diversity/src/GeneralisedDiversities.jl:494</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L482'>Diversity/src/GeneralisedDiversities.jl:482</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dγ̄{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dγ̄() - Normalised similarity-sensitive subcommunity gamma diversity</h3>
@@ -764,15 +764,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L494'>Diversity/src/GeneralisedDiversities.jl:494</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L482'>Diversity/src/GeneralisedDiversities.jl:482</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dρ() - Raw similarity-sensitive subcommunity beta diversity / redundancy</h3>
@@ -787,15 +787,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L220'>Diversity/src/GeneralisedDiversities.jl:220</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L208'>Diversity/src/GeneralisedDiversities.jl:208</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dρ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dρ() - Raw similarity-sensitive subcommunity beta diversity / redundancy</h3>
@@ -810,15 +810,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L220'>Diversity/src/GeneralisedDiversities.jl:220</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L208'>Diversity/src/GeneralisedDiversities.jl:208</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dϵ or Dρ̄() - Normalised similarity-sensitive subcommunity beta diversity / evenness</h3>
@@ -833,15 +833,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L284'>Diversity/src/GeneralisedDiversities.jl:284</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L272'>Diversity/src/GeneralisedDiversities.jl:272</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dϵ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dϵ or Dρ̄() - Normalised similarity-sensitive subcommunity beta diversity / evenness</h3>
@@ -856,15 +856,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L284'>Diversity/src/GeneralisedDiversities.jl:284</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L272'>Diversity/src/GeneralisedDiversities.jl:272</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>DḠ() - Normalised similarity-sensitive ecosystem gamma diversity</h3>
@@ -879,15 +879,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L551'>Diversity/src/GeneralisedDiversities.jl:551</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L539'>Diversity/src/GeneralisedDiversities.jl:539</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> DḠ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>DḠ() - Normalised similarity-sensitive ecosystem gamma diversity</h3>
@@ -902,15 +902,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L551'>Diversity/src/GeneralisedDiversities.jl:551</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L539'>Diversity/src/GeneralisedDiversities.jl:539</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>Dᾱ() - Normalised similarity-sensitive subcommunity alpha diversity</h3>
@@ -925,15 +925,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L139'>Diversity/src/GeneralisedDiversities.jl:139</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L127'>Diversity/src/GeneralisedDiversities.jl:127</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> Dᾱ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>Dᾱ() - Normalised similarity-sensitive subcommunity alpha diversity</h3>
@@ -948,15 +948,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L139'>Diversity/src/GeneralisedDiversities.jl:139</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L127'>Diversity/src/GeneralisedDiversities.jl:127</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>diversity() - calculates subcommunity and ecosystem diversities</h3>
@@ -978,15 +978,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L36'>Diversity/src/GeneralisedDiversities.jl:36</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>diversity() - calculates subcommunity and ecosystem diversities</h3>
@@ -1008,15 +1008,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L36'>Diversity/src/GeneralisedDiversities.jl:36</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)
+<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool)
 </div>
 <div class='entry-body'>
 <h3>diversity() - calculates subcommunity and ecosystem diversities</h3>
@@ -1038,15 +1038,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L36'>Diversity/src/GeneralisedDiversities.jl:36</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)
+<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool)
 </div>
 <div class='entry-body'>
 <h3>diversity() - calculates subcommunity and ecosystem diversities</h3>
@@ -1068,15 +1068,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L36'>Diversity/src/GeneralisedDiversities.jl:36</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)
+<div id='diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> diversity{S<:FloatingPoint,T<:Number}(measure::Function,proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2},returnecosystem::Bool,returncommunity::Bool,returnweights::Bool)
 </div>
 <div class='entry-body'>
 <h3>diversity() - calculates subcommunity and ecosystem diversities</h3>
@@ -1098,7 +1098,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/GeneralisedDiversities.jl#L48'>Diversity/src/GeneralisedDiversities.jl:48</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/GeneralisedDiversities.jl#L36'>Diversity/src/GeneralisedDiversities.jl:36</a></td>
 </tr>
 </table>
 </div>
@@ -1119,7 +1119,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
 </tr>
 </table>
 </div>
@@ -1140,7 +1140,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L92'>Diversity/src/EffectiveNumbers.jl:92</a></td>
 </tr>
 </table>
 </div>
@@ -1161,7 +1161,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
 </tr>
 </table>
 </div>
@@ -1182,7 +1182,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
 </tr>
 </table>
 </div>
@@ -1203,15 +1203,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L14'>Diversity/src/EffectiveNumbers.jl:14</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1})
+<div id='powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1})
 </div>
 <div class='entry-body'>
 <h3>powermean()</h3>
@@ -1224,15 +1224,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,1},Array{S<:Number,2}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))
+<div id='powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> powermean{S<:Number}(values::Union(Array{S<:Number,2},Array{S<:Number,1}),orders::Array{T,1},weights::Union(Array{T,2},Array{T,1}))
 </div>
 <div class='entry-body'>
 <h3>powermean()</h3>
@@ -1245,15 +1245,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L65'>Diversity/src/EffectiveNumbers.jl:65</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>qDZ()</h3>
@@ -1266,15 +1266,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>qDZ()</h3>
@@ -1287,15 +1287,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L176'>Diversity/src/EffectiveNumbers.jl:176</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>qDZ()</h3>
@@ -1308,15 +1308,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number),Z::Array{S<:FloatingPoint,2})
+<div id='qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> qDZ{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}),Z::Array{S<:FloatingPoint,2})
 </div>
 <div class='entry-body'>
 <h3>qDZ()</h3>
@@ -1329,15 +1329,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L212'>Diversity/src/EffectiveNumbers.jl:212</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,1},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>qD()</h3>
@@ -1350,15 +1350,15 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L127'>Diversity/src/EffectiveNumbers.jl:127</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L127'>Diversity/src/EffectiveNumbers.jl:127</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> qD{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>qD()</h3>
@@ -1371,7 +1371,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/EffectiveNumbers.jl#L157'>Diversity/src/EffectiveNumbers.jl:157</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/EffectiveNumbers.jl#L157'>Diversity/src/EffectiveNumbers.jl:157</a></td>
 </tr>
 </table>
 </div>
@@ -1397,7 +1397,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Collection.jl#L117'>Diversity/src/Collection.jl:117</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Collection.jl#L117'>Diversity/src/Collection.jl:117</a></td>
 </tr>
 </table>
 </div>
@@ -1416,7 +1416,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Collection.jl#L41'>Diversity/src/Collection.jl:41</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Collection.jl#L41'>Diversity/src/Collection.jl:41</a></td>
 </tr>
 </table>
 </div>
@@ -1433,7 +1433,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Collection.jl#L75'>Diversity/src/Collection.jl:75</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Collection.jl#L75'>Diversity/src/Collection.jl:75</a></td>
 </tr>
 </table>
 </div>
@@ -1450,7 +1450,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Collection.jl#L7'>Diversity/src/Collection.jl:7</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Collection.jl#L7'>Diversity/src/Collection.jl:7</a></td>
 </tr>
 </table>
 </div>
@@ -1467,7 +1467,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Collection.jl#L25'>Diversity/src/Collection.jl:25</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Collection.jl#L25'>Diversity/src/Collection.jl:25</a></td>
 </tr>
 </table>
 </div>
@@ -1484,7 +1484,7 @@ diversities = gamma(proportions, [0, 1, 2, Inf], Z)</code></pre><h1 id='module-r
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Collection.jl#L15'>Diversity/src/Collection.jl:15</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Collection.jl#L15'>Diversity/src/Collection.jl:15</a></td>
 </tr>
 </table>
 </div>

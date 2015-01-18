@@ -24,40 +24,16 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <li >
 <ul >
 <li >
-<a href='#jostD(proportions,qs)'>jostD(proportions,qs)</a></li>
+<a href='#jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 <li >
-<a href='#jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
-<li >
-<a href='#jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))'>jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))</a></li>
+<a href='#jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))'>jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))</a></li>
 </ul>
 </li>
 </ul>
 <div class='entries'>
 <div class='entry'>
-<div id='jostD(proportions,qs)' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> jostD(proportions,qs)
-</div>
-<div class='entry-body'>
-<h3>jostD()</h3>
-<p>Calculates Hill number of order q of population(s) with given relative proportions.</p>
-<h3>Arguments:</h3>
-<p><em>proportions</em> relative proportions of different individuals / species               in population (vector, or matrix where columns are               individual populations)</p>
-<p><em>qs</em> single number or vector of orders of diversity measurement</p>
-<h3>Returns:</h3>
-<ul><li>Diversity of order qs (single number or vector of diversities)</li></ul><div class='entry-meta'>
-<strong>Details:</strong>
-<table class='meta-table'>
-<tr >
-<td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Jost.jl#L17'>Diversity/src/Jost.jl:17</a></td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class='entry'>
-<div id='jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> jostalpha{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>jostalpha() (or jostα())</h3>
@@ -71,19 +47,19 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Jost.jl#L39'>Diversity/src/Jost.jl:39</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Jost.jl#L20'>Diversity/src/Jost.jl:20</a></td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class='entry'>
-<div id='jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(Array{T<:Number,1},T<:Number))
+<div id='jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> jostbeta{S<:FloatingPoint,T<:Number}(proportions::Array{S<:FloatingPoint,2},qs::Union(T<:Number,Array{T<:Number,1}))
 </div>
 <div class='entry-body'>
 <h3>jostbeta() (or jostβ())</h3>
-<p>Calculates Jost's beta diversity of a series of columns representing independent community counts, for a series of orders, repesented as a vector of qs. This is just the naive gamma diversity divided by the Jost's alpha diversity</p>
+<p>Calculates Jost's beta diversity of a series of columns representing independent community counts, for a series of orders, repesented as a vector of qs. This is just the naive gamma diversity divided by Jost's alpha diversity</p>
 <h3>Arguments:</h3>
 <p><em>proportions</em> relative proportions of different individuals / species               in population (vector, or matrix where columns are               for individual sub-communities)</p>
 <p><em>qs</em> single number or vector of orders of diversity measurement</p>
@@ -93,7 +69,7 @@ diversities = jostβ(proportions, [0, 1, 2])</code></pre><h1 id='module-referenc
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/c24b03506904b2e8483b8f559b82e03f83d83e20/src/Jost.jl#L65'>Diversity/src/Jost.jl:65</a></td>
+<a href='https://github.com/richardreeve/Diversity.jl/tree/ca842ec82f611f7f1f475eed63a3cd2fa7eb819f/src/Jost.jl#L46'>Diversity/src/Jost.jl:46</a></td>
 </tr>
 </table>
 </div>
