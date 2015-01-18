@@ -80,6 +80,7 @@ Z = rand(numspecies, numspecies);
 colweights = rand(numcommunities);
 colweights /= sum(colweights);
 allthesame = probs * colweights';
+@test_approx_eq DB(allthesame, qs, Z) 1 ./ qD(colweights, 2 - qs)
 @test_approx_eq DB̄(allthesame, qs, Z) ones((1, length(qs)))
 @test_approx_eq DR̄(allthesame, qs, Z) ones((1, length(qs)))
 @test_approx_eq DR(allthesame, qs) qD(colweights, qs)
@@ -93,6 +94,7 @@ end
 @test_approx_eq DR(distinct, qs) ones((1, length(qs)))
 @test_approx_eq Dρ̄(distinct, qs) repeat(sum(distinct, 1), inner = [length(qs), 1])
 @test_approx_eq DB̄(distinct, qs) qD(reshape(sum(distinct, 1), numcommunities), qs)
+@test_approx_eq DB(distinct, qs) ones((1, length(qs)))
 
 # Need to check the diversity() function
 @test_approx_eq diversity(DR̄, allthesame, qs, Z, false, false, true) colweights
