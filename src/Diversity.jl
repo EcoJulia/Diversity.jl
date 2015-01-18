@@ -51,4 +51,7 @@ export hillnumber
 
 end # sub-module Hill
 
+## Make sure that Lexicon is loading so inline REPL documentation works
+using Lexicon
+
 end # module
