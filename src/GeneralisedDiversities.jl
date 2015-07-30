@@ -77,9 +77,10 @@ function diversity{S <: FloatingPoint,
 end
 
 @doc """
-### Dα() - Raw similarity-sensitive subcommunity alpha diversity
+### Dα() - Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
-Calculates diversity of a series of columns representing independent
+Calculates average raw alpha diversity / naive-community diversity of
+a series of subcommunities represented by columns of independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
@@ -109,8 +110,9 @@ subcommunityalpha = Dα
 @doc """
 ### Dᾱ() - Normalised similarity-sensitive subcommunity alpha diversity
 
-Calculates diversity of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
+Calculates (normalised alpha) diversity of a series of
+subcommunities represented by columns of independent subcommunity
+counts, for a series of orders, represented as a vector of
 qs.
 
 ### Arguments:
@@ -138,11 +140,12 @@ Dᾱ{S <: FloatingPoint,
 subcommunityalphabar = Dᾱ
 
 @doc """
-### DA() - Raw similarity-sensitive ecosystem alpha diversity
+### DA() - Raw similarity-sensitive ecosystem alpha diversity / naive-community diversity
 
-Calculates naive-community diversity of a series of columns
-representing independent subcommunity counts, for a series of orders,
-represented as a vector of qs.
+Calculates average raw alpha diversity / naive-community diversity of
+a series of subcommunities represented by columns of independent
+subcommunity counts, for a series of orders, represented as a vector
+of qs.
 
 ### Arguments:
 
@@ -165,9 +168,9 @@ ecosystemA = DA
 @doc """
 ### DĀ() - Normalised similarity-sensitive ecosystem alpha diversity
 
-Calculates diversity of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
+Calculates average (normalised alpha) diversity of a series of
+subcommunities represented by columns of independent subcommunity
+counts, for a series of orders, represented as a vector of qs.
 
 ### Arguments:
 
@@ -188,11 +191,11 @@ DĀ{S <: FloatingPoint,
 ecosystemAbar = DĀ
 
 @doc """
-### Dρ() - Raw similarity-sensitive subcommunity beta diversity / redundancy
+### Dρ() - Raw similarity-sensitive subcommunity redundancy
 
-Calculates redundancy of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
+Calculates redundancy of a series of subcommunities represented by
+columns of independent subcommunity counts, for a series of orders,
+represented as a vector of qs.
 
 ### Arguments:
 
@@ -219,13 +222,12 @@ end
 subcommunityredundancy = subcommunityrho = Dρ
     
 @doc """
-### Dβ() - Raw similarity-sensitive subcommunity beta diversity
+### Dβ() - Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
-Calculates diversities of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
-
-Dβ is the average concentration of species in a subcommunity.
+Calculates the raw beta diversity / distinctiveness of or
+concentration of species in a series of subcommunities represented by
+columns of independent subcommunity counts, for a series of orders,
+represented as a vector of qs.
 
 ### Arguments:
 
@@ -249,14 +251,20 @@ function Dβ{S <: FloatingPoint,
     Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
     mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
 end
-subcommunitybeta = Dβ
+
+subcommunitybeta = subcommunitydistinctiveness =
+    subcommunityconcentration = Dβ
 
 @doc """
-### Dϵ or Dρ̄() - Normalised similarity-sensitive subcommunity beta diversity / evenness
+### Dρ̄() - Normalised similarity-sensitive subcommunity representativeness
 
-Calculates evenness of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
+Calculates the representativeness of a series of subcommunities
+represented by columns of independent subcommunity counts, for a
+series of orders, represented as a vector of qs. Representativeness
+reflects what proportion of the ecosystem each subcommunity is
+representative of on average, so if each subcommunity contains 1/xth
+of the species, then the average representativeness of the
+subcommunities is 1/x.
 
 ### Arguments:
 
@@ -268,9 +276,9 @@ qs.
 
 ### Returns:
 
-* array of evennesses, first dimension representing subcommunities, and
+* array of representativenesses, first dimension representing subcommunities, and
   last representing values of q""" ->
-function Dϵ{S <: FloatingPoint,
+function Dρ̄{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
@@ -284,18 +292,16 @@ function Dϵ{S <: FloatingPoint,
                                                     proportions, 1),
                                           (size(proportions, 2)))), 1)
 end
-subcommunityevenness = Dϵ
-subcommunityrhobar = Dρ̄ = Dϵ
-
+subcommunityrhobar = subcommunityrepresentativeness = Dρ̄
+subcommunityepsilon = Dϵ = Dρ̄
 
 @doc """
 ### Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity
 
-Calculates diversity of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
-
-Dβ̄ is the number of distinct subcommunities like subcommunity j.
+Calculates normalised beta diversities or the effective number of
+distinct subcommunities perceived by a series of subcommunities
+represented by columns of independent subcommunity counts, represented
+as a vector of qs.
 
 ### Arguments:
 
@@ -326,11 +332,11 @@ end
 subcommunitybetabar = Dβ̄
 
 @doc """
-### DR() - Raw similarity-sensitive ecosystem beta diversity / redundancy
+### DR() - Raw similarity-sensitive ecosystem redundancy
 
-Calculates average redundancy of a series of columns representing
-independent subcommunity counts, for a series of orders, represented
-as a vector of qs.
+Calculates average redundancy of a series of subcommunities
+represented by columns of independent subcommunity counts, for a
+series of orders, represented as a vector of qs.
 
 ### Arguments:
 
@@ -350,13 +356,12 @@ DR{S <: FloatingPoint,
 ecosystemredundancy = ecosystemR = DR
     
 @doc """
-### DB() - Raw similarity-sensitive ecosystem beta diversity
+### DB() - Raw similarity-sensitive ecosystem beta diversity / distinctiveness / concentration
 
-Calculates diversity of a series of columns representing independent
-subcommunity counts, for a series of orders, represented as a vector of
-qs.
-
-DB is average concentration of species in the subcommunities.
+Calculates average raw beta diversity / distinctiveness of or
+concentration of species in a series of subcommunities represented by
+columns of independent subcommunity counts, for a series of orders,
+represented as a vector of qs.
 
 ### Arguments:
 
@@ -374,14 +379,18 @@ function DB{S <: FloatingPoint,
                         Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ, proportions, qs, Z, true, false, false)
 end
-ecosystemB = DB
+ecosystemB = ecosystemdistinctiveness = ecosystemconcentration = DB
 
 @doc """
-### DE() or DR̄() - Normalised similarity-sensitive ecosystem beta diversity / evenness
+### DR̄() - Normalised similarity-sensitive ecosystem representativeness
 
-Calculates average evenness of a series of columns representing
-independent subcommunity counts, for a series of orders, represented
-as a vector of qs.
+Calculates average representativeness of a series of subcommunities
+represented by columns of independent subcommunity counts, for a
+series of orders, represented as a vector of qs. Representativeness
+reflects what proportion of the ecosystem each subcommunity is
+representative of on average, so if each subcommunity contains 1/xth
+of the species, then the average representativeness of the
+subcommunities is 1/x.
 
 ### Arguments:
 
@@ -393,22 +402,22 @@ as a vector of qs.
 
 ### Returns:
 
-* vector of evennesses representing values of q""" ->
-DE{S <: FloatingPoint,
+* vector of representativenesses representing values of q""" ->
+DR̄{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
-                   diversity(Dϵ, proportions, qs, Z, true, false, false)
-ecosystemevenness = DE
-ecosystemRbar = DR̄ = DE
+                   diversity(Dρ̄, proportions, qs, Z, true, false, false)
+
+ecosystemRbar = ecosystemrepresentativeness = DR̄
+ecosystemE = DE = DR̄
 
 @doc """
-### DB̄() - Normalised similarity-sensitive ecosystem beta diversity
+### DB̄() - Normalised similarity-sensitive ecosystem beta diversity / effective number of communities
 
-Calculates average diversity of a series of columns representing
-independent subcommunity counts, for a series of orders, represented
-as a vector of qs.
-
-DB̄ is the effective number of distinct subcommunities.
+Calculates average normalised beta diversity or the effective number
+of distinct subcommunities present in a series of subcommunities
+represented by columns of independent subcommunity counts, for a
+series of orders, represented as a vector of qs.
 
 ### Arguments:
 
