@@ -1,5 +1,8 @@
 module Diversity
-using Docile
+if VERSION < v"0.4-"
+    using Docile
+end
+
 @docstrings(manual = ["../doc/diversity.md"])
 
 #include("Collection.jl")
