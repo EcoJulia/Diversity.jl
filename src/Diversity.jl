@@ -3,7 +3,9 @@ if VERSION < v"0.4-"
     using Docile
 end
 
-@docstrings(manual = ["../doc/diversity.md"])
+if VERSION < v"0.4-"
+   @docstrings(manual = ["../doc/diversity.md"])
+end
 
 #include("Collection.jl")
 #export Collection, Ecosystem, Community
@@ -26,7 +28,9 @@ export contributions
 
 module Ecology
 using Docile
-@docstrings(manual = ["../doc/ecology.md"])
+if VERSION < v"0.4-"
+   @docstrings(manual = ["../doc/ecology.md"])
+end
 
 include("Ecology.jl")
 export generalisedrichness, richness
@@ -38,7 +42,9 @@ end # sub-module Ecology
 
 module Jost
 using Docile
-@docstrings(manual = ["../doc/jost.md"])
+if VERSION < v"0.4-"
+   @docstrings(manual = ["../doc/jost.md"])
+end
 
 include("Jost.jl")
 export jostbeta, jostβ, jostalpha, jostα
@@ -47,7 +53,9 @@ end # sub-module Jost
 
 module Hill
 using Docile
-@docstrings(manual = ["../doc/hill.md"])
+if VERSION < v"0.4-"
+   @docstrings(manual = ["../doc/hill.md"])
+end
 
 include("Hill.jl")
 export hillnumber
