@@ -1,4 +1,4 @@
-@doc """
+Docile.@doc """
 ### Abstract Similarity supertype
 
 This type is the abstract superclass of all similarity types. Its
@@ -7,7 +7,7 @@ individuals.
 """ ->
 abstract Similarity
 
-@doc """
+Docile.@doc """
 ### Unique type, a subtype of Similarity
 
 This type is the simplest Similarity subtype, which identifies all
@@ -18,7 +18,7 @@ end
 
 typealias Species Unique
 
-@doc """
+Docile.@doc """
 ### Taxonomy type, a subtype of Similarity
 
 This subtype of Similarity allows taxonomic similarity matrices
@@ -27,7 +27,7 @@ immutable Taxonomy <: Similarity
     labels::Dict{String, (Float64, Dict{String, String})}
 end
 
-@doc """
+Docile.@doc """
 ### GeneralSimilarity, a general matrix-based Similarity subtype
 
 This subtype of Similarity simply holds a matrix with similarities
@@ -65,7 +65,7 @@ getsimilarities{FP}(abundances::Array{FP}, s::Taxonomy) =
 getsimilarities{FP}(abundances::Array{FP}, s::GeneralSimilarity) =
     convert(Array{FP, 2}, matrix)
 
-@doc """
+Docile.@doc """
 ### Abstract Partition supertype
 
 This type is the abstract superclass of all partitioning types.
@@ -84,7 +84,7 @@ legalpartition(abundances::Array, p::Subcommunity) =
 legalpartition(abundances::Array, p::Onecommunity) =
     (ndims(abundances) == 1)
 
-@doc """
+Docile.@doc """
 ### Collection type
 
 Type representing a single community or collection of communities. It

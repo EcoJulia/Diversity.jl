@@ -1,6 +1,6 @@
 using Diversity
 
-@doc """
+Docile.@doc """
 ### jostalpha() (or jostα())
 
 Calculates Jost's alpha diversity of a series of columns representing
@@ -26,7 +26,7 @@ end
 
 jostα = jostalpha
 
-@doc """
+Docile.@doc """
 ### jostbeta() (or jostβ())
 
 Calculates Jost's beta diversity of a series of columns representing

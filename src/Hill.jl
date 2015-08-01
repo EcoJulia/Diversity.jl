@@ -1,6 +1,6 @@
 using Diversity
 
-@doc """
+Docile.@doc """
 ### hillnumber()
 
 Calculate the Hill number (or naive diversity) of order q of

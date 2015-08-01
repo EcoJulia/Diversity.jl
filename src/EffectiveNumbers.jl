@@ -1,4 +1,4 @@
-@doc """
+Docile.@doc """
 ### powermean()
 
 Calculates *order*th power mean of *values*, weighted by
@@ -38,7 +38,7 @@ function powermean{S <: Number,
     end
 end
 
-@doc """
+Docile.@doc """
 Calculates *order*th power mean of *values*, weighted by *weights*.
 By default *weights* are equal, and *order* is 1, so this is just
 the arithmetic mean.""" -> powermean
@@ -49,7 +49,7 @@ powermean{T <: Integer,
                        weights::Vector{U} = ones(values) * 1.) =
                            powermean(values, order * 1., weights)
                            
-@doc """
+Docile.@doc """
 ### powermean()
 
 Calculates power mean of *values* of order *orders*, weighted by
@@ -72,7 +72,7 @@ function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
     map(order -> powermean(values * 1., order * 1., weights * 1.), orders)
 end
 
-@doc """
+Docile.@doc """
 ### qD()
 
 Calculates Hill number or naive diversity of order(s) *qs* of a
@@ -95,14 +95,14 @@ function qD{S <: FloatingPoint,
     powermean(proportions, qs - 1., proportions) .^ -1
 end
 
-@doc """
+Docile.@doc """
 ### qD()
 
 Calculates Hill number or naive diversity of orders *qs* of a
 population or series of subpopulations with given relative
 *proportions*.""" -> qD
 
-@doc """
+Docile.@doc """
 ### qD()
 
 Calculates Hill number or naive diversity of order(s) *qs* of a series
@@ -119,7 +119,7 @@ qD{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
        mapslices(p -> qD(p, qs), proportions, 1)
 
-@doc """
+Docile.@doc """
 ### qDZ()
 
 Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
@@ -148,14 +148,14 @@ function qDZ{S <: FloatingPoint,
     powermean(Z * proportions, qs - 1., proportions) .^ -1
 end
 
-@doc """
+Docile.@doc """
 ### qDZ()
 
 Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
 a population of series of subpopulations with given relative
 *proportions*, and similarity matrix *Z*.""" -> qDZ
 
-@doc """
+Docile.@doc """
 ### qDZ()
 
 Calculates Leinster-Cobbold general diversity of >= 1 order *qs* of a

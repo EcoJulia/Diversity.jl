@@ -1,4 +1,4 @@
-@doc """
+Docile.@doc """
 ### diversity() - calculates subcommunity and ecosystem diversities
 
 Calculates any diversity of a series of columns representing
@@ -76,7 +76,7 @@ function diversity{S <: FloatingPoint,
     end
 end
 
-@doc """
+Docile.@doc """
 ### Dα() - Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
@@ -107,7 +107,7 @@ end
 
 subcommunityalpha = Dα
 
-@doc """
+Docile.@doc """
 ### Dᾱ() - Normalised similarity-sensitive subcommunity alpha diversity
 
 Calculates (normalised alpha) diversity of a series of
@@ -139,7 +139,7 @@ Dᾱ{S <: FloatingPoint,
                               
 subcommunityalphabar = Dᾱ
 
-@doc """
+Docile.@doc """
 ### DA() - Raw similarity-sensitive ecosystem alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
@@ -165,7 +165,7 @@ DA{S <: FloatingPoint,
                     
 ecosystemA = DA
 
-@doc """
+Docile.@doc """
 ### DĀ() - Normalised similarity-sensitive ecosystem alpha diversity
 
 Calculates average (normalised alpha) diversity of a series of
@@ -190,7 +190,7 @@ DĀ{S <: FloatingPoint,
                     
 ecosystemAbar = DĀ
 
-@doc """
+Docile.@doc """
 ### Dρ() - Raw similarity-sensitive subcommunity redundancy
 
 Calculates redundancy of a series of subcommunities represented by
@@ -221,7 +221,7 @@ function Dρ{S <: FloatingPoint,
 end
 subcommunityredundancy = subcommunityrho = Dρ
     
-@doc """
+Docile.@doc """
 ### Dβ() - Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
 Calculates the raw beta diversity / distinctiveness of or
@@ -255,7 +255,7 @@ end
 subcommunitybeta = subcommunitydistinctiveness =
     subcommunityconcentration = Dβ
 
-@doc """
+Docile.@doc """
 ### Dρ̄() - Normalised similarity-sensitive subcommunity representativeness
 
 Calculates the representativeness of a series of subcommunities
@@ -295,7 +295,7 @@ end
 subcommunityrhobar = subcommunityrepresentativeness = Dρ̄
 subcommunityepsilon = Dϵ = Dρ̄
 
-@doc """
+Docile.@doc """
 ### Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity
 
 Calculates normalised beta diversities or the effective number of
@@ -331,7 +331,7 @@ function Dβ̄{S <: FloatingPoint,
 end
 subcommunitybetabar = Dβ̄
 
-@doc """
+Docile.@doc """
 ### DR() - Raw similarity-sensitive ecosystem redundancy
 
 Calculates average redundancy of a series of subcommunities
@@ -355,7 +355,7 @@ DR{S <: FloatingPoint,
                    diversity(Dρ, proportions, qs, Z, true, false, false)
 ecosystemredundancy = ecosystemR = DR
     
-@doc """
+Docile.@doc """
 ### DB() - Raw similarity-sensitive ecosystem beta diversity / distinctiveness / concentration
 
 Calculates average raw beta diversity / distinctiveness of or
@@ -381,7 +381,7 @@ function DB{S <: FloatingPoint,
 end
 ecosystemB = ecosystemdistinctiveness = ecosystemconcentration = DB
 
-@doc """
+Docile.@doc """
 ### DR̄() - Normalised similarity-sensitive ecosystem representativeness
 
 Calculates average representativeness of a series of subcommunities
@@ -411,7 +411,7 @@ DR̄{S <: FloatingPoint,
 ecosystemRbar = ecosystemrepresentativeness = DR̄
 ecosystemE = DE = DR̄
 
-@doc """
+Docile.@doc """
 ### DB̄() - Normalised similarity-sensitive ecosystem beta diversity / effective number of communities
 
 Calculates average normalised beta diversity or the effective number
@@ -437,7 +437,7 @@ function DB̄{S <: FloatingPoint,
 end
 ecosystemBbar = DB̄
 
-@doc """
+Docile.@doc """
 ### Dγ() - Raw similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -470,7 +470,7 @@ end
 
 subcommunitygamma = Dγ
 
-@doc """
+Docile.@doc """
 ### Dγ̄() - Normalised similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -503,7 +503,7 @@ end
 
 subcommunitygammabar = Dγ̄
 
-@doc """
+Docile.@doc """
 ### DG() - Raw similarity-sensitive ecosystem gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -528,7 +528,7 @@ DG{S <: FloatingPoint,
                     
 ecosystemG = DG
 
-@doc """
+Docile.@doc """
 ### DḠ() - Normalised similarity-sensitive ecosystem gamma diversity
 
 Calculates diversity of a series of columns representing independent

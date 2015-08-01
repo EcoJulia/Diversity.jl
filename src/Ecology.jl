@@ -1,6 +1,6 @@
 using Diversity
 
-@doc """
+Docile.@doc """
 ### generalisedrichness() - Calculate a generalised version of richness
 
 Calculates (species) richness of a series of columns representing
@@ -24,7 +24,7 @@ function generalisedrichness{S <: FloatingPoint}(measure::Function,
     measure(proportions, 0, Z)
 end
 
-@doc """
+Docile.@doc """
 ### richness() - Calculate species richness of populations
 
 Calculates (species) richness of a series of columns representing
@@ -39,7 +39,7 @@ function richness{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedrichness(Dᾱ, proportions)
 end
 
-@doc """
+Docile.@doc """
 ### generalisedshannon() - Calculate a generalised version of Shannon entropy
 
 Calculates Shannon entropy of a series of columns representing
@@ -63,7 +63,7 @@ function generalisedshannon{S <: FloatingPoint}(measure::Function,
     log(measure(proportions, 1, Z))
 end
 
-@doc """
+Docile.@doc """
 ### shannon() - Calculate shannon entropy of populations
 
 Calculates shannon entropy of a series of columns representing
@@ -78,7 +78,7 @@ function shannon{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedshannon(Dᾱ, proportions)
 end
 
-@doc """
+Docile.@doc """
 ### generalisedsimpson() - Calculate a generalised version of Simpson's index
 
 Calculates Simpson's index of a series of columns representing
@@ -101,7 +101,7 @@ function generalisedsimpson{S <: FloatingPoint}(measure::Function ,
     measure(proportions, 2, Z) .^ -1
 end
 
-@doc """
+Docile.@doc """
 ### simpson() - Calculate Simpson's index
 
 Calculates Simpson's index of a series of columns representing
@@ -117,7 +117,7 @@ function simpson{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedsimpson(Dᾱ, proportions)
 end
 
-@doc """
+Docile.@doc """
 ### generalisedjaccard() - Calculate a generalised version of Jaccard's index
 
 Calculates a generalisation of Jaccard's index of a series of columns
@@ -140,7 +140,7 @@ function generalisedjaccard(proportions::Matrix, qs,
     DA(proportions, qs, Z) ./ DG(proportions, qs, Z) - 1
 end
 
-@doc """
+Docile.@doc """
 ### jaccard() - Calculate Jaccard index
 
 Calculates Jaccard index (Jaccard similarity coefficient) of two
