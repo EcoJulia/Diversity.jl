@@ -1,16 +1,17 @@
 module Diversity
 using Docile
 
-#include("Collection.jl")
-#export Collection, Ecosystem, Community
-#export Subcommunity, Onecommunity
-#export Unique, Species, Taxonomy
 """
 !!summary(Package for measuring diversity for the Julia Language)
 
 !!include(../doc/diversity.md)
 """
 Diversity
+
+include("Collection.jl")
+export Collection, Ecosystem, Community
+export Subcommunity, Onecommunity
+export Unique, Species, Taxonomy
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
