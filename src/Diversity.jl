@@ -1,11 +1,16 @@
 module Diversity
 using Docile
-@docstrings(manual = ["../doc/diversity.md"])
 
 #include("Collection.jl")
 #export Collection, Ecosystem, Community
 #export Subcommunity, Onecommunity
 #export Unique, Species, Taxonomy
+"""
+!!summary(Package for measuring diversity for the Julia Language)
+
+!!include(../doc/diversity.md)
+"""
+Diversity
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
@@ -23,7 +28,13 @@ export contributions
 
 module Ecology
 using Docile
-@docstrings(manual = ["../doc/ecology.md"])
+
+"""
+!!summary(Sub-package of Diversity for ecological diversity measures)
+
+!!include(../doc/ecology.md)
+"""
+Ecology
 
 include("Ecology.jl")
 export generalisedrichness, richness
@@ -36,7 +47,12 @@ end # sub-module Ecology
 module Jost
 using Docile
 
-@docstrings(manual = ["../doc/jost.md"])
+"""
+!!summary(Sub-package of Diversity for Jost's diversity measures)
+
+!!include(../doc/jost.md)
+"""
+Jost
 
 include("Jost.jl")
 export jostbeta, jostβ, jostalpha, jostα
@@ -45,7 +61,13 @@ end # sub-module Jost
 
 module Hill
 using Docile
-@docstrings(manual = ["../doc/hill.md"])
+
+"""
+!!summary(Sub-package of Diversity for Hill numbers)
+
+!!include(../doc/hill.md)
+"""
+Hill
 
 include("Hill.jl")
 export hillnumber

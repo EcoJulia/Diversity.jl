@@ -1,7 +1,7 @@
 using Diversity
 
-Docile.@doc """
-### hillnumber()
+"""
+!!summary(Calculates Hill numbers)
 
 Calculate the Hill number (or naive diversity) of order q of
 population(s) with given relative proportions
@@ -13,7 +13,8 @@ population(s) with given relative proportions
 * qs: single number or vector of orders of diversity measurement
 
 ### Returns:
-* Diversity of order qs (single number or vector of diversities)""" ->
+* Diversity of order qs (single number or vector of diversities)
+"""
 function hillnumber(proportions, qs)
     qD(proportions, qs)
 end

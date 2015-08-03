@@ -7,8 +7,10 @@ found in the **Diversity.Jost** package.
 
 Accessing the main functionality in the package is simple:
 
-```julia
+```julia_skip
 using Diversity.Jost
-...
-diversities = jostβ(proportions, [0, 1, 2])
+
+# Load community to study
+
+diversities = jostβ(community, [0, 1, 2])
 ```

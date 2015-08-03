@@ -1,7 +1,7 @@
 using Diversity
 
-Docile.@doc """
-### generalisedrichness() - Calculate a generalised version of richness
+"""
+!!summary(Calculate a generalised version of richness)
 
 Calculates (species) richness of a series of columns representing
 independent subcommunity counts, which is diversity at q = 0 for any
@@ -16,7 +16,10 @@ similarity matrix for the species
 *Z* similarity matrix
 
 ### Returns:
-* diversity (at ecosystem level) or diversities (of subcommunities)""" ->
+* diversity (at ecosystem level) or diversities (of subcommunities)
+"""
+:generalisedrichness
+
 function generalisedrichness{S <: FloatingPoint}(measure::Function,
                                                  proportions::Matrix{S},
                                                  Z::Matrix{S} =
@@ -24,8 +27,8 @@ function generalisedrichness{S <: FloatingPoint}(measure::Function,
     measure(proportions, 0, Z)
 end
 
-Docile.@doc """
-### richness() - Calculate species richness of populations
+"""
+!!summary(Calculate species richness of populations)
 
 Calculates (species) richness of a series of columns representing
 independent subcommunity counts, which is diversity at q = 0
@@ -34,13 +37,14 @@ independent subcommunity counts, which is diversity at q = 0
 *proportions* population proportions
 
 ### Returns:
-* diversities of subcommunities""" ->
+* diversities of subcommunities
+"""
 function richness{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedrichness(Dᾱ, proportions)
 end
 
-Docile.@doc """
-### generalisedshannon() - Calculate a generalised version of Shannon entropy
+"""
+!!summary(Calculate a generalised version of Shannon entropy)
 
 Calculates Shannon entropy of a series of columns representing
 independent subcommunity counts, which is log(diversity) at q = 1 for
@@ -55,7 +59,10 @@ includes a similarity matrix for the species
 *Z* similarity matrix
 
 ### Returns:
-* entropy (at ecosystem level) or entropies (of subcommunities)""" ->
+* entropy (at ecosystem level) or entropies (of subcommunities)
+"""
+:generalisedshannon
+
 function generalisedshannon{S <: FloatingPoint}(measure::Function,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
@@ -63,8 +70,8 @@ function generalisedshannon{S <: FloatingPoint}(measure::Function,
     log(measure(proportions, 1, Z))
 end
 
-Docile.@doc """
-### shannon() - Calculate shannon entropy of populations
+"""
+!!summary(Calculate Shannon entropy of populations)
 
 Calculates shannon entropy of a series of columns representing
 independent subcommunity counts, which is log(diversity) at q = 1
@@ -73,13 +80,14 @@ independent subcommunity counts, which is log(diversity) at q = 1
 *proportions* population proportions
 
 ### Returns:
-* entropies of subcommunities""" ->
+* entropies of subcommunities
+"""
 function shannon{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedshannon(Dᾱ, proportions)
 end
 
-Docile.@doc """
-### generalisedsimpson() - Calculate a generalised version of Simpson's index
+"""
+!!summary(Calculate a generalised version of Simpson's index)
 
 Calculates Simpson's index of a series of columns representing
 independent subcommunity counts, which is 1 / diversity at q = 2 for
@@ -93,7 +101,10 @@ includes a similarity matrix for the species
 *Z* similarity matrix
 
 ### Returns:
-* concentration (at ecosystem level) or concentrations (of subcommunities)""" ->
+* concentration (at ecosystem level) or concentrations (of subcommunities)
+"""
+:generalisedsimpson
+
 function generalisedsimpson{S <: FloatingPoint}(measure::Function ,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
@@ -101,8 +112,8 @@ function generalisedsimpson{S <: FloatingPoint}(measure::Function ,
     measure(proportions, 2, Z) .^ -1
 end
 
-Docile.@doc """
-### simpson() - Calculate Simpson's index
+"""
+!!summary(Calculate Simpson's index)
 
 Calculates Simpson's index of a series of columns representing
 independent subcommunity counts, which is 1 / diversity (or
@@ -112,19 +123,22 @@ concentration) at q = 2
 *proportions* population proportions
 
 ### Returns:
-* concentrations of subcommunities""" ->
+* concentrations of subcommunities
+"""
+:simpson
+
 function simpson{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedsimpson(Dᾱ, proportions)
 end
 
-Docile.@doc """
-### generalisedjaccard() - Calculate a generalised version of Jaccard's index
+"""
+!!summary(Calculate a generalised version of the Jaccard index)
 
-Calculates a generalisation of Jaccard's index of a series of columns
-representing subcommunity counts. This evaluates to is DG / DA for a
-series of orders, repesented as a vector of qs (or a single number).
-It also includes a similarity matrix for the species. This gives
-measure of the average distinctiveness of the subcommunities.
+Calculates a generalisation of the Jaccard index of a series of
+columns representing subcommunity counts. This evaluates to is DG / DA
+for a series of orders, repesented as a vector of qs (or a single
+number).  It also includes a similarity matrix for the species. This
+gives measure of the average distinctiveness of the subcommunities.
 
 ### Arguments:
 *proportions* population proportions
@@ -132,7 +146,10 @@ measure of the average distinctiveness of the subcommunities.
 *Z* similarity matrix
 
 ### Returns:
-* Jaccard-related distinctivess measures""" ->
+* Jaccard-related distinctivess measures
+"""
+:generalisedjaccard
+
 function generalisedjaccard(proportions::Matrix, qs,
                             Z::Matrix = eye(size(proportions, 1)))
     size(proportions, 2) == 2 ||
@@ -140,8 +157,8 @@ function generalisedjaccard(proportions::Matrix, qs,
     DA(proportions, qs, Z) ./ DG(proportions, qs, Z) - 1
 end
 
-Docile.@doc """
-### jaccard() - Calculate Jaccard index
+"""
+!!summary(Calculate the Jaccard index)
 
 Calculates Jaccard index (Jaccard similarity coefficient) of two
 columns representing independent subcommunity counts, which is
@@ -151,7 +168,8 @@ DA(proportions, 0) / DG(proportions, 0) - 1
 *proportions* population proportions
 
 ### Returns:
-* Jaccard index""" ->
+* the Jaccard index
+"""
 function jaccard{S <: FloatingPoint}(proportions::Matrix{S})
     generalisedjaccard(proportions, 0)[1]
 end

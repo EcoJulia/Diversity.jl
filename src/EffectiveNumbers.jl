@@ -1,17 +1,20 @@
-Docile.@doc """
-### powermean()
+"""
+!!summary(Calculates the weighted powermean of a series of numbers)
 
 Calculates *order*th power mean of *values*, weighted by
 *weights*. By default, *weights* are equal and *order*
 is 1, so this is just the arithmetic mean.
 
-### Arguments:
+#### Arguments:
 * values: values for which to calculate mean
 * order: order of power mean
 * weights: weights of elements, normalised to 1 inside function
 
-### Returns:
-* weighted power mean""" ->
+#### Returns:
+* weighted power mean(s)
+"""
+:powermean
+
 function powermean{S <: Number,
                    T <: FloatingPoint,
                    U <: Number}(values::Vector{S},
@@ -38,31 +41,14 @@ function powermean{S <: Number,
     end
 end
 
-Docile.@doc """
-Calculates *order*th power mean of *values*, weighted by *weights*.
-By default *weights* are equal, and *order* is 1, so this is just
-the arithmetic mean.""" -> powermean
-
 ## We need to handle lack of automatic promotion between ints and floats in Julia
 powermean{T <: Integer,
           U <: Number}(values::Vector{U}, order::T,
                        weights::Vector{U} = ones(values) * 1.) =
                            powermean(values, order * 1., weights)
                            
-Docile.@doc """
-### powermean()
 
-Calculates power mean of *values* of order *orders*, weighted by
-*weights*. By default, *weights* are equal and *order* is 1, so this
-is just the arithmetic mean.
-
-### Arguments:
-* values: values for which to calculate mean
-* orders: vector of orders of power mean
-* weights: weights of elements, normalised to 1 inside function
-
-### Returns:
-* weighted power means""" ->
+## We need to handle matrices as well as vectors
 function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
                                 orders::Vector,
                                 weights::Union(Vector, Matrix) =
@@ -72,19 +58,21 @@ function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
     map(order -> powermean(values * 1., order * 1., weights * 1.), orders)
 end
 
-Docile.@doc """
-### qD()
+"""
+!!summary(Calculates Hill / naive-similarity diversity)
 
 Calculates Hill number or naive diversity of order(s) *qs* of a
 population with given relative proportions.
 
-### Arguments:
+#### Arguments:
 * proportions: relative proportions of different individuals /
-               species in population
+               species in population or series of populations
 * qs: single number or vector of orders of diversity measurement
 
-### Returns:
-* Diversity of order qs (single number or vector of diversities)""" ->
+#### Returns:
+* Diversity of order qs (single number or vector of diversities)"""
+:qD
+
 function qD{S <: FloatingPoint,
             T <: Number}(proportions::Vector{S},
                          qs::Union(T, Vector{T}))
@@ -95,45 +83,28 @@ function qD{S <: FloatingPoint,
     powermean(proportions, qs - 1., proportions) .^ -1
 end
 
-Docile.@doc """
-### qD()
-
-Calculates Hill number or naive diversity of orders *qs* of a
-population or series of subpopulations with given relative
-*proportions*.""" -> qD
-
-Docile.@doc """
-### qD()
-
-Calculates Hill number or naive diversity of order(s) *qs* of a series
-of subpopulations with given relative *proportions*.
-
-### Arguments:
-* proportions - relative proportions of different individuals /
-                species in a series of subpopulations
-* qs - single number or vector of orders of diversity measurement
-
-### Returns:
-* Diversities of order qs (single number or vector of diversities)""" ->
+## We need to handle matrices as well as vectors
 qD{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
        mapslices(p -> qD(p, qs), proportions, 1)
 
-Docile.@doc """
-### qDZ()
+"""
+!!summary(Calculates Leinster-Cobbold / similarity-sensitive diversity)
 
 Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
 a population with given relative *proportions*, and similarity matrix
 *Z*.
 
-### Arguments:
+#### Arguments:
 * proportions: relative proportions of different individuals /
-               species in population
+               species in a population or series of populations
 * qs: single number or vector of orders of diversity measurement
 * Z: similarity matrix
 
-### Returns:
-* Diversity of order qs (single number or vector of diversities)""" ->
+#### Returns:
+* Diversity of order qs (single number or vector of diversities)"""
+:qDZ
+
 function qDZ{S <: FloatingPoint,
              T <: Number}(proportions::Vector{S}, qs::Union(T, Vector{T}),
                           Z::Matrix{S} = eye(length(proportions)))
@@ -148,28 +119,7 @@ function qDZ{S <: FloatingPoint,
     powermean(Z * proportions, qs - 1., proportions) .^ -1
 end
 
-Docile.@doc """
-### qDZ()
-
-Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
-a population of series of subpopulations with given relative
-*proportions*, and similarity matrix *Z*.""" -> qDZ
-
-Docile.@doc """
-### qDZ()
-
-Calculates Leinster-Cobbold general diversity of >= 1 order *qs* of a
-series of subpopulations with given relative *proportions*, and
-similarity matrix *Z*.
-
-### Arguments:
-* proportions - relative proportions of different individuals /
-                species in a series of subpopulations
-* qs: single number or vector of orders of diversity measurement
-* Z: similarity matrix
-
-### Returns:
-* Diversities of order qs (single number or vector of diversities)""" ->
+## We need to handle matrices as well as vectors
 qDZ{S <: FloatingPoint,
     T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                  Z::Matrix{S} = eye(size(proportions, 1))) =

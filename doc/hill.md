@@ -5,8 +5,10 @@
 
 Accessing the main functionality in the package is simple:
 
-```julia
+```julia_skip
 using Diversity.Hill
-...
-diversities = hillnumber(proportions, [0, 1, 2])
+
+# Load community to study
+
+diversities = hillnumber(community, [0, 1, 2])
 ```

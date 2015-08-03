@@ -4,16 +4,18 @@ diversity measures extended from those described in the arXiv paper
 [arXiv:1404.6520 (q-bio.QM)](http://arxiv.org/abs/1404.6520),
 *How to partition diversity*. The alpha, beta and gamma diversities in
 the paper are supplemented by beta diversity measures related to
-evenness, DE, and redundancy, DR, of ecosystems, and their associated
-subcommunities (Dϵ and Dρ, respectively).
+redundancy, DR and representativeness, DR̄, of ecosystems, and their associated
+subcommunities (Dρ and Dρ̄, respectively).
 
 # Usage
 
 Accessing the functionality in the package is simple:
 
-```julia
+```julia_skip
 using Diversity
-...
-diversities = Dᾱ(proportions, [0, 1, 2, Inf], Z)
-diversities = Dγ(proportions, [0, 1, 2, Inf], Z)
+
+# Load up ecosystem
+
+diversities = Dᾱ(ecosystem, [0, 1, 2, Inf], Z)
+diversities = Dγ(ecosystem, [0, 1, 2, Inf], Z)
 ```

@@ -1,7 +1,7 @@
 using Diversity
 
-Docile.@doc """
-### jostalpha() (or jostα())
+"""
+!!summary(Calculates Jost's alpha diversity)
 
 Calculates Jost's alpha diversity of a series of columns representing
 independent community counts, for a series of orders, repesented as a
@@ -17,7 +17,10 @@ divided by the naive-community beta diversity.
 
 ### Returns:
 * array of diversities, first dimension representing sub-communities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:jostalpha, :jostα]
+
 function jostalpha{S <: FloatingPoint,
                    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}))
     DA(proportions, qs) ./
@@ -26,8 +29,8 @@ end
 
 jostα = jostalpha
 
-Docile.@doc """
-### jostbeta() (or jostβ())
+"""
+!!summary(Calculates Jost's beta diversity)
 
 Calculates Jost's beta diversity of a series of columns representing
 independent community counts, for a series of orders, repesented as a
@@ -43,7 +46,10 @@ Jost's alpha diversity
 
 ### Returns:
 * array of diversities, first dimension representing sub-communities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:jostbeta, :jostβ]
+
 function jostbeta{S <: FloatingPoint,
                   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}))
     DḠ(proportions, qs) ./ jostalpha(proportions, qs)

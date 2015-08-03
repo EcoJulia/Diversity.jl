@@ -1,58 +1,81 @@
-Docile.@doc """
-### Abstract Similarity supertype
+"""
+!!summary(Abstract Similarity supertype for all similarity measures)
 
 This type is the abstract superclass of all similarity types. Its
 subtypes allow you to define how similarity is measured between
 individuals.
-""" ->
+"""
 abstract Similarity
 
-Docile.@doc """
-### Unique type, a subtype of Similarity
+"""
+!!summary(A subtype of Similarity where all individuals are completely distinct)
 
 This type is the simplest Similarity subtype, which identifies all
 individuals as unique and completely distinct from each other.
-""" ->
+"""
 immutable Unique <: Similarity
 end
 
+"""
+!!summary(A subtype of Similarity where all species are completely distinct)
+
+This type is the simplest Similarity subtype, which identifies all
+species as unique and completely distinct from each other.
+"""
 typealias Species Unique
 
-Docile.@doc """
-### Taxonomy type, a subtype of Similarity
+"""
+!!summary(A subtype of Similarity with similarity between related taxa)
 
 This subtype of Similarity allows taxonomic similarity matrices
-""" ->
-immutable Taxonomy <: Similarity
-    labels::Dict{String, (Float64, Dict{String, String})}
+"""
+:Taxonomy
+
+if VERSION < v"0.4-"
+    immutable Taxonomy <: Similarity
+        labels::Dict{String, (Float64, Dict{String, String})}
+    end
+else
+    immutable Taxonomy <: Similarity
+        labels::Dict{String, Tuple{Float64, Dict{String, String}}}
+    end    
 end
 
-Docile.@doc """
-### GeneralSimilarity, a general matrix-based Similarity subtype
+
+"""
+!!summary(A general matrix-based Similarity subtype)
 
 This subtype of Similarity simply holds a matrix with similarities
 between individuals.
 
-### Members
+#### Members:
 
 **matrix** A two-dimensional matrix representing similarity between
            individuals. By default this will be the identity matrix,
            but will require the number of species to be instantiated.
-""" ->
+"""
 immutable GeneralSimilarity <: Similarity
     matrix::Matrix
 
-    function GeneralSimilarity(z::Array{Float64, 2})
-        size(z, 1) == size(z, 2) ||
+"""
+!!summary(Constructor for GeneralSimilarity)
+
+Creates an instance of the GeneralSimilarity class, with an arbitrary similarity matrix.
+
+#### Arguments:
+* Z: similarity matrix
+"""
+    function GeneralSimilarity(Z::Array{Float64, 2})
+        size(Z, 1) == size(Z, 2) ||
         error("Similarity matrix is not square")
         
-        isapprox(max(maximum(z), 1.), 1.) ||
+        isapprox(max(maximum(Z), 1.), 1.) ||
         warn("Similarity matrix has values above 1")
 
-        isapprox(min(minimum(z), 0.), 0.) ||
+        isapprox(min(minimum(Z), 0.), 0.) ||
         warn("Similarity matrix has values below 0")
 
-        new(z)
+        new(Z)
     end
 end
 
@@ -65,17 +88,24 @@ getsimilarities{FP}(abundances::Array{FP}, s::Taxonomy) =
 getsimilarities{FP}(abundances::Array{FP}, s::GeneralSimilarity) =
     convert(Array{FP, 2}, matrix)
 
-Docile.@doc """
-### Abstract Partition supertype
+"""
+!!summary(Abstract Partition supertype for all partitioning types)
 
 This type is the abstract superclass of all partitioning types.
 Partition subtypes allow you to define how to partition your total
 collection (e.g. an ecosystem) into smaller components (e.g.
 subcommunities).
-""" ->
+"""
 abstract Partition
 
+"""
+!!summary(Partition type with multiple subccomunities)
+"""
 immutable Subcommunity <: Partition; end
+
+"""
+!!summary(Partition type allowing only one subcommunity)
+"""
 immutable Onecommunity <: Partition; end
 
 legalpartition(abundances::Array, p::Subcommunity) =
@@ -84,8 +114,8 @@ legalpartition(abundances::Array, p::Subcommunity) =
 legalpartition(abundances::Array, p::Onecommunity) =
     (ndims(abundances) == 1)
 
-Docile.@doc """
-### Collection type
+"""
+!!summary(Collection type, representing a collection of one or more subcommunities)
 
 Type representing a single community or collection of communities. It
 contains a collection of individuals which *may* be further
@@ -95,7 +125,7 @@ ecosystem, which consists of a series of subcommunities.
 The type stores relative abundances of different types, e.g. species,
 and also allows for similarity between individuals.
 
-### Parameterisation
+#### Parameterisation:
 
 **Collection{S, P, FP}**
 
@@ -105,7 +135,7 @@ and also allows for similarity between individuals.
 
 **FP** is the kind of number storage, a subtype of FloatingPoint.
 
-### Members
+#### Members:
 
 **abundances** An array of relative abundances. The first dimension
                represents the species, and further dimensions
@@ -114,7 +144,7 @@ and also allows for similarity between individuals.
 **Z** A two-dimensional matrix representing similarity between
       individuals of the base type, S. By default this will be the
       identity matrix.
-""" ->
+"""
 type Collection{S <: Similarity,
                 P <: Partition,
                 FP <: FloatingPoint}
@@ -124,12 +154,12 @@ type Collection{S <: Similarity,
     similarities::Matrix{FP}
     normalise::Bool
 
-    function Collection(s, p, ab, bool)
+    function Collection(s, p, ab, normalise)
         legalpartition(ab, p) || error("Not a legal partition")
-        abundances = bool ? (ab / sum(ab)) : ab
+        abundances = normalise ? (ab / sum(ab)) : ab
         isapprox(sum(abundances), 1.0) || warn("Not normalised")
         sim = getsimilarities(abundances, partition)
-        new(s, p, abundances, sim, bool)
+        new(s, p, abundances, sim, normalise)
     end
 
     function Collection(s, p, ab)
@@ -163,8 +193,18 @@ type Collection{S <: Similarity,
     end
 end
 
+"""
+!!summary(Ecosystem type, representing an ecosystem of multiple subcommunities)
+"""
+:Ecosystem
+
 Ecosystem{S, FP}(s::S, ab::Array{FP}) = Collection{S, Subcommunity, FP}(s, ab)
 Ecosystem{FP}(ab::Array{FP}) = Collection{Species, Subcommunity, FP}(ab)
+
+"""
+!!summary(Community type, representing a single community)
+"""
+:Community
 
 Community{S, FP}(s::S, ab::Array{FP}) = Collection{S, Onecommunity, FP}(s, ab)
 Community{FP}(ab::Array{FP}) = Collection{Species, Onecommunity, FP}(ab)

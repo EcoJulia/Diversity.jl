@@ -1,12 +1,12 @@
-Docile.@doc """
-### diversity() - calculates subcommunity and ecosystem diversities
+"""
+!!summary(Calculates subcommunity and ecosystem diversities)
 
 Calculates any diversity of a series of columns representing
 independent subcommunity counts, for a series of orders, repesented as
 a vector of qs, with similarity matrix Z, by default the (naïve)
 identity matrix.
 
-### Arguments:
+#### Arguments:
 *measure* the diversity function to be used - one of Dα, Dᾱ, Dρ, Dϵ
           (or Dρ̄), Dγ or Dγ̄
 
@@ -24,7 +24,7 @@ identity matrix.
 
 *returnweights* boolean describing whether to return subcommunity weights
 
-### Returns:
+#### Returns:
 Some or all (as tuple) of:  
 
 * vector of ecosystem diversities representing values of q  
@@ -33,7 +33,10 @@ Some or all (as tuple) of:
   last representing values of q  
 
 * multidimensional array with dimensions matiching shape of proportions,
-  with extra dimension for values of q""" ->
+  with extra dimension for values of q
+"""
+:diversity
+
 function diversity{S <: FloatingPoint,
                    T <: Number}(measure::Function,
                                 proportions::Matrix{S},
@@ -49,7 +52,7 @@ function diversity{S <: FloatingPoint,
     end
 
     ## We need our qs to be a vector of floating points
-    powers = 1. - convert(Vector{S}, [qs])
+    powers = 1. - convert(Vector{S}, collect(qs))
     
     ## We'll definitely need to calculate subcommunity diversity first
     cd = measure(proportions, qs, Z)
@@ -76,15 +79,15 @@ function diversity{S <: FloatingPoint,
     end
 end
 
-Docile.@doc """
-### Dα() - Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
+"""
+!!summary(Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity)
 
 Calculates average raw alpha diversity / naive-community diversity of
 a series of subcommunities represented by columns of independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -92,10 +95,13 @@ qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of diversities, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dα, :subcommunityalpha]
+
 function Dα{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -107,15 +113,15 @@ end
 
 subcommunityalpha = Dα
 
-Docile.@doc """
-### Dᾱ() - Normalised similarity-sensitive subcommunity alpha diversity
+"""
+!!summary(Normalised similarity-sensitive subcommunity alpha diversity)
 
 Calculates (normalised alpha) diversity of a series of
 subcommunities represented by columns of independent subcommunity
 counts, for a series of orders, represented as a vector of
 qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -123,10 +129,13 @@ qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of diversities, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dᾱ, :subcommunityalphabar]
+
 Dᾱ{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -139,15 +148,15 @@ Dᾱ{S <: FloatingPoint,
                               
 subcommunityalphabar = Dᾱ
 
-Docile.@doc """
-### DA() - Raw similarity-sensitive ecosystem alpha diversity / naive-community diversity
+"""
+!!summary(Raw similarity-sensitive ecosystem alpha diversity / naive-community diversity)
 
 Calculates average raw alpha diversity / naive-community diversity of
 a series of subcommunities represented by columns of independent
 subcommunity counts, for a series of orders, represented as a vector
 of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -155,9 +164,12 @@ of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of diversities representing values of q""" ->
+* vector of diversities representing values of q
+"""
+[:DA, :ecosystemA]
+
 DA{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -165,14 +177,14 @@ DA{S <: FloatingPoint,
                     
 ecosystemA = DA
 
-Docile.@doc """
-### DĀ() - Normalised similarity-sensitive ecosystem alpha diversity
+"""
+!!summary(Normalised similarity-sensitive ecosystem alpha diversity)
 
 Calculates average (normalised alpha) diversity of a series of
 subcommunities represented by columns of independent subcommunity
 counts, for a series of orders, represented as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -180,9 +192,12 @@ counts, for a series of orders, represented as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of diversities representing values of q""" ->
+* vector of diversities representing values of q
+"""
+[:DĀ, :ecosystemAbar]
+
 DĀ{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -190,14 +205,14 @@ DĀ{S <: FloatingPoint,
                     
 ecosystemAbar = DĀ
 
-Docile.@doc """
-### Dρ() - Raw similarity-sensitive subcommunity redundancy
+"""
+!!summary(Raw similarity-sensitive subcommunity redundancy)
 
 Calculates redundancy of a series of subcommunities represented by
 columns of independent subcommunity counts, for a series of orders,
 represented as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -205,10 +220,13 @@ represented as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of redundancies, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dρ, :subcommunityrho, :subcommunityredundancy]
+
 function Dρ{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -219,17 +237,18 @@ function Dρ{S <: FloatingPoint,
     Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
     mapslices(p -> powermean(Zp ./ (Z * p), 1. - qs, p), proportions, 1)
 end
+
 subcommunityredundancy = subcommunityrho = Dρ
     
-Docile.@doc """
-### Dβ() - Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
+"""
+!!summary(Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration)
 
 Calculates the raw beta diversity / distinctiveness of or
 concentration of species in a series of subcommunities represented by
 columns of independent subcommunity counts, for a series of orders,
 represented as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -237,10 +256,14 @@ represented as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of diversities, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dβ, :subcommunitybeta, :subcommunitydistinctiveness,
+  :subcommunityconcentration]
+  
 function Dβ{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -255,8 +278,8 @@ end
 subcommunitybeta = subcommunitydistinctiveness =
     subcommunityconcentration = Dβ
 
-Docile.@doc """
-### Dρ̄() - Normalised similarity-sensitive subcommunity representativeness
+"""
+!!summary(Normalised similarity-sensitive subcommunity representativeness)
 
 Calculates the representativeness of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
@@ -266,7 +289,7 @@ representative of on average, so if each subcommunity contains 1/xth
 of the species, then the average representativeness of the
 subcommunities is 1/x.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -274,10 +297,14 @@ subcommunities is 1/x.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of representativenesses, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dρ̄, :subcommunityrhobar, :subcommunityrepresentativeness, :Dϵ,
+  :subcommunityepsilon]
+
 function Dρ̄{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -295,15 +322,15 @@ end
 subcommunityrhobar = subcommunityrepresentativeness = Dρ̄
 subcommunityepsilon = Dϵ = Dρ̄
 
-Docile.@doc """
-### Dβ̄() - Normalised similarity-sensitive subcommunity beta diversity
+"""
+!!summary(Normalised similarity-sensitive subcommunity beta diversity)
 
 Calculates normalised beta diversities or the effective number of
 distinct subcommunities perceived by a series of subcommunities
 represented by columns of independent subcommunity counts, represented
 as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -311,10 +338,13 @@ as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of diversities, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dβ̄, :subcommunitybetabar]
+
 function Dβ̄{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -331,14 +361,14 @@ function Dβ̄{S <: FloatingPoint,
 end
 subcommunitybetabar = Dβ̄
 
-Docile.@doc """
-### DR() - Raw similarity-sensitive ecosystem redundancy
+"""
+!!summary(Raw similarity-sensitive ecosystem redundancy)
 
 Calculates average redundancy of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
 series of orders, represented as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -346,24 +376,27 @@ series of orders, represented as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of redundancies representing values of q""" ->
+* vector of redundancies representing values of q
+"""
+[:DR, :ecosystemR, :ecosystemredundancy]
+
 DR{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ, proportions, qs, Z, true, false, false)
 ecosystemredundancy = ecosystemR = DR
     
-Docile.@doc """
-### DB() - Raw similarity-sensitive ecosystem beta diversity / distinctiveness / concentration
+"""
+!!summary(Raw similarity-sensitive ecosystem beta diversity / distinctiveness / concentration)
 
 Calculates average raw beta diversity / distinctiveness of or
 concentration of species in a series of subcommunities represented by
 columns of independent subcommunity counts, for a series of orders,
 represented as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -371,9 +404,12 @@ represented as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of diversities representing values of q""" ->
+* vector of diversities representing values of q
+"""
+[:DB, :ecosystemB, :ecosystemdistinctiveness, :ecosystemconcentration]
+
 function DB{S <: FloatingPoint,
            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
@@ -381,8 +417,8 @@ function DB{S <: FloatingPoint,
 end
 ecosystemB = ecosystemdistinctiveness = ecosystemconcentration = DB
 
-Docile.@doc """
-### DR̄() - Normalised similarity-sensitive ecosystem representativeness
+"""
+!!summary(Normalised similarity-sensitive ecosystem representativeness)
 
 Calculates average representativeness of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
@@ -392,7 +428,7 @@ representative of on average, so if each subcommunity contains 1/xth
 of the species, then the average representativeness of the
 subcommunities is 1/x.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -400,9 +436,12 @@ subcommunities is 1/x.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of representativenesses representing values of q""" ->
+* vector of representativenesses representing values of q
+"""
+[:DR̄, :ecosystemRbar, :ecosystemrepresentativeness, :DE, :ecosystemE]
+
 DR̄{S <: FloatingPoint,
   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -411,15 +450,15 @@ DR̄{S <: FloatingPoint,
 ecosystemRbar = ecosystemrepresentativeness = DR̄
 ecosystemE = DE = DR̄
 
-Docile.@doc """
-### DB̄() - Normalised similarity-sensitive ecosystem beta diversity / effective number of communities
+"""
+!!summary(Normalised similarity-sensitive ecosystem beta diversity / effective number of communities)
 
 Calculates average normalised beta diversity or the effective number
 of distinct subcommunities present in a series of subcommunities
 represented by columns of independent subcommunity counts, for a
 series of orders, represented as a vector of qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -427,9 +466,12 @@ series of orders, represented as a vector of qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of diversities representing values of q""" ->
+* vector of diversities representing values of q
+"""
+[:DB̄, :ecosystemBbar]
+
 function DB̄{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -437,14 +479,14 @@ function DB̄{S <: FloatingPoint,
 end
 ecosystemBbar = DB̄
 
-Docile.@doc """
-### Dγ() - Raw similarity-sensitive subcommunity gamma diversity
+"""
+!!summary(Raw similarity-sensitive subcommunity gamma diversity)
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -452,10 +494,13 @@ qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of diversities, first dimension representing subcommunities, and
-  last representing values of q""" ->
+  last representing values of q
+"""
+[:Dγ, :subcommunitygamma]
+
 function Dγ{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -470,14 +515,14 @@ end
 
 subcommunitygamma = Dγ
 
-Docile.@doc """
-### Dγ̄() - Normalised similarity-sensitive subcommunity gamma diversity
+"""
+!!summary(Normalised similarity-sensitive subcommunity gamma diversity)
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -485,10 +530,13 @@ qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
 * array of diversities, first dimension representing subcommunities, and
-last representing values of q""" ->
+last representing values of q
+"""
+[:Dγ̄, :subcommunitygammabar]
+
 function Dγ̄{S <: FloatingPoint,
             T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -503,14 +551,14 @@ end
 
 subcommunitygammabar = Dγ̄
 
-Docile.@doc """
-### DG() - Raw similarity-sensitive ecosystem gamma diversity
+"""
+!summary(Raw similarity-sensitive ecosystem gamma diversity)
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -518,24 +566,27 @@ qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of diversities representing values of q""" ->
+* vector of diversities representing values of q
+"""
+[:DG, :ecosystemG]
+
 DG{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ, proportions, qs, Z, true, false, false)
-                    
+
 ecosystemG = DG
 
-Docile.@doc """
-### DḠ() - Normalised similarity-sensitive ecosystem gamma diversity
+"""
+!!summary(Normalised similarity-sensitive ecosystem gamma diversity)
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
 qs.
 
-### Arguments:
+#### Arguments:
 
 *proportions* population proportions
 
@@ -543,9 +594,12 @@ qs.
 
 *Z* similarity matrix
 
-### Returns:
+#### Returns:
 
-* vector of diversities representing values of q""" ->
+* vector of diversities representing values of q
+"""
+[:DḠ, :ecosystemGbar]
+
 DḠ{S <: FloatingPoint,
    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =

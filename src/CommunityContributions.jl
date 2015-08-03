@@ -36,7 +36,7 @@ function contributions{S <: FloatingPoint,
                                     returnsubcommunity::Bool = false,
                                     returnweights::Bool = false)
     ## We need our qs to be a vector of floating points
-    powers = 1. - convert(Vector{S}, [qs])
+    powers = 1. - convert(Vector{S}, collect(qs))
     
     ## Then calculate the subcommunity and ecosystem diversity measures
     ed, cd, w = diversity(measure, proportions, qs, Z, true, true, true)
