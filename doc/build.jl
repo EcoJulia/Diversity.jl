@@ -41,4 +41,7 @@ cd(dirname(@__FILE__)) do
     end
 
     info("Need to run \"git add $(api_directory)\" to add new api files from this directory.")
+
+    info("Need to build website using mkdocs from Diversity root:")
+    info("Run \"/opt/local/Library/Frameworks/Python.framework/Versions/3.4/bin/mkdocs build --clean\"")
 end

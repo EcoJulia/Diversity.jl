@@ -1,0 +1,23 @@
+site_name:           Diversity.jl
+repo_url:            https://github.com/richardreeve/Diversity.jl
+site_description:    Package for measuring and partitioning diversity
+site_author:         Richard Reeve
+theme:               readthedocs
+docs_dir:            doc
+
+pages:
+- Introduction:     diversity.md
+- Submodules:
+    - Ecology:      ecology.md
+    - Hill:         hill.md
+    - Jost:         jost.md
+- API:
+    - Diversity:            api/Diversity.md
+    - Diversity.Ecology:    api/Diversity.Ecology.md
+    - Diversity.Hill:       api/Diversity.Hill.md
+    - Diversity.Jost:       api/Diversity.Jost.md
+    - Index:                api/index.md
+
+markdown_extensions:
+    - tables
+    - fenced_code
