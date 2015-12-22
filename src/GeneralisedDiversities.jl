@@ -1,5 +1,5 @@
 """
-!!summary(Calculates subcommunity and ecosystem diversities)
+!!summary(Calculates subcommunity and supercommunity diversities)
 
 Calculates any diversity of a series of columns representing
 independent subcommunity counts, for a series of orders, repesented as
@@ -16,10 +16,10 @@ identity matrix.
 
 *Z* similarity matrix
 
-*returnecosystem* boolean describing whether to return the
-                  ecosystem diversity
+*returnsupercommunity* boolean describing whether to return the
+                  supercommunity diversity
 
-*returncommunity* boolean describing whether to return the
+*returnsubcommunity* boolean describing whether to return the
                   subcommunity diversities 
 
 *returnweights* boolean describing whether to return subcommunity weights
@@ -27,7 +27,7 @@ identity matrix.
 #### Returns:
 Some or all (as tuple) of:  
 
-* vector of ecosystem diversities representing values of q  
+* vector of supercommunity diversities representing values of q  
 
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q  
@@ -42,12 +42,12 @@ function diversity{S <: AbstractFloat,
                                 proportions::Matrix{S},
                                 qs::Union{T, Vector{T}},
                                 Z::Matrix{S} = eye(size(proportions, 1)),
-                                returnecosystem::Bool = true,
-                                returncommunity::Bool = true,
+                                returnsupercommunity::Bool = true,
+                                returnsubcommunity::Bool = true,
                                 returnweights::Bool = true)
     ## Make sure we actually want to calculate the diversity before
     ## going any further!
-    if (!returnecosystem && !returncommunity)
+    if (!returnsupercommunity && !returnsubcommunity)
         return returnweights ? mapslices(sum, proportions, 1) : nothing
     end
 
@@ -66,8 +66,8 @@ function diversity{S <: AbstractFloat,
                 ed[i] = powermean(reshape(cd[i, :], size(proportions, 2)),
                                   power, reshape(w, size(proportions, 2)))
             end
-            # must be returning ecosystem, but what else?
-            return (returncommunity ?
+            # must be returning supercommunity, but what else?
+            return (returnsubcommunity ?
                     (returnweights ? (ed, cd, w) : (ed, cd)) :
                     (returnweights ? (ed, w) : (ed)))
         else # must be returning subcommunity and weights
@@ -100,7 +100,7 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dα
+:subcommunityalpha
 
 function Dα{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -134,7 +134,7 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dᾱ
+:subcommunityalphabar
 
 Dᾱ{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -149,7 +149,7 @@ Dᾱ{S <: AbstractFloat,
 subcommunityalphabar = Dᾱ
 
 """
-!!summary(Raw similarity-sensitive ecosystem alpha diversity / naive-community diversity)
+!!summary(Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity)
 
 Calculates average raw alpha diversity / naive-community diversity of
 a series of subcommunities represented by columns of independent
@@ -168,17 +168,17 @@ of qs.
 
 * vector of diversities representing values of q
 """
-:DA
+:supercommunityA
 
 DA{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dα, proportions, qs, Z, true, false, false)
                     
-ecosystemA = DA
+supercommunityA = ecosystemA = DA
 
 """
-!!summary(Normalised similarity-sensitive ecosystem alpha diversity)
+!!summary(Normalised similarity-sensitive supercommunity alpha diversity)
 
 Calculates average (normalised alpha) diversity of a series of
 subcommunities represented by columns of independent subcommunity
@@ -196,14 +196,14 @@ counts, for a series of orders, represented as a vector of qs.
 
 * vector of diversities representing values of q
 """
-:DĀ
+:supercommunityAbar
 
 DĀ{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dᾱ, proportions, qs, Z, true, false, false)
                     
-ecosystemAbar = DĀ
+supercommunityAbar = ecosystemAbar = DĀ
 
 """
 !!summary(Raw similarity-sensitive subcommunity redundancy)
@@ -225,7 +225,7 @@ represented as a vector of qs.
 * array of redundancies, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dρ
+:subcommunityrho
 
 function Dρ{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -261,7 +261,7 @@ represented as a vector of qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dβ
+:subcommunitybeta
   
 function Dβ{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -283,7 +283,7 @@ subcommunitybeta = subcommunitydistinctiveness =
 Calculates the representativeness of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
 series of orders, represented as a vector of qs. Representativeness
-reflects what proportion of the ecosystem each subcommunity is
+reflects what proportion of the supercommunity each subcommunity is
 representative of on average, so if each subcommunity contains 1/xth
 of the species, then the average representativeness of the
 subcommunities is 1/x.
@@ -301,7 +301,7 @@ subcommunities is 1/x.
 * array of representativenesses, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dρ̄
+:subcommunityrhobar
 
 function Dρ̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -341,7 +341,7 @@ as a vector of qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dβ̄
+:subcommunitybetabar
 
 function Dβ̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -360,7 +360,7 @@ end
 subcommunitybetabar = Dβ̄
 
 """
-!!summary(Raw similarity-sensitive ecosystem redundancy)
+!!summary(Raw similarity-sensitive supercommunity redundancy)
 
 Calculates average redundancy of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
@@ -378,16 +378,16 @@ series of orders, represented as a vector of qs.
 
 * vector of redundancies representing values of q
 """
-:DR
+:supercommunityR
 
 DR{S <: AbstractFloat,
   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ, proportions, qs, Z, true, false, false)
-ecosystemredundancy = ecosystemR = DR
+supercommunityredundancy = supercommunityR = ecosystemR = DR
     
 """
-!!summary(Raw similarity-sensitive ecosystem beta diversity / distinctiveness / concentration)
+!!summary(Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration)
 
 Calculates average raw beta diversity / distinctiveness of or
 concentration of species in a series of subcommunities represented by
@@ -406,22 +406,22 @@ represented as a vector of qs.
 
 * vector of diversities representing values of q
 """
-:DB
+:supercommunityB
 
 function DB{S <: AbstractFloat,
            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                         Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ, proportions, qs, Z, true, false, false)
 end
-ecosystemB = ecosystemdistinctiveness = ecosystemconcentration = DB
+supercommunityB = ecosystemB = supercommunitydistinctiveness = supercommunityconcentration = DB
 
 """
-!!summary(Normalised similarity-sensitive ecosystem representativeness)
+!!summary(Normalised similarity-sensitive supercommunity representativeness)
 
 Calculates average representativeness of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
 series of orders, represented as a vector of qs. Representativeness
-reflects what proportion of the ecosystem each subcommunity is
+reflects what proportion of the supercommunity each subcommunity is
 representative of on average, so if each subcommunity contains 1/xth
 of the species, then the average representativeness of the
 subcommunities is 1/x.
@@ -438,18 +438,18 @@ subcommunities is 1/x.
 
 * vector of representativenesses representing values of q
 """
-:DR̄
+:supercommunityRbar
 
 DR̄{S <: AbstractFloat,
   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ̄, proportions, qs, Z, true, false, false)
 
-ecosystemRbar = ecosystemrepresentativeness = DR̄
-ecosystemE = DE = DR̄
+supercommunityRbar = ecosystemRbar = supercommunityrepresentativeness = DR̄
+supercommunityE = ecosystemE = DE = DR̄
 
 """
-!!summary(Normalised similarity-sensitive ecosystem beta diversity / effective number of communities)
+!!summary(Normalised similarity-sensitive supercommunity beta diversity / effective number of communities)
 
 Calculates average normalised beta diversity or the effective number
 of distinct subcommunities present in a series of subcommunities
@@ -468,14 +468,14 @@ series of orders, represented as a vector of qs.
 
 * vector of diversities representing values of q
 """
-:DB̄
+:supercommunityBbar
 
 function DB̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ̄, proportions, qs, Z, true, false, false)
 end
-ecosystemBbar = DB̄
+supercommunityBbar = ecosystemBbar = DB̄
 
 """
 !!summary(Raw similarity-sensitive subcommunity gamma diversity)
@@ -497,7 +497,7 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:Dγ
+:subcommunitygamma
 
 function Dγ{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -533,7 +533,7 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
 last representing values of q
 """
-:Dγ̄
+:subcommunitygammabar
 
 function Dγ̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
@@ -550,7 +550,7 @@ end
 subcommunitygammabar = Dγ̄
 
 """
-!summary(Raw similarity-sensitive ecosystem gamma diversity)
+!summary(Raw similarity-sensitive supercommunity gamma diversity)
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
@@ -568,17 +568,17 @@ qs.
 
 * vector of diversities representing values of q
 """
-:DG
+:supercommunityG
 
 DG{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ, proportions, qs, Z, true, false, false)
 
-ecosystemG = DG
+supercommunityG = ecosystemG = DG
 
 """
-!!summary(Normalised similarity-sensitive ecosystem gamma diversity)
+!!summary(Normalised similarity-sensitive supercommunity gamma diversity)
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
@@ -596,11 +596,11 @@ qs.
 
 * vector of diversities representing values of q
 """
-:DḠ
+:supercommunityGbar
 
 DḠ{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ̄, proportions, qs, Z, true, false, false)
 
-ecosystemGbar = DḠ
+supercommunityGbar = ecosystemGbar = DḠ
