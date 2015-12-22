@@ -20,7 +20,7 @@ similarity matrix for the species
 """
 :generalisedrichness
 
-function generalisedrichness{S <: FloatingPoint}(measure::Function,
+function generalisedrichness{S <: AbstractFloat}(measure::Function,
                                                  proportions::Matrix{S},
                                                  Z::Matrix{S} =
                                                  eye(size(proportions, 1)))
@@ -39,7 +39,7 @@ independent subcommunity counts, which is diversity at q = 0
 ### Returns:
 * diversities of subcommunities
 """
-function richness{S <: FloatingPoint}(proportions::Matrix{S})
+function richness{S <: AbstractFloat}(proportions::Matrix{S})
     generalisedrichness(Dᾱ, proportions)
 end
 
@@ -63,7 +63,7 @@ includes a similarity matrix for the species
 """
 :generalisedshannon
 
-function generalisedshannon{S <: FloatingPoint}(measure::Function,
+function generalisedshannon{S <: AbstractFloat}(measure::Function,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
                                                 eye(size(proportions)[1]))
@@ -82,7 +82,7 @@ independent subcommunity counts, which is log(diversity) at q = 1
 ### Returns:
 * entropies of subcommunities
 """
-function shannon{S <: FloatingPoint}(proportions::Matrix{S})
+function shannon{S <: AbstractFloat}(proportions::Matrix{S})
     generalisedshannon(Dᾱ, proportions)
 end
 
@@ -105,7 +105,7 @@ includes a similarity matrix for the species
 """
 :generalisedsimpson
 
-function generalisedsimpson{S <: FloatingPoint}(measure::Function ,
+function generalisedsimpson{S <: AbstractFloat}(measure::Function ,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
                                                 eye(size(proportions)[1]))
@@ -127,7 +127,7 @@ concentration) at q = 2
 """
 :simpson
 
-function simpson{S <: FloatingPoint}(proportions::Matrix{S})
+function simpson{S <: AbstractFloat}(proportions::Matrix{S})
     generalisedsimpson(Dᾱ, proportions)
 end
 
@@ -170,6 +170,6 @@ DA(proportions, 0) / DG(proportions, 0) - 1
 ### Returns:
 * the Jaccard index
 """
-function jaccard{S <: FloatingPoint}(proportions::Matrix{S})
+function jaccard{S <: AbstractFloat}(proportions::Matrix{S})
     generalisedjaccard(proportions, 0)[1]
 end

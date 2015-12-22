@@ -37,10 +37,10 @@ Some or all (as tuple) of:
 """
 :diversity
 
-function diversity{S <: FloatingPoint,
+function diversity{S <: AbstractFloat,
                    T <: Number}(measure::Function,
                                 proportions::Matrix{S},
-                                qs::Union(T, Vector{T}),
+                                qs::Union{T, Vector{T}},
                                 Z::Matrix{S} = eye(size(proportions, 1)),
                                 returnecosystem::Bool = true,
                                 returncommunity::Bool = true,
@@ -58,9 +58,9 @@ function diversity{S <: FloatingPoint,
     cd = measure(proportions, qs, Z)
 
     ## But do we need to calculate anything else?
-    if (returnecosystem || returnweights)
+    if (returnsupercommunity || returnweights)
         w = mapslices(sum, proportions, 1)
-        if (returnecosystem)
+        if (returnsupercommunity)
             ed = zeros(powers)
             for (i, power) in enumerate(powers)
                 ed[i] = powermean(reshape(cd[i, :], size(proportions, 2)),
@@ -100,10 +100,10 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dα, :subcommunityalpha]
+:Dα
 
-function Dα{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dα{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -134,10 +134,10 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dᾱ, :subcommunityalphabar]
+:Dᾱ
 
-Dᾱ{S <: FloatingPoint,
-   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+Dᾱ{S <: AbstractFloat,
+   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     mapslices(p -> qDZ(p, qs, Z),
                               proportions *
@@ -168,10 +168,10 @@ of qs.
 
 * vector of diversities representing values of q
 """
-[:DA, :ecosystemA]
+:DA
 
-DA{S <: FloatingPoint,
-   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+DA{S <: AbstractFloat,
+   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dα, proportions, qs, Z, true, false, false)
                     
@@ -196,10 +196,10 @@ counts, for a series of orders, represented as a vector of qs.
 
 * vector of diversities representing values of q
 """
-[:DĀ, :ecosystemAbar]
+:DĀ
 
-DĀ{S <: FloatingPoint,
-   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+DĀ{S <: AbstractFloat,
+   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dᾱ, proportions, qs, Z, true, false, false)
                     
@@ -225,10 +225,10 @@ represented as a vector of qs.
 * array of redundancies, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dρ, :subcommunityrho, :subcommunityredundancy]
+:Dρ
 
-function Dρ{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dρ{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -261,11 +261,10 @@ represented as a vector of qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dβ, :subcommunitybeta, :subcommunitydistinctiveness,
-  :subcommunityconcentration]
+:Dβ
   
-function Dβ{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dβ{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -302,11 +301,10 @@ subcommunities is 1/x.
 * array of representativenesses, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dρ̄, :subcommunityrhobar, :subcommunityrepresentativeness, :Dϵ,
-  :subcommunityepsilon]
+:Dρ̄
 
-function Dρ̄{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dρ̄{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -343,10 +341,10 @@ as a vector of qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dβ̄, :subcommunitybetabar]
+:Dβ̄
 
-function Dβ̄{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dβ̄{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -380,10 +378,10 @@ series of orders, represented as a vector of qs.
 
 * vector of redundancies representing values of q
 """
-[:DR, :ecosystemR, :ecosystemredundancy]
+:DR
 
-DR{S <: FloatingPoint,
-  T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+DR{S <: AbstractFloat,
+  T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ, proportions, qs, Z, true, false, false)
 ecosystemredundancy = ecosystemR = DR
@@ -408,10 +406,10 @@ represented as a vector of qs.
 
 * vector of diversities representing values of q
 """
-[:DB, :ecosystemB, :ecosystemdistinctiveness, :ecosystemconcentration]
+:DB
 
-function DB{S <: FloatingPoint,
-           T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function DB{S <: AbstractFloat,
+           T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                         Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ, proportions, qs, Z, true, false, false)
 end
@@ -440,10 +438,10 @@ subcommunities is 1/x.
 
 * vector of representativenesses representing values of q
 """
-[:DR̄, :ecosystemRbar, :ecosystemrepresentativeness, :DE, :ecosystemE]
+:DR̄
 
-DR̄{S <: FloatingPoint,
-  T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+DR̄{S <: AbstractFloat,
+  T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ̄, proportions, qs, Z, true, false, false)
 
@@ -470,10 +468,10 @@ series of orders, represented as a vector of qs.
 
 * vector of diversities representing values of q
 """
-[:DB̄, :ecosystemBbar]
+:DB̄
 
-function DB̄{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function DB̄{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ̄, proportions, qs, Z, true, false, false)
 end
@@ -499,10 +497,10 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-[:Dγ, :subcommunitygamma]
+:Dγ
 
-function Dγ{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dγ{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -535,10 +533,10 @@ qs.
 * array of diversities, first dimension representing subcommunities, and
 last representing values of q
 """
-[:Dγ̄, :subcommunitygammabar]
+:Dγ̄
 
-function Dγ̄{S <: FloatingPoint,
-            T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+function Dγ̄{S <: AbstractFloat,
+            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -570,10 +568,10 @@ qs.
 
 * vector of diversities representing values of q
 """
-[:DG, :ecosystemG]
+:DG
 
-DG{S <: FloatingPoint,
-   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+DG{S <: AbstractFloat,
+   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ, proportions, qs, Z, true, false, false)
 
@@ -598,10 +596,10 @@ qs.
 
 * vector of diversities representing values of q
 """
-[:DḠ, :ecosystemGbar]
+:DḠ
 
-DḠ{S <: FloatingPoint,
-   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+DḠ{S <: AbstractFloat,
+   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ̄, proportions, qs, Z, true, false, false)
 

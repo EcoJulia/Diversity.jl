@@ -37,7 +37,7 @@ if VERSION < v"0.4-"
     end
 else
     immutable Taxonomy <: Similarity
-        labels::Dict{String, Tuple{Float64, Dict{String, String}}}
+        labels::Dict{AbstractString, Tuple{Float64, Dict{AbstractString, AbstractString}}}
     end    
 end
 
@@ -133,7 +133,7 @@ and also allows for similarity between individuals.
 
 **P** is the partition type, e.g. Subcommunity, a subtype of Partition.
 
-**FP** is the kind of number storage, a subtype of FloatingPoint.
+**FP** is the kind of number storage, a subtype of AbstractFloat.
 
 #### Members:
 
@@ -147,7 +147,7 @@ and also allows for similarity between individuals.
 """
 type Collection{S <: Similarity,
                 P <: Partition,
-                FP <: FloatingPoint}
+                FP <: AbstractFloat}
     similarity::S
     partition::P
     abundances::Array{FP}

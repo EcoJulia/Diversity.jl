@@ -19,10 +19,10 @@ divided by the naive-community beta diversity.
 * array of diversities, first dimension representing sub-communities, and
   last representing values of q
 """
-[:jostalpha, :jostα]
+:jostα
 
-function jostalpha{S <: FloatingPoint,
-                   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}))
+function jostalpha{S <: AbstractFloat,
+                   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}})
     DA(proportions, qs) ./
     qD(reshape(mapslices(sum, proportions, (1,)), size(proportions)[2]), qs)
 end
@@ -48,10 +48,10 @@ Jost's alpha diversity
 * array of diversities, first dimension representing sub-communities, and
   last representing values of q
 """
-[:jostbeta, :jostβ]
+:jostβ
 
-function jostbeta{S <: FloatingPoint,
-                  T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}))
+function jostbeta{S <: AbstractFloat,
+                  T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}})
     DḠ(proportions, qs) ./ jostalpha(proportions, qs)
 end
 

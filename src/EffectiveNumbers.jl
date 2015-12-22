@@ -16,7 +16,7 @@ is 1, so this is just the arithmetic mean.
 :powermean
 
 function powermean{S <: Number,
-                   T <: FloatingPoint,
+                   T <: AbstractFloat,
                    U <: Number}(values::Vector{S},
                                 order::T = 1.,
                                 weights::Vector{U} = ones(values) * 1.)
@@ -49,9 +49,9 @@ powermean{T <: Integer,
                            
 
 ## We need to handle matrices as well as vectors
-function powermean{S <: Number}(values::Union(Vector{S}, Matrix{S}),
+function powermean{S <: Number}(values::Union{Vector{S}, Matrix{S}},
                                 orders::Vector,
-                                weights::Union(Vector, Matrix) =
+                                weights::Union{Vector, Matrix} =
                                 ones(values) * 1.)
     (size(values) == size(weights)) ||
     error("Values and weights are not the same size")
@@ -73,9 +73,9 @@ population with given relative proportions.
 * Diversity of order qs (single number or vector of diversities)"""
 :qD
 
-function qD{S <: FloatingPoint,
+function qD{S <: AbstractFloat,
             T <: Number}(proportions::Vector{S},
-                         qs::Union(T, Vector{T}))
+                         qs::Union{T, Vector{T}})
     if !isapprox(sum(proportions), 1.)
         warn("qD: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
@@ -84,8 +84,8 @@ function qD{S <: FloatingPoint,
 end
 
 ## We need to handle matrices as well as vectors
-qD{S <: FloatingPoint,
-   T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T})) =
+qD{S <: AbstractFloat,
+   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}}) =
        mapslices(p -> qD(p, qs), proportions, 1)
 
 """
@@ -105,8 +105,8 @@ a population with given relative *proportions*, and similarity matrix
 * Diversity of order qs (single number or vector of diversities)"""
 :qDZ
 
-function qDZ{S <: FloatingPoint,
-             T <: Number}(proportions::Vector{S}, qs::Union(T, Vector{T}),
+function qDZ{S <: AbstractFloat,
+             T <: Number}(proportions::Vector{S}, qs::Union{T, Vector{T}},
                           Z::Matrix{S} = eye(length(proportions)))
     if !isapprox(sum(proportions), 1.)
         warn("qDZ: Population proportions don't sum to 1, fixing...")
@@ -120,7 +120,7 @@ function qDZ{S <: FloatingPoint,
 end
 
 ## We need to handle matrices as well as vectors
-qDZ{S <: FloatingPoint,
-    T <: Number}(proportions::Matrix{S}, qs::Union(T, Vector{T}),
+qDZ{S <: AbstractFloat,
+    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                  Z::Matrix{S} = eye(size(proportions, 1))) =
                      mapslices(p -> qDZ(p, qs, Z), proportions, 1)
