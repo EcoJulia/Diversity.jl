@@ -56,12 +56,12 @@ function contributions{S <: AbstractFloat,
             ## contribution per individual or subcommunity rather than
             ## any kind of actual value
             if (isapprox(power, 0))
-                results[i, :] = w .* log(cd[i, :])
+                results[i, :] = (w .* log(slicedim(cd, 1, i)))[1,:]
                 ## IS THIS THE RIGHT WAY TO NORMALISE UNDER LOG?
-                results[i, :] -= w .* sum(results[i, :])
+                results[i, :] -= (w .* sum(slicedim(results, 1, i)))[1,:]
             else
-                results[i, :] = w .* (cd[i, :] .^ power)
-                results[i, :] /= sum(results[i, :])
+                results[i, :] = (w .* (slicedim(cd, 1, i) .^ power))[1,:]
+                results[i, :] /= sum(results[i,:])
             end
         end
     end
