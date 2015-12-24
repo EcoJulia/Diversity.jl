@@ -1,20 +1,18 @@
 """
-!!summary(Calculates the weighted powermean of a series of numbers)
+### Calculates the weighted powermean of a series of numbers
 
 Calculates *order*th power mean of *values*, weighted by
 *weights*. By default, *weights* are equal and *order*
 is 1, so this is just the arithmetic mean.
 
 #### Arguments:
-* values: values for which to calculate mean
-* order: order of power mean
-* weights: weights of elements, normalised to 1 inside function
+- `values`: values for which to calculate mean
+- `order`: order of power mean
+- `weights`: weights of elements, normalised to 1 inside function
 
 #### Returns:
-* weighted power mean(s)
+- weighted power mean(s)
 """
-:powermean
-
 function powermean{S <: Number,
                    T <: AbstractFloat,
                    U <: Number}(values::Vector{S},
@@ -59,20 +57,18 @@ function powermean{S <: Number}(values::Union{Vector{S}, Matrix{S}},
 end
 
 """
-!!summary(Calculates Hill / naive-similarity diversity)
+### Calculates Hill / naive-similarity diversity
 
 Calculates Hill number or naive diversity of order(s) *qs* of a
 population with given relative proportions.
 
 #### Arguments:
-* proportions: relative proportions of different individuals /
+- `proportions`: relative proportions of different individuals /
                species in population or series of populations
-* qs: single number or vector of orders of diversity measurement
+- `qs`: single number or vector of orders of diversity measurement
 
 #### Returns:
-* Diversity of order qs (single number or vector of diversities)"""
-:qD
-
+- Diversity of order qs (single number or vector of diversities)"""
 function qD{S <: AbstractFloat,
             T <: Number}(proportions::Vector{S},
                          qs::Union{T, Vector{T}})
@@ -89,22 +85,20 @@ qD{S <: AbstractFloat,
        mapslices(p -> qD(p, qs), proportions, 1)
 
 """
-!!summary(Calculates Leinster-Cobbold / similarity-sensitive diversity)
+### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
 Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
 a population with given relative *proportions*, and similarity matrix
 *Z*.
 
 #### Arguments:
-* proportions: relative proportions of different individuals /
+- `proportions`: relative proportions of different individuals /
                species in a population or series of populations
-* qs: single number or vector of orders of diversity measurement
-* Z: similarity matrix
+- `qs`: single number or vector of orders of diversity measurement
+- `Z`: similarity matrix
 
 #### Returns:
-* Diversity of order qs (single number or vector of diversities)"""
-:qDZ
-
+- Diversity of order qs (single number or vector of diversities)"""
 function qDZ{S <: AbstractFloat,
              T <: Number}(proportions::Vector{S}, qs::Union{T, Vector{T}},
                           Z::Matrix{S} = eye(length(proportions)))
