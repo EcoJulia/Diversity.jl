@@ -1,13 +1,20 @@
-# Diversity [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl) [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Diversity](http://pkg.julialang.org/badges/Diversity_release.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=release)
+# Diversity [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl) [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
 
-**Diversity** is a [Julia](http://www.julialang.org) package that provides
-functionality for measuring alpha, beta and gamma diversity of
-subcommunities and ecosystems. It uses the diversity measures described
-in the arXiv paper [arXiv:1404.6520 (q-bio.QM)](http://arxiv.org/abs/1404.6520),
+- **Current Release**: 
+  [![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
+  [![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
+  [![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
+
+
+**Diversity** is a [Julia](http://www.julialang.org) package that
+provides functionality for measuring alpha, beta and gamma diversity
+of supercommunities (e.g. ecosystems) and their constituent
+subcommunities. It uses the diversity measures described in the arXiv
+paper [arXiv:1404.6520 (q-bio.QM)](http://arxiv.org/abs/1404.6520),
 *How to partition diversity*. It also provides a series of other
 related and older diversity measures through sub-modules. Currently
-these are all ecological diversity measures, but this will be
-expanded through interfacing to BioJulia.
+these are all ecological diversity measures, but this will be expanded
+through interfacing to BioJulia.
 
 This package is still in alpha, and so we do not guarantee its
 correctness, although we are aware of no issues with it. Please
@@ -27,23 +34,23 @@ Accessing the main functionality in the package is simple:
 ```julia
 using Diversity
 ...
-diversities = ecosystemAbar(proportions, [0, 1, 2, Inf], Z)
-diversity = DE(proportions, 2, Z)
+diversities = supercommunityAbar(proportions, [0, 1, 2, Inf], Z)
+diversity = supercommunityR(proportions, 2, Z)
 ```
 
 The main package provides basic diversity measures (from
 [Hill, 1973](http://www.jstor.org/stable/1934352)), and generalised alpha,
-beta and gamma diversity measures at the level of the ecosystem and its
+beta and gamma diversity measures at the level of the supercommunity and its
 component subcommunities (these are extended from
 [Reeve et al, 2014](http://arxiv.org/abs/1404.6520)).
 There are also matching normalised and raw, alpha, beta and gamma
-diversities at both the subcommunity and ecosystem level. The
+diversities at both the subcommunity and supercommunity level. The
 functions exist both with unicode names preceded by D (e.g.
 Dᾱ()), and with matching ascii names (e.g.
 subcommunityalphabar()). We also provide a general function for extract any
 diversity measure for a series of subcommunity relative abundances.
 And we can calculate the proportions that subcommunities each
-contribute to ecosystem diversity per subcommunity or per individual.
+contribute to supercommunity diversity per subcommunity or per individual.
 The full documentation can be found
 [here](http://richardreeve.github.io/Diversity.jl/stable/diversity.html).
 
@@ -53,10 +60,10 @@ The package also provides sub-modules with other diversity measures:
 
 We also replicate old ecological diversity measures and generalised
 versions of them that relate to our general measures of alpha, beta
-and gamma diversity at subcommunity and ecosystem measures. The
+and gamma diversity at subcommunity and supercommunity measures. The
 generalisations of the richness, Shannon and Simpson are the only
 standard measures we are aware of whose subcommunity components sum
-directly to the corresponding ecosystem measure (although note that
+directly to the corresponding supercommunity measure (although note that
 Simpson's index decreases for increased diversity, so small components
 are more diverse).
 Documentation for these diversity measures can be found
