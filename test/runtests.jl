@@ -111,6 +111,7 @@ ed, cd, w = diversity(Dγ, communities, qs, Z, true, true, true)
 @test_approx_eq diversity(Dγ̄, communities, qs, Z, false, true, true)[1] cd
 @test_approx_eq diversity(Dα, allthesame, qs, Z, true, true, true)[3] colweights
 
+using Diversity.contributions
 # Now some even communities, should see that raw and normalised
 # diversities are the same
 smoothed = communities ./ mapslices(sum, communities, 1);

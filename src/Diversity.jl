@@ -26,7 +26,7 @@ export DĀ, DA, DB̄, DB, DE, DR̄, DR, DḠ, DG
 export diversity
 
 include("CommunityContributions.jl")
-export contributions
+# export contributions
 
 module Ecology
 using Docile
