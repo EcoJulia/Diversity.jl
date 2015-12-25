@@ -1,44 +1,46 @@
-## contributions() - Calculate diversity contributions from subcommunities
-##
-## Calculates proportions that subcommunities each contribute to
-## ecosystem diversity per subcommunity (perindividual = false), or
-## per individual (perindividual = true) - in the latter case scaled
-## so that the total # of individuals is 1, since we only have
-## relative abundances.
-##
-## Arguments:
-## - measure - diversity measure to use
-## - proportions - population proportions
-## - qs - single number or vector of values of parameter q
-## - perindividual - do we measure per individual in population (true)
-##                   or per subcommunity (false)
-## - Z - similarity matrix
-## - returnecosystem - boolean describing whether to return the
-##                     ecosystem diversity
-## - returnsubcommunity - boolean describing whether to return the
-##                     subcommunity diversities
-## - returnweights - boolean describing whether to return subcommunity weights
-##
-## Returns:
-## - contributions of subcommunities to ecosystem diversity (of type measure)
-## - and none, some or all (in a tuple) of:
-##   - vector of ecosystem diversities representing values of q
-##   - array of diversities, first dimension representing subcommunities, and
-##     last representing values of q
-##   - vector of subcommunity weights
+"""
+### Calculate diversity contributions from subcommunities
+
+Calculates proportions that subcommunities each contribute to
+supercommunity diversity per subcommunity (perindividual = false), or
+per individual (perindividual = true) - in the latter case scaled
+so that the total # of individuals is 1, since we only have
+relative abundances.
+
+#### Arguments:
+- `measure`: diversity measure to use
+- `proportions`: population proportions
+- `qs`: single number or vector of values of parameter q
+- `perindividual`: do we measure per individual in population (true)
+                   or per subcommunity (false)
+- `Z`: similarity matrix
+- `returnsupercommunity`: boolean describing whether to return the
+                    supercommunity diversity
+- `returnsubcommunity`: boolean describing whether to return the
+                    subcommunity diversities
+- `returnweights`: boolean describing whether to return subcommunity weights
+
+#### Returns:
+- contributions of subcommunities to supercommunity diversity (of type measure)
+- and none, some or all (in a tuple) of:
+  - vector of supercommunity diversities representing values of q
+  - array of diversities, first dimension representing subcommunities, and
+    last representing values of q
+  - vector of subcommunity weights
+"""
 function contributions{S <: AbstractFloat,
                        T <: Number}(measure::Function,
                                     proportions::Matrix{S},
                                     qs::Union{T, Vector{T}},
                                     perindividual::Bool = true,
                                     Z::Matrix{S} = eye(size(proportions, 1)),
-                                    returnecosystem::Bool = false,
+                                    returnsupercommunity::Bool = false,
                                     returnsubcommunity::Bool = false,
                                     returnweights::Bool = false)
     ## We need our qs to be a vector of floating points
     powers = 1. - convert(Vector{S}, collect(qs))
     
-    ## Then calculate the subcommunity and ecosystem diversity measures
+    ## Then calculate the subcommunity and supercommunity diversity measures
     ed, cd, w = diversity(measure, proportions, qs, Z, true, true, true)
 
     ## And calculate the contributions
@@ -67,7 +69,7 @@ function contributions{S <: AbstractFloat,
     end
     contrib = perindividual ? (results ./ w) : results
     ## And then return the right bits
-    return (returnecosystem ?
+    return (returnsupercommunity ?
             (returnsubcommunity ?
              (returnweights ? (contrib, ed, cd, w) : (contrib, ed, cd)) :
              (returnweights ? (contrib, ed, w) : (contrib, ed))) :
