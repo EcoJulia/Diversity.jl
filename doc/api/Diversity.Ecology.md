@@ -1,6 +1,7 @@
 # Diversity.Ecology
 
-## Exported
+
+## Methods [Exported]
 
 ---
 

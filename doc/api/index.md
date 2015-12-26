@@ -5,11 +5,15 @@
 
 ---
 
-## Exported
+## Functions [Exported]
 
 [Diversity.Community](Diversity.md#function__community.1)  ### Community type, representing a single community
 
 [Diversity.Ecosystem](Diversity.md#function__ecosystem.1)  ### Ecosystem type, representing an ecosystem of multiple subcommunities
+
+---
+
+## Methods [Exported]
 
 [DA{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number})](Diversity.md#method__da.1)  ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
 
@@ -91,6 +95,10 @@
 
 [qD{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 1},  qs::Union{Array{T<:Number, 1}, T<:Number})](Diversity.md#method__qd.1)  ### Calculates Hill / naive-similarity diversity
 
+---
+
+## Types [Exported]
+
 [Diversity.Collection{S<:Diversity.Similarity, P<:Diversity.Partition, FP<:AbstractFloat}](Diversity.md#type__collection.1)  ### Collection type, representing a collection of one or more subcommunities
 
 [Diversity.GeneralSimilarity](Diversity.md#type__generalsimilarity.1)  ### A general matrix-based Similarity subtype
@@ -101,11 +109,15 @@
 
 [Diversity.Unique](Diversity.md#type__unique.1)  ### A subtype of Similarity where all individuals are completely distinct
 
+---
+
+## Typealiass [Exported]
+
 [Species](Diversity.md#typealias__species.1)  ### A subtype of Similarity where all species are completely distinct
 
 ---
 
-## Internal
+## Methods [Internal]
 
 [call(::Type{Diversity.GeneralSimilarity},  Z::Array{Float64, 2})](Diversity.md#method__call.1)  ### Constructor for GeneralSimilarity
 
@@ -127,15 +139,27 @@
 
 [powermean{S<:Number}(values::Array{S<:Number, 1})](Diversity.md#method__powermean.3)  ### Calculates the weighted powermean of a series of numbers
 
+---
+
+## Types [Internal]
+
 [Diversity.Partition](Diversity.md#type__partition.1)  ### Abstract Partition supertype for all partitioning types
 
 [Diversity.Similarity](Diversity.md#type__similarity.1)  ### Abstract Similarity supertype for all similarity measures
+
+## MODULE: Diversity.Hill
+
+---
+
+## Methods [Exported]
+
+[hillnumber(proportions,  qs)](Diversity.Hill.md#method__hillnumber.1)  ### Calculates Hill numbers
 
 ## MODULE: Diversity.Ecology
 
 ---
 
-## Exported
+## Methods [Exported]
 
 [generalisedjaccard(proportions::Array{T, 2},  qs)](Diversity.Ecology.md#method__generalisedjaccard.1)  ### Calculate a generalised version of the Jaccard index
 
@@ -161,19 +185,11 @@
 
 [simpson{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2})](Diversity.Ecology.md#method__simpson.1)  ### Calculate Simpson's index
 
-## MODULE: Diversity.Hill
-
----
-
-## Exported
-
-[hillnumber(proportions,  qs)](Diversity.Hill.md#method__hillnumber.1)  ### Calculates Hill numbers
-
 ## MODULE: Diversity.Jost
 
 ---
 
-## Exported
+## Methods [Exported]
 
 [jostalpha{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number})](Diversity.Jost.md#method__jostalpha.1)  ### Calculates Jost's alpha diversity
 

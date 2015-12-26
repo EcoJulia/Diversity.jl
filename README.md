@@ -122,8 +122,9 @@ The online documentation for the current stable branch is here:
 
 The online documentation for the current master (unreleased) branch is here:
 
-* [Main API index](doc/api/index.md)
 * [Diversity](http://richardreeve.github.io/Diversity.jl/master/diversity.html)
 * [Diversity.Ecology](http://richardreeve.github.io/Diversity.jl/master/ecology.html)
 * [Diversity.Hill](http://richardreeve.github.io/Diversity.jl/master/hill.html)
 * [Diversity.Jost](http://richardreeve.github.io/Diversity.jl/master/jost.html)
+
+* [Main API index](site/api/index.html)

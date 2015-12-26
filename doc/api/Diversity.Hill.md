@@ -1,6 +1,7 @@
 # Diversity.Hill
 
-## Exported
+
+## Methods [Exported]
 
 ---
 

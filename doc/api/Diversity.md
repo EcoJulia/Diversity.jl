@@ -1,6 +1,7 @@
 # Diversity
 
-## Exported
+
+## Functions [Exported]
 
 ---
 
@@ -21,6 +22,8 @@
 
 *source:*
 [Diversity/src/Collection.jl:205](file:///Users/richardr/.julia/v0.4/Diversity/src/Collection.jl)
+
+## Methods [Exported]
 
 ---
 
@@ -1184,6 +1187,8 @@ population with given relative proportions.
 *source:*
 [Diversity/src/EffectiveNumbers.jl:72](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
 
+## Types [Exported]
+
 ---
 
 <a id="type__collection.1" class="lexicon_definition"></a>
@@ -1274,6 +1279,8 @@ individuals as unique and completely distinct from each other.
 *source:*
 [Diversity/src/Collection.jl:16](file:///Users/richardr/.julia/v0.4/Diversity/src/Collection.jl)
 
+## Typealiass [Exported]
+
 ---
 
 <a id="typealias__species.1" class="lexicon_definition"></a>
@@ -1287,7 +1294,8 @@ species as unique and completely distinct from each other.
 *source:*
 [Diversity/src/Collection.jl:25](file:///Users/richardr/.julia/v0.4/Diversity/src/Collection.jl)
 
-## Internal
+
+## Methods [Internal]
 
 ---
 
@@ -1591,6 +1599,8 @@ is 1, so this is just the arithmetic mean.
 
 *source:*
 [Diversity/src/EffectiveNumbers.jl:16](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
+
+## Types [Internal]
 
 ---
 

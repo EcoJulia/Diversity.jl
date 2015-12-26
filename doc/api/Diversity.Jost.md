@@ -1,6 +1,7 @@
 # Diversity.Jost
 
-## Exported
+
+## Methods [Exported]
 
 ---
 

@@ -1,10 +1,5 @@
-using Lexicon
-using Docile
-using Diversity
-using Diversity.Ecology
-using Diversity.Hill
-using Diversity.Jost
-@docstrings
+using Lexicon, Docile
+using Diversity, Diversity.Ecology, Diversity.Hill, Diversity.Jost
 
 """
 ### createhtmldocs()
@@ -19,11 +14,10 @@ to github and displayed on github.io using:
 git subtree push --prefix doc/site origin gh-pages
 """
 function createhtmldocs(dir::AbstractString)
-    slash = (dir[end] == '/') ? "" : "/"
-    save("$(dir)$(slash)diversity.html", Diversity)
-    save("$(dir)$(slash)ecology.html", Diversity.Ecology)
-    save("$(dir)$(slash)hill.html", Diversity.Hill)
-    save("$(dir)$(slash)jost.html", Diversity.Jost)
+    save(joinpath(dir, "diversity.html"), Diversity)
+    save(joinpath(dir, "ecology.html"), Diversity.Ecology)
+    save(joinpath(dir, "hill.html"), Diversity.Hill)
+    save(joinpath(dir, "jost.html"), Diversity.Jost)
 end
 
 """
@@ -35,15 +29,41 @@ documentation is currently stored in \"doc/api\". These will then be
 uploaded to github.
 """
 function createmddocs(dir::AbstractString)
-    slash = (dir[end] == '/') ? "" : "/"
-    save("$(dir)$(slash)Diversity.md", Diversity)
-    save("$(dir)$(slash)Diversity.Ecology.md", Diversity.Ecology)
-    save("$(dir)$(slash)Diversity.Hill.md", Diversity.Hill)
-    save("$(dir)$(slash)Diversity.Jost.md", Diversity.Jost)
-    index = Index()
-    update!(index, save("doc/api/Diversity.md", Diversity));
-    update!(index, save("doc/api/Diversity.Ecology.md", Diversity.Ecology));
-    update!(index, save("doc/api/Diversity.Hill.md", Diversity.Hill));
-    update!(index, save("doc/api/Diversity.Jost.md", Diversity.Jost));
-    save("$(dir)$(slash)index.md", index)
+    const modules = Docile.Collector.submodules(Diversity)
+    # Run the doctests *before* we start to generate *any* documentation.
+    for m in modules
+        failures = failed(doctest(m))
+        if !isempty(failures.results)
+            println("\nDoctests failed, aborting commit.\n")
+            display(failures)
+            exit(1) # Bail when doctests fail.
+        end
+    end
+
+    # Generate and save the contents of docstrings as markdown files.
+    index  = Index()
+    config = Config(md_subheader = :category,
+                    category_order = [:module, :function, :method,
+                                      :type, :typealias,
+                                      :macro, :global])
+    for mod in modules
+        update!(index, save(joinpath(dir, "$(mod).md"), mod, config))
+    end
+    save(joinpath(dir, "index.md"), index, config)
+    
+    # Add a reminder not to edit the generated files.
+    open(joinpath(dir, "README.md"), "w") do f
+        print(f, """
+        Files in this directory are generated using an automated script. Make
+        all changes to the originating docstrings/files rather than these ones.
+
+        Documentation should *only* be built directly on the `master` branch.
+        Source links would otherwise become unavailable should a branch be
+        deleted from the `origin`. This means potential pull request authors
+        *should not* run the build script when filing a PR.
+        """)
+    end
+
+    info("Need to build website using mkdocs from Diversity root:")
+    info("Run \"mkdocs build --clean\"")
 end
