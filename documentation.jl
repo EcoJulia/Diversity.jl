@@ -18,7 +18,7 @@ to github and displayed on github.io using:
 
 git subtree push --prefix doc/site origin gh-pages
 """ ->
-function createdocs(dir::String)
+function createdocs(dir::AbstractString)
     slash = (dir[end] == '/') ? "" : "/"
     save("$(dir)$(slash)diversity.html", Diversity)
     save("$(dir)$(slash)ecology.html", Diversity.Ecology)
