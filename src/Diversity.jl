@@ -1,17 +1,12 @@
+# VERSION >= v"0.4.0-dev+6641" && __precompile__()
+
 module Diversity
-using Docile
-
-"""
-!!summary(Package for measuring diversity for the Julia Language)
-
-!!include(../doc/diversity.md)
-"""
-Diversity
+VERSION < v"0.4-" && using Docile
 
 include("Collection.jl")
 export Collection, Ecosystem, Community
 export Subcommunity, Onecommunity
-export Unique, Species, Taxonomy
+export Unique, Species, Taxonomy, GeneralSimilarity
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
@@ -41,15 +36,9 @@ export diversity
 include("CommunityContributions.jl")
 # export contributions
 
+"$(readall(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
 module Ecology
-using Docile
-
-"""
-!!summary(Sub-package of Diversity for ecological diversity measures)
-
-!!include(../doc/ecology.md)
-"""
-Ecology
+VERSION < v"0.4-" && using Docile
 
 include("Ecology.jl")
 export generalisedrichness, richness
@@ -59,30 +48,19 @@ export generalisedjaccard, jaccard
 
 end # sub-module Ecology
 
+"$(readall(joinpath(dirname(@__FILE__), "../doc/jost.md")))"
 module Jost
-using Docile
-
-"""
-!!summary(Sub-package of Diversity for Jost's diversity measures)
-
-!!include(../doc/jost.md)
-"""
-Jost
+VERSION < v"0.4-" && using Docile
 
 include("Jost.jl")
 export jostbeta, jostβ, jostalpha, jostα
 
 end # sub-module Jost
 
+"$(readall(joinpath(dirname(@__FILE__), "../doc/hill.md")))"
 module Hill
-using Docile
+VERSION < v"0.4-" && using Docile
 
-"""
-!!summary(Sub-package of Diversity for Hill numbers)
-
-!!include(../doc/hill.md)
-"""
-Hill
 
 include("Hill.jl")
 export hillnumber
@@ -90,6 +68,6 @@ export hillnumber
 end # sub-module Hill
 
 ## Make sure that Lexicon is loading so inline REPL documentation works
-using Lexicon
+VERSION < v"0.4-" && using Lexicon
 
 end # module

@@ -1,5 +1,5 @@
 """
-!!summary(Calculates subcommunity and supercommunity diversities)
+### Calculates subcommunity and supercommunity diversities
 
 Calculates any diversity of a series of columns representing
 independent subcommunity counts, for a series of orders, repesented as
@@ -7,36 +7,34 @@ a vector of qs, with similarity matrix Z, by default the (naïve)
 identity matrix.
 
 #### Arguments:
-*measure* the diversity function to be used - one of Dα, Dᾱ, Dρ, Dϵ
+- `measure`: the diversity function to be used - one of Dα, Dᾱ, Dρ, Dϵ
           (or Dρ̄), Dγ or Dγ̄
 
-*proportions* population proportions
+- `proportions`:population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
-*returnsupercommunity* boolean describing whether to return the
-                  supercommunity diversity
+- `returnsupercommunity`: boolean describing whether to return the
+                         supercommunity diversity
 
-*returnsubcommunity* boolean describing whether to return the
-                  subcommunity diversities 
+- `returnsubcommunity`: boolean describing whether to return the
+                       subcommunity diversities 
 
-*returnweights* boolean describing whether to return subcommunity weights
+- `returnweights`: boolean describing whether to return subcommunity weights
 
 #### Returns:
 Some or all (as tuple) of:  
 
-* vector of supercommunity diversities representing values of q  
+- vector of supercommunity diversities representing values of q  
 
-* array of diversities, first dimension representing subcommunities, and
+- array of diversities, first dimension representing subcommunities, and
   last representing values of q  
 
-* multidimensional array with dimensions matiching shape of proportions,
+- multidimensional array with dimensions matiching shape of proportions,
   with extra dimension for values of q
 """
-:diversity
-
 function diversity{S <: AbstractFloat,
                    T <: Number}(measure::Function,
                                 proportions::Matrix{S},
@@ -80,7 +78,7 @@ function diversity{S <: AbstractFloat,
 end
 
 """
-!!summary(Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity)
+### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
 a series of subcommunities represented by columns of independent
@@ -89,19 +87,17 @@ qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of diversities, first dimension representing subcommunities, and
+- array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunityalpha
-
 function Dα{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -114,7 +110,7 @@ end
 subcommunityalpha = Dα
 
 """
-!!summary(Normalised similarity-sensitive subcommunity alpha diversity)
+### Normalised similarity-sensitive subcommunity alpha diversity)
 
 Calculates (normalised alpha) diversity of a series of
 subcommunities represented by columns of independent subcommunity
@@ -123,19 +119,17 @@ qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of diversities, first dimension representing subcommunities, and
+- array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunityalphabar
-
 Dᾱ{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -149,7 +143,7 @@ Dᾱ{S <: AbstractFloat,
 subcommunityalphabar = Dᾱ
 
 """
-!!summary(Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity)
+### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
 a series of subcommunities represented by columns of independent
@@ -158,18 +152,16 @@ of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of diversities representing values of q
+- vector of diversities representing values of q
 """
-:supercommunityA
-
 DA{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -178,7 +170,7 @@ DA{S <: AbstractFloat,
 supercommunityA = DA
 
 """
-!!summary(Normalised similarity-sensitive supercommunity alpha diversity)
+### Normalised similarity-sensitive supercommunity alpha diversity
 
 Calculates average (normalised alpha) diversity of a series of
 subcommunities represented by columns of independent subcommunity
@@ -186,18 +178,16 @@ counts, for a series of orders, represented as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of diversities representing values of q
+- vector of diversities representing values of q
 """
-:supercommunityAbar
-
 DĀ{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -206,7 +196,7 @@ DĀ{S <: AbstractFloat,
 supercommunityAbar = DĀ
 
 """
-!!summary(Raw similarity-sensitive subcommunity redundancy)
+### Raw similarity-sensitive subcommunity redundancy
 
 Calculates redundancy of a series of subcommunities represented by
 columns of independent subcommunity counts, for a series of orders,
@@ -214,19 +204,17 @@ represented as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of redundancies, first dimension representing subcommunities, and
+- array of redundancies, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunityrho
-
 function Dρ{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -241,7 +229,7 @@ end
 subcommunityredundancy = subcommunityrho = Dρ
     
 """
-!!summary(Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration)
+### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
 Calculates the raw beta diversity / distinctiveness of or
 concentration of species in a series of subcommunities represented by
@@ -250,19 +238,17 @@ represented as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of diversities, first dimension representing subcommunities, and
+- array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunitybeta
-  
 function Dβ{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -278,7 +264,7 @@ subcommunitybeta = subcommunitydistinctiveness =
     subcommunityconcentration = Dβ
 
 """
-!!summary(Normalised similarity-sensitive subcommunity representativeness)
+### Normalised similarity-sensitive subcommunity representativeness
 
 Calculates the representativeness of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
@@ -290,19 +276,17 @@ subcommunities is 1/x.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of representativenesses, first dimension representing subcommunities, and
+- array of representativenesses, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunityrhobar
-
 function Dρ̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -320,7 +304,7 @@ end
 subcommunityrhobar = subcommunityrepresentativeness = Dρ̄
 
 """
-!!summary(Normalised similarity-sensitive subcommunity beta diversity)
+### Normalised similarity-sensitive subcommunity beta diversity
 
 Calculates normalised beta diversities or the effective number of
 distinct subcommunities perceived by a series of subcommunities
@@ -329,19 +313,17 @@ as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of diversities, first dimension representing subcommunities, and
+- array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunitybetabar
-
 function Dβ̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -359,7 +341,7 @@ end
 subcommunitybetabar = Dβ̄
 
 """
-!!summary(Raw similarity-sensitive supercommunity redundancy)
+### Raw similarity-sensitive supercommunity redundancy
 
 Calculates average redundancy of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
@@ -367,18 +349,16 @@ series of orders, represented as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of redundancies representing values of q
+- vector of redundancies representing values of q
 """
-:supercommunityR
-
 DR{S <: AbstractFloat,
   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -386,7 +366,7 @@ DR{S <: AbstractFloat,
 supercommunityredundancy = supercommunityR = DR
     
 """
-!!summary(Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration)
+### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
 
 Calculates average raw beta diversity / distinctiveness of or
 concentration of species in a series of subcommunities represented by
@@ -395,18 +375,16 @@ represented as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of diversities representing values of q
+- vector of diversities representing values of q
 """
-:supercommunityB
-
 function DB{S <: AbstractFloat,
            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                         Z::Matrix{S} = eye(size(proportions, 1)))
@@ -415,7 +393,7 @@ end
 supercommunityB = supercommunitydistinctiveness = supercommunityconcentration = DB
 
 """
-!!summary(Normalised similarity-sensitive supercommunity representativeness)
+### Normalised similarity-sensitive supercommunity representativeness
 
 Calculates average representativeness of a series of subcommunities
 represented by columns of independent subcommunity counts, for a
@@ -427,18 +405,16 @@ subcommunities is 1/x.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of representativenesses representing values of q
+- vector of representativenesses representing values of q
 """
-:supercommunityRbar
-
 DR̄{S <: AbstractFloat,
   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -447,7 +423,7 @@ DR̄{S <: AbstractFloat,
 supercommunityRbar = supercommunityrepresentativeness = DR̄
 
 """
-!!summary(Normalised similarity-sensitive supercommunity beta diversity / effective number of communities)
+### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
 
 Calculates average normalised beta diversity or the effective number
 of distinct subcommunities present in a series of subcommunities
@@ -456,18 +432,16 @@ series of orders, represented as a vector of qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of diversities representing values of q
+- vector of diversities representing values of q
 """
-:supercommunityBbar
-
 function DB̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -476,7 +450,7 @@ end
 supercommunityBbar = DB̄
 
 """
-!!summary(Raw similarity-sensitive subcommunity gamma diversity)
+### Raw similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
@@ -484,19 +458,17 @@ qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of diversities, first dimension representing subcommunities, and
+- array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-:subcommunitygamma
-
 function Dγ{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -512,7 +484,7 @@ end
 subcommunitygamma = Dγ
 
 """
-!!summary(Normalised similarity-sensitive subcommunity gamma diversity)
+### Normalised similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
@@ -520,19 +492,17 @@ qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* array of diversities, first dimension representing subcommunities, and
-last representing values of q
+- array of diversities, first dimension representing subcommunities, and
+  last representing values of q
 """
-:subcommunitygammabar
-
 function Dγ̄{S <: AbstractFloat,
             T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                          Z::Matrix{S} = eye(size(proportions, 1)))
@@ -548,7 +518,7 @@ end
 subcommunitygammabar = Dγ̄
 
 """
-!summary(Raw similarity-sensitive supercommunity gamma diversity)
+### Raw similarity-sensitive supercommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
@@ -556,18 +526,16 @@ qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of diversities representing values of q
+- vector of diversities representing values of q
 """
-:supercommunityG
-
 DG{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =
@@ -576,7 +544,7 @@ DG{S <: AbstractFloat,
 supercommunityG = DG
 
 """
-!!summary(Normalised similarity-sensitive supercommunity gamma diversity)
+### Normalised similarity-sensitive supercommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
 subcommunity counts, for a series of orders, represented as a vector of
@@ -584,18 +552,16 @@ qs.
 
 #### Arguments:
 
-*proportions* population proportions
+- `proportions`: population proportions
 
-*qs* single number or vector of values of parameter q
+- `qs`: single number or vector of values of parameter q
 
-*Z* similarity matrix
+- `Z`: similarity matrix
 
 #### Returns:
 
-* vector of diversities representing values of q
+- vector of diversities representing values of q
 """
-:supercommunityGbar
-
 DḠ{S <: AbstractFloat,
    T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                 Z::Matrix{S} = eye(size(proportions, 1))) =

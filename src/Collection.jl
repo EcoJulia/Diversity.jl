@@ -1,5 +1,5 @@
 """
-!!summary(Abstract Similarity supertype for all similarity measures)
+### Abstract Similarity supertype for all similarity measures
 
 This type is the abstract superclass of all similarity types. Its
 subtypes allow you to define how similarity is measured between
@@ -8,7 +8,7 @@ individuals.
 abstract Similarity
 
 """
-!!summary(A subtype of Similarity where all individuals are completely distinct)
+### A subtype of Similarity where all individuals are completely distinct
 
 This type is the simplest Similarity subtype, which identifies all
 individuals as unique and completely distinct from each other.
@@ -17,25 +17,28 @@ immutable Unique <: Similarity
 end
 
 """
-!!summary(A subtype of Similarity where all species are completely distinct)
+### A subtype of Similarity where all species are completely distinct
 
 This type is the simplest Similarity subtype, which identifies all
 species as unique and completely distinct from each other.
 """
 typealias Species Unique
 
-"""
-!!summary(A subtype of Similarity with similarity between related taxa)
+if VERSION < v"0.4-"
+@doc """
+### A subtype of Similarity with similarity between related taxa
 
 This subtype of Similarity allows taxonomic similarity matrices
-"""
-:Taxonomy
-
-if VERSION < v"0.4-"
+""" ->
     immutable Taxonomy <: Similarity
         labels::Dict{String, (Float64, Dict{String, String})}
     end
 else
+@doc """
+### A subtype of Similarity with similarity between related taxa
+
+This subtype of Similarity allows taxonomic similarity matrices
+""" ->
     immutable Taxonomy <: Similarity
         labels::Dict{AbstractString, Tuple{Float64, Dict{AbstractString, AbstractString}}}
     end    
@@ -43,27 +46,30 @@ end
 
 
 """
-!!summary(A general matrix-based Similarity subtype)
+### A general matrix-based Similarity subtype
 
 This subtype of Similarity simply holds a matrix with similarities
 between individuals.
 
 #### Members:
 
-**matrix** A two-dimensional matrix representing similarity between
+- `matrix` A two-dimensional matrix representing similarity between
            individuals. By default this will be the identity matrix,
            but will require the number of species to be instantiated.
 """
 immutable GeneralSimilarity <: Similarity
+"""A two-dimensional matrix representing similarity between
+individuals. By default this will be the identity matrix,
+but will require the number of species to be instantiated."""
     matrix::Matrix
 
 """
-!!summary(Constructor for GeneralSimilarity)
+### Constructor for GeneralSimilarity
 
 Creates an instance of the GeneralSimilarity class, with an arbitrary similarity matrix.
 
 #### Arguments:
-* Z: similarity matrix
+- `Z`: similarity matrix
 """
     function GeneralSimilarity(Z::Array{Float64, 2})
         size(Z, 1) == size(Z, 2) ||
@@ -89,7 +95,7 @@ getsimilarities{FP}(abundances::Array{FP}, s::GeneralSimilarity) =
     convert(Array{FP, 2}, matrix)
 
 """
-!!summary(Abstract Partition supertype for all partitioning types)
+### Abstract Partition supertype for all partitioning types
 
 This type is the abstract superclass of all partitioning types.
 Partition subtypes allow you to define how to partition your total
@@ -99,12 +105,12 @@ subcommunities).
 abstract Partition
 
 """
-!!summary(Partition type with multiple subccomunities)
+### Partition type with multiple subccomunities
 """
 immutable Subcommunity <: Partition; end
 
 """
-!!summary(Partition type allowing only one subcommunity)
+### Partition type allowing only one subcommunity
 """
 immutable Onecommunity <: Partition; end
 
@@ -115,7 +121,7 @@ legalpartition(abundances::Array, p::Onecommunity) =
     (ndims(abundances) == 1)
 
 """
-!!summary(Collection type, representing a collection of one or more subcommunities)
+### Collection type, representing a collection of one or more subcommunities
 
 Type representing a single community or collection of communities. It
 contains a collection of individuals which *may* be further
@@ -129,19 +135,19 @@ and also allows for similarity between individuals.
 
 **Collection{S, P, FP}**
 
-**S** is the similarity type, e.g. Species, a subtype of Similarity.
+- `S` is the similarity type, e.g. Species, a subtype of Similarity.
 
-**P** is the partition type, e.g. Subcommunity, a subtype of Partition.
+- `P` is the partition type, e.g. Subcommunity, a subtype of Partition.
 
-**FP** is the kind of number storage, a subtype of AbstractFloat.
+- `FP` is the kind of number storage, a subtype of AbstractFloat.
 
 #### Members:
 
-**abundances** An array of relative abundances. The first dimension
+- `abundances` An array of relative abundances. The first dimension
                represents the species, and further dimensions
                represent the structure of collection.
 
-**Z** A two-dimensional matrix representing similarity between
+- `Z` A two-dimensional matrix representing similarity between
       individuals of the base type, S. By default this will be the
       identity matrix.
 """
@@ -194,7 +200,7 @@ type Collection{S <: Similarity,
 end
 
 """
-!!summary(Ecosystem type, representing an ecosystem of multiple subcommunities)
+### Ecosystem type, representing an ecosystem of multiple subcommunities
 """
 :Ecosystem
 
@@ -202,7 +208,7 @@ Ecosystem{S, FP}(s::S, ab::Array{FP}) = Collection{S, Subcommunity, FP}(s, ab)
 Ecosystem{FP}(ab::Array{FP}) = Collection{Species, Subcommunity, FP}(ab)
 
 """
-!!summary(Community type, representing a single community)
+### Community type, representing a single community
 """
 :Community
 
@@ -223,6 +229,3 @@ function summarydimensions(c::Collection, level::Integer)
         return [1:level]
     end
 end
-
-
-
