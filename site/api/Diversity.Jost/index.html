@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Diversity.Jost - Diversity.jl</title>
+  
+
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+  <link href="../../site/master/static/custom.css" rel="stylesheet">
+  <link href="../../site/stable/static/custom.css" rel="stylesheet">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Diversity.Jost";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
+  <script src="../../site/master/static/custom.js"></script>
+  <script src="../../site/stable/static/custom.js"></script>
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../diversity/" class="icon icon-home"> Diversity.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../diversity/">Introduction</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Submodules</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../ecology/">Ecology</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../hill/">Hill</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../jost/">Jost</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>API</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Diversity/">Diversity</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Diversity.Ecology/">Diversity.Ecology</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Diversity.Hill/">Diversity.Hill</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Diversity.Jost</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#diversityjost">Diversity.Jost</a></li>
+                
+                    <li><a class="toctree-l4" href="#methods-exported">Methods [Exported]</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../">Index</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../diversity/">Diversity.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../diversity/">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>API &raquo;</li>
+        
+      
+    
+    <li>Diversity.Jost</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="https://github.com/richardreeve/Diversity.jl" class="icon icon-github"> Edit on GitHub</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="diversityjost">Diversity.Jost</h1>
+<h2 id="methods-exported">Methods [Exported]</h2>
+<hr />
+<p><a id="method__jostalpha.1" class="lexicon_definition"></a></p>
+<h4 id="jostalphasabstractfloat-tnumberproportionsarraysabstractfloat-2-qsunionarraytnumber-1-tnumber">jostalpha{S&lt;:AbstractFloat, T&lt;:Number}(proportions::Array{S&lt;:AbstractFloat, 2},  qs::Union{Array{T&lt;:Number, 1}, T&lt;:Number}) <a href="#method__jostalpha.1">¶</a></h4>
+<h3 id="calculates-josts-alpha-diversity">Calculates Jost's alpha diversity</h3>
+<p>Calculates Jost's alpha diversity of a series of columns representing
+independent community counts, for a series of orders, repesented as a
+vector of qs. This is just the naive-community ecosystem diversity
+divided by the naive-community beta diversity.</p>
+<h3 id="arguments">Arguments:</h3>
+<ul>
+<li>
+<p><code>proportions</code> relative proportions of different individuals / species
+                in population (vector, or matrix where columns are
+                for individual sub-communities)</p>
+</li>
+<li>
+<p><code>qs</code> single number or vector of orders of diversity measurement</p>
+</li>
+</ul>
+<h3 id="returns">Returns:</h3>
+<ul>
+<li>array of diversities, first dimension representing sub-communities, and
+  last representing values of q</li>
+</ul>
+<p><em>source:</em>
+<a href="file:///Users/richardr/.julia/v0.4/Diversity/src/Jost.jl">Diversity/src/Jost.jl:22</a></p>
+<hr />
+<p><a id="method__jostbeta.1" class="lexicon_definition"></a></p>
+<h4 id="jostbetasabstractfloat-tnumberproportionsarraysabstractfloat-2-qsunionarraytnumber-1-tnumber">jostbeta{S&lt;:AbstractFloat, T&lt;:Number}(proportions::Array{S&lt;:AbstractFloat, 2},  qs::Union{Array{T&lt;:Number, 1}, T&lt;:Number}) <a href="#method__jostbeta.1">¶</a></h4>
+<h3 id="calculates-josts-beta-diversity">Calculates Jost's beta diversity</h3>
+<p>Calculates Jost's beta diversity of a series of columns representing
+independent community counts, for a series of orders, repesented as a
+vector of qs. This is just the naive gamma diversity divided by
+Jost's alpha diversity</p>
+<h3 id="arguments_1">Arguments:</h3>
+<ul>
+<li>
+<p><code>proportions</code> relative proportions of different individuals / species
+                in population (vector, or matrix where columns are
+                for individual sub-communities)</p>
+</li>
+<li>
+<p><code>qs</code> single number or vector of orders of diversity measurement</p>
+</li>
+</ul>
+<h3 id="returns_1">Returns:</h3>
+<ul>
+<li>array of diversities, first dimension representing sub-communities, and
+  last representing values of q</li>
+</ul>
+<p><em>source:</em>
+<a href="file:///Users/richardr/.julia/v0.4/Diversity/src/Jost.jl">Diversity/src/Jost.jl:49</a></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../" class="btn btn-neutral float-right" title="Index"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Diversity.Hill/" class="btn btn-neutral" title="Diversity.Hill"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../Diversity.Hill/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>
