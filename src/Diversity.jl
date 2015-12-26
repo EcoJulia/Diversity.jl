@@ -2,6 +2,7 @@
 
 module Diversity
 VERSION < v"0.4-" && using Docile
+using Compat
 
 include("Collection.jl")
 export Collection, Ecosystem, Community
