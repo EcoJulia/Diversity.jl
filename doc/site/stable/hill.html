@@ -11,12 +11,7 @@
 
 <h1 class='package-header'>Diversity.Hill</h1>
 
-<p><a href="http://www.jstor.org/stable/1934352">Hill numbers</a> are found in the <strong>Diversity.Hill</strong> package.</p>
-<h1>Usage</h1>
-<p>Accessing the main functionality in the package is simple:</p>
-<pre><code>using Diversity.Hill
-...
-diversities = hillnumber(proportions, [0, 1, 2])</code></pre><h1 id='module-reference'>Reference</h1>
+<h1 id='module-reference'>Reference</h1>
 <ul class='index'>
 <li >
 <strong>methods:</strong>
@@ -24,27 +19,33 @@ diversities = hillnumber(proportions, [0, 1, 2])</code></pre><h1 id='module-refe
 <li >
 <ul >
 <li >
-<a href='#hillnumber(proportions,qs)'>hillnumber(proportions,qs)</a></li>
+<a href='#method_hillnumber_proportions___qs_'>hillnumber(proportions,  qs)</a></li>
 </ul>
 </li>
 </ul>
 <div class='entries'>
 <div class='entry'>
-<div id='hillnumber(proportions,qs)' class='entry-name category-method'>
-<div class='category'>[method] &mdash; </div> hillnumber(proportions,qs)
+<div id='method_hillnumber_proportions___qs_' class='entry-name category-method'>
+<div class='category'>[method] &mdash; </div> hillnumber(proportions,  qs)
 </div>
 <div class='entry-body'>
-<h3>hillnumber()</h3>
-<p>Calculate the Hill number (or naive diversity) of order q of population(s) with given relative proportions</p>
+<div class="markdown"><h3>Calculates Hill numbers</h3>
+<p>Calculate the Hill number &#40;or naive diversity&#41; of order q of population&#40;s&#41; with given relative proportions</p>
 <h3>Arguments:</h3>
-<ul><li>proportions: relative proportions of different individuals / species in population (vector, or matrix where columns are individual populations) </li><li>qs: single number or vector of orders of diversity measurement</li></ul>
+<ul>
+<li><code>proportions</code>: relative proportions of different individuals / species                  in population &#40;vector, or matrix where columns are                  individual populations&#41; </li>
+<li><code>qs</code>: single number or vector of orders of diversity measurement</li>
+</ul>
 <h3>Returns:</h3>
-<ul><li>Diversity of order qs (single number or vector of diversities)</li></ul><div class='entry-meta'>
+<ul>
+<li>Diversity of order qs &#40;single number or vector of diversities&#41;</li>
+</ul>
+</div><div class='entry-meta'>
 <strong>Details:</strong>
 <table class='meta-table'>
 <tr >
 <td><strong>source:</strong></td><td >
-<a href='https://github.com/richardreeve/Diversity.jl/tree/156f18e601fc47a3fc0c3f8c820990736aa84e16/src/Hill.jl#L16'>Diversity/src/Hill.jl:16</a></td>
+<a href='file:///Users/richardr/.julia/v0.4/Diversity/src/Hill.jl'>Diversity/src/Hill.jl:18</a></td>
 </tr>
 </table>
 </div>
