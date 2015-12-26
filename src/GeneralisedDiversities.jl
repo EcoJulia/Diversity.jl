@@ -38,7 +38,7 @@ Some or all (as tuple) of:
 function diversity{S <: AbstractFloat,
                    T <: Number}(measure::Function,
                                 proportions::Matrix{S},
-                                qs::Union{T, Vector{T}},
+                                qs::@compat(Union{T, Vector{T}}),
                                 Z::Matrix{S} = eye(size(proportions, 1)),
                                 returnsupercommunity::Bool = true,
                                 returnsubcommunity::Bool = true,
@@ -99,7 +99,7 @@ qs.
   last representing values of q
 """
 function Dα{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -131,7 +131,7 @@ qs.
   last representing values of q
 """
 Dᾱ{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     mapslices(p -> qDZ(p, qs, Z),
                               proportions *
@@ -163,7 +163,7 @@ of qs.
 - vector of diversities representing values of q
 """
 DA{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dα, proportions, qs, Z, true, false, false)
                     
@@ -189,7 +189,7 @@ counts, for a series of orders, represented as a vector of qs.
 - vector of diversities representing values of q
 """
 DĀ{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dᾱ, proportions, qs, Z, true, false, false)
                     
@@ -216,7 +216,7 @@ represented as a vector of qs.
   last representing values of q
 """
 function Dρ{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -250,7 +250,7 @@ represented as a vector of qs.
   last representing values of q
 """
 function Dβ{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -288,7 +288,7 @@ subcommunities is 1/x.
   last representing values of q
 """
 function Dρ̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -325,7 +325,7 @@ as a vector of qs.
   last representing values of q
 """
 function Dβ̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -360,7 +360,7 @@ series of orders, represented as a vector of qs.
 - vector of redundancies representing values of q
 """
 DR{S <: AbstractFloat,
-  T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+  T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ, proportions, qs, Z, true, false, false)
 supercommunityredundancy = supercommunityR = DR
@@ -386,7 +386,7 @@ represented as a vector of qs.
 - vector of diversities representing values of q
 """
 function DB{S <: AbstractFloat,
-           T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+           T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                         Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ, proportions, qs, Z, true, false, false)
 end
@@ -416,7 +416,7 @@ subcommunities is 1/x.
 - vector of representativenesses representing values of q
 """
 DR̄{S <: AbstractFloat,
-  T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+  T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ̄, proportions, qs, Z, true, false, false)
 
@@ -443,7 +443,7 @@ series of orders, represented as a vector of qs.
 - vector of diversities representing values of q
 """
 function DB̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ̄, proportions, qs, Z, true, false, false)
 end
@@ -470,7 +470,7 @@ qs.
   last representing values of q
 """
 function Dγ{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -504,7 +504,7 @@ qs.
   last representing values of q
 """
 function Dγ̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                          Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
@@ -537,7 +537,7 @@ qs.
 - vector of diversities representing values of q
 """
 DG{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ, proportions, qs, Z, true, false, false)
 
@@ -563,7 +563,7 @@ qs.
 - vector of diversities representing values of q
 """
 DḠ{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
+   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ̄, proportions, qs, Z, true, false, false)
 
