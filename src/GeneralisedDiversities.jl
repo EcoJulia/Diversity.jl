@@ -175,7 +175,7 @@ DA{S <: AbstractFloat,
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dα, proportions, qs, Z, true, false, false)
                     
-supercommunityA = ecosystemA = DA
+supercommunityA = DA
 
 """
 !!summary(Normalised similarity-sensitive supercommunity alpha diversity)
@@ -203,7 +203,7 @@ DĀ{S <: AbstractFloat,
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dᾱ, proportions, qs, Z, true, false, false)
                     
-supercommunityAbar = ecosystemAbar = DĀ
+supercommunityAbar = DĀ
 
 """
 !!summary(Raw similarity-sensitive subcommunity redundancy)
@@ -318,7 +318,6 @@ function Dρ̄{S <: AbstractFloat,
                                           (size(proportions, 2)))), 1)
 end
 subcommunityrhobar = subcommunityrepresentativeness = Dρ̄
-subcommunityepsilon = Dϵ = Dρ̄
 
 """
 !!summary(Normalised similarity-sensitive subcommunity beta diversity)
@@ -384,7 +383,7 @@ DR{S <: AbstractFloat,
   T <: Number}(proportions::Matrix{S}, qs::Union{T, Vector{T}},
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ, proportions, qs, Z, true, false, false)
-supercommunityredundancy = supercommunityR = ecosystemR = DR
+supercommunityredundancy = supercommunityR = DR
     
 """
 !!summary(Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration)
@@ -413,7 +412,7 @@ function DB{S <: AbstractFloat,
                         Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ, proportions, qs, Z, true, false, false)
 end
-supercommunityB = ecosystemB = supercommunitydistinctiveness = supercommunityconcentration = DB
+supercommunityB = supercommunitydistinctiveness = supercommunityconcentration = DB
 
 """
 !!summary(Normalised similarity-sensitive supercommunity representativeness)
@@ -445,8 +444,7 @@ DR̄{S <: AbstractFloat,
                Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ̄, proportions, qs, Z, true, false, false)
 
-supercommunityRbar = ecosystemRbar = supercommunityrepresentativeness = DR̄
-supercommunityE = ecosystemE = DE = DR̄
+supercommunityRbar = supercommunityrepresentativeness = DR̄
 
 """
 !!summary(Normalised similarity-sensitive supercommunity beta diversity / effective number of communities)
@@ -475,7 +473,7 @@ function DB̄{S <: AbstractFloat,
                          Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ̄, proportions, qs, Z, true, false, false)
 end
-supercommunityBbar = ecosystemBbar = DB̄
+supercommunityBbar = DB̄
 
 """
 !!summary(Raw similarity-sensitive subcommunity gamma diversity)
@@ -575,7 +573,7 @@ DG{S <: AbstractFloat,
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ, proportions, qs, Z, true, false, false)
 
-supercommunityG = ecosystemG = DG
+supercommunityG = DG
 
 """
 !!summary(Normalised similarity-sensitive supercommunity gamma diversity)
@@ -603,4 +601,4 @@ DḠ{S <: AbstractFloat,
                 Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ̄, proportions, qs, Z, true, false, false)
 
-supercommunityGbar = ecosystemGbar = DḠ
+supercommunityGbar = DḠ

@@ -17,13 +17,26 @@ include("EffectiveNumbers.jl")
 export qD, qDZ
 
 include("GeneralisedDiversities.jl")
-export subcommunityalphabar, subcommunityalpha, supercommunityA, supercommunityAbar, ecosystemA, ecosystemAbar
-export subcommunitybetabar, subcommunitybeta, supercommunityB, supercommunityBbar, ecosystemB, ecosystemBbar
-export subcommunityrhobar, subcommunityrho, supercommunityR, supercommunityRbar, ecosystemR, ecosystemRbar
-export subcommunitygammabar, subcommunitygamma, supercommunityG, supercommunityGbar, ecosystemG, ecosystemGbar
-export Dᾱ, Dα, Dβ̄, Dβ, Dϵ, Dρ̄, Dρ, Dγ̄, Dγ
-export DĀ, DA, DB̄, DB, DE, DR̄, DR, DḠ, DG
+export subcommunityalphabar, subcommunityalpha, supercommunityA, supercommunityAbar
+export subcommunitybetabar, subcommunitybeta, supercommunityB, supercommunityBbar
+export subcommunityrhobar, subcommunityrho, supercommunityR, supercommunityRbar
+export subcommunitygammabar, subcommunitygamma, supercommunityG, supercommunityGbar
+export Dᾱ, Dα, Dβ̄, Dβ, Dρ̄, Dρ, Dγ̄, Dγ
+export DĀ, DA, DB̄, DB, DR̄, DR, DḠ, DG
 export diversity
+@deprecate(ecosystemA, supercommunityA)
+@deprecate(ecosystemAbar, supercommunityAbar)
+@deprecate(ecosystemB, supercommunityB)
+@deprecate(ecosystemBbar, supercommunityBbar)
+@deprecate(ecosystemR, supercommunityR)
+@deprecate(ecosystemRbar, supercommunityRbar)
+@deprecate(ecosystemG, supercommunityG)
+@deprecate(ecosystemGbar, supercommunityGbar)
+@deprecate(subcommunityepsilon, Dρ̄)
+@deprecate(Dϵ, Dρ̄)
+@deprecate(ecosystemE, supercommunityRbar)
+@deprecate(supercommunityE, supercommunityRbar)
+@deprecate(DE, supercommunityRbar)
 
 include("CommunityContributions.jl")
 # export contributions
