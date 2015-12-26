@@ -40,6 +40,7 @@ include("CommunityContributions.jl")
 "$(readall(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
 module Ecology
 VERSION < v"0.4-" && using Docile
+using Compat
 
 include("Ecology.jl")
 export generalisedrichness, richness
