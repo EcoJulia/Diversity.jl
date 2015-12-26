@@ -1,4 +1,6 @@
-# Diversity [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl) [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
+# Diversity
+  [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl)
+  [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/latest/?badge=stable) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/?badge=latest)
 
 - **Current Release**: 
   [![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
@@ -94,11 +96,10 @@ package.
 
 ### Usage
 
-Accessing the documentation in Julia requires Lexicon:
+Accessing the documentation in Julia is easy in v0.4 onwards:
 
 ```julia
 using Diversity
-using Lexicon
 
 # Returns any documentation for the qDZ function and all qDZ methods
 ?qDZ
@@ -107,24 +108,18 @@ using Lexicon
 ?qD([0.1, 0.2, 0.7], 2)
 ```
 
-However, the documentation is also available online.
+The documentation is also available online.
 
 ### Stable branch
 
-The online documentation for the current stable branch is here:
-
-* [Diversity](http://richardreeve.github.io/Diversity.jl/stable/diversity.html)
-* [Diversity.Ecology](http://richardreeve.github.io/Diversity.jl/stable/ecology.html)
-* [Diversity.Hill](http://richardreeve.github.io/Diversity.jl/stable/hill.html)
-* [Diversity.Jost](http://richardreeve.github.io/Diversity.jl/stable/jost.html)
+The online documentation for the current stable branch is
+[here](http://diversityjl.readthedocs.org/en/stable/diversity/), and
+API docs start
+[here](http://diversityjl.readthedocs.org/en/stable/api/Diversity/).
 
 ### Master branch
 
-The online documentation for the current master (unreleased) branch is here:
-
-* [Diversity](http://richardreeve.github.io/Diversity.jl/master/diversity.html)
-* [Diversity.Ecology](http://richardreeve.github.io/Diversity.jl/master/ecology.html)
-* [Diversity.Hill](http://richardreeve.github.io/Diversity.jl/master/hill.html)
-* [Diversity.Jost](http://richardreeve.github.io/Diversity.jl/master/jost.html)
-
-* [Main API index](doc/api/index.md)
+The online documentation for the latest master (unreleased) branch is
+[here](http://diversityjl.readthedocs.org/en/latest/diversity/), and
+API docs start
+[here](http://diversityjl.readthedocs.org/en/latest/api/Diversity/).
