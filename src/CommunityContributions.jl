@@ -31,7 +31,7 @@ relative abundances.
 function contributions{S <: AbstractFloat,
                        T <: Number}(measure::Function,
                                     proportions::Matrix{S},
-                                    qs::Union{T, Vector{T}},
+                                    qs::@compat(Union{T, Vector{T}}),
                                     perindividual::Bool = true,
                                     Z::Matrix{S} = eye(size(proportions, 1)),
                                     returnsupercommunity::Bool = false,
