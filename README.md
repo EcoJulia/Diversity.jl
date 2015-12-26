@@ -127,4 +127,4 @@ The online documentation for the current master (unreleased) branch is here:
 * [Diversity.Hill](http://richardreeve.github.io/Diversity.jl/master/hill.html)
 * [Diversity.Jost](http://richardreeve.github.io/Diversity.jl/master/jost.html)
 
-* [Main API index](site/api/index.md)
+* [Main API index](doc/api/index.md)
