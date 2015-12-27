@@ -29,7 +29,7 @@ documentation is currently stored in \"doc/api\". These will then be
 uploaded to github.
 """
 function createmddocs(dir::AbstractString)
-    const modules = Docile.Collector.submodules(Diversity)
+    modules = Docile.Collector.submodules(Diversity)
     # Run the doctests *before* we start to generate *any* documentation.
     for m in modules
         failures = failed(doctest(m))
@@ -39,6 +39,7 @@ function createmddocs(dir::AbstractString)
             exit(1) # Bail when doctests fail.
         end
     end
+    setdiff!(modules, Set([Diversity]))
 
     # Generate and save the contents of docstrings as markdown files.
     index  = Index()
@@ -46,6 +47,7 @@ function createmddocs(dir::AbstractString)
                     category_order = [:module, :function, :method,
                                       :type, :typealias,
                                       :macro, :global])
+    update!(index, save(joinpath(dir, "Diversity.md"), Diversity, config))
     for mod in modules
         update!(index, save(joinpath(dir, "$(mod).md"), mod, config))
     end

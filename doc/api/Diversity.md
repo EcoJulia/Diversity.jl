@@ -28,7 +28,7 @@
 ---
 
 <a id="method__da.1" class="lexicon_definition"></a>
-#### DA{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__da.1)
+#### DA{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__da.1)
 ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
@@ -50,12 +50,12 @@ of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:165](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:162](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__da.2" class="lexicon_definition"></a>
-#### DA{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__da.2)
+#### DA{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__da.2)
 ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
@@ -77,12 +77,12 @@ of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:165](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:162](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__db.1" class="lexicon_definition"></a>
-#### DB{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__db.1)
+#### DB{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__db.1)
 ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
 
 Calculates average raw beta diversity / distinctiveness of or
@@ -104,12 +104,12 @@ represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:388](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:378](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__db.2" class="lexicon_definition"></a>
-#### DB{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__db.2)
+#### DB{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__db.2)
 ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
 
 Calculates average raw beta diversity / distinctiveness of or
@@ -131,12 +131,12 @@ represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:388](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:378](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__db772.1" class="lexicon_definition"></a>
-#### DB̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__db772.1)
+#### DB̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__db772.1)
 ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
 
 Calculates average normalised beta diversity or the effective number
@@ -158,12 +158,12 @@ series of orders, represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:445](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:433](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__db772.2" class="lexicon_definition"></a>
-#### DB̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__db772.2)
+#### DB̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__db772.2)
 ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
 
 Calculates average normalised beta diversity or the effective number
@@ -185,12 +185,12 @@ series of orders, represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:445](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:433](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__dg.1" class="lexicon_definition"></a>
-#### DG{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__dg.1)
+#### DG{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__dg.1)
 ### Raw similarity-sensitive supercommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -211,12 +211,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:539](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:524](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__dg.2" class="lexicon_definition"></a>
-#### DG{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__dg.2)
+#### DG{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__dg.2)
 ### Raw similarity-sensitive supercommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -237,12 +237,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:539](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:524](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__dr.1" class="lexicon_definition"></a>
-#### DR{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__dr.1)
+#### DR{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__dr.1)
 ### Raw similarity-sensitive supercommunity redundancy
 
 Calculates average redundancy of a series of subcommunities
@@ -263,12 +263,12 @@ series of orders, represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:362](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:353](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__dr.2" class="lexicon_definition"></a>
-#### DR{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__dr.2)
+#### DR{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__dr.2)
 ### Raw similarity-sensitive supercommunity redundancy
 
 Calculates average redundancy of a series of subcommunities
@@ -289,12 +289,12 @@ series of orders, represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:362](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:353](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__dr772.1" class="lexicon_definition"></a>
-#### DR̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__dr772.1)
+#### DR̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__dr772.1)
 ### Normalised similarity-sensitive supercommunity representativeness
 
 Calculates average representativeness of a series of subcommunities
@@ -319,12 +319,12 @@ subcommunities is 1/x.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:418](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:407](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__dr772.2" class="lexicon_definition"></a>
-#### DR̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__dr772.2)
+#### DR̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__dr772.2)
 ### Normalised similarity-sensitive supercommunity representativeness
 
 Calculates average representativeness of a series of subcommunities
@@ -349,12 +349,12 @@ subcommunities is 1/x.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:418](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:407](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d256.1" class="lexicon_definition"></a>
-#### DĀ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d256.1)
+#### DĀ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d256.1)
 ### Normalised similarity-sensitive supercommunity alpha diversity
 
 Calculates average (normalised alpha) diversity of a series of
@@ -375,12 +375,12 @@ counts, for a series of orders, represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:191](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:187](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d256.2" class="lexicon_definition"></a>
-#### DĀ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d256.2)
+#### DĀ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d256.2)
 ### Normalised similarity-sensitive supercommunity alpha diversity
 
 Calculates average (normalised alpha) diversity of a series of
@@ -401,12 +401,12 @@ counts, for a series of orders, represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:191](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:187](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d945.1" class="lexicon_definition"></a>
-#### Dα{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d945.1)
+#### Dα{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d945.1)
 ### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
@@ -429,12 +429,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:101](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:100](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d945.2" class="lexicon_definition"></a>
-#### Dα{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d945.2)
+#### Dα{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d945.2)
 ### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
 Calculates average raw alpha diversity / naive-community diversity of
@@ -457,12 +457,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:101](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:100](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d946.1" class="lexicon_definition"></a>
-#### Dβ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d946.1)
+#### Dβ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d946.1)
 ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
 Calculates the raw beta diversity / distinctiveness of or
@@ -485,12 +485,12 @@ represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:252](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:246](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d946.2" class="lexicon_definition"></a>
-#### Dβ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d946.2)
+#### Dβ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d946.2)
 ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
 Calculates the raw beta diversity / distinctiveness of or
@@ -513,12 +513,12 @@ represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:252](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:246](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d946772.1" class="lexicon_definition"></a>
-#### Dβ̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d946772.1)
+#### Dβ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d946772.1)
 ### Normalised similarity-sensitive subcommunity beta diversity
 
 Calculates normalised beta diversities or the effective number of
@@ -541,12 +541,12 @@ as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:327](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:319](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d946772.2" class="lexicon_definition"></a>
-#### Dβ̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d946772.2)
+#### Dβ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d946772.2)
 ### Normalised similarity-sensitive subcommunity beta diversity
 
 Calculates normalised beta diversities or the effective number of
@@ -569,12 +569,12 @@ as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:327](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:319](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d947.1" class="lexicon_definition"></a>
-#### Dγ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d947.1)
+#### Dγ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d947.1)
 ### Raw similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -596,12 +596,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:472](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:459](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d947.2" class="lexicon_definition"></a>
-#### Dγ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d947.2)
+#### Dγ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d947.2)
 ### Raw similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -623,12 +623,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:472](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:459](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d947772.1" class="lexicon_definition"></a>
-#### Dγ̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d947772.1)
+#### Dγ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d947772.1)
 ### Normalised similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -650,12 +650,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:506](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:492](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d947772.2" class="lexicon_definition"></a>
-#### Dγ̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d947772.2)
+#### Dγ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d947772.2)
 ### Normalised similarity-sensitive subcommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -677,12 +677,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:506](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:492](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d961.1" class="lexicon_definition"></a>
-#### Dρ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d961.1)
+#### Dρ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d961.1)
 ### Raw similarity-sensitive subcommunity redundancy
 
 Calculates redundancy of a series of subcommunities represented by
@@ -704,12 +704,12 @@ represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:218](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:213](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d961.2" class="lexicon_definition"></a>
-#### Dρ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d961.2)
+#### Dρ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d961.2)
 ### Raw similarity-sensitive subcommunity redundancy
 
 Calculates redundancy of a series of subcommunities represented by
@@ -731,12 +731,12 @@ represented as a vector of qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:218](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:213](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d961772.1" class="lexicon_definition"></a>
-#### Dρ̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d961772.1)
+#### Dρ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d961772.1)
 ### Normalised similarity-sensitive subcommunity representativeness
 
 Calculates the representativeness of a series of subcommunities
@@ -762,12 +762,12 @@ subcommunities is 1/x.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:290](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:283](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d961772.2" class="lexicon_definition"></a>
-#### Dρ̄{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d961772.2)
+#### Dρ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d961772.2)
 ### Normalised similarity-sensitive subcommunity representativeness
 
 Calculates the representativeness of a series of subcommunities
@@ -793,12 +793,12 @@ subcommunities is 1/x.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:290](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:283](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d7712.1" class="lexicon_definition"></a>
-#### DḠ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d7712.1)
+#### DḠ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d7712.1)
 ### Normalised similarity-sensitive supercommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -819,12 +819,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:565](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:549](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d7712.2" class="lexicon_definition"></a>
-#### DḠ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d7712.2)
+#### DḠ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d7712.2)
 ### Normalised similarity-sensitive supercommunity gamma diversity
 
 Calculates diversity of a series of columns representing independent
@@ -845,12 +845,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:565](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:549](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d8113.1" class="lexicon_definition"></a>
-#### Dᾱ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__d8113.1)
+#### Dᾱ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__d8113.1)
 ### Normalised similarity-sensitive subcommunity alpha diversity)
 
 Calculates (normalised alpha) diversity of a series of
@@ -873,12 +873,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:133](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:131](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__d8113.2" class="lexicon_definition"></a>
-#### Dᾱ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d8113.2)
+#### Dᾱ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__d8113.2)
 ### Normalised similarity-sensitive subcommunity alpha diversity)
 
 Calculates (normalised alpha) diversity of a series of
@@ -901,12 +901,12 @@ qs.
 
 
 *source:*
-[Diversity/src/GeneralisedDiversities.jl:133](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
+[Diversity/src/GeneralisedDiversities.jl:131](file:///Users/richardr/.julia/v0.4/Diversity/src/GeneralisedDiversities.jl)
 
 ---
 
 <a id="method__diversity.1" class="lexicon_definition"></a>
-#### diversity{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__diversity.1)
+#### diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__diversity.1)
 ### Calculates subcommunity and supercommunity diversities
 
 Calculates any diversity of a series of columns representing
@@ -950,7 +950,7 @@ Some or all (as tuple) of:
 ---
 
 <a id="method__diversity.2" class="lexicon_definition"></a>
-#### diversity{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__diversity.2)
+#### diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__diversity.2)
 ### Calculates subcommunity and supercommunity diversities
 
 Calculates any diversity of a series of columns representing
@@ -994,7 +994,7 @@ Some or all (as tuple) of:
 ---
 
 <a id="method__diversity.3" class="lexicon_definition"></a>
-#### diversity{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool) [¶](#method__diversity.3)
+#### diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool) [¶](#method__diversity.3)
 ### Calculates subcommunity and supercommunity diversities
 
 Calculates any diversity of a series of columns representing
@@ -1038,7 +1038,7 @@ Some or all (as tuple) of:
 ---
 
 <a id="method__diversity.4" class="lexicon_definition"></a>
-#### diversity{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool) [¶](#method__diversity.4)
+#### diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool) [¶](#method__diversity.4)
 ### Calculates subcommunity and supercommunity diversities
 
 Calculates any diversity of a series of columns representing
@@ -1082,7 +1082,7 @@ Some or all (as tuple) of:
 ---
 
 <a id="method__diversity.5" class="lexicon_definition"></a>
-#### diversity{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool,  returnweights::Bool) [¶](#method__diversity.5)
+#### diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool,  returnweights::Bool) [¶](#method__diversity.5)
 ### Calculates subcommunity and supercommunity diversities
 
 Calculates any diversity of a series of columns representing
@@ -1126,7 +1126,7 @@ Some or all (as tuple) of:
 ---
 
 <a id="method__qdz.1" class="lexicon_definition"></a>
-#### qDZ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 1},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__qdz.1)
+#### qDZ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 1},  qs) [¶](#method__qdz.1)
 ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
 Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
@@ -1143,12 +1143,12 @@ a population with given relative *proportions*, and similarity matrix
 - Diversity of order qs (single number or vector of diversities)
 
 *source:*
-[Diversity/src/EffectiveNumbers.jl:102](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
+[Diversity/src/EffectiveNumbers.jl:112](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
 
 ---
 
 <a id="method__qdz.2" class="lexicon_definition"></a>
-#### qDZ{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 1},  qs::Union{Array{T<:Number, 1}, T<:Number},  Z::Array{S<:AbstractFloat, 2}) [¶](#method__qdz.2)
+#### qDZ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 1},  qs,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__qdz.2)
 ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
 Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
@@ -1165,12 +1165,12 @@ a population with given relative *proportions*, and similarity matrix
 - Diversity of order qs (single number or vector of diversities)
 
 *source:*
-[Diversity/src/EffectiveNumbers.jl:102](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
+[Diversity/src/EffectiveNumbers.jl:112](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
 
 ---
 
 <a id="method__qd.1" class="lexicon_definition"></a>
-#### qD{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 1},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__qd.1)
+#### qD{S<:Number}(proportions::Array{S<:Number, 1},  qs) [¶](#method__qd.1)
 ### Calculates Hill / naive-similarity diversity
 
 Calculates Hill number or naive diversity of order(s) *qs* of a
@@ -1185,7 +1185,7 @@ population with given relative proportions.
 - Diversity of order qs (single number or vector of diversities)
 
 *source:*
-[Diversity/src/EffectiveNumbers.jl:72](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
+[Diversity/src/EffectiveNumbers.jl:85](file:///Users/richardr/.julia/v0.4/Diversity/src/EffectiveNumbers.jl)
 
 ## Types [Exported]
 
@@ -1315,7 +1315,7 @@ Creates an instance of the GeneralSimilarity class, with an arbitrary similarity
 ---
 
 <a id="method__contributions.1" class="lexicon_definition"></a>
-#### contributions{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__contributions.1)
+#### contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__contributions.1)
 ### Calculate diversity contributions from subcommunities
 
 Calculates proportions that subcommunities each contribute to
@@ -1352,7 +1352,7 @@ relative abundances.
 ---
 
 <a id="method__contributions.2" class="lexicon_definition"></a>
-#### contributions{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  perindividual::Bool) [¶](#method__contributions.2)
+#### contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  perindividual::Bool) [¶](#method__contributions.2)
 ### Calculate diversity contributions from subcommunities
 
 Calculates proportions that subcommunities each contribute to
@@ -1389,7 +1389,7 @@ relative abundances.
 ---
 
 <a id="method__contributions.3" class="lexicon_definition"></a>
-#### contributions{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__contributions.3)
+#### contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2}) [¶](#method__contributions.3)
 ### Calculate diversity contributions from subcommunities
 
 Calculates proportions that subcommunities each contribute to
@@ -1426,7 +1426,7 @@ relative abundances.
 ---
 
 <a id="method__contributions.4" class="lexicon_definition"></a>
-#### contributions{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool) [¶](#method__contributions.4)
+#### contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool) [¶](#method__contributions.4)
 ### Calculate diversity contributions from subcommunities
 
 Calculates proportions that subcommunities each contribute to
@@ -1463,7 +1463,7 @@ relative abundances.
 ---
 
 <a id="method__contributions.5" class="lexicon_definition"></a>
-#### contributions{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool) [¶](#method__contributions.5)
+#### contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool) [¶](#method__contributions.5)
 ### Calculate diversity contributions from subcommunities
 
 Calculates proportions that subcommunities each contribute to
@@ -1500,7 +1500,7 @@ relative abundances.
 ---
 
 <a id="method__contributions.6" class="lexicon_definition"></a>
-#### contributions{S<:AbstractFloat, T<:Number}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number},  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool,  returnweights::Bool) [¶](#method__contributions.6)
+#### contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  perindividual::Bool,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool,  returnweights::Bool) [¶](#method__contributions.6)
 ### Calculate diversity contributions from subcommunities
 
 Calculates proportions that subcommunities each contribute to
@@ -1537,7 +1537,7 @@ relative abundances.
 ---
 
 <a id="method__powermean.1" class="lexicon_definition"></a>
-#### powermean{S<:Number, T<:AbstractFloat, U<:Number}(values::Array{S<:Number, 1},  order::T<:AbstractFloat,  weights::Array{U<:Number, 1}) [¶](#method__powermean.1)
+#### powermean{S<:AbstractFloat}(values::Array{S<:AbstractFloat, 1}) [¶](#method__powermean.1)
 ### Calculates the weighted powermean of a series of numbers
 
 Calculates *order*th power mean of *values*, weighted by
@@ -1559,7 +1559,7 @@ is 1, so this is just the arithmetic mean.
 ---
 
 <a id="method__powermean.2" class="lexicon_definition"></a>
-#### powermean{S<:Number, T<:AbstractFloat}(values::Array{S<:Number, 1},  order::T<:AbstractFloat) [¶](#method__powermean.2)
+#### powermean{S<:AbstractFloat}(values::Array{S<:AbstractFloat, 1},  order::S<:AbstractFloat) [¶](#method__powermean.2)
 ### Calculates the weighted powermean of a series of numbers
 
 Calculates *order*th power mean of *values*, weighted by
@@ -1581,7 +1581,7 @@ is 1, so this is just the arithmetic mean.
 ---
 
 <a id="method__powermean.3" class="lexicon_definition"></a>
-#### powermean{S<:Number}(values::Array{S<:Number, 1}) [¶](#method__powermean.3)
+#### powermean{S<:AbstractFloat}(values::Array{S<:AbstractFloat, 1},  order::S<:AbstractFloat,  weights::Array{S<:AbstractFloat, 1}) [¶](#method__powermean.3)
 ### Calculates the weighted powermean of a series of numbers
 
 Calculates *order*th power mean of *values*, weighted by

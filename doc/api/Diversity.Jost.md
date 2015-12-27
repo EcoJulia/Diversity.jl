@@ -6,7 +6,7 @@
 ---
 
 <a id="method__jostalpha.1" class="lexicon_definition"></a>
-#### jostalpha{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__jostalpha.1)
+#### jostalpha{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__jostalpha.1)
 ### Calculates Jost's alpha diversity
 
 Calculates Jost's alpha diversity of a series of columns representing
@@ -32,7 +32,7 @@ divided by the naive-community beta diversity.
 ---
 
 <a id="method__jostbeta.1" class="lexicon_definition"></a>
-#### jostbeta{S<:AbstractFloat, T<:Number}(proportions::Array{S<:AbstractFloat, 2},  qs::Union{Array{T<:Number, 1}, T<:Number}) [¶](#method__jostbeta.1)
+#### jostbeta{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs) [¶](#method__jostbeta.1)
 ### Calculates Jost's beta diversity
 
 Calculates Jost's beta diversity of a series of columns representing
@@ -53,5 +53,5 @@ Jost's alpha diversity
 
 
 *source:*
-[Diversity/src/Jost.jl:49](file:///Users/richardr/.julia/v0.4/Diversity/src/Jost.jl)
+[Diversity/src/Jost.jl:48](file:///Users/richardr/.julia/v0.4/Diversity/src/Jost.jl)
 
