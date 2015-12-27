@@ -3,6 +3,7 @@
 "$(readall(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
 module Diversity
 VERSION < v"0.4-" && using Docile
+using Compat
 
 include("Collection.jl")
 export Collection, Ecosystem, Community
@@ -40,6 +41,7 @@ include("CommunityContributions.jl")
 "$(readall(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
 module Ecology
 VERSION < v"0.4-" && using Docile
+using Compat
 
 include("Ecology.jl")
 export generalisedrichness, richness
