@@ -1,5 +1,6 @@
 # VERSION >= v"0.4.0-dev+6641" && __precompile__()
 
+"$(readall(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
 module Diversity
 VERSION < v"0.4-" && using Docile
 

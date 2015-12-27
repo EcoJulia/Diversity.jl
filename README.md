@@ -30,61 +30,62 @@ if you find any problems.
 
 #### Diversity
 
+The main package provides basic numbers-equivalent diversity
+measures (described in
+[Hill, 1973](http://www.jstor.org/stable/1934352)),
+similarity-sensitive diversity measures (generalised from Hill, and
+described in
+[Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
+and related alpha, beta and gamma diversity measures at the level of
+the supercommunity and its component subcommunities (generalised in
+turn from Leinster and Cobbold, and described in
+[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The functions
+exist both with unicode names preceded by D (e.g. Dᾱ()), and with
+matching ascii names (e.g. subcommunityalphabar()). We also provide a
+general function for extract any diversity measure for a series of
+subcommunity relative abundances. The full documentation can be found
+[here](http://diversityjl.readthedocs.org/en/stable/diversity/).
+
 Accessing the main functionality in the package is simple:
 
-```julia
+```julia_skip
 using Diversity
 ...
 diversities = supercommunityAbar(proportions, [0, 1, 2, Inf], Z)
 diversity = supercommunityR(proportions, 2, Z)
 ```
 
-The main package provides basic diversity measures (from
-[Hill, 1973](http://www.jstor.org/stable/1934352)), and generalised alpha,
-beta and gamma diversity measures at the level of the supercommunity and its
-component subcommunities (these are extended from
-[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)).
-There are also matching normalised and raw, alpha, beta and gamma
-diversities at both the subcommunity and supercommunity level. The
-functions exist both with unicode names preceded by D (e.g.
-Dᾱ()), and with matching ascii names (e.g.
-subcommunityalphabar()). We also provide a general function for extract any
-diversity measure for a series of subcommunity relative abundances.
-And we can calculate the proportions that subcommunities each
-contribute to supercommunity diversity per subcommunity or per individual.
-The full documentation can be found
-[here](http://richardreeve.github.io/Diversity.jl/stable/diversity.html).
-
 The package also provides sub-modules with other diversity measures:
 
 #### Diversity.Ecology
 
-We also replicate old ecological diversity measures and generalised
-versions of them that relate to our general measures of alpha, beta
-and gamma diversity at subcommunity and supercommunity measures. The
-generalisations of the richness, Shannon and Simpson are the only
-standard measures we are aware of whose subcommunity components sum
-directly to the corresponding supercommunity measure (although note that
-Simpson's index decreases for increased diversity, so small components
-are more diverse).
-Documentation for these diversity measures can be found
-[here](http://richardreeve.github.io/Diversity.jl/stable/ecology.html).
+Many existing ecological diversity measures can be derived from our
+diversity measures, and so we provide them in the Diversity.Ecology
+submodule along with generalised versions of them that relate to our
+general measures of alpha, beta and gamma diversity at subcommunity
+and supercommunity levels. The generalisations of species richness,
+Shannon entropy and Simpson's index are the only standard measures we
+are aware of whose subcommunity components sum directly to the
+corresponding supercommunity measure (although note that Simpson's
+index decreases for increased diversity, so small components are more
+diverse). Documentation for these diversity measures can be found
+[here](http://diversityjl.readthedocs.org/en/stable/Diversity.Ecology/).
 
 #### Diversity.Hill
 
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
-.Hill sub-module.
+Diversity.Hill sub-module.
 Documentation for these diversity measures can be found
-[here](http://richardreeve.github.io/Diversity.jl/stable/hill.html).
+[here](http://diversityjl.readthedocs.org/en/stable/Diversity.Hill/).
 
 #### Diversity.Jost
 
 Lou Jost's
 [diversity](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
-found in the .Jost sub-module.
+found in the Diversity.Jost sub-module.
 Documentation for these diversity measures is
-[here](http://richardreeve.github.io/Diversity.jl/stable/jost.html).
+[here](http://diversityjl.readthedocs.org/en/stable/Diversity.Jost/).
 
 ## Documentation
 
