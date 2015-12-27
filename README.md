@@ -1,6 +1,6 @@
 # Diversity
   [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl)
-  [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/latest/?badge=stable) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/?badge=latest)
+  [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
 
 - **Current Release**: 
   [![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
@@ -69,14 +69,14 @@ are aware of whose subcommunity components sum directly to the
 corresponding supercommunity measure (although note that Simpson's
 index decreases for increased diversity, so small components are more
 diverse). Documentation for these diversity measures can be found
-[here](http://diversityjl.readthedocs.org/en/stable/Diversity.Ecology/).
+[here](http://diversityjl.readthedocs.org/en/stable/ecology/).
 
 #### Diversity.Hill
 
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 Diversity.Hill sub-module.
 Documentation for these diversity measures can be found
-[here](http://diversityjl.readthedocs.org/en/stable/Diversity.Hill/).
+[here](http://diversityjl.readthedocs.org/en/stable/hill/).
 
 #### Diversity.Jost
 
@@ -85,7 +85,7 @@ Lou Jost's
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
 found in the Diversity.Jost sub-module.
 Documentation for these diversity measures is
-[here](http://diversityjl.readthedocs.org/en/stable/Diversity.Jost/).
+[here](http://diversityjl.readthedocs.org/en/stable/jost/).
 
 ## Documentation
 
