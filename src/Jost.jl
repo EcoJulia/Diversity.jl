@@ -1,5 +1,4 @@
 using Diversity
-using Compat
 
 """
 ### Calculates Jost's alpha diversity
@@ -20,8 +19,7 @@ divided by the naive-community beta diversity.
 - array of diversities, first dimension representing sub-communities, and
   last representing values of q
 """
-function jostalpha{S <: AbstractFloat,
-                   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}))
+function jostalpha{S <: AbstractFloat}(proportions::Matrix{S}, qs)
     DA(proportions, qs) ./
     qD(reshape(mapslices(sum, proportions, (1,)), size(proportions)[2]), qs)
 end
@@ -47,8 +45,7 @@ Jost's alpha diversity
 - array of diversities, first dimension representing sub-communities, and
   last representing values of q
 """
-function jostbeta{S <: AbstractFloat,
-                  T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}))
+function jostbeta{S <: AbstractFloat}(proportions::Matrix{S}, qs)
     DḠ(proportions, qs) ./ jostalpha(proportions, qs)
 end
 

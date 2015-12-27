@@ -28,15 +28,14 @@ relative abundances.
     last representing values of q
   - vector of subcommunity weights
 """
-function contributions{S <: AbstractFloat,
-                       T <: Number}(measure::Function,
-                                    proportions::Matrix{S},
-                                    qs::@compat(Union{T, Vector{T}}),
-                                    perindividual::Bool = true,
-                                    Z::Matrix{S} = eye(size(proportions, 1)),
-                                    returnsupercommunity::Bool = false,
-                                    returnsubcommunity::Bool = false,
-                                    returnweights::Bool = false)
+function contributions{S <: AbstractFloat}(measure::Function,
+                                           proportions::Matrix{S},
+                                           qs,
+                                           perindividual::Bool = true,
+                                           Z::Matrix{S} = eye(size(proportions, 1)),
+                                           returnsupercommunity::Bool = false,
+                                           returnsubcommunity::Bool = false,
+                                           returnweights::Bool = false)
     ## We need our qs to be a vector of floating points
     powers = 1. - convert(Vector{S}, collect(qs))
     

@@ -35,14 +35,13 @@ Some or all (as tuple) of:
 - multidimensional array with dimensions matiching shape of proportions,
   with extra dimension for values of q
 """
-function diversity{S <: AbstractFloat,
-                   T <: Number}(measure::Function,
-                                proportions::Matrix{S},
-                                qs::@compat(Union{T, Vector{T}}),
-                                Z::Matrix{S} = eye(size(proportions, 1)),
-                                returnsupercommunity::Bool = true,
-                                returnsubcommunity::Bool = true,
-                                returnweights::Bool = true)
+function diversity{S <: AbstractFloat}(measure::Function,
+                                       proportions::Matrix{S},
+                                       qs,
+                                       Z::Matrix{S} = eye(size(proportions, 1)),
+                                       returnsupercommunity::Bool = true,
+                                       returnsubcommunity::Bool = true,
+                                       returnweights::Bool = true)
     ## Make sure we actually want to calculate the diversity before
     ## going any further!
     if (!returnsupercommunity && !returnsubcommunity)
@@ -98,9 +97,8 @@ qs.
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dα{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dα{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dα: Similarity matrix size does not match species number")
@@ -130,9 +128,8 @@ qs.
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-Dᾱ{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                Z::Matrix{S} = eye(size(proportions, 1))) =
+Dᾱ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                     mapslices(p -> qDZ(p, qs, Z),
                               proportions *
                               diagm(reshape(mapslices(v -> 1. / sum(v),
@@ -162,9 +159,8 @@ of qs.
 
 - vector of diversities representing values of q
 """
-DA{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                Z::Matrix{S} = eye(size(proportions, 1))) =
+DA{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dα, proportions, qs, Z, true, false, false)
                     
 supercommunityA = DA
@@ -188,9 +184,8 @@ counts, for a series of orders, represented as a vector of qs.
 
 - vector of diversities representing values of q
 """
-DĀ{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                Z::Matrix{S} = eye(size(proportions, 1))) =
+DĀ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dᾱ, proportions, qs, Z, true, false, false)
                     
 supercommunityAbar = DĀ
@@ -215,9 +210,8 @@ represented as a vector of qs.
 - array of redundancies, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dρ{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dρ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dρ: Similarity matrix size does not match species number")
@@ -249,9 +243,8 @@ represented as a vector of qs.
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dβ{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dβ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dβ: Similarity matrix size does not match species number")
@@ -287,9 +280,8 @@ subcommunities is 1/x.
 - array of representativenesses, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dρ̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dρ̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dϵ: Similarity matrix size does not match species number")
@@ -324,9 +316,8 @@ as a vector of qs.
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dβ̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dβ̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dβ̄: Similarity matrix size does not match species number")
@@ -359,9 +350,8 @@ series of orders, represented as a vector of qs.
 
 - vector of redundancies representing values of q
 """
-DR{S <: AbstractFloat,
-  T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-               Z::Matrix{S} = eye(size(proportions, 1))) =
+DR{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ, proportions, qs, Z, true, false, false)
 supercommunityredundancy = supercommunityR = DR
     
@@ -385,9 +375,8 @@ represented as a vector of qs.
 
 - vector of diversities representing values of q
 """
-function DB{S <: AbstractFloat,
-           T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                        Z::Matrix{S} = eye(size(proportions, 1)))
+function DB{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ, proportions, qs, Z, true, false, false)
 end
 supercommunityB = supercommunitydistinctiveness = supercommunityconcentration = DB
@@ -415,9 +404,8 @@ subcommunities is 1/x.
 
 - vector of representativenesses representing values of q
 """
-DR̄{S <: AbstractFloat,
-  T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-               Z::Matrix{S} = eye(size(proportions, 1))) =
+DR̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                    diversity(Dρ̄, proportions, qs, Z, true, false, false)
 
 supercommunityRbar = supercommunityrepresentativeness = DR̄
@@ -442,9 +430,8 @@ series of orders, represented as a vector of qs.
 
 - vector of diversities representing values of q
 """
-function DB̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function DB̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     diversity(Dβ̄, proportions, qs, Z, true, false, false)
 end
 supercommunityBbar = DB̄
@@ -469,9 +456,8 @@ qs.
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dγ{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dγ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dγ: Similarity matrix size does not match species number")
@@ -503,9 +489,8 @@ qs.
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dγ̄{S <: AbstractFloat,
-            T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                         Z::Matrix{S} = eye(size(proportions, 1)))
+function Dγ̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                                Z::Matrix{S} = eye(size(proportions, 1)))
     l = size(proportions, 1)
     size(Z) == (l, l) ||
     error("Dγ̄: Similarity matrix size does not match species number")
@@ -536,9 +521,8 @@ qs.
 
 - vector of diversities representing values of q
 """
-DG{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                Z::Matrix{S} = eye(size(proportions, 1))) =
+DG{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ, proportions, qs, Z, true, false, false)
 
 supercommunityG = DG
@@ -562,9 +546,8 @@ qs.
 
 - vector of diversities representing values of q
 """
-DḠ{S <: AbstractFloat,
-   T <: Number}(proportions::Matrix{S}, qs::@compat(Union{T, Vector{T}}),
-                Z::Matrix{S} = eye(size(proportions, 1))) =
+DḠ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
+                       Z::Matrix{S} = eye(size(proportions, 1))) =
                     diversity(Dγ̄, proportions, qs, Z, true, false, false)
 
 supercommunityGbar = DḠ
