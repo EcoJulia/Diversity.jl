@@ -15,7 +15,7 @@ is 1, so this is just the arithmetic mean.
 """
 function powermean{S <: AbstractFloat}(values::Vector{S},
                                        order::S = 1.,
-                                       weights::Vector{S} = ones(values) * 1.)
+                                       weights::Vector{S} = ones(values))
     ## Normalise weights to sum to 1 (as per Rényi)
     length(values) == length(weights) ||
       error("powermean: Weight and value vectors must be the same length")
@@ -47,22 +47,22 @@ function powermean{S <: AbstractFloat}(values::Matrix{S},
 end
 
 ## We need to handle lack of automatic promotion between ints and floats in Julia
-function powermean{S <: Number,
-                   T <: Number,
-                   U <: Number}(values::Array{S},
-                                order::T,
-                                weights::Array{U} = ones(values) * 1.)
+function powermean{S <: Real,
+                   T <: Real,
+                   U <: Real}(values::Array{S},
+                              order::T,
+                              weights::Array{U} = ones(values))
     (size(values) == size(weights)) ||
     error("Values and weights are not the same size")
     powermean(values * 1., order * 1., weights * 1.)
 end
 
 ## We need to handle matrices as well as vectors
-function powermean{S <: Number,
-                   T <: Number,
-                   U <: Number}(values::Array{S},
-                                orders::Vector{T},
-                                weights::Array{U} = ones(values) * 1.)
+function powermean{S <: Real,
+                   T <: Real,
+                   U <: Real}(values::Array{S},
+                              orders::Vector{T},
+                              weights::Array{U} = ones(values))
     (size(values) == size(weights)) ||
     error("Values and weights are not the same size")
     
@@ -82,7 +82,7 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD{S <: Number}(proportions::Vector{S}, qs)
+function qD{S <: Real}(proportions::Vector{S}, qs)
     if !isapprox(sum(proportions), 1.)
         warn("qD: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
@@ -91,7 +91,7 @@ function qD{S <: Number}(proportions::Vector{S}, qs)
 end
 
 ## We need to handle matrices as well as vectors
-qD{S <: Number}(proportions::Matrix{S}, qs) =
+qD{S <: Real}(proportions::Matrix{S}, qs) =
     mapslices(p -> qD(p, qs), proportions, 1)
 
 """

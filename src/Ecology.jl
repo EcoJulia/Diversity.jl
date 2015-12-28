@@ -62,7 +62,7 @@ includes a similarity matrix for the species
 function generalisedshannon{S <: AbstractFloat}(measure::Function,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
-                                                eye(size(proportions)[1]))
+                                                eye(size(proportions, 1)))
     log(measure(proportions, 1, Z))
 end
 
@@ -102,7 +102,7 @@ includes a similarity matrix for the species
 function generalisedsimpson{S <: AbstractFloat}(measure::Function ,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
-                                                eye(size(proportions)[1]))
+                                                eye(size(proportions, 1)))
     measure(proportions, 2, Z) .^ -1
 end
 
