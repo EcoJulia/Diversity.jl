@@ -24,26 +24,14 @@ species as unique and completely distinct from each other.
 """
 typealias Species Unique
 
-if VERSION < v"0.4-"
-@doc """
+"""
 ### A subtype of Similarity with similarity between related taxa
 
 This subtype of Similarity allows taxonomic similarity matrices
-""" ->
-    immutable Taxonomy <: Similarity
-        labels::Dict{String, (Float64, Dict{String, String})}
-    end
-else
-@doc """
-### A subtype of Similarity with similarity between related taxa
-
-This subtype of Similarity allows taxonomic similarity matrices
-""" ->
-    immutable Taxonomy <: Similarity
-        labels::Dict{AbstractString, Tuple{Float64, Dict{AbstractString, AbstractString}}}
-    end    
-end
-
+"""
+immutable Taxonomy <: Similarity
+    labels::Dict{AbstractString, @compat(Tuple{Float64, Dict{AbstractString, AbstractString}})}
+end    
 
 """
 ### A general matrix-based Similarity subtype
