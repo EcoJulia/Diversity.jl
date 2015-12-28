@@ -41,11 +41,11 @@ manyweights = rand(numspecies, numcommunities);
 manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
                              (numcommunities)));
 
-@test_approx_eq qD(manyweights, 0) numspecies * ones((1, size(manyweights)[2]))
-@test_approx_eq qD(manyweights, [0]) numspecies * ones((1, size(manyweights)[2]))
+@test_approx_eq qD(manyweights, 0) numspecies * ones((1, size(manyweights, 2)))
+@test_approx_eq qD(manyweights, [0]) numspecies * ones((1, size(manyweights, 2)))
 @test_approx_eq qDZ(manyweights, [0, 1, 2, Inf],
-                    ones((size(manyweights)[1],
-                          size(manyweights)[1]))) ones((4, size(manyweights)[2]))
+                    ones((size(manyweights, 1),
+                          size(manyweights, 1)))) ones((4, size(manyweights, 2)))
 
 # Generate warnings, but normalise and calculate diversities
 warn("We now generate two warnings for code coverage completeness...")
@@ -55,11 +55,11 @@ warn("We now generate two warnings for code coverage completeness...")
 # Sub-community alpha diversities
 communities = rand(numspecies, numcommunities);
 communities /= sum(communities);
-@test_approx_eq Dᾱ(communities, 0) numspecies * ones((1, size(communities)[2]))
+@test_approx_eq Dᾱ(communities, 0) numspecies * ones((1, size(communities, 2)))
 @test_approx_eq subcommunityalphabar(communities,
-                                     [0]) numspecies * ones((1, size(communities)[2]))
+                                     [0]) numspecies * ones((1, size(communities, 2)))
 @test_approx_eq Dᾱ(communities,
-                  [0, 1, 2, Inf], Z1) ones((4, size(communities)[2]))
+                  [0, 1, 2, Inf], Z1) ones((4, size(communities, 2)))
 
 @test_approx_eq Dα(communities, 0) numspecies * mapslices(v -> 1. / sum(v),
                                                   communities, 1)
@@ -69,7 +69,7 @@ qs = [0, 1, 2, 3, 4, 5, 6, Inf];
 @test_approx_eq DĀ(even, qs) numspecies * ones((1, length(qs)))
 @test_approx_eq DA(even, qs) numspecies * numcommunities * ones((1, length(qs)))
 
-probs = reshape(mapslices(sum, communities, 2), (size(communities)[1]));
+probs = reshape(mapslices(sum, communities, 2), (size(communities, 1)));
 @test_approx_eq DG(communities, qs) DḠ(communities, qs)
 @test_approx_eq DG(communities, qs) qD(probs, qs)
 @test_approx_eq DG(communities, qs, Z1) qDZ(probs, qs, Z1)
@@ -170,4 +170,4 @@ evendistinct = mapslices((x) -> x / (sum(x) * numcommunities), distinct, 1)
 # Checking Hill numbers
 using Diversity.Hill
 
-@test_approx_eq hillnumber(manyweights, 0) numspecies * ones((1, size(manyweights)[2]))
+@test_approx_eq hillnumber(manyweights, 0) numspecies * ones((1, size(manyweights, 2)))
