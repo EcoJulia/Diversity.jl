@@ -96,16 +96,21 @@ a population with given relative *proportions*, and similarity matrix
 - `Z`: similarity matrix
 
 #### Returns:
-- Diversity of order qs (single number or vector of diversities)"""
-function qDZ{S <: AbstractFloat}(proportions::AbstractArray{S, 1}, qs,
-                                 Z::AbstractArray{S, 2} = eye(length(proportions)))
+- Diversity of order qs (single number or vector of diversities)
+"""
+function qDZ{S <: AbstractFloat, T <: Similarity}(proportions::Vector{S}, qs,
+                                         sim::T = Unique())
     if !isapprox(sum(proportions), 1.)
         warn("qDZ: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
     end
-
-    l = length(proportions)
-    size(Z) == (l, l) ||
-    error("qDZ: Similarity matrix size does not match species number")
-    powermean(Z * proportions, qs - 1., proportions) .^ -1
+    z = get_similarities(proportions, sim)
+    powermean(z * proportions, qs - 1., proportions) .^ -1
 end
+
+qDZ{S <: AbstractFloat, T <: Similarity}(proportions::Matrix{S}, qs,
+                                         sim::T = Unique()) =
+                                             mapslices(p -> qDZ(p, qs, get_similarities(proportions, sim)),
+                                                       proportions, 1)
+
+qDZ{S <: AbstractFloat}(proportions::Array{S}, qs, z::Matrix{S}) = qDZ(proportions, qs, GeneralSimilarity(z))
