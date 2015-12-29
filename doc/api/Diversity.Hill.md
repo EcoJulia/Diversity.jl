@@ -23,5 +23,5 @@ population(s) with given relative proportions
 
 
 *source:*
-[Diversity/src/Hill.jl:18](file:///Users/richardr/.julia/v0.4/Diversity/src/Hill.jl)
+[Diversity/src/Hill.jl:18](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Hill.jl#L18)
 

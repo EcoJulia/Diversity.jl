@@ -25,7 +25,7 @@ gives measure of the average distinctiveness of the subcommunities.
 
 
 *source:*
-[Diversity/src/Ecology.jl:143](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:143](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L143)
 
 ---
 
@@ -49,7 +49,7 @@ gives measure of the average distinctiveness of the subcommunities.
 
 
 *source:*
-[Diversity/src/Ecology.jl:143](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:143](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L143)
 
 ---
 
@@ -74,7 +74,7 @@ similarity matrix for the species
 
 
 *source:*
-[Diversity/src/Ecology.jl:21](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:21](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L21)
 
 ---
 
@@ -99,7 +99,7 @@ similarity matrix for the species
 
 
 *source:*
-[Diversity/src/Ecology.jl:21](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:21](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L21)
 
 ---
 
@@ -124,7 +124,7 @@ includes a similarity matrix for the species
 
 
 *source:*
-[Diversity/src/Ecology.jl:62](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:62](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L62)
 
 ---
 
@@ -149,7 +149,7 @@ includes a similarity matrix for the species
 
 
 *source:*
-[Diversity/src/Ecology.jl:62](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:62](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L62)
 
 ---
 
@@ -173,7 +173,7 @@ includes a similarity matrix for the species
 
 
 *source:*
-[Diversity/src/Ecology.jl:102](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:102](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L102)
 
 ---
 
@@ -197,7 +197,7 @@ includes a similarity matrix for the species
 
 
 *source:*
-[Diversity/src/Ecology.jl:102](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:102](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L102)
 
 ---
 
@@ -217,7 +217,7 @@ DA(proportions, 0) / DG(proportions, 0) - 1
 
 
 *source:*
-[Diversity/src/Ecology.jl:163](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:163](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L163)
 
 ---
 
@@ -236,7 +236,7 @@ independent subcommunity counts, which is diversity at q = 0
 
 
 *source:*
-[Diversity/src/Ecology.jl:40](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:40](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L40)
 
 ---
 
@@ -255,7 +255,7 @@ independent subcommunity counts, which is log(diversity) at q = 1
 
 
 *source:*
-[Diversity/src/Ecology.jl:81](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:81](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L81)
 
 ---
 
@@ -275,5 +275,5 @@ concentration) at q = 2
 
 
 *source:*
-[Diversity/src/Ecology.jl:122](file:///Users/richardr/.julia/v0.4/Diversity/src/Ecology.jl)
+[Diversity/src/Ecology.jl:122](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Ecology.jl#L122)
 

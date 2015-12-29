@@ -15,85 +15,87 @@
 
 ## Methods [Exported]
 
-[DA{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__da.1)  ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
+[diversity{S<:AbstractFloat, T<:Diversity.Similarity}(kind::Tuple{Function, Set{Symbol}},  proportions::Array{S<:AbstractFloat, 2},  qs,  sim::T<:Diversity.Similarity)](Diversity.md#method__diversity.1)  ### Calculates subcommunity and supercommunity diversities
 
-[DA{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__da.2)  ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
+[diversity{S<:AbstractFloat}(kind::Tuple{Function, Set{Symbol}},  proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__diversity.2)  ### Calculates subcommunity and supercommunity diversities
 
-[DB{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__db.1)  ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
+[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__diversity.3)  ### Calculates subcommunity and supercommunity diversities
 
-[DB{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__db.2)  ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
+[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  sim,  returnsupercommunity::Bool)](Diversity.md#method__diversity.4)  ### Calculates subcommunity and supercommunity diversities
 
-[DB̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__db772.1)  ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
+[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  sim,  returnsupercommunity::Bool,  returnsubcommunity::Bool)](Diversity.md#method__diversity.5)  ### Calculates subcommunity and supercommunity diversities
 
-[DB̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__db772.2)  ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
+[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  sim,  returnsupercommunity::Bool,  returnsubcommunity::Bool,  returnweights::Bool)](Diversity.md#method__diversity.6)  ### Calculates subcommunity and supercommunity diversities
 
-[DG{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__dg.1)  ### Raw similarity-sensitive supercommunity gamma diversity
+[qDZ{S<:AbstractFloat, T<:Diversity.Similarity}(proportions::Array{S<:AbstractFloat, 1},  qs,  sim::T<:Diversity.Similarity)](Diversity.md#method__qdz.1)  ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
-[DG{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__dg.2)  ### Raw similarity-sensitive supercommunity gamma diversity
+[qDZ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 1},  qs)](Diversity.md#method__qdz.2)  ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
-[DR{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__dr.1)  ### Raw similarity-sensitive supercommunity redundancy
+[qD{S<:Real}(proportions::Array{S<:Real, 1},  qs)](Diversity.md#method__qd.1)  ### Calculates Hill / naive-similarity diversity
 
-[DR{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__dr.2)  ### Raw similarity-sensitive supercommunity redundancy
+[subcommunityalphabar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunityalphabar.1)  ### Normalised similarity-sensitive subcommunity alpha diversity)
 
-[DR̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__dr772.1)  ### Normalised similarity-sensitive supercommunity representativeness
+[subcommunityalphabar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunityalphabar.2)  ### Normalised similarity-sensitive subcommunity alpha diversity)
 
-[DR̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__dr772.2)  ### Normalised similarity-sensitive supercommunity representativeness
+[subcommunityalpha{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunityalpha.1)  ### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
-[DĀ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d256.1)  ### Normalised similarity-sensitive supercommunity alpha diversity
+[subcommunityalpha{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunityalpha.2)  ### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
 
-[DĀ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d256.2)  ### Normalised similarity-sensitive supercommunity alpha diversity
+[subcommunitybetabar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunitybetabar.1)  ### Normalised similarity-sensitive subcommunity beta diversity
 
-[Dα{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d945.1)  ### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
+[subcommunitybetabar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunitybetabar.2)  ### Normalised similarity-sensitive subcommunity beta diversity
 
-[Dα{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d945.2)  ### Raw similarity-sensitive subcommunity alpha diversity / naive-community diversity
+[subcommunitybeta{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunitybeta.1)  ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
-[Dβ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d946.1)  ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
+[subcommunitybeta{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunitybeta.2)  ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
 
-[Dβ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d946.2)  ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
+[subcommunitygammabar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunitygammabar.1)  ### Normalised similarity-sensitive subcommunity gamma diversity
 
-[Dβ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d946772.1)  ### Normalised similarity-sensitive subcommunity beta diversity
+[subcommunitygammabar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunitygammabar.2)  ### Normalised similarity-sensitive subcommunity gamma diversity
 
-[Dβ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d946772.2)  ### Normalised similarity-sensitive subcommunity beta diversity
+[subcommunitygamma{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunitygamma.1)  ### Raw similarity-sensitive subcommunity gamma diversity
 
-[Dγ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d947.1)  ### Raw similarity-sensitive subcommunity gamma diversity
+[subcommunitygamma{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunitygamma.2)  ### Raw similarity-sensitive subcommunity gamma diversity
 
-[Dγ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d947.2)  ### Raw similarity-sensitive subcommunity gamma diversity
+[subcommunityrhobar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunityrhobar.1)  ### Normalised similarity-sensitive subcommunity representativeness
 
-[Dγ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d947772.1)  ### Normalised similarity-sensitive subcommunity gamma diversity
+[subcommunityrhobar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunityrhobar.2)  ### Normalised similarity-sensitive subcommunity representativeness
 
-[Dγ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d947772.2)  ### Normalised similarity-sensitive subcommunity gamma diversity
+[subcommunityrho{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__subcommunityrho.1)  ### Raw similarity-sensitive subcommunity redundancy
 
-[Dρ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d961.1)  ### Raw similarity-sensitive subcommunity redundancy
+[subcommunityrho{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__subcommunityrho.2)  ### Raw similarity-sensitive subcommunity redundancy
 
-[Dρ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d961.2)  ### Raw similarity-sensitive subcommunity redundancy
+[supercommunityAbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunityabar.1)  ### Normalised similarity-sensitive supercommunity alpha diversity
 
-[Dρ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d961772.1)  ### Normalised similarity-sensitive subcommunity representativeness
+[supercommunityAbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunityabar.2)  ### Normalised similarity-sensitive supercommunity alpha diversity
 
-[Dρ̄{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d961772.2)  ### Normalised similarity-sensitive subcommunity representativeness
+[supercommunityA{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunitya.1)  ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
 
-[DḠ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d7712.1)  ### Normalised similarity-sensitive supercommunity gamma diversity
+[supercommunityA{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunitya.2)  ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
 
-[DḠ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d7712.2)  ### Normalised similarity-sensitive supercommunity gamma diversity
+[supercommunityBbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunitybbar.1)  ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
 
-[Dᾱ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__d8113.1)  ### Normalised similarity-sensitive subcommunity alpha diversity)
+[supercommunityBbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunitybbar.2)  ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
 
-[Dᾱ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__d8113.2)  ### Normalised similarity-sensitive subcommunity alpha diversity)
+[supercommunityB{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunityb.1)  ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
 
-[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__diversity.1)  ### Calculates subcommunity and supercommunity diversities
+[supercommunityB{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunityb.2)  ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
 
-[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__diversity.2)  ### Calculates subcommunity and supercommunity diversities
+[supercommunityGbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunitygbar.1)  ### Normalised similarity-sensitive supercommunity gamma diversity
 
-[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool)](Diversity.md#method__diversity.3)  ### Calculates subcommunity and supercommunity diversities
+[supercommunityGbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunitygbar.2)  ### Normalised similarity-sensitive supercommunity gamma diversity
 
-[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool)](Diversity.md#method__diversity.4)  ### Calculates subcommunity and supercommunity diversities
+[supercommunityG{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunityg.1)  ### Raw similarity-sensitive supercommunity gamma diversity
 
-[diversity{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs,  Z::Array{S<:AbstractFloat, 2},  returnsupercommunity::Bool,  returnsubcommunity::Bool,  returnweights::Bool)](Diversity.md#method__diversity.5)  ### Calculates subcommunity and supercommunity diversities
+[supercommunityG{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunityg.2)  ### Raw similarity-sensitive supercommunity gamma diversity
 
-[qDZ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 1},  qs)](Diversity.md#method__qdz.1)  ### Calculates Leinster-Cobbold / similarity-sensitive diversity
+[supercommunityRbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunityrbar.1)  ### Normalised similarity-sensitive supercommunity representativeness
 
-[qDZ{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 1},  qs,  Z::Array{S<:AbstractFloat, 2})](Diversity.md#method__qdz.2)  ### Calculates Leinster-Cobbold / similarity-sensitive diversity
+[supercommunityRbar{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunityrbar.2)  ### Normalised similarity-sensitive supercommunity representativeness
 
-[qD{S<:Number}(proportions::Array{S<:Number, 1},  qs)](Diversity.md#method__qd.1)  ### Calculates Hill / naive-similarity diversity
+[supercommunityR{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__supercommunityr.1)  ### Raw similarity-sensitive supercommunity redundancy
+
+[supercommunityR{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2},  qs,  sim)](Diversity.md#method__supercommunityr.2)  ### Raw similarity-sensitive supercommunity redundancy
 
 ---
 
@@ -101,11 +103,13 @@
 
 [Diversity.Collection{S<:Diversity.Similarity, P<:Diversity.Partition, FP<:AbstractFloat}](Diversity.md#type__collection.1)  ### Collection type, representing a collection of one or more subcommunities
 
-[Diversity.GeneralSimilarity](Diversity.md#type__generalsimilarity.1)  ### A general matrix-based Similarity subtype
+[Diversity.GeneralSimilarity{S<:AbstractFloat}](Diversity.md#type__generalsimilarity.1)  ### A general matrix-based Similarity subtype
 
 [Diversity.Onecommunity](Diversity.md#type__onecommunity.1)  ### Partition type allowing only one subcommunity
 
 [Diversity.Subcommunity](Diversity.md#type__subcommunity.1)  ### Partition type with multiple subccomunities
+
+[Diversity.Taxonomy](Diversity.md#type__taxonomy.1)  ### A subtype of Similarity with similarity between related taxa
 
 [Diversity.Unique](Diversity.md#type__unique.1)  ### A subtype of Similarity where all individuals are completely distinct
 
@@ -119,7 +123,7 @@
 
 ## Methods [Internal]
 
-[call(::Type{Diversity.GeneralSimilarity},  Z::Array{Float64, 2})](Diversity.md#method__call.1)  ### Constructor for GeneralSimilarity
+[call{S<:AbstractFloat}(::Type{Diversity.GeneralSimilarity{S<:AbstractFloat}},  z::Array{S<:AbstractFloat, 2})](Diversity.md#method__call.1)  ### Constructor for GeneralSimilarity
 
 [contributions{S<:AbstractFloat}(measure::Function,  proportions::Array{S<:AbstractFloat, 2},  qs)](Diversity.md#method__contributions.1)  ### Calculate diversity contributions from subcommunities
 
@@ -146,14 +150,6 @@
 [Diversity.Partition](Diversity.md#type__partition.1)  ### Abstract Partition supertype for all partitioning types
 
 [Diversity.Similarity](Diversity.md#type__similarity.1)  ### Abstract Similarity supertype for all similarity measures
-
-## MODULE: Diversity.Hill
-
----
-
-## Methods [Exported]
-
-[hillnumber(proportions,  qs)](Diversity.Hill.md#method__hillnumber.1)  ### Calculates Hill numbers
 
 ## MODULE: Diversity.Jost
 
@@ -194,4 +190,12 @@
 [shannon{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2})](Diversity.Ecology.md#method__shannon.1)  ### Calculate Shannon entropy of populations
 
 [simpson{S<:AbstractFloat}(proportions::Array{S<:AbstractFloat, 2})](Diversity.Ecology.md#method__simpson.1)  ### Calculate Simpson's index
+
+## MODULE: Diversity.Hill
+
+---
+
+## Methods [Exported]
+
+[hillnumber(proportions,  qs)](Diversity.Hill.md#method__hillnumber.1)  ### Calculates Hill numbers
 

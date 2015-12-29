@@ -27,7 +27,7 @@ divided by the naive-community beta diversity.
 
 
 *source:*
-[Diversity/src/Jost.jl:22](file:///Users/richardr/.julia/v0.4/Diversity/src/Jost.jl)
+[Diversity/src/Jost.jl:22](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Jost.jl#L22)
 
 ---
 
@@ -53,5 +53,5 @@ Jost's alpha diversity
 
 
 *source:*
-[Diversity/src/Jost.jl:48](file:///Users/richardr/.julia/v0.4/Diversity/src/Jost.jl)
+[Diversity/src/Jost.jl:48](https://github.com/richardreeve/Diversity.jl/tree/33e5ccdee2b395af7d54b11ad13cb4d67c8531ce/src/Jost.jl#L48)
 
