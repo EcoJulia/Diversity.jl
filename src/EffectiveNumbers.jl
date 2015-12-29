@@ -98,8 +98,8 @@ a population with given relative *proportions*, and similarity matrix
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)
 """
-function qDZ{S <: AbstractFloat, T <: Similarity}(proportions::Vector{S}, qs,
-                                         sim::T = Unique())
+function qDZ{S <: AbstractFloat,
+    T <: Similarity}(proportions::Vector{S}, qs, sim::T = Unique())
     if !isapprox(sum(proportions), 1.)
         warn("qDZ: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
