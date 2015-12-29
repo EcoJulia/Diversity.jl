@@ -18,13 +18,14 @@ include("EffectiveNumbers.jl")
 export qD, qDZ
 
 include("GeneralisedDiversities.jl")
+export diversity
 export subcommunityalphabar, subcommunityalpha, supercommunityA, supercommunityAbar
 export subcommunitybetabar, subcommunitybeta, supercommunityB, supercommunityBbar
 export subcommunityrhobar, subcommunityrho, supercommunityR, supercommunityRbar
 export subcommunitygammabar, subcommunitygamma, supercommunityG, supercommunityGbar
 export Dᾱ, Dα, Dβ̄, Dβ, Dρ̄, Dρ, Dγ̄, Dγ
 export DĀ, DA, DB̄, DB, DR̄, DR, DḠ, DG
-export diversity
+## Deprecate ecosystem-related names
 @deprecate(ecosystemA, supercommunityA)
 @deprecate(ecosystemAbar, supercommunityAbar)
 @deprecate(ecosystemB, supercommunityB)
@@ -33,6 +34,8 @@ export diversity
 @deprecate(ecosystemRbar, supercommunityRbar)
 @deprecate(ecosystemG, supercommunityG)
 @deprecate(ecosystemGbar, supercommunityGbar)
+
+## Deprecate anything related to ϵ as it has been replaced by ρ̄
 @deprecate(subcommunityepsilon, Dρ̄)
 @deprecate(Dϵ, Dρ̄)
 @deprecate(ecosystemE, supercommunityRbar)
