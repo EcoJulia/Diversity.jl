@@ -85,7 +85,7 @@ get_similarities{S}(::Array{S}, sim::Taxonomy) =
     error("Can't generate a taxonomic similarity matrix yet")
 
 get_similarities{S}(abundances::Array{S}, sim::GeneralSimilarity{S}) =
-    size(abundances, 1) == size(sim.z, 1) ? sim.z : error("Similarity matrix size mismatch with number of types")
+    size(abundances, 1) == size(sim.z, 1) ? sim.z : error("Similarity matrix size $(size(sim.z)) mismatch with number of types $(size(abundances, 1))")
 
 """
 ### Abstract Partition supertype for all partitioning types
