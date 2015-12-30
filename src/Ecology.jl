@@ -38,7 +38,7 @@ independent subcommunity counts, which is diversity at q = 0
 - diversities of subcommunities
 """
 function richness{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedrichness(Dᾱ, proportions)
+    generalisedrichness(subcommunityalphabar, proportions)
 end
 
 """
@@ -79,7 +79,7 @@ independent subcommunity counts, which is log(diversity) at q = 1
 - entropies of subcommunities
 """
 function shannon{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedshannon(Dᾱ, proportions)
+    generalisedshannon(subcommunityalphabar, proportions)
 end
 
 """
@@ -120,7 +120,7 @@ concentration) at q = 2
 - concentrations of subcommunities
 """
 function simpson{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedsimpson(Dᾱ, proportions)
+    generalisedsimpson(subcommunityalphabar, proportions)
 end
 
 """
@@ -144,7 +144,7 @@ function generalisedjaccard(proportions::Matrix, qs,
                             Z::Matrix = eye(size(proportions, 1)))
     size(proportions, 2) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    DA(proportions, qs, Z) ./ DG(proportions, qs, Z) - 1
+    supercommunityA(proportions, qs, Z) ./ supercommunityG(proportions, qs, Z) - 1
 end
 
 """
