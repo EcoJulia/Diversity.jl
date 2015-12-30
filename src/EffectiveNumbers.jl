@@ -75,12 +75,12 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD{S <: Real}(proportions::AbstractArray{S, 1}, qs)
-    if !isapprox(sum(proportions), 1.)
+function qD{S <: Real}(proportions::Vector{S}, qs)
+    if !isapprox(sum(proportions), 1.0)
         warn("qD: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
     end
-    powermean(proportions, qs - 1., proportions) .^ -1
+    powermean(proportions, qs - 1.0, proportions) .^ -1
 end
 
 """
@@ -100,12 +100,12 @@ a population with given relative *proportions*, and similarity matrix
 """
 function qDZ{S <: AbstractFloat,
     T <: Similarity}(proportions::Vector{S}, qs, sim::T = Unique())
-    if !isapprox(sum(proportions), 1.)
+    if !isapprox(sum(proportions), 1.0)
         warn("qDZ: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
     end
     z = get_similarities(proportions, sim)
-    powermean(z * proportions, qs - 1., proportions) .^ -1
+    powermean(z * proportions, qs - 1.0, proportions) .^ -1
 end
 
 qDZ{S <: AbstractFloat, T <: Similarity}(proportions::Matrix{S}, qs,
