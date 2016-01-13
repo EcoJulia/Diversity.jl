@@ -1,9 +1,10 @@
 # Diversity
+[![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
+[![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
+[![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
+
   [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl)
   [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
-  [![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
-  [![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
-  [![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
