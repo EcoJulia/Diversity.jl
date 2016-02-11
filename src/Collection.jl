@@ -92,29 +92,29 @@ getsimilarities{FP}(abundances::Array{FP}, s::Taxonomy) =
     error("Can't generate a taxonomic similarity matrix yet")
 
 getsimilarities{FP}(abundances::Array{FP}, s::GeneralSimilarity) =
-    convert(Array{FP, 2}, matrix)
+    convert(Array{FP, 2}, s.matrix)
 
 """
-### Abstract Partition supertype for all partitioning types
+### Abstract Supercommunity supertype for all partitioning types
 
 This type is the abstract superclass of all partitioning types.
-Partition subtypes allow you to define how to partition your total
-collection (e.g. an ecosystem) into smaller components (e.g.
+Supercommunity subtypes allow you to define how to partition your total
+supercommunity (e.g. an ecosystem) into smaller components (e.g.
 subcommunities).
 """
-abstract Partition
+abstract Supercommunity
 
 """
-### Partition type with multiple subccomunities
+### Supercommunity type with multiple subccomunities
 """
-immutable Subcommunity <: Partition; end
+immutable Subcommunities <: Supercommunity; end
 
 """
-### Partition type allowing only one subcommunity
+### Supercommunity type allowing only one subcommunity
 """
-immutable Onecommunity <: Partition; end
+immutable Onecommunity <: Supercommunity; end
 
-legalpartition(abundances::Array, p::Subcommunity) =
+legalpartition(abundances::Array, p::Subcommunities) =
     (ndims(abundances) == 2)
 
 legalpartition(abundances::Array, p::Onecommunity) =
@@ -133,11 +133,11 @@ and also allows for similarity between individuals.
 
 #### Parameterisation:
 
-**Collection{S, P, FP}**
+**Collection{S, Super, FP}**
 
-- `S` is the similarity type, e.g. Species, a subtype of Similarity.
+- `Sim` is the similarity type, e.g. Species, a subtype of Similarity.
 
-- `P` is the partition type, e.g. Subcommunity, a subtype of Partition.
+- `Super` is the supercommunity type, e.g. Subcommunities, a subtype of Supercommunity.
 
 - `FP` is the kind of number storage, a subtype of AbstractFloat.
 
@@ -148,84 +148,60 @@ and also allows for similarity between individuals.
                represent the structure of collection.
 
 - `Z` A two-dimensional matrix representing similarity between
-      individuals of the base type, S. By default this will be the
+      individuals of the base type, Sim. By default this will be the
       identity matrix.
 """
-type Collection{S <: Similarity,
-                P <: Partition,
+type Collection{Sim <: Similarity,
+                Super <: Supercommunity,
                 FP <: AbstractFloat}
-    similarity::S
-    partition::P
+    similarity::Sim
+    supercommunity::Super
     abundances::Array{FP}
     similarities::Matrix{FP}
     normalise::Bool
 
-    function Collection(s, p, ab, normalise)
-        legalpartition(ab, p) || error("Not a legal partition")
+    function Collection(s, sup, ab, normalise)
+        legalpartition(ab, sup) || error("Not a legal partition")
         abundances = normalise ? (ab / sum(ab)) : ab
         isapprox(sum(abundances), 1.0) || warn("Not normalised")
-        sim = getsimilarities(abundances, partition)
-        new(s, p, abundances, sim, normalise)
+        sim = getsimilarities(abundances, s)
+        new(s, sup, abundances, sim, normalise)
     end
 
-    function Collection(s, p, ab)
-        legalpartition(ab, p) || error("Not a legal partition")
+    function Collection(s, sup, ab)
+        legalpartition(ab, sup) || error("Not a legal partition")
         abundances = (ab / sum(ab))
-        sim = getsimilarities(abundances, partition)
-        new(s, p, abundances, sim, true)
+        sim = getsimilarities(abundances, s)
+        new(s, sup, abundances, sim, true)
     end
     
-    function Collection(s::S, ab)
-        p = P()
-        legalpartition(ab, p) || error("Not a legal partition")
+    function Collection(s::Sim, ab)
+        sup = Super()
+        legalpartition(ab, sup) || error("Not a legal partition")
         abundances = (ab / sum(ab))
-        sim = getsimilarities(abundances, partition)
-        new(s, p, abundances, sim, true)
+        sim = getsimilarities(abundances, s)
+        new(s, sup, abundances, sim, true)
     end
     
-    function Collection(p::P, ab)
-        legalpartition(ab, p) || error("Not a legal partition")        
+    function Collection(sup::Super, ab)
+        legalpartition(ab, sup) || error("Not a legal partition")        
         abundances = (ab / sum(ab))
-        sim = getsimilarities(abundances, partition)
-        new(S(), p, abundances, sim, true)
+        s = Sim()
+        sim = getsimilarities(abundances, s)
+        new(s, sup, abundances, sim, true)
     end
     
     function Collection(ab)
-        p = P()        
-        legalpartition(ab, p) || error("Not a legal partition")
+        sup = Super()        
+        legalpartition(ab, sup) || error("Not a legal partition")
         abundances = (ab / sum(ab))
-        sim = getsimilarities(abundances, partition)
-        new(S(), p, abundances, sim, true)
+        s = Sim()
+        sim = getsimilarities(abundances, s)
+        new(s, sup, abundances, sim, true)
     end
 end
 
 """
 ### Ecosystem type, representing an ecosystem of multiple subcommunities
 """
-:Ecosystem
-
-Ecosystem{S, FP}(s::S, ab::Array{FP}) = Collection{S, Subcommunity, FP}(s, ab)
-Ecosystem{FP}(ab::Array{FP}) = Collection{Species, Subcommunity, FP}(ab)
-
-"""
-### Community type, representing a single community
-"""
-:Community
-
-Community{S, FP}(s::S, ab::Array{FP}) = Collection{S, Onecommunity, FP}(s, ab)
-Community{FP}(ab::Array{FP}) = Collection{Species, Onecommunity, FP}(ab)
-
-getpartitions(c::Collection) = [1:ndims(c.abundances)]
-
-getindividual(c::Collection) = -1
-
-function summarydimensions(c::Collection, level::Integer)
-    n = ndims(c.abundances)
-    if level == 0
-        return []
-    elseif level == -1
-        return [2:n]
-    elseif level > 0 && level <= n
-        return [1:level]
-    end
-end
+typealias Ecosystem{Sim, FP} Collection{Sim, Subcommunities, FP}
