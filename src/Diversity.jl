@@ -10,8 +10,8 @@ end
 using Compat
 
 include("Collection.jl")
-export Collection, Ecosystem, Community
-export Subcommunity, Onecommunity
+export Collection, Ecosystem
+export Subcommunities, Onecommunity
 export Unique, Species, Taxonomy, GeneralSimilarity
 
 include("EffectiveNumbers.jl")
