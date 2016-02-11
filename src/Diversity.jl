@@ -1,11 +1,13 @@
 VERSION >= v"0.4.0-dev+6641" && __precompile__()
 
-"$(readall(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
+using Compat
+
+"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
 module Diversity
 if (VERSION < v"0.4-")
   using Docile
-  using Compat
 end
+using Compat
 
 include("Collection.jl")
 export Collection, Ecosystem, Community
@@ -40,12 +42,12 @@ export diversity
 include("CommunityContributions.jl")
 # export contributions
 
-"$(readall(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
+"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
 module Ecology
 if (VERSION < v"0.4-")
   using Docile
-  using Compat
 end
+using Compat
 
 include("Ecology.jl")
 export generalisedrichness, richness
@@ -55,24 +57,24 @@ export generalisedjaccard, jaccard
 
 end # sub-module Ecology
 
-"$(readall(joinpath(dirname(@__FILE__), "../doc/jost.md")))"
+"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/jost.md")))"
 module Jost
 if (VERSION < v"0.4-")
   using Docile
-  using Compat
 end
+using Compat
 
 include("Jost.jl")
 export jostbeta, jostβ, jostalpha, jostα
 
 end # sub-module Jost
 
-"$(readall(joinpath(dirname(@__FILE__), "../doc/hill.md")))"
+"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/hill.md")))"
 module Hill
 if (VERSION < v"0.4-")
   using Docile
-  using Compat
 end
+using Compat
 
 include("Hill.jl")
 export hillnumber
