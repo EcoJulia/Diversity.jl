@@ -1,13 +1,13 @@
 VERSION >= v"0.4.0-dev+6641" && __precompile__()
 
-using Compat
-
-"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
 module Diversity
 if (VERSION < v"0.4-")
   using Docile
 end
 using Compat
+
+"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
+Diversity
 
 include("Collection.jl")
 export Collection, Ecosystem
