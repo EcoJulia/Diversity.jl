@@ -23,8 +23,26 @@ export subcommunityalphabar, subcommunityalpha, supercommunityA, supercommunityA
 export subcommunitybetabar, subcommunitybeta, supercommunityB, supercommunityBbar
 export subcommunityrhobar, subcommunityrho, supercommunityR, supercommunityRbar
 export subcommunitygammabar, subcommunitygamma, supercommunityG, supercommunityGbar
-export Dᾱ, Dα, Dβ̄, Dβ, Dρ̄, Dρ, Dγ̄, Dγ
-export DĀ, DA, DB̄, DB, DR̄, DR, DḠ, DG
+## We do not export ᾱ, α, β̄, β, ρ̄, ρ, γ̄, γ as they're too short
+
+## Deprecate short names as too ambiguous
+@deprecate(Dᾱ, subcommunityalphabar)
+@deprecate(Dα, subcommunityalpha)
+@deprecate(Dβ̄, subcommunitybetabar)
+@deprecate(Dβ, subcommunitybeta)
+@deprecate(Dρ̄, subcommunityrhobar)
+@deprecate(Dρ, subcommunityrho)
+@deprecate(Dγ̄, subcommunitygammabar)
+@deprecate(Dγ, subcommunitygamma)
+@deprecate(DĀ, supercommunityAbar)
+@deprecate(DA, supercommunityA)
+@deprecate(DB̄, supercommunityBbar)
+@deprecate(DB, supercommunityB)
+@deprecate(DR̄, supercommunityRbar)
+@deprecate(DR, supercommunityR)
+@deprecate(DḠ, supercommunityGbar)
+@deprecate(DG, supercommunityG)
+
 ## Deprecate ecosystem-related names
 @deprecate(ecosystemA, supercommunityA)
 @deprecate(ecosystemAbar, supercommunityAbar)
