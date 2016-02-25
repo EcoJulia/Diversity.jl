@@ -20,46 +20,46 @@ include("Ecology.jl")
 # Sub-community alpha diversities
 communities = rand(numspecies, numcommunities);
 communities /= sum(communities);
-@test_approx_eq Dᾱ(communities, 0) numspecies * ones((1, size(communities, 2)))
+@test_approx_eq subcommunityalphabar(communities, 0) numspecies * ones((1, size(communities, 2)))
 @test_approx_eq subcommunityalphabar(communities,
                                      [0]) numspecies * ones((1, size(communities, 2)))
-@test_approx_eq Dᾱ(communities,
-                  [0, 1, 2, Inf], Z1) ones((4, size(communities, 2)))
+@test_approx_eq subcommunityalphabar(communities,
+                                     [0, 1, 2, Inf], Z1) ones((4, size(communities, 2)))
 
-@test_approx_eq Dα(communities, 0) numspecies * mapslices(v -> 1. / sum(v),
-                                                  communities, 1)
+@test_approx_eq subcommunityalpha(communities, 0) numspecies * mapslices(v -> 1. / sum(v),
+                                                                         communities, 1)
 
 even = ones((numspecies, numcommunities)) / (numspecies * numcommunities);
 qs = [0, 1, 2, 3, 4, 5, 6, Inf];
-@test_approx_eq DĀ(even, qs) numspecies * ones((1, length(qs)))
-@test_approx_eq DA(even, qs) numspecies * numcommunities * ones((1, length(qs)))
+@test_approx_eq supercommunityAbar(even, qs) numspecies * ones((1, length(qs)))
+@test_approx_eq supercommunityA(even, qs) numspecies * numcommunities * ones((1, length(qs)))
 
 probs = reshape(mapslices(sum, communities, 2), (size(communities, 1)));
-@test_approx_eq DG(communities, qs) DḠ(communities, qs)
-@test_approx_eq DG(communities, qs) qD(probs, qs)
-@test_approx_eq DG(communities, qs, Z1) qDZ(probs, qs, Z1)
+@test_approx_eq supercommunityG(communities, qs) supercommunityGbar(communities, qs)
+@test_approx_eq supercommunityG(communities, qs) qD(probs, qs)
+@test_approx_eq supercommunityG(communities, qs, Z1) qDZ(probs, qs, Z1)
 
 Z = rand(numspecies, numspecies);
-@test_approx_eq DG(communities, qs, Z) qDZ(probs, qs, Z)
+@test_approx_eq supercommunityG(communities, qs, Z) qDZ(probs, qs, Z)
 
 colweights = rand(numcommunities);
 colweights /= sum(colweights);
 allthesame = probs * colweights';
-@test_approx_eq DB(allthesame, qs, Z) 1 ./ qD(colweights, 2 - qs)
-@test_approx_eq DB̄(allthesame, qs, Z) ones((1, length(qs)))
-@test_approx_eq DR̄(allthesame, qs, Z) ones((1, length(qs)))
-@test_approx_eq DR(allthesame, qs) qD(colweights, qs)
+@test_approx_eq supercommunityB(allthesame, qs, Z) 1 ./ qD(colweights, 2 - qs)
+@test_approx_eq supercommunityBbar(allthesame, qs, Z) ones((1, length(qs)))
+@test_approx_eq supercommunityRbar(allthesame, qs, Z) ones((1, length(qs)))
+@test_approx_eq supercommunityR(allthesame, qs) qD(colweights, qs)
 
 communitylist = rand(1:numcommunities, numspecies)
 distinct = zeros(Float64, (numspecies, numcommunities))
-for i in 1:numspecies
+for (i in 1:numspecies)
     distinct[i, communitylist[i]] = weights[i]
 end
 
-@test_approx_eq DR(distinct, qs) ones((1, length(qs)))
-@test_approx_eq Dρ̄(distinct, qs) repeat(sum(distinct, 1), inner = [length(qs), 1])
-@test_approx_eq DB̄(distinct, qs) qD(reshape(sum(distinct, 1), numcommunities), qs)
-@test_approx_eq DB(distinct, qs) ones((1, length(qs)))
+@test_approx_eq supercommunityR(distinct, qs) ones((1, length(qs)))
+@test_approx_eq subcommunityrhobar(distinct, qs) repeat(sum(distinct, 1), inner = [length(qs), 1])
+@test_approx_eq supercommunityBbar(distinct, qs) qD(reshape(sum(distinct, 1), numcommunities), qs)
+@test_approx_eq supercommunityB(distinct, qs) ones((1, length(qs)))
 
 # Need to check the diversity() function
 @test_approx_eq diversity(DR̄, allthesame, qs, Z, false, false, true) colweights
