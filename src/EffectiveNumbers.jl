@@ -16,10 +16,19 @@ is 1, so this is just the arithmetic mean.
 function powermean{S <: AbstractFloat}(values::Vector{S},
                                        order::S = 1.,
                                        weights::Vector{S} = ones(values))
-    ## Normalise weights to sum to 1 (as per Rényi)
     length(values) == length(weights) ||
-      error("powermean: Weight and value vectors must be the same length")
+    throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
+    
+    # Normalise weights to sum to 1 (as per Rényi)
     proportions = weights / sum(weights)
+
+    # Check whether all proportions are NaN - happens in normalisation when all
+    # weights are zero in group. In that case we want to propagate the NaN
+    if (all(isnan(proportions)))
+        return(NaN)
+    end
+    
+    # Extract values with non-zero weights
     present = filter(x -> !isapprox(x[1], 0.), zip(proportions, values))
     if (isinf(order))
       if (order > 0.) # +Inf -> Maximum
@@ -40,8 +49,6 @@ end
 function powermean{S <: AbstractFloat}(values::Matrix{S},
                                        orders::Vector{S},
                                        weights::Matrix{S} = ones(values))
-    (size(values) == size(weights)) ||
-    error("Values and weights are not the same size")
     map(order -> map(col -> powermean(values[:,col], order, weights[:, col]),
                      1:size(values)[2]), orders)
 end
@@ -52,8 +59,6 @@ function powermean{S <: Real,
                    U <: Real}(values::Array{S},
                               order::T,
                               weights::Array{U} = ones(values))
-    (size(values) == size(weights)) ||
-    error("Values and weights are not the same size")
     powermean(values * 1., order * 1., weights * 1.)
 end
 
@@ -63,9 +68,6 @@ function powermean{S <: Real,
                    U <: Real}(values::Array{S},
                               orders::Vector{T},
                               weights::Array{U} = ones(values))
-    (size(values) == size(weights)) ||
-    error("Values and weights are not the same size")
-    
     map(order -> powermean(values * 1., order * 1., weights * 1.), orders)
 end
 
