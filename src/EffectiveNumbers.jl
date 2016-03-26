@@ -46,11 +46,21 @@ function powermean{S <: AbstractFloat}(values::Vector{S},
     end
 end
 
+# This is the next most simple case - matrices with subcommunities, and an order
+function powermean{S <: AbstractFloat}(values::Matrix{S},
+                                       order::S,
+                                       weights::Matrix{S} = ones(values))
+    size(values) == size(weights) ||
+    throw(DimensionMismatch("powermean: Weight and value matrixes must be the same size"))
+
+    map(col -> powermean(values[:,col], order, weights[:, col]), 1:size(values)[2])
+end
+
+# This is the next most common case - matrices with subcommunities, and a vector of orders
 function powermean{S <: AbstractFloat}(values::Matrix{S},
                                        orders::Vector{S},
                                        weights::Matrix{S} = ones(values))
-    map(order -> map(col -> powermean(values[:,col], order, weights[:, col]),
-                     1:size(values)[2]), orders)
+    map(order -> powermean(values, order, weights), orders)
 end
 
 ## We need to handle lack of automatic promotion between ints and floats in Julia
@@ -59,16 +69,29 @@ function powermean{S <: Real,
                    U <: Real}(values::Array{S},
                               order::T,
                               weights::Array{U} = ones(values))
-    powermean(values * 1., order * 1., weights * 1.)
+    (length(size(values)) <= 2 && size(values) == size(weights)) ||
+    throw(DimensionMismatch("powermean: Value and weight matrices must match and be at most 2-dimensional"))
+
+    # Must be at least Float32
+    FType = promote_type(S, T, U, Float32)
+    powermean(convert(Array{FType}, values),
+              convert(FType, order),
+              convert(Array{FType}, weights))
 end
 
-## We need to handle matrices as well as vectors
+## We need to handle lack of automatic promotion between ints and floats in Julia
 function powermean{S <: Real,
                    T <: Real,
                    U <: Real}(values::Array{S},
                               orders::Vector{T},
                               weights::Array{U} = ones(values))
-    map(order -> powermean(values * 1., order * 1., weights * 1.), orders)
+    (length(size(values)) <= 2) ||
+    throw(DimensionMismatch("powermean: Value matrix must be at most 2-dimensional"))
+
+    # Must be at least Float32
+    FType = promote_type(S, T, U, Float32)
+    map(order -> powermean(convert(Array{FType}, values), order, convert(Array{FType}, weights)),
+        convert(Array{FType}, orders))
 end
 
 """
