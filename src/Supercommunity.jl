@@ -128,15 +128,6 @@ function match!{Part <: Partition}(part::Part, sim::MatrixSimilarity)
     end
     true
 end
-                          
-getSimilarityMatrix{Part <: Partition}(part::Part, ::Unique) =
-    convert(Array{part.FPType}, eye(size(part.abundances, 1)))
-    
-getSimilarityMatrix{Part <: Partition}(part::Part, ::Taxonomy) =
-    error("Can't generate a taxonomic similarity matrix yet")
-
-getSimilarityMatrix{Part <: Partition}(part::Part, sim::MatrixSimilarity) =
-    match!(part, sim) && sim.z
 
 """
 ### Supercommunity type, representing a collection of individuals
@@ -185,6 +176,18 @@ type Supercommunity
         new(part, sim, Nullable(), part.FPType)
     end
 end
+
+getSimilarityMatrix{Part <: Partition}(part::Part, ::Unique) =
+    convert(Array{part.FPType}, eye(size(part.abundances, 1)))
+    
+getSimilarityMatrix{Part <: Partition}(part::Part, ::Taxonomy) =
+    error("Can't generate a taxonomic similarity matrix yet")
+
+getSimilarityMatrix{Part <: Partition}(part::Part, sim::MatrixSimilarity) =
+    match!(part, sim) && sim.z
+
+getSimilarityMatrix{Sup <: Supercommunity}(sup::Sup) =
+    getSimilarityMatrix(sup.partition, sup.similarity)
 
 function getOrdinariness!{Part <: Partition}(part::Part, ::Unique)
     part.abundances
