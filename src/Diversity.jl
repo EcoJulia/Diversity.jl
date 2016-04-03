@@ -1,18 +1,14 @@
 VERSION >= v"0.4.0-dev+6641" && __precompile__()
 
 module Diversity
-if (VERSION < v"0.4-")
-  using Docile
-end
 using Compat
+VERSION < v"0.4-" && using Docile
 
-"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
-Diversity
-
-include("Collection.jl")
-export Collection, Ecosystem
-export Subcommunities, Onecommunity
-export Unique, Species, Taxonomy, GeneralSimilarity
+include("Supercommunity.jl")
+export Partition, Subcommunities, Onecommunity
+export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
+export Supercommunity, Ecosystem, Community
+export getSimilarityMatrix, getOrdinariness!
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
