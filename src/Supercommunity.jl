@@ -98,10 +98,10 @@ type MatrixSimilarity <: Similarity
     """
     function MatrixSimilarity{FP <: AbstractFloat}(z::Matrix{FP})
         size(z, 1) == size(z, 2) ||
-        error("Similarity matrix is not square")
+        throw(DimensionMismatch("Similarity matrix is not square"))
         
         isapprox(min(minimum(z), 0.), 0.) ||
-        error("Similarity matrix has values below 0")
+        throw(DomainError())
         
         isapprox(max(maximum(z), 1.), 1.) ||
         warn("Similarity matrix has values above 1")
@@ -120,7 +120,7 @@ end
 
 function match!{Part <: Partition}(part::Part, sim::MatrixSimilarity)
     size(part.abundances, 1) == size(sim.z, 1) ||
-    error("Similarity matrix size $(size(sim.z)) mismatch with number of types $(size(part.abundances, 1))")
+    throw(DimensionMismatch("Similarity matrix size $(size(sim.z)) mismatch with number of types $(size(part.abundances, 1))"))
     if part.FPType != sim.FPType
         warn("Fixing Similarity type $(sim.FPType) to Partition type $(part.FPType)")
         sim.FPType = part.FPType
