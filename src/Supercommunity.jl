@@ -177,6 +177,24 @@ type Supercommunity
     end
 end
 
+"""
+### Ecosystem type, representing an ecosystem of multiple subcommunities
+"""
+:Ecosystem
+
+Ecosystem{FP <: AbstractFloat,
+          Sim <: Similarity}(ab::Matrix{FP}, sim::Sim = Unique()) =
+              Supercommunity(Subcommunities(ab), sim)
+
+"""
+### Community type, representing a single community
+"""
+:Community
+
+Community{FP <: AbstractFloat,
+          Sim <: Similarity}(ab::Vector{FP}, sim::Sim = Unique()) =
+              Supercommunity(Onecommunity(ab), sim)
+
 getSimilarityMatrix{Part <: Partition}(part::Part, ::Unique) =
     convert(Array{part.FPType}, eye(size(part.abundances, 1)))
     
@@ -208,20 +226,6 @@ function getOrdinariness!{Sup <: Supercommunity}(sup::Sup)
     get(sup.ordinariness)
 end
 
-"""
-### Ecosystem type, representing an ecosystem of multiple subcommunities
-"""
-:Ecosystem
 
-Ecosystem{FP <: AbstractFloat,
-          Sim <: Similarity}(ab::Matrix{FP}, sim::Sim = Unique()) =
-              Supercommunity(Subcommunities(ab), sim)
 
-"""
-### Community type, representing a single community
-"""
-:Community
 
-Community{FP <: AbstractFloat,
-          Sim <: Similarity}(ab::Vector{FP}, sim::Sim = Unique()) =
-              Supercommunity(Onecommunity(ab), sim)
