@@ -228,6 +228,68 @@ function getOrdinariness!{Sup <: Supercommunity}(sup::Sup)
     get(sup.ordinariness)
 end
 
+import Base.start, Base.next, Base.done, Base.eltype, Base.length
 
+function start(::Onecommunity)
+    (1,)
+end
 
+function next(::Onecommunity, state::Tuple{Int64})
+    (one.abundances, (state[1] + 1, ))
+end
+
+function done(one::Onecommunity, state::Tuple{Int64})
+    state[1] != 1
+end
+
+function eltype(one::Onecommunity)
+    Vector{one.FPType}
+end
+
+function length(::Onecommunity)
+    1
+end
+
+function start(::Subcommunities)
+    (1,)
+end
+
+function next(sub::Subcommunities, state::Tuple{Int64})
+    (sub.abundances[:, state[1]], (state[1] + 1, ))
+end
+
+function done(sub::Subcommunities, state::Tuple{Int64})
+    state[1] > length(sub)
+end
+
+function eltype(sub::Subcommunities)
+    Vector{sub.FPType}
+end
+
+function length(sub::Subcommunities)
+    size(sub.abundances, 2)
+end
+
+function start{Sup <: Supercommunity}(sup::Sup)
+    (1, start(sup.partition))
+end
+
+function next{Sup <: Supercommunity}(sup::Sup, state::Tuple{Int64, Tuple})
+    states, statep = state
+    itemp, statep = next(sup.partition, state[2])
+    items = getOrdinariness!(sup)[:, state[1]]
+    ((items, itemp), (state[1] + 1, statep))
+end
+
+function done{Sup <: Supercommunity}(sup::Sup, state::Tuple{Int64, Tuple})
+    done(sup.partition, state[2])
+end
+
+function eltype{Sup <: Supercommunity}(sup::Sup)
+    (Vector{sup.FPType}, eltype(sup.partition))
+end
+
+function length{Sup <: Supercommunity}(sup::Sup)
+    length(sup.partition)
+end
 
