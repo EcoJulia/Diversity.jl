@@ -207,6 +207,8 @@ getSimilarityMatrix{Part <: Partition}(part::Part, sim::MatrixSimilarity) =
 getSimilarityMatrix{Sup <: Supercommunity}(sup::Sup) =
     getSimilarityMatrix(sup.partition, sup.similarity)
 
+getAbundances{Sup <: Supercommunity}(sup::Sup) = sup.partition.abundances
+
 function getOrdinariness!{Part <: Partition}(part::Part, ::Unique)
     part.abundances
 end
