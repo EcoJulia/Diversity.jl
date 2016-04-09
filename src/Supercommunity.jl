@@ -250,6 +250,16 @@ function getOrdinariness!(sup::AbstractSupercommunity)
     get(sup.ordinariness)
 end
 
+function getSuperOrdinariness!(sup::AbstractSupercommunity)
+    ord = getOrdinariness!(sup)
+    ndims(ord) > 1 ? mapslices(sum, ord, 2) : ord
+end
+
+function getWeights(sup::AbstractSupercommunity)
+    ab = getAbundances(sup)
+    ndims(ab) > 1 ? mapslices(sum, ab, 1) : sum(ab)
+end
+
 import Base.start, Base.next, Base.done, Base.eltype, Base.length
 
 function start(::Onecommunity)

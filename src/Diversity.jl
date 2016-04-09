@@ -8,7 +8,7 @@ include("Supercommunity.jl")
 export Partition, Subcommunities, Onecommunity
 export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
 export Supercommunity, Ecosystem, Community
-export getSimilarityMatrix, getOrdinariness!
+export getAbundances, getWeights, getSimilarityMatrix, getOrdinariness!
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
