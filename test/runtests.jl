@@ -80,7 +80,6 @@ smoothed = communities ./ mapslices(sum, communities, 1);
 smoothed /= numcommunities;
 # Just for completeness, check one for q=-Inf - we currently have no use for this, but it is coded.
 @test_approx_eq contributions(Dα, smoothed, [-Inf, 0, 1, 2, 3, 4, 5, Inf], true) contributions(Dᾱ, smoothed, [-Inf, 0, 1, 2, 3, 4, 5, Inf], true)
-qs = [0, 1, 2, 3, 4, 5, Inf];
 @test_approx_eq contributions(Dρ, smoothed, qs, true) contributions(Dρ̄, smoothed, qs, true)
 @test_approx_eq contributions(Dγ, smoothed, qs, true) contributions(Dγ̄, smoothed, qs, true)
 @test_approx_eq contributions(Dα, smoothed, qs, false) contributions(Dᾱ, smoothed, qs, false)
