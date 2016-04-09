@@ -56,10 +56,9 @@ for i in 1:size(manyweights, 2)
                               size(manyweights[:,i], 1)))) ones((4, size(manyweights[:,i], 2)))
 end
 
-# Generate warnings, but normalise and calculate diversities
-warn("We now generate two warnings for code coverage completeness...")
-@test_approx_eq qD([0.1, 0.1], 1) 2.
-@test_approx_eq qDZ([0.1, 0.1], 1) 2.
+# Diversities are not normalised, so generate an error
+@test_throws ErrorException qD([0.1, 0.1], 1)
+@test_throws ErrorException qDZ([0.1, 0.1], 1)
 
 end
 

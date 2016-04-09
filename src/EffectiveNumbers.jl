@@ -75,13 +75,13 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD{Sup <: AbstractSupercommunity}(sup::Sup, qs)
-    length(sup) > 1 ||
+function qD(sup::AbstractSupercommunity, qs)
+    length(sup) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
     isa(sup.similarity, Unique) || error("Not a naive similarity type")
 
-    powermean(getAbundances(sup), qs, getAbundances(sup)) .^ -1
+    powermean(getAbundances(sup), qs - 1, getAbundances(sup)) .^ -1
 end
 
 function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
@@ -104,11 +104,10 @@ a population with given relative *proportions*, and similarity matrix
 - Diversity of order qs (single number or vector of diversities)
 """
 function qDZ(sup::AbstractSupercommunity, qs)
-    if (length(sup) > 1)
-        throw(DimensionMismatch("Can only calculate diversity of a single community"))
-    end
+    length(sup) == 1 ||
+    throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getAbundances(sup), qs - 1.0, getOrdinariness!(sup)) .^ -1
+    powermean(getOrdinariness!(sup), qs - 1, getAbundances(sup)) .^ -1
 end
 
 function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs,

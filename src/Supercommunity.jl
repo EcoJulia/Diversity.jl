@@ -16,7 +16,7 @@ type Subcommunities <: AbstractPartition
     FPType::Type
     function Subcommunities{FP <: AbstractFloat}(abundances::Matrix{FP}, normalise::Bool = false)
         relative = normalise ? abundances / sum(abundances) : abundances
-        isapprox(sum(relative), 1.0) || warn("Not normalised")
+        isapprox(sum(relative), 1.0) || error("Not normalised")
         new(relative, FP)
     end
 end
@@ -29,7 +29,7 @@ type Onecommunity <: AbstractPartition
     FPType::Type
     function Onecommunity{FP <: AbstractFloat}(abundances::Vector{FP}, normalise::Bool = false)
         relative = normalise ? abundances / sum(abundances) : abundances
-        isapprox(sum(relative), 1.0) || warn("Not normalised")
+        isapprox(sum(relative), 1.0) || error("Not normalised")
         new(relative, FP)
     end
 end

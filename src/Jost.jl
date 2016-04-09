@@ -20,7 +20,7 @@ divided by the naive-community beta diversity.
   last representing values of q
 """
 function jostalpha{S <: AbstractFloat}(proportions::Matrix{S}, qs)
-    supercommunityA(proportions, qs) ./
+    supercommunityDiversity(RawAlpha(Ecosystem(proportions)), qs) ./
     qD(reshape(mapslices(sum, proportions, (1,)), size(proportions)[2]), qs)
 end
 
@@ -46,7 +46,7 @@ Jost's alpha diversity
   last representing values of q
 """
 function jostbeta{S <: AbstractFloat}(proportions::Matrix{S}, qs)
-    supercommunityGbar(proportions, qs) ./ jostalpha(proportions, qs)
+    supercommunityDiversity(Gamma(Ecosystem(proportions)), qs) ./ jostalpha(proportions, qs)
 end
 
 jostβ = jostbeta
