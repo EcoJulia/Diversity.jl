@@ -101,8 +101,7 @@ Calculates Hill number or naive diversity of order(s) *qs* of a
 population with given relative proportions.
 
 #### Arguments:
-- `proportions`: relative proportions of different individuals /
-               species in population or series of populations
+- `proportions`: relative proportions of different types in population
 - `qs`: single number or vector of orders of diversity measurement
 
 #### Returns:
@@ -115,10 +114,6 @@ function qD{S <: Real}(proportions::Vector{S}, qs)
     powermean(proportions, qs - 1., proportions) .^ -1
 end
 
-## We need to handle matrices as well as vectors
-qD{S <: Real}(proportions::Matrix{S}, qs) =
-    mapslices(p -> qD(p, qs), proportions, 1)
-
 """
 ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
@@ -127,8 +122,7 @@ a population with given relative *proportions*, and similarity matrix
 *Z*.
 
 #### Arguments:
-- `proportions`: relative proportions of different individuals /
-               species in a population or series of populations
+- `proportions`: relative proportions of different types in a population
 - `qs`: single number or vector of orders of diversity measurement
 - `Z`: similarity matrix
 
@@ -146,8 +140,3 @@ function qDZ{S <: AbstractFloat}(proportions::Vector{S}, qs,
     error("qDZ: Similarity matrix size does not match species number")
     powermean(Z * proportions, qs - 1., proportions) .^ -1
 end
-
-## We need to handle matrices as well as vectors
-qDZ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                        Z::Matrix{S} = eye(size(proportions, 1))) =
-    mapslices(p -> qDZ(p, qs, Z), proportions, 1)
