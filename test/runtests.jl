@@ -14,6 +14,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 
 include("EffectiveNumbers.jl")
 include("Supercommunity.jl")
+include("DiversityMeasure.jl")
 include("Hill.jl")
 include("Jost.jl")
 include("Ecology.jl")

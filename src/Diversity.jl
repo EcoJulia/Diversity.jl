@@ -13,6 +13,9 @@ export getAbundances, getWeights, getSimilarityMatrix, getOrdinariness!
 include("EffectiveNumbers.jl")
 export qD, qDZ
 
+include("DiversityMeasure.jl")
+export DiversityLevel, individualDiversity, subcommunityDiversity, supercommunityDiversity
+
 include("GeneralisedDiversities.jl")
 export diversity
 export subcommunityalphabar, subcommunityalpha, supercommunityA, supercommunityAbar
