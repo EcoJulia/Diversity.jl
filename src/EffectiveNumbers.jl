@@ -75,14 +75,22 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD{S <: Real}(proportions::Vector{S}, qs)
-    if !isapprox(sum(proportions), 1.0)
-        warn("qD: Population proportions don't sum to 1, fixing...")
-        proportions /= sum(proportions)
-    end
-    powermean(proportions, qs - 1.0, proportions) .^ -1
+function qD{Sup <: AbstractSupercommunity}(sup::Sup, qs)
+    length(sup) > 1 ||
+    throw(DimensionMismatch("Can only calculate diversity of a single community"))
+
+    isa(sup.similarity, Unique) || error("Not a naive similarity type")
+
+    powermean(getAbundances(sup), qs, getAbundances(sup)) .^ -1
 end
 
+<<<<<<< 33b2500a9b40529dc286ca155c6201fea7fc10b0
+=======
+function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
+    qD(Supercommunity(Onecommunity(proportions)), qs)
+end
+
+>>>>>>> src/EffectiveNumbers.jl: Now using new Supercommunity type to calculate qD() and qDZ().
 """
 ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
@@ -98,19 +106,19 @@ a population with given relative *proportions*, and similarity matrix
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)
 """
-function qDZ{S <: AbstractFloat,
-    T <: Similarity}(proportions::Vector{S}, qs, sim::T = Unique())
-    if !isapprox(sum(proportions), 1.0)
-        warn("qDZ: Population proportions don't sum to 1, fixing...")
-        proportions /= sum(proportions)
+function qDZ(sup::AbstractSupercommunity, qs)
+    if (length(sup) > 1)
+        throw(DimensionMismatch("Can only calculate diversity of a single community"))
     end
-    z = get_similarities(proportions, sim)
-    powermean(z * proportions, qs - 1.0, proportions) .^ -1
+
+    powermean(getAbundances(sup), qs - 1.0, getOrdinariness!(sup)) .^ -1
 end
 
-qDZ{S <: AbstractFloat, T <: Similarity}(proportions::Matrix{S}, qs,
-                                         sim::T = Unique()) =
-                                             mapslices(p -> qDZ(p, qs, get_similarities(proportions, sim)),
-                                                       proportions, 1)
+function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs,
+                                  sim::AbstractSimilarity = Unique())
+    qDZ(Supercommunity(Onecommunity(proportions), sim), qs)
+end
 
-qDZ{S <: AbstractFloat}(proportions::Array{S}, qs, z::Matrix{S}) = qDZ(proportions, qs, GeneralSimilarity(z))
+function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs, Z::Matrix{FP})
+    qDZ(Supercommunity(Onecommunity(proportions), MatrixSimilarity(Z)), qs)
+end
