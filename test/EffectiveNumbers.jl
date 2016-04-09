@@ -2,7 +2,7 @@ module TestEffectiveNumbers
 using Diversity
 using Base.Test
 
-numbers = [1., 2, 4, 8, 16];
+numbers = [1.0, 2, 4, 8, 16];
 numspecies = 100;
 fragments = rand(numspecies);
 weights = rand(numspecies);
@@ -18,15 +18,12 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 
 # Check that an exception is thrown when 'values' and weights are different lengths
 @test_throws DimensionMismatch Diversity.powermean(numbers, 0, weights)
-@test_throws DimensionMismatch Diversity.powermean(zeros(Float64, (2, 2)), 0, weights)
-@test_throws DimensionMismatch Diversity.powermean(zeros(Float64, (2, 2, 2)), 0,
-                                                   ones(Float64, (2, 2, 2)))
 
 # Some simple values
 @test_approx_eq Diversity.powermean(numbers, 0.0) 4.0
 @test_approx_eq Diversity.powermean(numbers, [-Inf]) [1]
 @test_approx_eq Diversity.powermean(numbers, [1.0, -1.0]) [31/5, 80/31]
-@test_approx_eq Diversity.powermean(numbers, Inf, [1, 1, 1, 1, 0]) 8
+@test_approx_eq Diversity.powermean(numbers, Inf, [1.0, 1.0, 1.0, 1.0, 0.0]) 8
 @test isnan(Diversity.powermean(numbers, 0.0, 0.0 * numbers))
 
 # Power mean with some random numbers
@@ -37,8 +34,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 @test_approx_eq Diversity.powermean(fragments, 1, weights) sum(fragments .* weights)
 
 # Basic qD diversity calculation
-@test_approx_eq qD(weights, 0) mapreduce((x) -> isapprox(x, 0.) ? 0. : 1.,
-                                         +, weights)
+@test_approx_eq qD(weights, 0) mapreduce((x) -> isapprox(x, 0) ? 0 : 1, +, weights)
 @test_approx_eq qD(weights, 1) prod(weights .^ -weights)
 @test_approx_eq qD(weights, 2) 1. / sum(weights .^ 2)
 @test_approx_eq qD(weights, Inf) 1. / maximum(weights)
