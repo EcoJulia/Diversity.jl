@@ -84,13 +84,10 @@ function qD{Sup <: AbstractSupercommunity}(sup::Sup, qs)
     powermean(getAbundances(sup), qs, getAbundances(sup)) .^ -1
 end
 
-<<<<<<< 33b2500a9b40529dc286ca155c6201fea7fc10b0
-=======
 function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
     qD(Supercommunity(Onecommunity(proportions)), qs)
 end
 
->>>>>>> src/EffectiveNumbers.jl: Now using new Supercommunity type to calculate qD() and qDZ().
 """
 ### Calculates Leinster-Cobbold / similarity-sensitive diversity
 
