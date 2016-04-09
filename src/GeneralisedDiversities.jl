@@ -90,22 +90,15 @@ qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dα{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dα: Similarity matrix size does not match species number")
-    mapslices(p -> powermean(Z * p, qs - 1., p) .^ -1,  proportions, 1)
-end
-
-subcommunityalpha = Dα
+subcommunityalpha{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((α, :sub), proportions, qs, sim)
 
 """
 ### Normalised similarity-sensitive subcommunity alpha diversity)
@@ -121,23 +114,15 @@ qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-Dᾱ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                    mapslices(p -> qDZ(p, qs, Z),
-                              proportions *
-                              diagm(reshape(mapslices(v -> 1. / sum(v),
-                                                      proportions, 1),
-                                            (size(proportions, 2)))),
-                              1)
-                              
-subcommunityalphabar = Dᾱ
+subcommunityalphabar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((ᾱ, :sub), proportions, qs, sim)
 
 """
 ### Raw similarity-sensitive supercommunity alpha diversity / naive-community diversity
@@ -153,17 +138,14 @@ of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of diversities representing values of q
 """
-DA{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                    diversity(Dα, proportions, qs, Z, true, false, false)
-                    
-supercommunityA = DA
+supercommunityA{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((α, :super), proportions, qs, sim)
 
 """
 ### Normalised similarity-sensitive supercommunity alpha diversity
@@ -178,17 +160,14 @@ counts, for a series of orders, represented as a vector of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of diversities representing values of q
 """
-DĀ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                    diversity(Dᾱ, proportions, qs, Z, true, false, false)
-                    
-supercommunityAbar = DĀ
+supercommunityAbar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((ᾱ, :super), proportions, qs, sim)
 
 """
 ### Raw similarity-sensitive subcommunity redundancy
@@ -203,24 +182,17 @@ represented as a vector of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of redundancies, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dρ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dρ: Similarity matrix size does not match species number")
-    
-    Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
-    mapslices(p -> powermean(Zp ./ (Z * p), 1. - qs, p), proportions, 1)
-end
+subcommunityrho{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((ρ, :sub), proportions, qs, sim)
 
-subcommunityredundancy = subcommunityrho = Dρ
+subcommunityredundancy = subcommunityrho
     
 """
 ### Raw similarity-sensitive subcommunity beta diversity / distinctiveness / concentration
@@ -236,25 +208,17 @@ represented as a vector of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dβ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dβ: Similarity matrix size does not match species number")
-    
-    Zp = Z * reshape(mapslices(sum, proportions, 2), (size(proportions, 1)))
-    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p), proportions, 1)
-end
+subcommunitybeta{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    1.0 ./ diversity((ρ, :sub), proportions, -qs, sim)
 
-subcommunitybeta = subcommunitydistinctiveness =
-    subcommunityconcentration = Dβ
+subcommunitydistinctiveness = subcommunityconcentration = subcommunitybeta
 
 """
 ### Normalised similarity-sensitive subcommunity representativeness
@@ -273,27 +237,17 @@ subcommunities is 1/x.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of representativenesses, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dρ̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dϵ: Similarity matrix size does not match species number")
+subcommunityrhobar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((ρ̄, :sub), proportions, qs, sim)
 
-    Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions, 1))) / sum(proportions)
-    mapslices(p -> powermean(Zp ./ (Z * p), 1. - qs, p),
-              proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
-                                                    proportions, 1),
-                                          (size(proportions, 2)))), 1)
-end
-subcommunityrhobar = subcommunityrepresentativeness = Dρ̄
+subcommunityrepresentativeness = subcommunityrhobar
 
 """
 ### Normalised similarity-sensitive subcommunity beta diversity
@@ -309,27 +263,15 @@ as a vector of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dβ̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dβ̄: Similarity matrix size does not match species number")
-    
-    Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions, 1))) / sum(proportions)
-    mapslices(p -> powermean((Z * p) ./ Zp, qs - 1., p),
-              proportions * diagm(reshape(mapslices(v -> 1. / sum(v),
-                                                    proportions, 1),
-                                          (size(proportions, 2)))), 1)
-end
-subcommunitybetabar = Dβ̄
+subcommunitybetabar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    1.0 ./ diversity((ρ̄, :sub), proportions, qs, sim)
 
 """
 ### Raw similarity-sensitive supercommunity redundancy
@@ -344,17 +286,17 @@ series of orders, represented as a vector of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of redundancies representing values of q
 """
-DR{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                   diversity(Dρ, proportions, qs, Z, true, false, false)
-supercommunityredundancy = supercommunityR = DR
-    
+supercommunityR{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((ρ, :super), proportions, qs, sim)
+
+supercommunityredundancy = supercommunityR
+
 """
 ### Raw similarity-sensitive supercommunity beta diversity / distinctiveness / concentration
 
@@ -369,17 +311,18 @@ represented as a vector of qs.
 
 - `qs single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of diversities representing values of q
 """
-function DB{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    diversity(Dβ, proportions, qs, Z, true, false, false)
+function supercommunityB{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique())
+    sub, weights = diversity((ρ, Set([:sub, :weights])), proportions, qs, sim)
+    powermean(1.0 ./ sub, qs, weights)
 end
-supercommunityB = supercommunitydistinctiveness = supercommunityconcentration = DB
+
+supercommunitydistinctiveness = supercommunityconcentration = supercommunityB
 
 """
 ### Normalised similarity-sensitive supercommunity representativeness
@@ -398,17 +341,16 @@ subcommunities is 1/x.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of representativenesses representing values of q
 """
-DR̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                   diversity(Dρ̄, proportions, qs, Z, true, false, false)
+supercommunityRbar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((ρ̄, :super), proportions, qs, sim)
 
-supercommunityRbar = supercommunityrepresentativeness = DR̄
+supercommunityrepresentativeness = supercommunityRbar
 
 """
 ### Normalised similarity-sensitive supercommunity beta diversity / effective number of communities
@@ -424,17 +366,16 @@ series of orders, represented as a vector of qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of diversities representing values of q
 """
-function DB̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    diversity(Dβ̄, proportions, qs, Z, true, false, false)
+function supercommunityBbar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique())
+    sub, weights = diversity((ρ̄, Set([:sub, :weights])), proportions, qs, sim)
+    powermean(1.0 ./ sub, qs, weights)
 end
-supercommunityBbar = DB̄
 
 """
 ### Raw similarity-sensitive subcommunity gamma diversity
@@ -449,25 +390,15 @@ qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dγ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dγ: Similarity matrix size does not match species number")
-
-    Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions, 1)))
-    mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
-end
-
-subcommunitygamma = Dγ
+subcommunitygamma{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((γ, :super), proportions, qs, sim)
 
 """
 ### Normalised similarity-sensitive subcommunity gamma diversity
@@ -482,25 +413,15 @@ qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - array of diversities, first dimension representing subcommunities, and
   last representing values of q
 """
-function Dγ̄{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                                Z::Matrix{S} = eye(size(proportions, 1)))
-    l = size(proportions, 1)
-    size(Z) == (l, l) ||
-    error("Dγ̄: Similarity matrix size does not match species number")
-
-    Zp = Z * reshape(mapslices(sum, proportions, 2),
-                     (size(proportions, 1))) / sum(proportions)
-    mapslices(p -> powermean(Zp, qs - 1., p) .^ -1, proportions, 1)
-end
-
-subcommunitygammabar = Dγ̄
+subcommunitygammabar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((γ̄, :sub), proportions, qs, sim)
 
 """
 ### Raw similarity-sensitive supercommunity gamma diversity
@@ -515,17 +436,14 @@ qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of diversities representing values of q
 """
-DG{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                    diversity(Dγ, proportions, qs, Z, true, false, false)
-
-supercommunityG = DG
+supercommunityG{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((γ, :super), proportions, qs, sim)
 
 """
 ### Normalised similarity-sensitive supercommunity gamma diversity
@@ -540,14 +458,11 @@ qs.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `z::Matrix{S <: AbstractFloat}` or `sim::T <: Similarity`: similarity matrix or object
 
 #### Returns:
 
 - vector of diversities representing values of q
 """
-DḠ{S <: AbstractFloat}(proportions::Matrix{S}, qs,
-                       Z::Matrix{S} = eye(size(proportions, 1))) =
-                    diversity(Dγ̄, proportions, qs, Z, true, false, false)
-
-supercommunityGbar = DḠ
+supercommunityGbar{S <: AbstractFloat}(proportions::Matrix{S}, qs, sim = Unique()) =
+    diversity((γ̄, :super), proportions, qs, sim)
