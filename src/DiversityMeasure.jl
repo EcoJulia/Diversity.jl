@@ -17,6 +17,7 @@ function getName(div::DiversityMeasure)
 end
 
 call(dl::DiversityLevel, dm::DiversityMeasure) = getPartitionFunction(dm, dl)
+call(dl::DiversityLevel, dm::DiversityMeasure, others...) = getPartitionFunction(dm, dl)(others...)
 
 abstract PowerMeanMeasure <: DiversityMeasure
 function getPartitionFunction(measure::PowerMeanMeasure,
