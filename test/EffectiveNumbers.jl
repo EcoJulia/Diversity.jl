@@ -49,11 +49,15 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 @test_approx_eq qDZ(weights, [1, 2]) qD(weights, [1, 2])
 @test_approx_eq qDZ(weights, [0, 1, 2, 3, Inf], Z1) [1, 1, 1, 1, 1]
 
-@test_approx_eq qD(manyweights, 0) numspecies * ones((1, size(manyweights, 2)))
-@test_approx_eq qD(manyweights, [0]) numspecies * ones((1, size(manyweights, 2)))
-@test_approx_eq qDZ(manyweights, [0, 1, 2, Inf],
-                    ones((size(manyweights, 1),
-                          size(manyweights, 1)))) ones((4, size(manyweights, 2)))
+@test typeof(qD(manyweights[:,1], 0)) <: AbstractFloat
+@test typeof(qD(manyweights[:,1], [0])) <: Vector
+
+for i in 1:size(manyweights, 2)
+    @test_approx_eq qD(manyweights[:,i], [0]) numspecies * ones((1, size(manyweights[:,i], 2)))
+    @test_approx_eq qDZ(manyweights[:,i], [0, 1, 2, Inf],
+                        ones((size(manyweights[:,i], 1),
+                              size(manyweights[:,i], 1)))) ones((4, size(manyweights[:,i], 2)))
+end
 
 # Generate warnings, but normalise and calculate diversities
 warn("We now generate two warnings for code coverage completeness...")
