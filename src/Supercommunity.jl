@@ -1,17 +1,17 @@
 """
-### Abstract Partition supertype for all partitioning types
+### AbstractPartition supertype for all partitioning types
 
 This type is the abstract superclass of all partitioning types.
-Partition subtypes allow you to define how to partition your total
+AbstractPartition subtypes allow you to define how to partition your total
 supercommunity (e.g. an ecosystem) into smaller components (e.g.
 subcommunities).
 """
-abstract Partition
+abstract AbstractPartition
 
 """
 ### Partition type with multiple subcommunities
 """
-type Subcommunities <: Partition
+type Subcommunities <: AbstractPartition
     abundances::Matrix
     FPType::Type
     function Subcommunities{FP <: AbstractFloat}(abundances::Matrix{FP}, normalise::Bool = false)
@@ -24,7 +24,7 @@ end
 """
 ### Partition type allowing only one subcommunity
 """
-type Onecommunity <: Partition
+type Onecommunity <: AbstractPartition
     abundances::Vector
     FPType::Type
     function Onecommunity{FP <: AbstractFloat}(abundances::Vector{FP}, normalise::Bool = false)
@@ -35,44 +35,44 @@ type Onecommunity <: Partition
 end
 
 """
-### Abstract Similarity supertype for all similarity measures
+### AbstractSimilarity supertype for all similarity measures
 
 This type is the abstract superclass of all similarity types. Its
 subtypes allow you to define how similarity is measured between
 individuals.
 """
-abstract Similarity
+abstract AbstractSimilarity
 
 """
-### A subtype of Similarity where all individuals are completely distinct
+### A subtype of AbstractSimilarity where all individuals are completely distinct
 
-This type is the simplest Similarity subtype, which identifies all
+This type is the simplest AbstractSimilarity subtype, which identifies all
 individuals as unique and completely distinct from each other.
 """
-immutable Unique <: Similarity
+immutable Unique <: AbstractSimilarity
 end
 
 """
-### A subtype of Similarity where all species are completely distinct
+### A subtype of AbstractSimilarity where all species are completely distinct
 
-This type is the simplest Similarity subtype, which identifies all
+This type is the simplest AbstractSimilarity subtype, which identifies all
 species as unique and completely distinct from each other.
 """
 typealias Species Unique
 
 """
-### A subtype of Similarity with similarity between related taxa
+### A subtype of AbstractSimilarity with similarity between related taxa
 
-This subtype of Similarity allows taxonomic similarity matrices
+This subtype of AbstractSimilarity allows taxonomic similarity matrices
 """
-immutable Taxonomy <: Similarity
+immutable Taxonomy <: AbstractSimilarity
     labels::Dict{AbstractString, @compat(Tuple{Float64, Dict{AbstractString, AbstractString}})}
 end    
 
 """
-### A general matrix-based Similarity subtype
+### A general matrix-based AbstractSimilarity subtype
 
-This subtype of Similarity simply holds a matrix with similarities
+This subtype of AbstractSimilarity simply holds a matrix with similarities
 between individuals.
 
 #### Members:
@@ -80,7 +80,7 @@ between individuals.
 - `zMatrix` A two-dimensional matrix representing similarity between
     individuals.
 """
-type MatrixSimilarity <: Similarity
+type MatrixSimilarity <: AbstractSimilarity
     
     """
     A two-dimensional matrix representing similarity between
@@ -110,15 +110,15 @@ type MatrixSimilarity <: Similarity
     end
 end
 
-function match!{Part <: Partition}(part::Part, ::Unique)
+function match!(part::AbstractPartition, ::Unique)
     true
 end
 
-function match!{Part <: Partition}(part::Part, ::Taxonomy)
+function match!(part::AbstractPartition, ::Taxonomy)
     error("Taxonomic similarity not yet implemented")
 end
 
-function match!{Part <: Partition}(part::Part, sim::MatrixSimilarity)
+function match!(part::AbstractPartition, sim::MatrixSimilarity)
     size(part.abundances, 1) == size(sim.z, 1) ||
     throw(DimensionMismatch("Similarity matrix size $(size(sim.z)) mismatch with number of types $(size(part.abundances, 1))"))
     if part.FPType != sim.FPType
@@ -130,29 +130,45 @@ function match!{Part <: Partition}(part::Part, sim::MatrixSimilarity)
 end
 
 """
+### AbstractSupercommunity supertype for all supercommunity types
+
+This type is the abstract superclass of all supercommunity types.
+AbstractSupercommunity subtypes allow you to define how to partition
+your total supercommunity (e.g. an ecosystem) into smaller components
+(e.g. subcommunities), and how to assess similarity between
+individuals within it.
+"""
+abstract AbstractSupercommunity
+
+"""
 ### Supercommunity type, representing a collection of individuals
 
 Type representing a whole supercommunity containing a single community
 or a collection of subcommunities. The supercommunity of individuals
 *may* be further partitioned into smaller groups. For instance this
 may be an ecosystem, which consists of a series of subcommunities. The
-Partition subtype within it stores relative abundances of different
+AbstractPartition subtype within it stores relative abundances of different
 types, e.g. species, and also allows for similarity between
 individuals.
 
-#### Parameterisation:
+#### Constructor:
 
-**Supercommunity{Sim, Part}**
+**Supercommunity(part::AbstractPartition, sim::AbstractSimilarity)**
 
-- `Part` is the partition type, e.g. Subcommunities, a subtype of Partition.
 
-- `Sim` is the similarity type, e.g. Species, a subtype of Similarity.
+- `part` is an instance of type Part, the partition type, e.g.
+  Subcommunities, a subtype of AbstractPartition.
+
+- `sim` is an instance of type Sim, the similarity type, e.g. Species,
+  a subtype of AbstractSimilarity.
 
 #### Members:
 
-- `partition` the instance of the Partition subtype, containing the 
+- `partition` the instance of the AbstractPartition subtype, containing the
+  subcommunities. These should be accessed through
+  getAbundances(::Supercommunity).
 
-- `similarity` The instance of the Similarity subtype, from which
+- `similarity` The instance of the AbstractSimilarity subtype, from which
   similarities between individuals can be calculated.
 
 - `ordinariness` A cache of the ordinariness of the individuals in the
@@ -163,68 +179,74 @@ individuals.
 - `FPType` is the kind of number storage, a subtype of AbstractFloat.
 
 """
-type Supercommunity
+type Supercommunity <: AbstractSupercommunity
     
-    partition::Partition
-    similarity::Similarity
+    partition::AbstractPartition
+    similarity::AbstractSimilarity
     ordinariness::Nullable{Array}
     FPType::Type
 
-    function Supercommunity{Part <: Partition,
-                            Sim <: Similarity}(part::Part, sim::Sim = Unique())
+    function Supercommunity(part::AbstractPartition,
+                            sim::AbstractSimilarity = Unique())
         match!(part, sim)
         new(part, sim, Nullable(), part.FPType)
     end
 end
 
 """
-### Ecosystem type, representing an ecosystem of multiple subcommunities
+### Ecosystem constructor for Supercommunity, representing an ecosystem of multiple subcommunities
 """
 :Ecosystem
 
-Ecosystem{FP <: AbstractFloat,
-          Sim <: Similarity}(ab::Matrix{FP}, sim::Sim = Unique()) =
+Ecosystem{FP <: AbstractFloat}(ab::Matrix{FP},
+                               sim::AbstractSimilarity = Unique()) =
               Supercommunity(Subcommunities(ab), sim)
 
 """
-### Community type, representing a single community
+### SingleCommunity contructor for Supercommunity, representing a single community
 """
-:Community
+:SingleCommunity
 
-Community{FP <: AbstractFloat,
-          Sim <: Similarity}(ab::Vector{FP}, sim::Sim = Unique()) =
-              Supercommunity(Onecommunity(ab), sim)
+SingleCommunity{FP <: AbstractFloat}(ab::Vector{FP},
+                                     sim::AbstractSimilarity = Unique()) =
+                    Supercommunity(Onecommunity(ab), sim)
 
-getSimilarityMatrix{Part <: Partition}(part::Part, ::Unique) =
+"""
+### getSimilarityMatrix() retrieves the similarity matrix for a supercommunity
+"""
+:getSimilarityMatrix
+
+getSimilarityMatrix(part::AbstractPartition, ::Unique) =
     convert(Array{part.FPType}, eye(size(part.abundances, 1)))
     
-getSimilarityMatrix{Part <: Partition}(part::Part, ::Taxonomy) =
+getSimilarityMatrix(part::AbstractPartition, ::Taxonomy) =
     error("Can't generate a taxonomic similarity matrix yet")
 
-getSimilarityMatrix{Part <: Partition}(part::Part, sim::MatrixSimilarity) =
+getSimilarityMatrix(part::AbstractPartition, sim::MatrixSimilarity) =
     match!(part, sim) && sim.z
 
-getSimilarityMatrix{Sup <: Supercommunity}(sup::Sup) =
+getSimilarityMatrix(sup::AbstractSupercommunity) =
     getSimilarityMatrix(sup.partition, sup.similarity)
 
-getAbundances{Sup <: Supercommunity}(sup::Sup) = sup.partition.abundances
+getAbundances(sup::AbstractSupercommunity) = sup.partition.abundances
 
-function getOrdinariness!{Part <: Partition}(part::Part, ::Unique)
+function getOrdinariness!(part::AbstractPartition, ::Unique)
     part.abundances
 end
     
-function getOrdinariness!{Part <: Partition}(part::Part, ::Taxonomy)
+function getOrdinariness!(part::AbstractPartition, ::Taxonomy)
     error("Can't generate a taxonomic similarity matrix yet")
 end
 
-function getOrdinariness!{Part <: Partition}(part::Part, sim::MatrixSimilarity)
+function getOrdinariness!(part::AbstractPartition, sim::MatrixSimilarity)
     match!(part, sim)
     sim.z * part.abundances
 end
 
-function getOrdinariness!{Sup <: Supercommunity}(sup::Sup)
-    isnull(sup.ordinariness) &&
-    (sup.ordinariness = getOrdinariness!(sup.partition, sup.similarity))
+function getOrdinariness!(sup::AbstractSupercommunity)
+    if isnull(sup.ordinariness)
+        sup.ordinariness = getOrdinariness!(sup.partition, sup.similarity)
+    end
     get(sup.ordinariness)
 end
 
@@ -270,26 +292,26 @@ function length(sub::Subcommunities)
     size(sub.abundances, 2)
 end
 
-function start{Sup <: Supercommunity}(sup::Sup)
+function start(sup::AbstractSupercommunity)
     (1, start(sup.partition))
 end
 
-function next{Sup <: Supercommunity}(sup::Sup, state::Tuple{Int64, Tuple})
+function next(sup::AbstractSupercommunity, state::Tuple{Int64, Tuple})
     states, statep = state
     itemp, statep = next(sup.partition, state[2])
     items = getOrdinariness!(sup)[:, state[1]]
     ((items, itemp), (state[1] + 1, statep))
 end
 
-function done{Sup <: Supercommunity}(sup::Sup, state::Tuple{Int64, Tuple})
+function done(sup::AbstractSupercommunity, state::Tuple{Int64, Tuple})
     done(sup.partition, state[2])
 end
 
-function eltype{Sup <: Supercommunity}(sup::Sup)
+function eltype(sup::AbstractSupercommunity)
     (Vector{sup.FPType}, eltype(sup.partition))
 end
 
-function length{Sup <: Supercommunity}(sup::Sup)
+function length(sup::AbstractSupercommunity)
     length(sup.partition)
 end
 
