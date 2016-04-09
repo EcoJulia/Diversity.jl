@@ -15,6 +15,7 @@ export qD, qDZ
 
 include("DiversityMeasure.jl")
 export DiversityLevel, individualDiversity, subcommunityDiversity, supercommunityDiversity
+export getName, getPartitionFunction
 
 include("GeneralisedDiversities.jl")
 export diversity

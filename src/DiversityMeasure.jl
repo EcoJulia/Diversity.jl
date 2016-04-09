@@ -15,3 +15,65 @@ abstract DiversityMeasure
 function getName(div::DiversityMeasure)
     replace(string(typeof(div)), "Diversity.", "")
 end
+
+call(dl::DiversityLevel, dm::DiversityMeasure) = getPartitionFunction(dm, dl)
+
+abstract PowerMeanMeasure <: DiversityMeasure
+function getPartitionFunction(measure::PowerMeanMeasure,
+                              level::DiversityLevel)
+    if (level == individualDiversity)
+        return function (qs)
+            map(q -> measure.diversities, qs)
+        end
+    elseif (level == subcommunityDiversity)
+        function (qs)
+            divAllFn = getPartitionFunction(measure, individualDiversity)
+            abundances = measure.abundances
+            println(abundances)
+            println(1.0 - qs)
+            println(divAllFn(qs))
+            map((order, divAll) -> {println(order);
+                                    println(divAll);
+                                    powermean(divAll, order, measure.abundances)},
+                1.0 - qs, divAllFn(qs))
+        end
+    elseif (level == supercommunityDiversity)
+        function (qs)
+            divSubFn = getPartitionFunction(measure, subcommunityDiversity)
+            map((order, divSub) -> powermean(divSub, order, measure.weights),
+                1.0 - qs, divSubFn(qs))
+        end
+    else
+        error("unrecognised request")
+    end
+end
+
+abstract RelativeEntropyMeasure <: DiversityMeasure
+function getPartitionFunction(measure::RelativeEntropyMeasure,
+                              level::DiversityLevel)
+    if (level == individualDiversity)
+        return function (qs)
+            map(q -> measure.diversities, qs)
+        end
+    elseif (level == subcommunityDiversity)
+        function (qs)
+            divAllFn = getPartitionFunction(measure, individualDiversity)
+            abundances = measure.abundances
+            println(abundances)
+            println(1.0 - qs)
+            println(divAllFn(qs))
+            map((order, divAll) -> {println(order);
+                                    println(divAll);
+                                    powermean(divAll, order, measure.abundances)},
+                qs - 1.0, divAllFn(qs))
+        end
+    elseif (level == supercommunityDiversity)
+        function (qs)
+            divSubFn = getPartitionFunction(measure, subcommunityDiversity)
+            map((order, divSub) -> powermean(divSub, order, measure.weights),
+                1.0 - qs, divSubFn(qs))
+        end
+    else
+        error("unrecognised request")
+    end
+end
