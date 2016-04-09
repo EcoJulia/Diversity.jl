@@ -59,8 +59,8 @@ Accessing the main functionality in the package is simple:
 ```julia_skip
 using Diversity
 ...
-diversities = supercommunityAbar(proportions, [0, 1, 2, Inf], Z)
-diversity = supercommunityR(proportions, 2, Z)
+diversities = supercommunityDiversity(NormalisedAlpha(Ecosystem(proportions, Z)), [0, 1, 2, Inf])
+diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 ```
 
 The package also provides sub-modules with other diversity measures:
