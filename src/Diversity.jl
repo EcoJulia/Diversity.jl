@@ -15,7 +15,8 @@ export qD, qDZ
 
 include("DiversityMeasure.jl")
 export DiversityLevel, individualDiversity, subcommunityDiversity, supercommunityDiversity
-export getName, getPartitionFunction
+export RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta, RawRho, NormalisedRho, Gamma
+export getName, getASCIIName, getFullName, getPartitionFunction
 
 include("GeneralisedDiversities.jl")
 export diversity

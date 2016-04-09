@@ -77,3 +77,115 @@ function getPartitionFunction(measure::RelativeEntropyMeasure,
         error("unrecognised request")
     end
 end
+
+type α <: PowerMeanMeasure
+    abundances::Array
+    diversities::Array
+    function α(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            getOrdinariness!(sup) .^ -1)
+    end
+end
+
+typealias RawAlpha α
+
+getASCIIName(::α) = "alpha"
+getFullName(::α) = "raw alpha diversity"
+
+type ᾱ <: PowerMeanMeasure
+    abundances::Array
+    diversities::Array
+    function ᾱ(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            getWeights(sup) ./ getOrdinariness!(sup))
+    end
+end
+
+typealias NormalisedAlpha ᾱ
+
+getASCIIName(::ᾱ) = "alpha bar"
+getFullName(::ᾱ) = "normalised alpha diversity"
+
+type β <: RelativeEntropyMeasure
+    abundances::Array
+    diversities::Array
+    function ρ(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            getSuperOrdinariness!(sup) ./ getOrdinariness!(sup))
+    end
+end
+
+typealias RawBeta β
+
+getASCIIName(::β) = "beta"
+getFullName(::β) = "distinctiveness"
+
+type β̄ <: RelativeEntropyMeasure
+    abundances::Array
+    diversities::Array
+    function ρ̄(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            getOrdinariness!(sup) ./ (getSuperOrdinariness!(sup) * getWeights(sup)))
+    end
+end
+
+typealias NormalisedBeta β̄
+
+getASCIIName(::β̄) = "beta bar"
+getFullName(::β̄) = "effective number of subcommunities"
+
+type ρ <: PowerMeanMeasure
+    abundances::Array
+    diversities::Array
+    function ρ(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            getSuperOrdinariness!(sup) ./ getOrdinariness!(sup))
+    end
+end
+
+typealias RawRho ρ
+
+getASCIIName(::ρ) = "rho"
+getFullName(::ρ) = "redundancy"
+
+type ρ̄ <: PowerMeanMeasure
+    abundances::Array
+    diversities::Array
+    function ρ̄(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            getSuperOrdinariness!(sup) * getWeights(sup) ./ getOrdinariness!(sup))
+    end
+end
+
+typealias NormalisedRho ρ̄
+
+getASCIIName(::ρ̄) = "rho bar"
+getFullName(::ρ̄) = "representativeness"
+
+type γ <: PowerMeanMeasure
+    abundances::Array
+    diversities::Array
+    function γ(sup::AbstractSupercommunity)
+        new(getAbundances(sup),
+            ones(1, length(sup)) ./ getSuperOrdinariness!(sup))
+    end
+end
+
+typealias Gamma γ
+
+getASCIIName(::γ) = "gamma"
+getFullName(::γ) = "gamma diversity"
+
+#type γ̄ <: PowerMeanMeasure
+#    abundances::Array
+#    diversities::Array
+#    function γ̄(sup::AbstractSupercommunity)
+#        new(getAbundances(sup),
+#            sum(getWeights(sup)) * ones(1, length(sup)) ./ getSuperOrdinariness!(sup))
+#    end
+#end
+
+#typealias NormalisedGammaDiversity γ̄
+
+# getASCIIName(::γ̄) = "gamma bar"
+# getFullName(::γ̄) = "normalised gamma diversity"
