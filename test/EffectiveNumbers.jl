@@ -1,5 +1,6 @@
 module TestEffectiveNumbers
 using Diversity
+using Compat
 using Base.Test
 
 numbers = [1.0, 2, 4, 8, 16];
