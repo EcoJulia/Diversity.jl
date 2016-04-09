@@ -13,6 +13,9 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
                              (numcommunities)));
 
 include("EffectiveNumbers.jl")
+include("Hill.jl")
+include("Jost.jl")
+include("Ecology.jl")
 
 # Sub-community alpha diversities
 communities = rand(numspecies, numcommunities);
@@ -92,43 +95,3 @@ smoothed /= numcommunities;
 @test_approx_eq contributions(Dᾱ, smoothed, qs, true) contributions(Dᾱ, smoothed, qs, false) * numcommunities
 @test_approx_eq contributions(Dρ̄, smoothed, qs, true) contributions(Dρ̄, smoothed, qs, false) * numcommunities
 @test_approx_eq contributions(Dγ̄, smoothed, qs, true) contributions(Dγ̄, smoothed, qs, false) * numcommunities
-
-# Looking at relations to historical measures, updated with similarity
-# and partitioning
-using Diversity.Ecology
-
-@test_approx_eq richness(communities) Dᾱ(communities, 0)
-@test_approx_eq generalisedrichness(DḠ, communities, Z1) 1
-
-@test_approx_eq shannon(communities) log(Dᾱ(communities, 1))
-@test_approx_eq generalisedshannon(DḠ, communities, Z1) 0
-
-@test_approx_eq simpson(communities) Dᾱ(communities, 2) .^ -1
-@test_approx_eq generalisedsimpson(DḠ, communities, Z1) 1
-
-@test_approx_eq jaccard([1 0 0; 0 1 1.]') 0
-@test_approx_eq jaccard([1 0 1; 0 1 1.]') 1 / 3
-@test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1.])
-
-@test_approx_eq generalisedjaccard([1 0 1; 0 1 1.]', [0, Inf]) [1/3, 1]
-@test_approx_eq generalisedjaccard([1 1 1; 1 1 1.]', [0, 1]) [1, 1]
-
-# Checking Jost's diversities
-using Diversity.Jost
-
-@test jostβ == jostbeta
-@test_approx_eq jostbeta(communities, 1) 1 ./ DR̄(communities, 1)
-@test_approx_eq jostbeta(allthesame, qs) ones(qs)
-
-## Check Jost's alpha diversity works for all the same subcommunity
-@test jostα == jostalpha
-@test_approx_eq jostalpha(allthesame, qs) DĀ(allthesame, qs)
-## And for all different subcommunities and any subcommunities with the same sizes
-evendistinct = mapslices((x) -> x / (sum(x) * numcommunities), distinct, 1)
-@test_approx_eq jostalpha(evendistinct, qs) DĀ(evendistinct, qs)
-@test_approx_eq jostalpha(smoothed, qs) DĀ(smoothed, qs)
-
-# Checking Hill numbers
-using Diversity.Hill
-
-@test_approx_eq hillnumber(manyweights, 0) numspecies * ones((1, size(manyweights, 2)))
