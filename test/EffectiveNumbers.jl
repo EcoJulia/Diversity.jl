@@ -33,6 +33,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 @test_approx_eq Diversity.powermean(fragments, Inf) maximum(fragments)
 @test_approx_eq Diversity.powermean(fragments, 0, weights) prod(fragments .^ weights)
 @test_approx_eq Diversity.powermean(fragments, 1, weights) sum(fragments .* weights)
+@test_approx_eq Diversity.powermean(manyweights, -1, manyweights) .^ -1 numspecies * ones((1, size(manyweights, 2)))
 
 # Basic qD diversity calculation
 @test_approx_eq qD(weights, 0) mapreduce((x) -> isapprox(x, 0) ? 0 : 1, +, weights)
