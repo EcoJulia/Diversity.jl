@@ -54,7 +54,7 @@ allthesame = probs * colweights';
 
 communitylist = rand(1:numcommunities, numspecies)
 distinct = zeros(Float64, (numspecies, numcommunities))
-for (i in 1:numspecies)
+for i in 1:numspecies
     distinct[i, communitylist[i]] = weights[i]
 end
 
