@@ -6,7 +6,6 @@ notifications:
     on_success: change
     on_failure: always
 julia:
-  - 0.3
   - 0.4
   - nightly
 before_install:
