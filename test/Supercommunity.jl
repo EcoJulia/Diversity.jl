@@ -1,7 +1,6 @@
 module TestSupercommunity
 using Diversity
 using Base.Test
-using Compat
 
 oc = Onecommunity([3.0, 3.0, 4.0], true)
 #@testset "OneCommunity" begin
@@ -18,8 +17,8 @@ ms = MatrixSimilarity(sim)
 #end
 
 tax = Taxonomy(Dict{AbstractString,
-                    @compat(Tuple{Float64, Dict{AbstractString,
-                                                AbstractString}})}())
+               Tuple{Float64, Dict{AbstractString,
+               AbstractString}}}())
 #@testset "Taxonomy" begin
 @test_throws ErrorException Diversity.match!(oc, tax)
 #end

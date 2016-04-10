@@ -27,7 +27,7 @@ Some or all (as tuple) of:
 - multidimensional array with dimensions matiching shape of proportions,
   with extra dimension for values of q
 """
-function diversity(kind::@compat(Tuple{Function, Set{Symbol}}),
+function diversity(kind::Tuple{Function, Set{Symbol}},
                    sup::AbstractSupercommunity, qs)
     ## Make sure we actually want to calculate the diversity before
     ## going any further!
@@ -77,12 +77,12 @@ function diversity(kind::@compat(Tuple{Function, Set{Symbol}}),
     end
 end
 
-diversity{S <: AbstractFloat}(kind::@compat(Tuple{Function, Set{Symbol}}),
+diversity{S <: AbstractFloat}(kind::Tuple{Function, Set{Symbol}},
                               proportions::Matrix{S}, qs, z::Matrix{S}) =
                                   diversity(kind, proportions, qs,
                                             GeneralSimilarity(z))
 
-diversity{S <: AbstractFloat}(kind::@compat(Tuple{Function, Symbol}),
+diversity{S <: AbstractFloat}(kind::Tuple{Function, Symbol},
                               proportions::Matrix{S}, qs, sim) =
                                   diversity((kind[1], Set{Symbol}([kind[2]])),
                                             proportions, qs, sim)
