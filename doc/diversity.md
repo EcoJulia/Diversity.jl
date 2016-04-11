@@ -1,5 +1,7 @@
-The **Diversity** package provides basic numbers-equivalent diversity
-measures (described in
+## Diversity
+
+The main **Diversity** package provides basic numbers-equivalent
+diversity measures (described in
 [Hill, 1973](http://www.jstor.org/stable/1934352)),
 similarity-sensitive diversity measures (generalised from Hill, and
 described in
@@ -7,22 +9,20 @@ described in
 and related alpha, beta and gamma diversity measures at the level of
 the supercommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
-[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The functions
-exist both with unicode names preceded by D (e.g. Dᾱ()), and with
-matching ascii names (e.g. subcommunityalphabar()). We also provide a
-general function for extract any diversity measure for a series of
-subcommunity relative abundances. The full documentation can be found
-[here](http://diversityjl.readthedocs.org/en/stable/diversity/).
+[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
+functions exist both with unicode names (e.g. ```ᾱ()```), which are
+not automatically exported (as we feel they are too short) and with
+matching longer ASCII names (e.g. ```NormalisedAlpha()```), which are.
+We also provide functions to calculate appropriate
+```subcommunityDiversity()``` and ```supercommunityDiversity()```
+values for each measure, a general ```diversity()``` function for
+extract any diversity measure at a series of scales.
 
-#### Usage
-
-Accessing the functionality in the package is simple:
+Accessing the main functionality in the package is simple:
 
 ```julia_skip
 using Diversity
-
-# Load up ecosystem
-
-diversities = Dᾱ(ecosystem, [0, 1, 2, Inf], Z)
-diversities = Dγ(ecosystem, [0, 1, 2, Inf], Z)
+...
+diversities = supercommunityDiversity(NormalisedAlpha(Ecosystem(proportions, Z)), [0, 1, 2, Inf])
+diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 ```

@@ -1,5 +1,6 @@
 __precompile__()
 
+"$((VERSION < v"0.5-"? readall : readstring)(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
 module Diversity
 using Compat
 
