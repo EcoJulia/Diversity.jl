@@ -1,8 +1,7 @@
-VERSION >= v"0.4.0-dev+6641" && __precompile__()
+__precompile__()
 
 module Diversity
 using Compat
-VERSION < v"0.4-" && using Docile
 
 include("Supercommunity.jl")
 export Partition, Subcommunities, Onecommunity
@@ -66,9 +65,6 @@ include("CommunityContributions.jl")
 
 "$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
 module Ecology
-if (VERSION < v"0.4-")
-  using Docile
-end
 using Compat
 
 include("Ecology.jl")
@@ -81,9 +77,6 @@ end # sub-module Ecology
 
 "$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/jost.md")))"
 module Jost
-if (VERSION < v"0.4-")
-  using Docile
-end
 using Compat
 
 include("Jost.jl")
@@ -93,17 +86,11 @@ end # sub-module Jost
 
 "$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/hill.md")))"
 module Hill
-if (VERSION < v"0.4-")
-  using Docile
-end
 using Compat
 
 include("Hill.jl")
 export hillnumber
 
 end # sub-module Hill
-
-## Make sure that Lexicon is loading so inline REPL documentation works
-VERSION < v"0.4-" && using Lexicon
 
 end # module
