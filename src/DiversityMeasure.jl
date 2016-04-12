@@ -1,4 +1,9 @@
 """
+### Enumeration of levels that can exist / be calculated for a supercommunity.
+"""
+@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity supercommunityDiversity metacommunityDiversity
+
+"""
 ### Generates the function to calculate individual diversities
 
 Generates the function to calculate individual diversities for a
@@ -14,7 +19,7 @@ series of orders, represented as a vector of qs.
   parameter q, and returns the individual diversities for those
   values.
 """
-:individualDiversity
+individualDiversity
 
 """
 ### Generates the function to calculate subcommunity diversity
@@ -31,7 +36,7 @@ series of orders, represented as a vector of qs.
 - Function which takes a single number or vector of values of
   parameter q, and returns the subcommunity diversities for those values.
 """
-:subcommunityDiversity
+subcommunityDiversity
 
 """
 ### Generates the function to calculate supercommunity diversity
@@ -49,12 +54,7 @@ series of orders, represented as a vector of qs.
   parameter q, and returns the supercommunity diversities for those
   values.
 """
-:supercommunityDiversity
-
-"""
-### Enumeration of levels that can exist / be calculated for a supercommunity.
-"""
-@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity supercommunityDiversity metacommunityDiversity
+supercommunityDiversity
 
 """
 ### DiversityMeasure supertype for all diversity measure types

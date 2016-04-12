@@ -196,8 +196,6 @@ end
 """
 ### Ecosystem constructor for Supercommunity, representing an ecosystem of multiple subcommunities
 """
-:Ecosystem
-
 Ecosystem{FP <: AbstractFloat}(ab::Matrix{FP},
                                sim::AbstractSimilarity = Unique()) =
               Supercommunity(Subcommunities(ab), sim)
@@ -205,16 +203,15 @@ Ecosystem{FP <: AbstractFloat}(ab::Matrix{FP},
 """
 ### SingleCommunity contructor for Supercommunity, representing a single community
 """
-:SingleCommunity
-
 SingleCommunity{FP <: AbstractFloat}(ab::Vector{FP},
                                      sim::AbstractSimilarity = Unique()) =
                     Supercommunity(Onecommunity(ab), sim)
 
 """
-### getSimilarityMatrix() retrieves the similarity matrix for a supercommunity
+### Retrieves (and possibly calculates) the similarity matrix for a supercommunity
 """
-:getSimilarityMatrix
+function getSimilarityMatrix
+end
 
 getSimilarityMatrix(part::AbstractPartition, ::Unique) =
     convert(Array{part.FPType}, eye(size(part.abundances, 1)))
@@ -228,7 +225,19 @@ getSimilarityMatrix(part::AbstractPartition, sim::MatrixSimilarity) =
 getSimilarityMatrix(sup::AbstractSupercommunity) =
     getSimilarityMatrix(sup.partition, sup.similarity)
 
+"""
+### Retrieves (and possibly calculates) the relative abundances of a supercommunity
+"""
+function getAbundances
+end
+
 getAbundances(sup::AbstractSupercommunity) = sup.partition.abundances
+
+"""
+### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a supercommunity
+"""
+function getOrdinariness!
+end
 
 function getOrdinariness!(part::AbstractPartition, ::Unique)
     part.abundances
@@ -250,16 +259,27 @@ function getOrdinariness!(sup::AbstractSupercommunity)
     get(sup.ordinariness)
 end
 
+"""
+### Retrieves (and possibly calculates) the ordinarinesses of a whole supercommunity
+"""
+function getSuperOrdinariness!
+end
+
 function getSuperOrdinariness!(sup::AbstractSupercommunity)
     ord = getOrdinariness!(sup)
     ndims(ord) > 1 ? mapslices(sum, ord, 2) : ord
 end
 
+"""
+### Retrieves (and possibly calculates) the relative weights of the subcommunities
+"""
 function getWeights(sup::AbstractSupercommunity)
     ab = getAbundances(sup)
     ndims(ab) > 1 ? mapslices(sum, ab, 1) : sum(ab)
 end
 
+## Now create the functions for the iterator interface for Partitions
+## and Supercommunities
 import Base.start, Base.next, Base.done, Base.eltype, Base.length
 
 function start(::Onecommunity)
@@ -267,11 +287,13 @@ function start(::Onecommunity)
 end
 
 function next(::Onecommunity, state::Tuple{Int64})
-    (one.abundances, (state[1] + 1, ))
+    index, = state
+    (one.abundances, (index + 1, ))
 end
 
 function done(one::Onecommunity, state::Tuple{Int64})
-    state[1] != 1
+    index, = state
+    index != 1
 end
 
 function eltype(one::Onecommunity)
@@ -287,11 +309,13 @@ function start(::Subcommunities)
 end
 
 function next(sub::Subcommunities, state::Tuple{Int64})
-    (sub.abundances[:, state[1]], (state[1] + 1, ))
+    index, = state
+    (sub.abundances[:, index], (index + 1,))
 end
 
 function done(sub::Subcommunities, state::Tuple{Int64})
-    state[1] > length(sub)
+    index, = state
+    index > length(sub)
 end
 
 function eltype(sub::Subcommunities)
@@ -307,14 +331,15 @@ function start(sup::AbstractSupercommunity)
 end
 
 function next(sup::AbstractSupercommunity, state::Tuple{Int64, Tuple})
-    states, statep = state
-    itemp, statep = next(sup.partition, state[2])
-    items = getOrdinariness!(sup)[:, state[1]]
-    ((items, itemp), (state[1] + 1, statep))
+    index_sup, index_part = state
+    item_part, index_part = next(sup.partition, index_part)
+    item_sup = getOrdinariness!(sup)[:, index_sup]
+    ((item_sup, item_part), (index_sup + 1, index_part))
 end
 
 function done(sup::AbstractSupercommunity, state::Tuple{Int64, Tuple})
-    done(sup.partition, state[2])
+    index_sup, state_part = state
+    done(sup.partition, state_part)
 end
 
 function eltype(sup::AbstractSupercommunity)
