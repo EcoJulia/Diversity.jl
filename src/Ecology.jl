@@ -127,7 +127,7 @@ end
 ### Calculate a generalised version of the Jaccard index
 
 Calculates a generalisation of the Jaccard index of a series of
-columns representing subcommunity counts. This evaluates to is DG / DA
+columns representing subcommunity counts. This evaluates to is alpha / gamma
 for a series of orders, repesented as a vector of qs (or a single
 number).  It also includes a similarity matrix for the species. This
 gives measure of the average distinctiveness of the subcommunities.
@@ -142,9 +142,11 @@ gives measure of the average distinctiveness of the subcommunities.
 """
 function generalisedjaccard(proportions::Matrix, qs,
                             Z::Matrix = eye(size(proportions, 1)))
-    size(proportions, 2) == 2 ||
+    eco = Ecosystem(proportions, Z)
+    length(eco) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    supercommunityA(proportions, qs, Z) ./ supercommunityG(proportions, qs, Z) - 1
+    (supercommunityDiversity(α(eco), qs) ./
+     supercommunityDiversity(γ(eco), qs)) - 1
 end
 
 """
@@ -152,7 +154,7 @@ end
 
 Calculates Jaccard index (Jaccard similarity coefficient) of two
 columns representing independent subcommunity counts, which is
-DA(proportions, 0) / DG(proportions, 0) - 1
+alpha(proportions, 0) / gamma(proportions, 0) - 1
 
 #### Arguments:
 - `proportions`: population proportions
