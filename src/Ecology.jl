@@ -9,7 +9,9 @@ diversity measure (passed as the second argument). It also includes a
 similarity matrix for the species
 
 #### Arguments:
-- `measure`: diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
+
+- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
 
 - `proportions`: population proportions
 
@@ -18,11 +20,12 @@ similarity matrix for the species
 ### Returns:
 - diversity (at ecosystem level) or diversities (of subcommunities)
 """
-function generalisedrichness{S <: AbstractFloat}(measure::Function,
+function generalisedrichness{S <: AbstractFloat}(level::DiversityLevel,
+                                                 DM::Type,
                                                  proportions::Matrix{S},
                                                  Z::Matrix{S} =
                                                  eye(size(proportions, 1)))
-    measure(proportions, 0, Z)
+    level(DM(Ecosystem(proportions, Z)), 0)
 end
 
 """
@@ -38,7 +41,7 @@ independent subcommunity counts, which is diversity at q = 0
 - diversities of subcommunities
 """
 function richness{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedrichness(subcommunityalphabar, proportions)
+    generalisedrichness(subcommunityDiversity, NormalisedAlpha, proportions)
 end
 
 """
@@ -50,7 +53,9 @@ any diversity measure (passed as the second argument). It also
 includes a similarity matrix for the species
 
 #### Arguments:
-- `measure`: diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
+
+- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
 
 - `proportions`: population proportions
 
@@ -59,11 +64,12 @@ includes a similarity matrix for the species
 #### Returns:
 - entropy (at ecosystem level) or entropies (of subcommunities)
 """
-function generalisedshannon{S <: AbstractFloat}(measure::Function,
+function generalisedshannon{S <: AbstractFloat}(level::DiversityLevel,
+                                                DM::Type,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
                                                 eye(size(proportions, 1)))
-    log(measure(proportions, 1, Z))
+    log(level(DM(Ecosystem(proportions, Z)), 1))
 end
 
 """
@@ -79,7 +85,7 @@ independent subcommunity counts, which is log(diversity) at q = 1
 - entropies of subcommunities
 """
 function shannon{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedshannon(subcommunityalphabar, proportions)
+    generalisedshannon(subcommunityDiversity, NormalisedAlpha, proportions)
 end
 
 """
@@ -91,19 +97,23 @@ any diversity measure (passed as the second argument). It also
 includes a similarity matrix for the species
 
 #### Arguments:
-- `measure`: diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
+
+- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
 
 - `proportions`: population proportions
+
 - `Z`: similarity matrix
 
 #### Returns:
 - concentration (at ecosystem level) or concentrations (of subcommunities)
 """
-function generalisedsimpson{S <: AbstractFloat}(measure::Function ,
+function generalisedsimpson{S <: AbstractFloat}(level::DiversityLevel,
+                                                DM::Type,
                                                 proportions::Matrix{S},
                                                 Z::Matrix{S} =
                                                 eye(size(proportions, 1)))
-    measure(proportions, 2, Z) .^ -1
+    level(DM(Ecosystem(proportions, Z)), 2) .^ -1
 end
 
 """
@@ -120,7 +130,7 @@ concentration) at q = 2
 - concentrations of subcommunities
 """
 function simpson{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedsimpson(subcommunityalphabar, proportions)
+    generalisedsimpson(subcommunityDiversity, NormalisedAlpha, proportions)
 end
 
 """
@@ -134,7 +144,9 @@ gives measure of the average distinctiveness of the subcommunities.
 
 #### Arguments:
 - `proportions`: population proportions
+
 - `qs`: single number or vector of values of parameter q
+
 - `Z`: similarity matrix
 
 #### Returns:
