@@ -8,16 +8,22 @@ include("Supercommunity.jl")
 export Partition, Subcommunities, Onecommunity
 export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
 export Supercommunity, Ecosystem, Community
-export getAbundances, getWeights, getSimilarityMatrix, getOrdinariness!
+export getAbundances, getWeights
+export getSimilarityMatrix, getOrdinariness!, getSuperOrdinariness!
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
 
 include("DiversityMeasure.jl")
-export DiversityLevel, individualDiversity, subcommunityDiversity, supercommunityDiversity
-export RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta, RawRho, NormalisedRho, Gamma
-export getName, getASCIIName, getFullName
+export DiversityLevel
+export individualDiversity, subcommunityDiversity, supercommunityDiversity
+
+export RawAlpha, NormalisedAlpha
+export RawBeta, NormalisedBeta, RawRho, NormalisedRho
+export Gamma
 ## We do not export ᾱ, α, β̄, β, ρ̄, ρ, γ̄, γ as they're too short
+
+export getName, getASCIIName, getFullName
 
 include("GeneralisedDiversities.jl")
 export diversity
@@ -50,38 +56,69 @@ export diversity
 @deprecate(ecosystemG, supercommunityG)
 @deprecate(ecosystemGbar, supercommunityGbar)
 
-## Deprecate all-in-one names, as we divide calculation into type of diversity and scale
-@deprecate(subcommunityalphabar(pop, Z, qs), subcommunityDiversity(ᾱ(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunityalpha(pop, Z, qs), subcommunityDiversity(α(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunitybetabar(pop, Z, qs), subcommunityDiversity(β̄(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunitybeta(pop, Z, qs), subcommunityDiversity(β(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunityrhobar(pop, Z, qs), subcommunityDiversity(ρ̄(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunityrho(pop, Z, qs), subcommunityDiversity(ρ(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunitygammabar(pop, Z, qs), subcommunityDiversity(γ̄(Ecosystem(pop, Z)), qs))
-@deprecate(subcommunitygamma(pop, Z, qs), subcommunityDiversity(γ(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityAbar(pop, Z, qs), supercommunityDiversity(ᾱ(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityA(pop, Z, qs), supercommunityDiversity(α(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityBbar(pop, Z, qs), supercommunityDiversity(β̄(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityB(pop, Z, qs), supercommunityDiversity(β(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityRbar(pop, Z, qs), supercommunityDiversity(ρ̄(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityR(pop, Z, qs), supercommunityDiversity(ρ(Ecosystem(pop, Z)), qs))
-@deprecate(supercommunityG(pop, Z, qs), supercommunityDiversity(γ(Ecosystem(pop, Z)), qs))
+## Deprecate all-in-one names, as we divide calculation into type of
+## diversity and scale
+@deprecate(subcommunityalphabar(pop, Z, qs),
+           subcommunityDiversity(ᾱ(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunityalpha(pop, Z, qs),
+           subcommunityDiversity(α(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunitybetabar(pop, Z, qs),
+           subcommunityDiversity(β̄(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunitybeta(pop, Z, qs),
+           subcommunityDiversity(β(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunityrhobar(pop, Z, qs),
+           subcommunityDiversity(ρ̄(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunityrho(pop, Z, qs),
+           subcommunityDiversity(ρ(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunitygammabar(pop, Z, qs),
+           subcommunityDiversity(γ̄(Ecosystem(pop, Z)), qs))
+@deprecate(subcommunitygamma(pop, Z, qs),
+           subcommunityDiversity(γ(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityAbar(pop, Z, qs),
+           supercommunityDiversity(ᾱ(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityA(pop, Z, qs),
+           supercommunityDiversity(α(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityBbar(pop, Z, qs),
+           supercommunityDiversity(β̄(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityB(pop, Z, qs),
+           supercommunityDiversity(β(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityRbar(pop, Z, qs),
+           supercommunityDiversity(ρ̄(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityR(pop, Z, qs),
+           supercommunityDiversity(ρ(Ecosystem(pop, Z)), qs))
+@deprecate(supercommunityG(pop, Z, qs),
+           supercommunityDiversity(γ(Ecosystem(pop, Z)), qs))
 
-@deprecate(subcommunityalphabar(pop, qs), subcommunityDiversity(ᾱ(Ecosystem(pop)), qs))
-@deprecate(subcommunityalpha(pop, qs), subcommunityDiversity(α(Ecosystem(pop)), qs))
-@deprecate(subcommunitybetabar(pop, qs), subcommunityDiversity(β̄(Ecosystem(pop)), qs))
-@deprecate(subcommunitybeta(pop, qs), subcommunityDiversity(β(Ecosystem(pop)), qs))
-@deprecate(subcommunityrhobar(pop, qs), subcommunityDiversity(ρ̄(Ecosystem(pop)), qs))
-@deprecate(subcommunityrho(pop, qs), subcommunityDiversity(ρ(Ecosystem(pop)), qs))
-@deprecate(subcommunitygammabar(pop, qs), subcommunityDiversity(γ̄(Ecosystem(pop)), qs))
-@deprecate(subcommunitygamma(pop, qs), subcommunityDiversity(γ(Ecosystem(pop)), qs))
-@deprecate(supercommunityAbar(pop, qs), supercommunityDiversity(ᾱ(Ecosystem(pop)), qs))
-@deprecate(supercommunityA(pop, qs), supercommunityDiversity(α(Ecosystem(pop)), qs))
-@deprecate(supercommunityBbar(pop, qs), supercommunityDiversity(β̄(Ecosystem(pop)), qs))
-@deprecate(supercommunityB(pop, qs), supercommunityDiversity(β(Ecosystem(pop)), qs))
-@deprecate(supercommunityRbar(pop, qs), supercommunityDiversity(ρ̄(Ecosystem(pop)), qs))
-@deprecate(supercommunityR(pop, qs), supercommunityDiversity(ρ(Ecosystem(pop)), qs))
-@deprecate(supercommunityG(pop, qs), supercommunityDiversity(γ(Ecosystem(pop)), qs))
+@deprecate(subcommunityalphabar(pop, qs),
+           subcommunityDiversity(ᾱ(Ecosystem(pop)), qs))
+@deprecate(subcommunityalpha(pop, qs),
+           subcommunityDiversity(α(Ecosystem(pop)), qs))
+@deprecate(subcommunitybetabar(pop, qs),
+           subcommunityDiversity(β̄(Ecosystem(pop)), qs))
+@deprecate(subcommunitybeta(pop, qs),
+           subcommunityDiversity(β(Ecosystem(pop)), qs))
+@deprecate(subcommunityrhobar(pop, qs),
+           subcommunityDiversity(ρ̄(Ecosystem(pop)), qs))
+@deprecate(subcommunityrho(pop, qs),
+           subcommunityDiversity(ρ(Ecosystem(pop)), qs))
+@deprecate(subcommunitygammabar(pop, qs),
+           subcommunityDiversity(γ̄(Ecosystem(pop)), qs))
+@deprecate(subcommunitygamma(pop, qs),
+           subcommunityDiversity(γ(Ecosystem(pop)), qs))
+@deprecate(supercommunityAbar(pop, qs),
+           supercommunityDiversity(ᾱ(Ecosystem(pop)), qs))
+@deprecate(supercommunityA(pop, qs),
+           supercommunityDiversity(α(Ecosystem(pop)), qs))
+@deprecate(supercommunityBbar(pop, qs),
+           supercommunityDiversity(β̄(Ecosystem(pop)), qs))
+@deprecate(supercommunityB(pop, qs),
+           supercommunityDiversity(β(Ecosystem(pop)), qs))
+@deprecate(supercommunityRbar(pop, qs),
+           supercommunityDiversity(ρ̄(Ecosystem(pop)), qs))
+@deprecate(supercommunityR(pop, qs),
+           supercommunityDiversity(ρ(Ecosystem(pop)), qs))
+@deprecate(supercommunityG(pop, qs),
+           supercommunityDiversity(γ(Ecosystem(pop)), qs))
 
 ## Deprecate anything related to ϵ as it has been replaced by ρ̄
 @deprecate(subcommunityepsilon, Dρ̄)
