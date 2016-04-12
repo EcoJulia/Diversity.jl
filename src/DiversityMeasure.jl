@@ -264,6 +264,7 @@ type β <: RelativeEntropyMeasure
 end
 
 typealias RawBeta β
+typealias Distinctiveness β
 
 getASCIIName(::β) = "beta"
 getFullName(::β) = "distinctiveness"
@@ -318,6 +319,7 @@ type ρ <: PowerMeanMeasure
 end
 
 typealias RawRho ρ
+typealias Redundancy ρ
 
 getASCIIName(::ρ) = "rho"
 getFullName(::ρ) = "redundancy"
@@ -345,6 +347,7 @@ type ρ̄ <: PowerMeanMeasure
 end
 
 typealias NormalisedRho ρ̄
+typealias Representativeness ρ̄
 
 getASCIIName(::ρ̄) = "rho bar"
 getFullName(::ρ̄) = "representativeness"
