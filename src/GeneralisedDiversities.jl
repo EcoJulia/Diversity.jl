@@ -49,7 +49,7 @@ function diversity{S <: AbstractFloat}(measure::Function,
     end
 
     ## We need our qs to be a vector of floating points
-    powers = 1. - convert(Vector{S}, collect(qs))
+    powers = 1.0 - vec(collect(S, qs))
     
     ## We'll definitely need to calculate subcommunity diversity first
     cd = measure(proportions, qs, Z)
