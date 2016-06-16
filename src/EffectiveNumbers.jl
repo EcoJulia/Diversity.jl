@@ -13,9 +13,9 @@ is 1, so this is just the arithmetic mean.
 #### Returns:
 - weighted power mean(s)
 """
-function powermean{S <: AbstractFloat}(values::Vector{S},
+function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
                                        order::Real = 1,
-                                       weights::Vector{S} = ones(values))
+                                       weights::AbstractArray{S, 1} = ones(values))
     length(values) == length(weights) ||
     throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
     
@@ -47,16 +47,16 @@ function powermean{S <: AbstractFloat}(values::Vector{S},
 end
 
 # This is the next most common case - a vector of orders
-function powermean{S <: AbstractFloat}(values::Vector{S},
+function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
                                        orders::Vector,
-                                       weights::Vector{S} = ones(values))
+                                       weights::AbstractArray{S, 1} = ones(values))
     map(order -> powermean(values, order, weights), orders)
 end
 
 # This is the next most simple case - matrices with subcommunities, and an order or orders
-function powermean{S <: AbstractFloat}(values::Matrix{S},
+function powermean{S <: AbstractFloat}(values::AbstractArray{S, 2},
                                        orders,
-                                       weights::Matrix{S} = ones(values))
+                                       weights::AbstractArray{S, 2} = ones(values))
     size(values) == size(weights) ||
     throw(DimensionMismatch("powermean: Weight and value matrixes must be the same size"))
 
@@ -75,7 +75,7 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD{S <: Real}(proportions::Vector{S}, qs)
+function qD{S <: Real}(proportions::AbstractArray{S, 1}, qs)
     if !isapprox(sum(proportions), 1.)
         warn("qD: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
@@ -97,8 +97,8 @@ a population with given relative *proportions*, and similarity matrix
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qDZ{S <: AbstractFloat}(proportions::Vector{S}, qs,
-                                 Z::Matrix{S} = eye(length(proportions)))
+function qDZ{S <: AbstractFloat}(proportions::AbstractArray{S, 1}, qs,
+                                 Z::AbstractArray{S, 2} = eye(length(proportions)))
     if !isapprox(sum(proportions), 1.)
         warn("qDZ: Population proportions don't sum to 1, fixing...")
         proportions /= sum(proportions)
