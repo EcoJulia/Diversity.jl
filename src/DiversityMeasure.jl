@@ -134,9 +134,11 @@ function getPartitionFunction(measure::PowerMeanMeasure,
             println(abundances)
             println(1.0 - qs)
             println(divAllFn(qs))
-            map((order, divAll) -> {println(order);
-                                    println(divAll);
-                                    powermean(divAll, order, measure.abundances)},
+            map((order, divAll) -> begin
+                println(order);
+                println(divAll);
+                powermean(divAll, order, measure.abundances)
+                end,
                 1.0 - qs, divAllFn(qs))
         end
     elseif (level == supercommunityDiversity)
@@ -173,9 +175,11 @@ function getPartitionFunction(measure::RelativeEntropyMeasure,
             println(abundances)
             println(1.0 - qs)
             println(divAllFn(qs))
-            map((order, divAll) -> {println(order);
+            map((order, divAll) -> begin
+            println(order);
                                     println(divAll);
-                                    powermean(divAll, order, measure.abundances)},
+                                    powermean(divAll, order, measure.abundances)
+                                end,
                 qs - 1.0, divAllFn(qs))
         end
     elseif (level == supercommunityDiversity)
