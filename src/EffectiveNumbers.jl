@@ -25,11 +25,11 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
     # Check whether all proportions are NaN - happens in normalisation when all
     # weights are zero in group. In that case we want to propagate the NaN
     if (all(isnan(proportions)))
-        return(NaN)
+        return(convert(S, NaN))
     end
     
     # Extract values with non-zero weights
-    present = filter(x -> !isapprox(x[1], 0.0), zip(proportions, values))
+    present = collect(filter(x -> !isapprox(x[1], 0.0), zip(proportions, values)))
     if (isinf(order))
       if (order > 0) # +Inf -> Maximum
         reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
