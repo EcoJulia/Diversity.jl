@@ -5,7 +5,7 @@ module Diversity
 using Compat
 
 include("Supercommunity.jl")
-export Partition, Subcommunities, Onecommunity
+export Subcommunities, Onecommunity
 export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
 export Supercommunity, Ecosystem, Community
 export getAbundances, getWeights
