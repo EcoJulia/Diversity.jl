@@ -108,8 +108,8 @@ end
 function getFullName
 end
 
-call(dl::DiversityLevel, dm::DiversityMeasure) = getPartitionFunction(dm, dl)
-call(dl::DiversityLevel, dm::DiversityMeasure, others...) = getPartitionFunction(dm, dl)(others...)
+@compat (dl::DiversityLevel)(dm::DiversityMeasure) = getPartitionFunction(dm, dl)
+@compat (dl::DiversityLevel)(dm::DiversityMeasure, others...) = getPartitionFunction(dm, dl)(others...)
 
 """
 ### Supertype of all power mean-based diversity measures
