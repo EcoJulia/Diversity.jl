@@ -166,14 +166,14 @@ individuals.
 
 - `partition` the instance of the AbstractPartition subtype, containing the
   subcommunities. These should be accessed through
-  getAbundances(::Supercommunity).
+  getabundance(::Supercommunity).
 
 - `similarity` The instance of the AbstractSimilarity subtype, from which
   similarities between individuals can be calculated.
 
 - `ordinariness` A cache of the ordinariness of the individuals in the
   Partition. Should only be accessed through
-  getOrdinariness!(::Supercommunity), which will populate the cache if
+  getordinariness!(::Supercommunity), which will populate the cache if
   it has not yet been calculated.
 
 - `FPType` is the kind of number storage, a subtype of AbstractFloat.
@@ -210,40 +210,42 @@ SingleCommunity{FP <: AbstractFloat}(ab::Vector{FP},
 """
 ### Retrieves (and possibly calculates) the similarity matrix for a supercommunity
 """
-function getSimilarityMatrix
+function similaritymatrix
 end
 
-getSimilarityMatrix(part::AbstractPartition, ::Unique) =
-    convert(Array{part.FPType}, eye(size(part.abundances, 1)))
+getsimilarity{Part <: AbstractPartition}(part::Part, ::Unique) =
+    convert(Array{eltype(part.abundances), 2}, eye(size(part.abundances, 1)))
     
-getSimilarityMatrix(part::AbstractPartition, ::Taxonomy) =
+getsimilarity(part::AbstractPartition, ::Taxonomy) =
     error("Can't generate a taxonomic similarity matrix yet")
 
-getSimilarityMatrix(part::AbstractPartition, sim::MatrixSimilarity) =
-    match!(part, sim) && sim.z
+function getsimilarity(part::AbstractPartition, sim::MatrixSimilarity)
+    match!(part, sim)
+    return sim.z
+end
 
-getSimilarityMatrix(sup::AbstractSupercommunity) =
-    getSimilarityMatrix(sup.partition, sup.similarity)
+getsimilarity{Sup <: AbstractSupercommunity}(sup::Sup) =
+    getsimilarity(sup.partition, sup.similarity)
 
 """
 ### Retrieves (and possibly calculates) the relative abundances of a supercommunity
 """
-function getAbundances
+function getabundance
 end
 
-getAbundances(sup::AbstractSupercommunity) = sup.partition.abundances
+getabundance{Sup <: AbstractSupercommunity}(sup::Sup) = sup.partition.abundances
 
 """
-### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a supercommunity
+### Calculates the ordinarinesses of the subcommunities in a supercommunity
 """
-function getOrdinariness!
+function getordinariness
 end
 
-function getOrdinariness!(part::AbstractPartition, ::Unique)
-    part.abundances
+function getordinariness{Part <: AbstractPartition}(part::Part, ::Unique)
+    return part.abundances
 end
     
-function getOrdinariness!(part::AbstractPartition, ::Taxonomy)
+function getordinariness{Part <: AbstractPartition}(part::Part, ::Taxonomy)
     error("Can't generate a taxonomic similarity matrix yet")
 end
 
@@ -252,9 +254,12 @@ function getOrdinariness!(part::AbstractPartition, sim::MatrixSimilarity)
     sim.z * part.abundances
 end
 
-function getOrdinariness!(sup::AbstractSupercommunity)
+"""
+### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a supercommunity
+"""
+function getordinariness!{Sup <: AbstractSupercommunity}(sup::Sup)
     if isnull(sup.ordinariness)
-        sup.ordinariness = getOrdinariness!(sup.partition, sup.similarity)
+        sup.ordinariness = getordinariness(sup.partition, sup.similarity)
     end
     get(sup.ordinariness)
 end
@@ -262,20 +267,17 @@ end
 """
 ### Retrieves (and possibly calculates) the ordinarinesses of a whole supercommunity
 """
-function getSuperOrdinariness!
-end
-
-function getSuperOrdinariness!(sup::AbstractSupercommunity)
-    ord = getOrdinariness!(sup)
-    ndims(ord) > 1 ? mapslices(sum, ord, 2) : ord
+function getsuperordinariness!{Sup <: AbstractSupercommunity}(sup::Sup)
+    ord = getordinariness!(sup)
+    sumoversubcommunities(sup.partition, ord)
 end
 
 """
 ### Retrieves (and possibly calculates) the relative weights of the subcommunities
 """
-function getWeights(sup::AbstractSupercommunity)
-    ab = getAbundances(sup)
-    ndims(ab) > 1 ? mapslices(sum, ab, 1) : sum(ab)
+function getweight{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    sumovertypes(sup.partition, ab)
 end
 
 ## Now create the functions for the iterator interface for Partitions
@@ -333,7 +335,7 @@ end
 function next(sup::AbstractSupercommunity, state::Tuple{Int64, Tuple})
     index_sup, index_part = state
     item_part, index_part = next(sup.partition, index_part)
-    item_sup = getOrdinariness!(sup)[:, index_sup]
+    item_sup = getordinariness!(sup)[:, index_sup]
     ((item_sup, item_part), (index_sup + 1, index_part))
 end
 

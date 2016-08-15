@@ -81,7 +81,7 @@ function qD(sup::AbstractSupercommunity, qs)
 
     isa(sup.similarity, Unique) || error("Not a naive similarity type")
 
-    powermean(getAbundances(sup), qs - 1, getAbundances(sup)) .^ -1
+    powermean(getabundance(sup), qs - 1, getabundance(sup)) .^ -1
 end
 
 function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
@@ -107,7 +107,7 @@ function qDZ(sup::AbstractSupercommunity, qs)
     length(sup) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getOrdinariness!(sup), qs - 1, getAbundances(sup)) .^ -1
+    powermean(getordinariness!(sup), qs - 1, getabundance(sup)) .^ -1
 end
 
 function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs,

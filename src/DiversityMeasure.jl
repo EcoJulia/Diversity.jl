@@ -209,8 +209,8 @@ type α <: PowerMeanMeasure
     abundances::Array
     diversities::Array
     function α(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            getOrdinariness!(sup) .^ -1)
+        new(getabundance(sup),
+            getordinariness!(sup) .^ -1)
     end
 end
 
@@ -235,8 +235,8 @@ type ᾱ <: PowerMeanMeasure
     abundances::Array
     diversities::Array
     function ᾱ(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            getWeights(sup) ./ getOrdinariness!(sup))
+        new(getabundance(sup),
+            getweight(sup) ./ getordinariness!(sup))
     end
 end
 
@@ -262,8 +262,8 @@ type β <: RelativeEntropyMeasure
     abundances::Array
     diversities::Array
     function ρ(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            getSuperOrdinariness!(sup) ./ getOrdinariness!(sup))
+        new(getabundance(sup),
+            getsuperordinariness!(sup) ./ getordinariness!(sup))
     end
 end
 
@@ -290,8 +290,8 @@ type β̄ <: RelativeEntropyMeasure
     abundances::Array
     diversities::Array
     function β̄(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            getOrdinariness!(sup) ./ (getSuperOrdinariness!(sup) * getWeights(sup)))
+        new(getabundance(sup),
+            getordinariness!(sup) ./ (getsuperordinariness!(sup) * getweight(sup)))
     end
 end
 
@@ -317,8 +317,8 @@ type ρ <: PowerMeanMeasure
     abundances::Array
     diversities::Array
     function ρ(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            getSuperOrdinariness!(sup) ./ getOrdinariness!(sup))
+        new(getabundances(sup),
+            getsuperordinariness!(sup) ./ getordinariness!(sup))
     end
 end
 
@@ -345,8 +345,8 @@ type ρ̄ <: PowerMeanMeasure
     abundances::Array
     diversities::Array
     function ρ̄(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            getSuperOrdinariness!(sup) * getWeights(sup) ./ getOrdinariness!(sup))
+        new(getabundance(sup),
+            getsuperordinariness!(sup) * getweight(sup) ./ getordinariness!(sup))
     end
 end
 
@@ -372,8 +372,8 @@ type γ <: PowerMeanMeasure
     abundances::Array
     diversities::Array
     function γ(sup::AbstractSupercommunity)
-        new(getAbundances(sup),
-            ones(1, length(sup)) ./ getSuperOrdinariness!(sup))
+        new(getabundance(sup),
+            ones(1, length(sup)) ./ getsuperordinariness!(sup))
     end
 end
 

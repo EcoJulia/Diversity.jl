@@ -11,7 +11,7 @@ sim = [1.0 0 0; 1.0 1.0 0.0; 1.0 1.0 1.0]
 ab3 = [1.0 2.0; 3.0 0.0; 0.0 4.0]'
 ms = MatrixSimilarity(sim)
 #@testset "MatrixSimilarity" begin
-@test_approx_eq getSimilarityMatrix(oc, ms) sim
+@test_approx_eq getsimilarity(oc, ms) sim
 @test_throws DomainError MatrixSimilarity(-sim)
 @test_throws DimensionMismatch MatrixSimilarity(ab3)
 #end
@@ -31,10 +31,10 @@ sup2 = Supercommunity(sc, sp)
 @test sup.similarity == ms
 @test sup.partition == oc
 @test isnull(sup.ordinariness)
-@test_approx_eq getOrdinariness!(sup) [0.3, 0.6, 1.0]
+@test_approx_eq getordinariness!(sup) [0.3, 0.6, 1.0]
 @test !isnull(sup.ordinariness)
 @test_throws DimensionMismatch Supercommunity(sc, ms)
-@test_approx_eq getSimilarityMatrix(sup2) eye(size(ab3, 1))
+@test_approx_eq getsimilarity(sup2) eye(size(ab3, 1))
 #end
 
 end
