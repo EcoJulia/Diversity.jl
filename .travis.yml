@@ -1,17 +1,26 @@
 language: julia
+
 notifications:
   recipients:
     - git@richardreeve.net
   email:
     on_success: change
     on_failure: always
+
+os:
+  - linux
+  - osx
+
 julia:
   - 0.4
   - 0.5
   - nightly
+
 before_install:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+
 script:
   - julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.test("Diversity", coverage=true)'
+
 after_success:
   - julia -e 'cd(Pkg.dir("Diversity", "test")); include("coverage.jl")'
