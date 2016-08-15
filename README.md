@@ -1,5 +1,4 @@
 # Diversity
-[![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
 [![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
 [![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
 
