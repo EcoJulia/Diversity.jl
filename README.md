@@ -3,15 +3,10 @@
 [![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
 [![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
 
-Master branch:
-[![Build Status - master](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl?branch=master)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master)
-[![Coverage Status - master](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
-
-Similarity branch:
-[![Build Status - similarity](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=similarity)](https://travis-ci.org/richardreeve/Diversity.jl?branch=similarity)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=similarity)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/similarity)
-[![Coverage Status - similarity](https://coveralls.io/repos/github/richardreeve/Diversity.jl/badge.svg?branch=similarity)](https://coveralls.io/github/richardreeve/Diversity.jl?branch=similarity)
+[![Build status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl?branch=master)
+[![Build status (Windows)](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master)
+[![Coveralls status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
+[![Codecov status](https://codecov.io/gh/richardreeve/Diversity.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/richardreeve/Diversity.jl)
 
 Docs:
 [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/)
