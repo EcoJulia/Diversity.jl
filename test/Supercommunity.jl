@@ -20,7 +20,7 @@ tax = Taxonomy(Dict{AbstractString,
                Tuple{Float64, Dict{AbstractString,
                AbstractString}}}())
 #@testset "Taxonomy" begin
-@test_throws ErrorException Diversity.match!(oc, tax)
+@test_throws ErrorException Diversity.psmatch(oc, tax)
 #end
 
 sc = Subcommunities(ab3, true)
