@@ -8,8 +8,12 @@
 [![Codecov status](https://codecov.io/gh/richardreeve/Diversity.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/richardreeve/Diversity.jl)
 
 Docs:
-[![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/)
-[![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
+[![Stable Documentation](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/)
+[![Latest Documentation](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
+
+New Docs:
+[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://richardreeve.github.io/Diversity.jl/stable)
+[![Latest Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://richardreeve.github.io/Diversity.jl/latest)
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
