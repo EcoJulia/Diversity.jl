@@ -249,9 +249,9 @@ function getordinariness{Part <: AbstractPartition}(part::Part, ::Taxonomy)
     error("Can't generate a taxonomic similarity matrix yet")
 end
 
-function getOrdinariness!(part::AbstractPartition, sim::MatrixSimilarity)
+function getordinariness{Part <: AbstractPartition}(part::Part, sim::MatrixSimilarity)
     match!(part, sim)
-    sim.z * part.abundances
+    return sim.z * part.abundances
 end
 
 """
