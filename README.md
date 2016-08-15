@@ -5,10 +5,12 @@
 
 Master branch:
 [![Build Status - master](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl?branch=master)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master)
 [![Coverage Status - master](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
 
 Similarity branch:
 [![Build Status - similarity](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=similarity)](https://travis-ci.org/richardreeve/Diversity.jl?branch=similarity)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=similarity)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/similarity)
 [![Coverage Status - similarity](https://coveralls.io/repos/github/richardreeve/Diversity.jl/badge.svg?branch=similarity)](https://coveralls.io/github/richardreeve/Diversity.jl?branch=similarity)
 
 Docs:
