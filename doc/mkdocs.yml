@@ -3,7 +3,7 @@
 
 site_name:        Diversity.jl
 repo_url:         https://github.com/richardreeve/Diversity.jl
-site_description: Julia package for Diversity measurement
+site_description: Package for measuring and partitioning diversity
 site_author:      Richard Reeve
 
 theme: material
@@ -16,7 +16,6 @@ markdown_extensions:
   - extra
   - tables
   - fenced_code
-  - mdx_math
   - admonition
 
 extra_javascript:
@@ -26,4 +25,8 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-  - Home: index.md
+- Introduction:     index.md
+- Submodules:
+    - Ecology:      ecology.md
+    - Hill:         hill.md
+    - Jost:         jost.md

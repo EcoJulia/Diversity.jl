@@ -14,3 +14,14 @@ using Diversity.Jost
 
 diversities = jostβ(community, [0, 1, 2])
 ```
+
+```@contents
+```
+
+```@autodocs
+Modules = [Diversity.Jost]
+Private = false
+```
+
+```@index
+```
