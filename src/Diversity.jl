@@ -1,8 +1,25 @@
 __precompile__()
 
-"$((VERSION < v"0.5-"? readall : readstring)(joinpath(dirname(@__FILE__), "../doc/diversity.md")))"
+"""
+The main **Diversity** module provides basic numbers-equivalent
+diversity measures (described in
+[Hill, 1973](http://www.jstor.org/stable/1934352)),
+similarity-sensitive diversity measures (generalised from Hill, and
+described in
+[Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
+and related alpha, beta and gamma diversity measures at the level of
+the supercommunity and its component subcommunities (generalised in
+turn from Leinster and Cobbold, and described in
+[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
+functions exist both with unicode names (e.g. ```ᾱ()```), which are
+not automatically exported (as we feel they are too short) and with
+matching longer ASCII names (e.g. ```NormalisedAlpha()```), which are.
+We also provide functions to calculate appropriate
+```subcommunityDiversity()``` and ```supercommunityDiversity()```
+values for each measure, a general ```diversity()``` function for
+extract any diversity measure at a series of scales.
+"""
 module Diversity
-using Compat
 
 include("Supercommunity.jl")
 export Subcommunities, Onecommunity
@@ -127,9 +144,17 @@ export diversity
 @deprecate(supercommunityE, supercommunityRbar)
 @deprecate(DE, supercommunityRbar)
 
-"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/ecology.md")))"
+"""
+The **Diversity.Ecology** module replicates old ecological
+diversity measures and generalised versions of them that relate to our
+general measures of alpha, beta and gamma diversity at subcommunity
+and supercommunity levels. The generalisations of the richness, Shannon
+and Simpson are the only standard measures we are aware of whose
+subcommunity components sum directly to the corresponding ecosystem
+measure (although note that Simpson's index decreases for increased
+diversity, so small components are more diverse).
+"""
 module Ecology
-using Compat
 
 include("Ecology.jl")
 export generalisedrichness, richness
@@ -139,18 +164,24 @@ export generalisedjaccard, jaccard
 
 end # sub-module Ecology
 
-"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/jost.md")))"
+"""
+Lou Jost's
+[diversity](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
+[measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
+found in the **Diversity.Jost** module.
+"""
 module Jost
-using Compat
 
 include("Jost.jl")
 export jostbeta, jostβ, jostalpha, jostα
 
 end # sub-module Jost
 
-"$(@compat readstring(joinpath(dirname(@__FILE__), "../doc/hill.md")))"
+"""
+[Hill numbers](http://www.jstor.org/stable/1934352) are found in the
+**Diversity.Hill** package.
+"""
 module Hill
-using Compat
 
 include("Hill.jl")
 export hillnumber

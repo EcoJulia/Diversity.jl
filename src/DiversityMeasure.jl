@@ -1,3 +1,5 @@
+using Compat
+
 """
 ### Enumeration of levels that can exist / be calculated for a supercommunity.
 """
