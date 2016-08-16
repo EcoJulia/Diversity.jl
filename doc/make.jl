@@ -2,8 +2,7 @@ using Documenter
 using Diversity
 
 makedocs(modules = [Diversity, Diversity.Ecology, Diversity.Jost, Diversity.Hill],
-         clean   = false,
-         doctest = false)
+         clean   = false)
 
 deploydocs(deps = Deps.pip("pygments",
                            "mkdocs",
