@@ -24,7 +24,7 @@ module Diversity
 include("Supercommunity.jl")
 export Subcommunities, Onecommunity
 export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
-export Supercommunity, Ecosystem, Community
+export Supercommunity, Ecosystem, SingleCommunity
 export getabundance, getweight
 export getsimilarity, getordinariness!, getsuperordinariness!
 
