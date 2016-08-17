@@ -63,6 +63,12 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 2},
     map(col -> powermean(values[:,col], orders, weights[:, col]), 1:size(values)[2])
 end
 
+function powermean{S <: AbstractFloat}(values::AbstractArray{S, 0},
+                                       order::Real = 1,
+                                       weights::AbstractArray{S, 0} = ones(values))
+    values[1]
+end
+
 """
 ### Calculates Hill / naive-similarity diversity
 
