@@ -214,15 +214,13 @@ end
 """
 ### Ecosystem constructor for Supercommunity, representing an ecosystem of multiple subcommunities
 """
-Ecosystem{FP <: AbstractFloat}(ab::Matrix{FP},
-                               sim::AbstractSimilarity = Unique()) =
+Ecosystem{Sim <: AbstractSimilarity}(ab, sim::Sim = Unique()) =
               Supercommunity(Subcommunities(ab), sim)
 
 """
 ### SingleCommunity contructor for Supercommunity, representing a single community
 """
-SingleCommunity{FP <: AbstractFloat}(ab::Vector{FP},
-                                     sim::AbstractSimilarity = Unique()) =
+SingleCommunity{Sim <: AbstractSimilarity}(ab, sim::Sim = Unique()) =
                     Supercommunity(Onecommunity(ab), sim)
 
 """
@@ -298,12 +296,11 @@ function getweight{Sup <: AbstractSupercommunity}(sup::Sup)
     sumovertypes(sup.partition, ab)
 end
 
-sumoversubcommunities{FP <: AbstractFloat, M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M) = mapslices(sum, vals, 2)
+sumoversubcommunities{FP <: AbstractFloat, M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M) = vec(mapslices(sum, vals, 2))
 sumoversubcommunities{FP <: AbstractFloat, V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V) = vals
 
 sumovertypes{FP <: AbstractFloat, M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M) = mapslices(sum, vals, 1)
 sumovertypes{FP <: AbstractFloat, V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V) = sum(vals)
-
 
 ## Now create the functions for the iterator interface for Partitions
 ## and Supercommunities
