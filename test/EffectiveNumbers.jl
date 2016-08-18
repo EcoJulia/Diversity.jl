@@ -21,6 +21,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 @test_throws DimensionMismatch Diversity.powermean(numbers, 0, weights)
 
 # Some simple values
+@test_approx_eq Diversity.powermean(collect(1.0), 0.0, collect(1.0)) 1.0
 @test_approx_eq Diversity.powermean(numbers, 0.0) 4.0
 @test_approx_eq Diversity.powermean(numbers, [-Inf]) [1]
 @test_approx_eq Diversity.powermean(numbers, [1.0, -1.0]) [31/5, 80/31]
