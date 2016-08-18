@@ -1,4 +1,6 @@
 using Diversity
+using Diversity.DiversityMeasure
+using Diversity.α, Diversity.ᾱ, Diversity.γ
 
 """
 ### Calculate a generalised version of richness
@@ -20,10 +22,11 @@ similarity matrix for the species
 ### Returns:
 - diversity (at ecosystem level) or diversities (of subcommunities)
 """
-function generalisedrichness{S <: AbstractFloat}(level::DiversityLevel,
-                                                 DM::Type,
-                                                 proportions::Matrix{S},
-                                                 Z::Matrix{S} =
+function generalisedrichness{DM <: DiversityMeasure,
+    Arr <: AbstractArray, Mat <: AbstractMatrix}(level::DiversityLevel,
+                                                 ::Type{DM},
+                                                 proportions::Arr,
+                                                 Z::Mat =
                                                  eye(size(proportions, 1)))
     level(DM(Ecosystem(proportions, Z)), 0)
 end
@@ -41,7 +44,7 @@ independent subcommunity counts, which is diversity at q = 0
 - diversities of subcommunities
 """
 function richness{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedrichness(subcommunityDiversity, NormalisedAlpha, proportions)
+    generalisedrichness(subcommunityDiversity, ᾱ, proportions)
 end
 
 """
@@ -64,11 +67,12 @@ includes a similarity matrix for the species
 #### Returns:
 - entropy (at ecosystem level) or entropies (of subcommunities)
 """
-function generalisedshannon{S <: AbstractFloat}(level::DiversityLevel,
-                                                DM::Type,
-                                                proportions::Matrix{S},
-                                                Z::Matrix{S} =
-                                                eye(size(proportions, 1)))
+function generalisedshannon{DM <: DiversityMeasure,
+    Arr <: AbstractArray, Mat <: AbstractMatrix}(level::DiversityLevel,
+                                                 ::Type{DM},
+                                                 proportions::Arr,
+                                                 Z::Mat =
+                                                 eye(size(proportions, 1)))
     log(level(DM(Ecosystem(proportions, Z)), 1))
 end
 
@@ -84,8 +88,8 @@ independent subcommunity counts, which is log(diversity) at q = 1
 #### Returns:
 - entropies of subcommunities
 """
-function shannon{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedshannon(subcommunityDiversity, NormalisedAlpha, proportions)
+function shannon(proportions)
+    generalisedshannon(subcommunityDiversity, ᾱ, proportions)
 end
 
 """
@@ -108,11 +112,12 @@ includes a similarity matrix for the species
 #### Returns:
 - concentration (at ecosystem level) or concentrations (of subcommunities)
 """
-function generalisedsimpson{S <: AbstractFloat}(level::DiversityLevel,
-                                                DM::Type,
-                                                proportions::Matrix{S},
-                                                Z::Matrix{S} =
-                                                eye(size(proportions, 1)))
+function generalisedsimpson{DM <: DiversityMeasure,
+    Arr <: AbstractArray, Mat <: AbstractMatrix}(level::DiversityLevel,
+                                                 ::Type{DM},
+                                                 proportions::Arr,
+                                                 Z::Mat =
+                                                 eye(size(proportions, 1)))
     level(DM(Ecosystem(proportions, Z)), 2) .^ -1
 end
 
@@ -129,8 +134,8 @@ concentration) at q = 2
 #### Returns:
 - concentrations of subcommunities
 """
-function simpson{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedsimpson(subcommunityDiversity, NormalisedAlpha, proportions)
+function simpson(proportions)
+    generalisedsimpson(subcommunityDiversity, ᾱ, proportions)
 end
 
 """
@@ -152,8 +157,9 @@ gives measure of the average distinctiveness of the subcommunities.
 #### Returns:
 - Jaccard-related distinctivess measures
 """
-function generalisedjaccard(proportions::Matrix, qs,
-                            Z::Matrix = eye(size(proportions, 1)))
+function generalisedjaccard{Arr <: AbstractArray,
+    Mat <: AbstractMatrix}(proportions::Arr, qs,
+                           Z::Mat = eye(size(proportions, 1)))
     eco = Ecosystem(proportions, Z)
     length(eco) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
@@ -174,6 +180,6 @@ alpha(proportions, 0) / gamma(proportions, 0) - 1
 #### Returns:
 - the Jaccard index
 """
-function jaccard{S <: AbstractFloat}(proportions::Matrix{S})
+function jaccard(proportions)
     generalisedjaccard(proportions, 0)[1]
 end
