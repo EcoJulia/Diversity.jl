@@ -215,7 +215,9 @@ end
 ### Ecosystem constructor for Supercommunity, representing an ecosystem of multiple subcommunities
 """
 Ecosystem{Sim <: AbstractSimilarity}(ab, sim::Sim = Unique()) =
-              Supercommunity(Subcommunities(ab), sim)
+    Supercommunity(Subcommunities(ab), sim)
+Ecosystem{Mat <: AbstractMatrix}(ab, z::Mat) =
+    Supercommunity(Subcommunities(ab), MatrixSimilarity(z))
 
 """
 ### SingleCommunity contructor for Supercommunity, representing a single community
