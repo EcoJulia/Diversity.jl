@@ -65,7 +65,7 @@ This type is the abstract superclass of all diversity measure types.
 DiversityMeasure subtypes allow you to calculate and cache any kind of
 diversity of a supercommunity.
 """
-abstract DiversityMeasure
+abstract DiversityMeasure{FP <: AbstractFloat}
 
 """
 ### Return the name of the DiversityMeasure
@@ -78,7 +78,7 @@ abstract DiversityMeasure
 
 - String containing true unicode name of DiversityMeasure
 """
-function getName(dm::DiversityMeasure)
+function getName{DM <: DiversityMeasure}(dm::DM)
     replace(string(typeof(dm)), "Diversity.", "")
 end
 
@@ -123,37 +123,6 @@ supercommunity.
 """
 abstract PowerMeanMeasure <: DiversityMeasure
 
-function getPartitionFunction(measure::PowerMeanMeasure,
-                              level::DiversityLevel)
-    if (level == individualDiversity)
-        return function (qs)
-            map(q -> measure.diversities, qs)
-        end
-    elseif (level == subcommunityDiversity)
-        function (qs)
-            divAllFn = getPartitionFunction(measure, individualDiversity)
-            abundances = measure.abundances
-            println(abundances)
-            println(1.0 - qs)
-            println(divAllFn(qs))
-            map((order, divAll) -> begin
-                println(order);
-                println(divAll);
-                powermean(divAll, order, measure.abundances)
-                end,
-                1.0 - qs, divAllFn(qs))
-        end
-    elseif (level == supercommunityDiversity)
-        function (qs)
-            divSubFn = getPartitionFunction(measure, subcommunityDiversity)
-            map((order, divSub) -> powermean(divSub, order, measure.weights),
-                1.0 - qs, divSubFn(qs))
-        end
-    else
-        error("unrecognised request")
-    end
-end
-
 """
 ### Supertype of all relative entropy-based diversity measures
 
@@ -164,36 +133,121 @@ kind of diversity of a supercommunity.
 """
 abstract RelativeEntropyMeasure <: DiversityMeasure
 
-function getPartitionFunction(measure::RelativeEntropyMeasure,
-                              level::DiversityLevel)
+"""
+### Returns individual diversities of a diversity measure
+
+Takes a diversity measure and single order or vector of orders, and
+returns the individual diversities for those values.
+
+#### Arguments:
+
+- `dm`: DiversityMeasure
+- `q` / `qs`: a single order or a vector of orders
+
+#### Returns:
+
+- Returns individual diversities of `dm` for a single order `q` or a
+  vector of order `qs`.
+"""
+function inddiv
+end
+
+@inline function inddiv{DM <: DiversityMeasure}(measure::DM, q::Real)
+    measure.diversities
+end
+
+@inline function inddiv{DM <: DiversityMeasure,
+    Vec <: AbstractVector}(measure::DM, qs::Vec)
+    map(q -> measure.diversities, qs)
+end
+
+"""
+### Calculates subcommunity diversities of a diversity measure
+
+Takes a diversity measure and single order or vector of orders, and
+calculates and returns the subcommunity diversities for those values.
+
+#### Arguments:
+
+- `dm`: DiversityMeasure
+- `q`: a single order or a vector of orders
+
+#### Returns:
+
+- Returns subcommunity diversities of `dm` for a single order `q` or a
+  vector of order `qs`.
+"""
+function subdiv
+end
+
+@inline function subdiv{PM <: PowerMeanMeasure}(measure::PM, q::Real)
+    powermean(inddiv(measure, q), 1.0 - q, measure.abundances)
+end
+
+@inline function subdiv{PM <: PowerMeanMeasure,
+    Vec <: AbstractVector}(measure::PM, qs::Vec)
+    map(q -> powermean(inddiv(measure, q),
+                       1.0 - q, measure.abundances), qs)
+end
+
+@inline function subdiv{RE <: RelativeEntropyMeasure}(measure::RE, q::Real)
+    powermean(inddiv(measure, q), q - 1.0, measure.abundances)
+end
+
+@inline function subdiv{RE <: RelativeEntropyMeasure,
+    Vec <: AbstractVector}(measure::RE, qs::Vec)
+    map(q -> powermean(inddiv(measure, q),
+                       q - 1.0, measure.abundances), qs)
+end
+
+"""
+### Calculates supercommunity diversities of a diversity measure
+
+Takes a diversity measure and single order or vector of orders, and
+calculates and returns the supercommunity diversities for those values.
+
+#### Arguments:
+
+- `dm`: DiversityMeasure
+- `q`: a single order or a vector of orders
+
+#### Returns:
+
+- Returns supercommunity diversities of `dm` for a single order `q` or a
+  vector of order `qs`.
+"""
+function superdiv
+end
+
+@inline function superdiv{DM <: DiversityMeasure}(measure::DM, q::Real)
+    powermean(subdiv(measure, q), 1.0 - q, measure.weights)
+end
+
+@inline function superdiv{DM <: DiversityMeasure,
+    Vec <: AbstractVector}(measure::DM, qs::Vec)
+    map(q -> powermean(subdiv(measure, q),
+                       1.0 - q, measure.weights), qs)
+end
+
+function getPartitionFunction{DM <: DiversityMeasure}(measure::DM,
+                                                      level::DiversityLevel)
     if (level == individualDiversity)
         return function (qs)
-            map(q -> measure.diversities, qs)
+            inddiv(measure, qs)
         end
     elseif (level == subcommunityDiversity)
         function (qs)
-            divAllFn = getPartitionFunction(measure, individualDiversity)
-            abundances = measure.abundances
-            println(abundances)
-            println(1.0 - qs)
-            println(divAllFn(qs))
-            map((order, divAll) -> begin
-            println(order);
-                                    println(divAll);
-                                    powermean(divAll, order, measure.abundances)
-                                end,
-                qs - 1.0, divAllFn(qs))
+            subdiv(measure, qs)
         end
     elseif (level == supercommunityDiversity)
         function (qs)
-            divSubFn = getPartitionFunction(measure, subcommunityDiversity)
-            map((order, divSub) -> powermean(divSub, order, measure.weights),
-                1.0 - qs, divSubFn(qs))
+            superdiv(measure, qs)
         end
     else
         error("unrecognised request")
     end
 end
+
 
 """
 ### Raw alpha diversity type (α)
@@ -209,9 +263,11 @@ measures are simple powermeans of the individual measures.
 """
 type α <: PowerMeanMeasure
     abundances::Array
+    weights::Array
     diversities::Array
     function α(sup::AbstractSupercommunity)
         new(getabundance(sup),
+            vec(collect(getweight(sup))),
             getordinariness!(sup) .^ -1)
     end
 end
@@ -235,10 +291,11 @@ measures are simple powermeans of the individual measures.
 """
 type ᾱ <: PowerMeanMeasure
     abundances::Array
+    weights::Array
     diversities::Array
     function ᾱ(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            getweight(sup) ./ getordinariness!(sup))
+        w = getweight(sup)
+        new(getabundance(sup), vec(collect(w)), w ./ getordinariness!(sup))
     end
 end
 
@@ -262,10 +319,12 @@ composite types are powermeans of those measures.
 """
 type β <: RelativeEntropyMeasure
     abundances::Array
+    weights::Array
     diversities::Array
-    function ρ(sup::AbstractSupercommunity)
+    function β(sup::AbstractSupercommunity)
         new(getabundance(sup),
-            getsuperordinariness!(sup) ./ getordinariness!(sup))
+            vec(collect(getweight(sup))),
+            getordinariness!(sup) ./ getsuperordinariness!(sup))
     end
 end
 
@@ -290,10 +349,12 @@ composite types are powermeans of those measures.
 """
 type β̄ <: RelativeEntropyMeasure
     abundances::Array
+    weights::Array
     diversities::Array
     function β̄(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            getordinariness!(sup) ./ (getsuperordinariness!(sup) * getweight(sup)))
+        w = getweight(sup)
+        new(getabundance(sup), vec(collect(w)),
+            getordinariness!(sup) ./ (getsuperordinariness!(sup) .* w))
     end
 end
 
@@ -317,9 +378,11 @@ measures.
 """
 type ρ <: PowerMeanMeasure
     abundances::Array
+    weights::Array
     diversities::Array
     function ρ(sup::AbstractSupercommunity)
-        new(getabundances(sup),
+        new(getabundance(sup),
+            vec(collect(getweight(sup))),
             getsuperordinariness!(sup) ./ getordinariness!(sup))
     end
 end
@@ -345,10 +408,12 @@ measures.
 """
 type ρ̄ <: PowerMeanMeasure
     abundances::Array
+    weights::Array
     diversities::Array
     function ρ̄(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            getsuperordinariness!(sup) * getweight(sup) ./ getordinariness!(sup))
+        w = getweight(sup)
+        new(getabundance(sup), vec(collect(w)),
+            (getsuperordinariness!(sup) .* w) ./ getordinariness!(sup))
     end
 end
 
@@ -372,9 +437,11 @@ measures are simple powermeans of the individual measures.
 """
 type γ <: PowerMeanMeasure
     abundances::Array
+    weights::Array
     diversities::Array
     function γ(sup::AbstractSupercommunity)
         new(getabundance(sup),
+            vec(collect(getweight(sup))),
             ones(1, length(sup)) ./ getsuperordinariness!(sup))
     end
 end
@@ -383,17 +450,3 @@ typealias Gamma γ
 
 getASCIIName(::γ) = "gamma"
 getFullName(::γ) = "gamma diversity"
-
-#type γ̄ <: PowerMeanMeasure
-#    abundances::Array
-#    diversities::Array
-#    function γ̄(sup::AbstractSupercommunity)
-#        new(getAbundances(sup),
-#            sum(getWeights(sup)) * ones(1, length(sup)) ./ getSuperOrdinariness!(sup))
-#    end
-#end
-
-#typealias NormalisedGammaDiversity γ̄
-
-# getASCIIName(::γ̄) = "gamma bar"
-# getFullName(::γ̄) = "normalised gamma diversity"

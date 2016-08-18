@@ -27,6 +27,7 @@ export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
 export Supercommunity, Ecosystem, SingleCommunity
 export getabundance, getweight
 export getsimilarity, getordinariness!, getsuperordinariness!
+export inddiv, subdiv, superdiv
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
