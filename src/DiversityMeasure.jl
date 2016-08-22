@@ -244,7 +244,7 @@ function getPartitionFunction{DM <: DiversityMeasure}(measure::DM,
             superdiv(measure, qs)
         end
     else
-        error("unrecognised request")
+        error("Unrecognised diversity level")
     end
 end
 

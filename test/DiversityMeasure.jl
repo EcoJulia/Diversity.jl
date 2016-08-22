@@ -113,6 +113,9 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     end
     @test superdiv(NormalisedBeta(Supercommunity(distinct)), qs) ≈ qD(reshape(sum(distinct, 1), numcommunities), qs)
     @test superdiv(RawBeta(Supercommunity(distinct)), qs) ≈ ones(length(qs))
+
+    # many (unexported!) diversity levels not yet implemented
+    @test_throws ErrorException Diversity.communityDiversity(nab)
 end
     
 end
