@@ -79,7 +79,8 @@ abstract DiversityMeasure{FP <: AbstractFloat}
 - String containing true unicode name of DiversityMeasure
 """
 function getName{DM <: DiversityMeasure}(dm::DM)
-    replace(string(typeof(dm)), "Diversity.", "")
+    s = replace(string(typeof(dm)), "Diversity.", "")
+    replace(s, r"{.*}$", "")
 end
 
 """
@@ -121,7 +122,7 @@ diversity measures which are straight power means. PowerMeanMeasure
 subtypes allow you to calculate and cache any kind of diversity of a
 supercommunity.
 """
-abstract PowerMeanMeasure <: DiversityMeasure
+abstract PowerMeanMeasure{FP} <: DiversityMeasure{FP}
 
 """
 ### Supertype of all relative entropy-based diversity measures
@@ -131,7 +132,7 @@ diversity measures which are straight power means.
 RelativeEntropyMeasure subtypes allow you to calculate and cache any
 kind of diversity of a supercommunity.
 """
-abstract RelativeEntropyMeasure <: DiversityMeasure
+abstract RelativeEntropyMeasure{FP} <: DiversityMeasure{FP}
 
 """
 ### Returns individual diversities of a diversity measure
@@ -279,15 +280,18 @@ measures are simple powermeans of the individual measures.
 
 - `sup`: a Supercommunity
 """
-type α <: PowerMeanMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function α(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            vec(collect(getweight(sup))),
-            getordinariness!(sup) .^ -1)
-    end
+type α{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    PowerMeanMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function α{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    w = vec(collect(getweight(sup)))
+    α{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         getordinariness!(sup) .^ -1)
 end
 
 typealias RawAlpha α
@@ -307,14 +311,19 @@ measures are simple powermeans of the individual measures.
 
 - `sup`: a Supercommunity
 """
-type ᾱ <: PowerMeanMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function ᾱ(sup::AbstractSupercommunity)
-        w = getweight(sup)
-        new(getabundance(sup), vec(collect(w)), w ./ getordinariness!(sup))
-    end
+type ᾱ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    PowerMeanMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function ᾱ{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    ws = getweight(sup)    
+    w = vec(collect(ws))
+    ᾱ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         ws ./ getordinariness!(sup))
 end
 
 typealias NormalisedAlpha ᾱ
@@ -335,15 +344,19 @@ composite types are powermeans of those measures.
 
 - `sup`: a Supercommunity
 """
-type β <: RelativeEntropyMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function β(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            vec(collect(getweight(sup))),
-            getordinariness!(sup) ./ getsuperordinariness!(sup))
-    end
+type β{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    RelativeEntropyMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function β{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    w = vec(collect(getweight(sup)))
+    β{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         getordinariness!(sup) ./
+                                         getsuperordinariness!(sup))
 end
 
 typealias RawBeta β
@@ -365,15 +378,20 @@ composite types are powermeans of those measures.
 
 - `sup`: a Supercommunity
 """
-type β̄ <: RelativeEntropyMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function β̄(sup::AbstractSupercommunity)
-        w = getweight(sup)
-        new(getabundance(sup), vec(collect(w)),
-            getordinariness!(sup) ./ (getsuperordinariness!(sup) .* w))
-    end
+type β̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    RelativeEntropyMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function β̄{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    ws = getweight(sup)
+    w = vec(collect(ws))
+    β̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         getordinariness!(sup) ./
+                                         (getsuperordinariness!(sup) .* ws))
 end
 
 typealias NormalisedBeta β̄
@@ -394,15 +412,19 @@ measures.
 
 - `sup`: a Supercommunity
 """
-type ρ <: PowerMeanMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function ρ(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            vec(collect(getweight(sup))),
-            getsuperordinariness!(sup) ./ getordinariness!(sup))
-    end
+type ρ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    PowerMeanMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function ρ{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    w = vec(collect(getweight(sup)))
+    ρ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         getsuperordinariness!(sup) ./
+                                         getordinariness!(sup))
 end
 
 typealias RawRho ρ
@@ -424,15 +446,20 @@ measures.
 
 - `sup`: a Supercommunity
 """
-type ρ̄ <: PowerMeanMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function ρ̄(sup::AbstractSupercommunity)
-        w = getweight(sup)
-        new(getabundance(sup), vec(collect(w)),
-            (getsuperordinariness!(sup) .* w) ./ getordinariness!(sup))
-    end
+type ρ̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    PowerMeanMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function ρ̄{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    ws = getweight(sup)
+    w = vec(collect(ws))
+    ρ̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         (getsuperordinariness!(sup) .* ws) ./
+                                         getordinariness!(sup))
 end
 
 typealias NormalisedRho ρ̄
@@ -453,15 +480,20 @@ measures are simple powermeans of the individual measures.
 
 - `sup`: a Supercommunity
 """
-type γ <: PowerMeanMeasure
-    abundances::Array
-    weights::Array
-    diversities::Array
-    function γ(sup::AbstractSupercommunity)
-        new(getabundance(sup),
-            vec(collect(getweight(sup))),
-            ones(1, length(sup)) ./ getsuperordinariness!(sup))
-    end
+type γ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
+    PowerMeanMeasure{FP}
+    abundances::AbArray
+    weights::WArray
+    diversities::AbArray
+end
+
+function γ{Sup <: AbstractSupercommunity}(sup::Sup)
+    ab = getabundance(sup)
+    ws = getweight(sup)
+    w = vec(collect(ws))
+    γ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
+                                         ones(eltype(ws), size(ws)) ./
+                                         getsuperordinariness!(sup))
 end
 
 typealias Gamma γ
