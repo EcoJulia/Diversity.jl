@@ -61,9 +61,12 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     @test individualDiversity(nab, 0) ≈ inddiv(nab, 0)
     @test individualDiversity(nab)(1) ≈ inddiv(nab, 1)
     @test inddiv(nab, [2, 3])[1] ≈ inddiv(nab, 2)
+    @test inddiv(sup2, Inf)[1] ≈ inddiv(RawAlpha(sup2), Inf)
+    
     @test subcommunityDiversity(nab, Inf) ≈ subdiv(nab, Inf)
     @test subdiv(nab, [4, 5])[1] ≈ subdiv(nab, 4)
-
+    @test subdiv(sup2, Inf)[2] ≈ subdiv(nab, Inf)
+    
     scg = subcommunityDiversity(Gamma(sup2))
     @test scg(1) ≈ scg(1.0)
     
@@ -84,6 +87,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     qs = [0, 1, 2, 3, 4, 5, 6, Inf];
     @test superdiv(NormalisedAlpha(Supercommunity(even)), qs) ≈ numspecies * ones(length(qs))
     @test superdiv(RawAlpha(Supercommunity(even)), qs) ≈ numspecies * numcommunities * ones(length(qs))
+    @test superdiv(sup2, Inf)[7] ≈ superdiv(Gamma(sup2), Inf)
     
     probs = reshape(mapslices(sum, communities, 2), (size(communities, 1)));
     @test superdiv(Gamma(Supercommunity(communities)), qs) ≈ qD(probs, qs)

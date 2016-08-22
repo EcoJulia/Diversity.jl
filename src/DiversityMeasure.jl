@@ -110,8 +110,8 @@ end
 function getFullName
 end
 
-@compat (dl::DiversityLevel)(dm::DiversityMeasure) = getPartitionFunction(dm, dl)
-@compat (dl::DiversityLevel)(dm::DiversityMeasure, others...) = getPartitionFunction(dm, dl)(others...)
+@compat (dl::DiversityLevel){DM <: DiversityMeasure}(dm::DM) = getPartitionFunction(dm, dl)
+@compat (dl::DiversityLevel){DM <: DiversityMeasure}(dm::DM, qs) = getPartitionFunction(dm, dl)(qs)
 
 """
 ### Supertype of all power mean-based diversity measures
@@ -152,13 +152,19 @@ returns the individual diversities for those values.
 function inddiv
 end
 
-@inline function inddiv{DM <: DiversityMeasure}(measure::DM, q::Real)
+@inline function inddiv{DM <: DiversityMeasure}(measure::DM, ::Real)
     measure.diversities
 end
 
 @inline function inddiv{DM <: DiversityMeasure,
     Vec <: AbstractVector}(measure::DM, qs::Vec)
     map(q -> measure.diversities, qs)
+end
+
+@inline function inddiv{Sup <: AbstractSupercommunity}(sup::Sup, qs)
+    map(dm -> inddiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+                                    RawBeta, NormalisedBeta,
+                                    RawRho, NormalisedRho, Gamma])
 end
 
 """
@@ -200,6 +206,12 @@ end
                        q - 1.0, measure.abundances), qs)
 end
 
+@inline function subdiv{Sup <: AbstractSupercommunity}(sup::Sup, qs)
+    map(dm -> subdiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+                                    RawBeta, NormalisedBeta,
+                                    RawRho, NormalisedRho, Gamma])
+end
+
 """
 ### Calculates supercommunity diversities of a diversity measure
 
@@ -227,6 +239,12 @@ end
     Vec <: AbstractVector}(measure::DM, qs::Vec)
     map(q -> powermean(subdiv(measure, q),
                        1.0 - q, measure.weights), qs)
+end
+
+@inline function superdiv{Sup <: AbstractSupercommunity}(sup::Sup, qs)
+    map(dm -> superdiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+                                      RawBeta, NormalisedBeta,
+                                      RawRho, NormalisedRho, Gamma])
 end
 
 function getPartitionFunction{DM <: DiversityMeasure}(measure::DM,
