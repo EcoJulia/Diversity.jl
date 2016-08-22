@@ -300,11 +300,25 @@ function getweight{Sup <: AbstractSupercommunity}(sup::Sup)
     sumovertypes(sup.partition, ab)
 end
 
-sumoversubcommunities{FP <: AbstractFloat, M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M) = vec(mapslices(sum, vals, 2))
-sumoversubcommunities{FP <: AbstractFloat, V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V) = vals
+@inline function sumoversubcommunities{FP <: AbstractFloat,
+    M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M)
+    vec(mapslices(sum, vals, 2))::Vector{FP}
+end
 
-sumovertypes{FP <: AbstractFloat, M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M) = mapslices(sum, vals, 1)
-sumovertypes{FP <: AbstractFloat, V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V) = sum(vals)
+@inline function sumoversubcommunities{FP <: AbstractFloat,
+    V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V)
+    vals
+end
+
+@inline function sumovertypes{FP <: AbstractFloat,
+    M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M)
+    mapslices(sum, vals, 1)::M
+end
+
+@inline function sumovertypes{FP <: AbstractFloat,
+    V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V)
+    sum(vals)
+end
 
 ## Now create the functions for the iterator interface for Partitions
 ## and Supercommunities
