@@ -212,18 +212,21 @@ function Supercommunity{Part}(part::Part)
 end
 
 """
-### Ecosystem constructor for Supercommunity, representing an ecosystem of multiple subcommunities
+### Multiple subcommunity constructors for Supercommunity
 """
-Ecosystem{Sim <: AbstractSimilarity}(ab, sim::Sim = Unique()) =
+Supercommunity{Mat <: AbstractMatrix,
+Sim <: AbstractSimilarity}(ab::Mat, sim::Sim = Unique()) =
     Supercommunity(Subcommunities(ab), sim)
-Ecosystem{Mat <: AbstractMatrix}(ab, z::Mat) =
+Supercommunity{Mat1 <: AbstractMatrix, Mat2 <: AbstractMatrix}(ab::Mat1,
+                                                               z::Mat2) =
     Supercommunity(Subcommunities(ab), MatrixSimilarity(z))
 
 """
-### SingleCommunity contructor for Supercommunity, representing a single community
+### Single subcommunity contructor for Supercommunity
 """
-SingleCommunity{Sim <: AbstractSimilarity}(ab, sim::Sim = Unique()) =
-                    Supercommunity(Onecommunity(ab), sim)
+Supercommunity{Vec <: AbstractVector,
+Sim <: AbstractSimilarity}(ab::Vec, sim::Sim = Unique()) =
+    Supercommunity(Onecommunity(ab), sim)
 
 """
 ### Retrieves (and possibly calculates) the similarity matrix for a supercommunity

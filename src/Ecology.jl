@@ -28,7 +28,7 @@ function generalisedrichness{DM <: DiversityMeasure,
                                                  proportions::Arr,
                                                  Z::Mat =
                                                  eye(size(proportions, 1)))
-    level(DM(Ecosystem(proportions, Z)), 0)
+    level(DM(Supercommunity(proportions, Z)), 0)
 end
 
 """
@@ -73,7 +73,7 @@ function generalisedshannon{DM <: DiversityMeasure,
                                                  proportions::Arr,
                                                  Z::Mat =
                                                  eye(size(proportions, 1)))
-    log(level(DM(Ecosystem(proportions, Z)), 1))
+    log(level(DM(Supercommunity(proportions, Z)), 1))
 end
 
 """
@@ -118,7 +118,7 @@ function generalisedsimpson{DM <: DiversityMeasure,
                                                  proportions::Arr,
                                                  Z::Mat =
                                                  eye(size(proportions, 1)))
-    level(DM(Ecosystem(proportions, Z)), 2) .^ -1
+    level(DM(Supercommunity(proportions, Z)), 2) .^ -1
 end
 
 """
@@ -160,7 +160,7 @@ gives measure of the average distinctiveness of the subcommunities.
 function generalisedjaccard{Arr <: AbstractArray,
     Mat <: AbstractMatrix}(proportions::Arr, qs,
                            Z::Mat = eye(size(proportions, 1)))
-    eco = Ecosystem(proportions, Z)
+    eco = Supercommunity(proportions, Z)
     length(eco) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
     (supercommunityDiversity(α(eco), qs) ./

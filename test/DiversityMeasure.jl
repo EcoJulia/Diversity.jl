@@ -56,36 +56,36 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     
     communities = rand(numspecies, numcommunities);
     communities /= sum(communities);
-    @test subdiv(NormalisedAlpha(Ecosystem(communities)), 0) ≈ numspecies * ones(size(communities, 2))
-    @test subdiv(NormalisedAlpha(Ecosystem(communities)),
+    @test subdiv(NormalisedAlpha(Supercommunity(communities)), 0) ≈ numspecies * ones(size(communities, 2))
+    @test subdiv(NormalisedAlpha(Supercommunity(communities)),
                  [0])[1] ≈ numspecies * ones(size(communities, 2))
-    sna = subdiv(NormalisedAlpha(Ecosystem(communities, Z1)), [0, 1, 2, Inf])
+    sna = subdiv(NormalisedAlpha(Supercommunity(communities, Z1)), [0, 1, 2, Inf])
     @test length(sna) == 4
     for i in eachindex(sna)
         @test sna[i] ≈ ones(size(communities, 2))
     end
     
-    @test subdiv(RawAlpha(Ecosystem(communities)), 0) ≈ numspecies * vec(mapslices(v -> 1. / sum(v), communities, 1))
+    @test subdiv(RawAlpha(Supercommunity(communities)), 0) ≈ numspecies * vec(mapslices(v -> 1. / sum(v), communities, 1))
     
     even = ones((numspecies, numcommunities)) / (numspecies * numcommunities);
     qs = [0, 1, 2, 3, 4, 5, 6, Inf];
-    @test superdiv(NormalisedAlpha(Ecosystem(even)), qs) ≈ numspecies * ones(length(qs))
-    @test superdiv(RawAlpha(Ecosystem(even)), qs) ≈ numspecies * numcommunities * ones(length(qs))
+    @test superdiv(NormalisedAlpha(Supercommunity(even)), qs) ≈ numspecies * ones(length(qs))
+    @test superdiv(RawAlpha(Supercommunity(even)), qs) ≈ numspecies * numcommunities * ones(length(qs))
     
     probs = reshape(mapslices(sum, communities, 2), (size(communities, 1)));
-    @test superdiv(Gamma(Ecosystem(communities)), qs) ≈ qD(probs, qs)
-    @test superdiv(Gamma(Ecosystem(communities, Z1)), qs) ≈ qDZ(probs, qs, Z1)
+    @test superdiv(Gamma(Supercommunity(communities)), qs) ≈ qD(probs, qs)
+    @test superdiv(Gamma(Supercommunity(communities, Z1)), qs) ≈ qDZ(probs, qs, Z1)
     
     Z = rand(numspecies, numspecies);
-    @test superdiv(Gamma(Ecosystem(communities, Z)), qs) ≈ qDZ(probs, qs, Z)
+    @test superdiv(Gamma(Supercommunity(communities, Z)), qs) ≈ qDZ(probs, qs, Z)
     
     colweights = rand(numcommunities);
     colweights /= sum(colweights);
     allthesame = probs * colweights';
-    @test superdiv(RawBeta(Ecosystem(allthesame, Z)), qs) ≈ 1.0 ./ qD(colweights, 2 - qs)
-    @test superdiv(NormalisedBeta(Ecosystem(allthesame, Z)), qs) ≈ ones(length(qs))
-    @test superdiv(NormalisedRho(Ecosystem(allthesame, Z)), qs) ≈ ones(length(qs))
-    @test superdiv(RawRho(Ecosystem(allthesame, Z)), qs) ≈ qD(colweights, qs)
+    @test superdiv(RawBeta(Supercommunity(allthesame, Z)), qs) ≈ 1.0 ./ qD(colweights, 2 - qs)
+    @test superdiv(NormalisedBeta(Supercommunity(allthesame, Z)), qs) ≈ ones(length(qs))
+    @test superdiv(NormalisedRho(Supercommunity(allthesame, Z)), qs) ≈ ones(length(qs))
+    @test superdiv(RawRho(Supercommunity(allthesame, Z)), qs) ≈ qD(colweights, qs)
     
     communitylist = rand(1:numcommunities, numspecies)
     distinct = zeros(Float64, (numspecies, numcommunities))
@@ -93,13 +93,13 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
         distinct[i, communitylist[i]] = weights[i]
     end
     
-    @test superdiv(RawRho(Ecosystem(distinct)), qs) ≈ ones(length(qs))
-    subnr = subdiv(NormalisedRho(Ecosystem(distinct)), qs)
+    @test superdiv(RawRho(Supercommunity(distinct)), qs) ≈ ones(length(qs))
+    subnr = subdiv(NormalisedRho(Supercommunity(distinct)), qs)
     for i in eachindex(qs)
         @test subnr[i] ≈ vec(sum(distinct, 1))
     end
-    @test superdiv(NormalisedBeta(Ecosystem(distinct)), qs) ≈ qD(reshape(sum(distinct, 1), numcommunities), qs)
-    @test superdiv(RawBeta(Ecosystem(distinct)), qs) ≈ ones(length(qs))
+    @test superdiv(NormalisedBeta(Supercommunity(distinct)), qs) ≈ qD(reshape(sum(distinct, 1), numcommunities), qs)
+    @test superdiv(RawBeta(Supercommunity(distinct)), qs) ≈ ones(length(qs))
 end
     
 end
