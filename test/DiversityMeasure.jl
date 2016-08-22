@@ -19,7 +19,6 @@ sc = Subcommunities(ab3)
 sp = Species()
 sup2 = Supercommunity(sc, sp)
 nab = NormalisedAlpha(sup2)
-    
 
 @testset "Diversity measures" begin
     diversities = [RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
@@ -37,8 +36,9 @@ nab = NormalisedAlpha(sup2)
     for i in 1:length(diversities)
         @test diversities[i] == shortds[i]
         div = diversities[i](sup)
+        div2 = diversities[i](sup2)
         @test getName(div) == chars[i]
-        @test getASCIIName(div) == asciis[i]
+        @test getASCIIName(div2) == asciis[i]
         @test getFullName(div) == fulls[i]
     end
 end
