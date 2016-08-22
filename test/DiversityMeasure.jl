@@ -60,7 +60,9 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
 @testset "inddiv / subdiv / superdiv" begin
     @test individualDiversity(nab, 0) ≈ inddiv(nab, 0)
     @test individualDiversity(nab)(1) ≈ inddiv(nab, 1)
+    @test inddiv(nab, [2, 3])[1] ≈ inddiv(nab, 2)
     @test subcommunityDiversity(nab, Inf) ≈ subdiv(nab, Inf)
+    @test subdiv(nab, [4, 5])[1] ≈ subdiv(nab, 4)
 
     scg = subcommunityDiversity(Gamma(sup2))
     @test scg(1) ≈ scg(1.0)

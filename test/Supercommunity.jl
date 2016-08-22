@@ -35,7 +35,7 @@ tax = Taxonomy(Dict{AbstractString,
                AbstractString}}}())
 @testset "psmatch" begin
     @test_throws ErrorException Diversity.psmatch(oc_count, tax)
-    @test Diversity.psmatch(oc_count, Unique())
+    @test Diversity.psmatch(oc_count, Unique()) == true
 end
 
 sc = Subcommunities(ab3)
