@@ -205,7 +205,7 @@ function Supercommunity{Part <: AbstractPartition, Sim <: AbstractSimilarity}(pa
     Supercommunity{FP, A, Part, Sim}(part, sim, Nullable{A}())
 end
 
-function Supercommunity{Part}(part::Part)
+function Supercommunity{Part <: AbstractPartition}(part::Part)
     A = typeof(part.abundances)
     FP = eltype(A)
     Supercommunity{FP, A, Part, Unique}(part, Unique(), Nullable{A}())
