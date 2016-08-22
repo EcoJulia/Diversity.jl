@@ -262,17 +262,16 @@ getabundance{Sup <: AbstractSupercommunity}(sup::Sup) = sup.partition.abundances
 function getordinariness
 end
 
-function getordinariness{Part <: AbstractPartition}(part::Part, ::Unique)
-    return part.abundances
-end
-    
-function getordinariness{Part <: AbstractPartition}(part::Part, ::Taxonomy)
-    error("Can't generate a taxonomic similarity matrix yet")
-end
-
-function getordinariness{Part <: AbstractPartition}(part::Part, sim::MatrixSimilarity)
+# Generic get ordinariness method
+function getordinariness{Part <: AbstractPartition,
+    Sim <: AbstractSimilarity}(part::Part, sim::Sim)
     psmatch(part, sim)
     return sim.z * part.abundances
+end
+
+# Simpler for distinct types
+function getordinariness{Part <: AbstractPartition}(part::Part, ::Unique)
+    return part.abundances
 end
 
 """

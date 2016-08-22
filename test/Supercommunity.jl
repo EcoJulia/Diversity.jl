@@ -33,8 +33,10 @@ end
 tax = Taxonomy(Dict{AbstractString,
                Tuple{Float64, Dict{AbstractString,
                AbstractString}}}())
-@testset "psmatch" begin
+@testset "Taxonomy / psmatch" begin
     @test_throws ErrorException Diversity.psmatch(oc_count, tax)
+    @test_throws ErrorException Diversity.getsimilarity(oc_count, tax)
+    @test_throws ErrorException Diversity.getordinariness(oc_count, tax)
     @test Diversity.psmatch(oc_count, Unique()) == true
 end
 
