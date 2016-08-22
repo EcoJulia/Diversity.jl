@@ -22,14 +22,25 @@ nab = NormalisedAlpha(sup2)
     
 
 @testset "Diversity measures" begin
-    nr = NormalisedRho(sup)
-    @test getName(nr) == "ρ̄"
-    @test getASCIIName(nr) == "rho bar"
-    @test getFullName(nr) == "representativeness"
-    
-    @test getName(nab) == "ᾱ"
-    @test getASCIIName(nab) == "alpha bar"
-    @test getFullName(nab) == "normalised alpha diversity"
+    diversities = [RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+                   RawRho, NormalisedRho, Gamma]
+    shortds = [Diversity.α, Diversity.ᾱ,
+               Diversity.β, Diversity.β̄,
+               Diversity.ρ, Diversity.ρ̄, Diversity.γ]
+    chars = ["α", "ᾱ", "β", "β̄", "ρ", "ρ̄", "γ"]
+    asciis = ["raw alpha", "normalised alpha",
+              "raw beta", "normalised beta",
+              "raw rho", "normalised rho", "gamma"]
+    fulls = ["raw alpha diversity", "normalised alpha diversity",
+             "distinctiveness", "effective number of subcommunities",
+             "redundancy", "representativeness", "gamma diversity"]
+    for i in 1:length(diversities)
+        @test diversities[i] == shortds[i]
+        div = diversities[i](sup)
+        @test getName(div) == chars[i]
+        @test getASCIIName(div) == asciis[i]
+        @test getFullName(div) == fulls[i]
+    end
 end
 
 numbers = [1., 2, 4, 8, 16];

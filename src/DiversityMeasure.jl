@@ -274,7 +274,7 @@ end
 
 typealias RawAlpha α
 
-getASCIIName(::α) = "alpha"
+getASCIIName(::α) = "raw alpha"
 getFullName(::α) = "raw alpha diversity"
 
 """
@@ -301,7 +301,7 @@ end
 
 typealias NormalisedAlpha ᾱ
 
-getASCIIName(::ᾱ) = "alpha bar"
+getASCIIName(::ᾱ) = "normalised alpha"
 getFullName(::ᾱ) = "normalised alpha diversity"
 
 """
@@ -331,7 +331,7 @@ end
 typealias RawBeta β
 typealias Distinctiveness β
 
-getASCIIName(::β) = "beta"
+getASCIIName(::β) = "raw beta"
 getFullName(::β) = "distinctiveness"
 
 """
@@ -360,7 +360,7 @@ end
 
 typealias NormalisedBeta β̄
 
-getASCIIName(::β̄) = "beta bar"
+getASCIIName(::β̄) = "normalised beta"
 getFullName(::β̄) = "effective number of subcommunities"
 
 """
@@ -390,7 +390,7 @@ end
 typealias RawRho ρ
 typealias Redundancy ρ
 
-getASCIIName(::ρ) = "rho"
+getASCIIName(::ρ) = "raw rho"
 getFullName(::ρ) = "redundancy"
 
 """
@@ -420,7 +420,7 @@ end
 typealias NormalisedRho ρ̄
 typealias Representativeness ρ̄
 
-getASCIIName(::ρ̄) = "rho bar"
+getASCIIName(::ρ̄) = "normalised rho"
 getFullName(::ρ̄) = "representativeness"
 
 """
