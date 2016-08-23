@@ -24,8 +24,6 @@ function jostalpha{S <: AbstractFloat}(proportions::Matrix{S}, qs)
     qD(reshape(mapslices(sum, proportions, (1,)), size(proportions)[2]), qs)
 end
 
-jostα = jostalpha
-
 """
 ### Calculates Jost's beta diversity
 
@@ -48,5 +46,3 @@ Jost's alpha diversity
 function jostbeta{S <: AbstractFloat}(proportions::Matrix{S}, qs)
     supercommunityDiversity(Gamma(Supercommunity(proportions)), qs) ./ jostalpha(proportions, qs)
 end
-
-jostβ = jostbeta
