@@ -9,21 +9,11 @@ end
 include("EffectiveNumbers.jl")
 include("Supercommunity.jl")
 include("DiversityMeasure.jl")
+include("GeneralisedDiversities.jl")
 include("Hill.jl")
 include("Jost.jl")
 include("Ecology.jl")
 
-# Need to check the diversity() function
-#@test diversity(Diversity.ρ̄, allthesame, qs, Z, false, false, true) ≈ colweights
-#@test diversity((Diversity.ρ̄, :sub),
-#                          communities, qs, Z) ≈ subcommunityrhobar(communities, qs, Z)
-#@test diversity((Diversity.ρ̄, :super), communities, qs, Z) ≈ supercommunityRbar(communities, qs, Z)
-#@test diversity((Diversity.ᾱ, Set([:super, :sub])), communities, qs, Z)[1] ≈ supercommunityAbar(communities, qs, Z)
-#@test diversity((Diversity.α, Set([:super, :sub, :weights])), allthesame, qs, Z)[2] ≈ subcommunityalpha(allthesame, qs, Z)
-#ed, cd, w = diversity((Diversity.γ, Set([:super, :sub, :weights])), communities, qs, Z)
-#@test diversity((Diversity.γ̄, :super), communities, qs, Z) ≈ ed 
-#@test diversity((Diversity.γ̄, Set([:sub, :weights])), communities, qs, Z)[1] ≈ cd
-#@test diversity((Diversity.α, Set([:super, :sub, :weights])), allthesame, qs, Z)[3] ≈ colweights
 
 #using Diversity.contributions
 # Now some even communities, should see that raw and normalised

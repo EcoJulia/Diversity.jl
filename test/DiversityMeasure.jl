@@ -12,7 +12,7 @@ oc = Onecommunity([3, 3, 4])
 sim = [1.0 0 0; 1.0 1.0 0.0; 1.0 1.0 1.0]
 ms = MatrixSimilarity(sim)
 sup = Supercommunity(oc, ms)
-sup3 = Supercommunity(oc)
+sup1 = Supercommunity(oc)
 
 ab3 = [1 2; 3 0; 0 4]'
 sc = Subcommunities(ab3)
@@ -35,11 +35,9 @@ nab = NormalisedAlpha(sup2)
              "redundancy", "representativeness", "gamma diversity"]
     for i in 1:length(diversities)
         @test diversities[i] == shortds[i]
-        div = diversities[i](sup)
-        div2 = diversities[i](sup2)
-        @test getName(div) == chars[i]
-        @test getASCIIName(div2) == asciis[i]
-        @test getFullName(div) == fulls[i]
+        @test getName(diversities[i](sup)) == chars[i]
+        @test getASCIIName(diversities[i](sup2)) == asciis[i]
+        @test getFullName(diversities[i](sup1)) == fulls[i]
     end
 end
 
@@ -53,9 +51,6 @@ numcommunities = 8;
 manyweights = rand(numspecies, numcommunities);
 manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
                              (numcommunities)));
-
-
-# Sub-community alpha diversities
 
 @testset "inddiv / subdiv / superdiv" begin
     @test individualDiversity(nab, 0) ≈ inddiv(nab, 0)
