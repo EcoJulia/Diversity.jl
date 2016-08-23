@@ -46,7 +46,7 @@ end
 
 @testset "qD" begin
     # Basic qD diversity calculation
-    @test qD(weights, 0) ≈ mapreduce((x) -> isapprox(x, 0) ? 0 : 1, +, weights)
+    @test qD(weights, 0) ≈ mapreduce((x) -> x ≈ 0 ? 0 : 1, +, weights)
     @test qD(weights, 1) ≈ prod(weights .^ -weights)
     @test qD(weights, 2) ≈ 1.0 / sum(weights .^ 2)
     @test qD(weights, Inf) ≈ 1.0 / maximum(weights)

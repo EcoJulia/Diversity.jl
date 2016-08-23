@@ -1,6 +1,8 @@
 module TestJost
 
 using Diversity
+using Diversity.ᾱ, Diversity.ρ̄
+
 if VERSION >= v"0.5.0-dev+7720"
     using Base.Test
 else
@@ -23,11 +25,14 @@ colweights /= sum(colweights);
 allthesame = probs * colweights';
 
 @testset "Jost" begin
-    @test_approx_eq jostbeta(communities, 1) 1 ./ supercommunityDiversity(Diversity.ρ̄(Supercommunity(communities)), 1)
-    @test_approx_eq jostbeta(allthesame, qs) ones(qs)
+    @test jostbeta(communities, 1) ≈ (1.0 ./
+                                      superdiv(ρ̄(Supercommunity(communities)),
+                                               1))
+    @test jostbeta(allthesame, qs) ≈ ones(qs)
     
     ## Check Jost's alpha diversity works for all the same subcommunity
-    @test_approx_eq jostalpha(allthesame, qs) supercommunityDiversity(Diversity.ᾱ(Supercommunity(allthesame)), qs)
+    @test jostalpha(allthesame, qs) ≈ superdiv(ᾱ(Supercommunity(allthesame)),
+                                               qs)
     
     ## And for all different subcommunities and any subcommunities with the same sizes
     weights = rand(numspecies);
@@ -39,13 +44,13 @@ allthesame = probs * colweights';
     end
     evendistinct = mapslices((x) -> x / (sum(x) * numcommunities), distinct, 1)
     
-    @test_approx_eq jostalpha(evendistinct, qs) supercommunityDiversity(Diversity.ᾱ(Supercommunity(evendistinct)), qs)
+    @test jostalpha(evendistinct, qs) ≈ superdiv(ᾱ(Supercommunity(evendistinct)), qs)
     
     # Now some even communities, should see that raw and normalised
     # diversities are the same
     smoothed = communities ./ mapslices(sum, communities, 1);
     smoothed /= numcommunities;
-    @test_approx_eq jostalpha(smoothed, qs) supercommunityDiversity(Diversity.ᾱ(Supercommunity(smoothed)), qs)
+    @test jostalpha(smoothed, qs) ≈ superdiv(ᾱ(Supercommunity(smoothed)), qs)
 end
 
 end
