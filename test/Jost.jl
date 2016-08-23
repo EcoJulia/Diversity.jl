@@ -23,12 +23,10 @@ colweights /= sum(colweights);
 allthesame = probs * colweights';
 
 @testset "Jost" begin
-    @test jostβ == jostbeta
     @test_approx_eq jostbeta(communities, 1) 1 ./ supercommunityDiversity(Diversity.ρ̄(Supercommunity(communities)), 1)
     @test_approx_eq jostbeta(allthesame, qs) ones(qs)
     
     ## Check Jost's alpha diversity works for all the same subcommunity
-    @test jostα == jostalpha
     @test_approx_eq jostalpha(allthesame, qs) supercommunityDiversity(Diversity.ᾱ(Supercommunity(allthesame)), qs)
     
     ## And for all different subcommunities and any subcommunities with the same sizes
