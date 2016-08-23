@@ -20,11 +20,9 @@ divided by the naive-community beta diversity.
   last representing values of q
 """
 function jostalpha{S <: AbstractFloat}(proportions::Matrix{S}, qs)
-    DA(proportions, qs) ./
+    supercommunityDiversity(RawAlpha(Supercommunity(proportions)), qs) ./
     qD(reshape(mapslices(sum, proportions, (1,)), size(proportions)[2]), qs)
 end
-
-jostα = jostalpha
 
 """
 ### Calculates Jost's beta diversity
@@ -46,7 +44,5 @@ Jost's alpha diversity
   last representing values of q
 """
 function jostbeta{S <: AbstractFloat}(proportions::Matrix{S}, qs)
-    DḠ(proportions, qs) ./ jostalpha(proportions, qs)
+    supercommunityDiversity(Gamma(Supercommunity(proportions)), qs) ./ jostalpha(proportions, qs)
 end
-
-jostβ = jostbeta

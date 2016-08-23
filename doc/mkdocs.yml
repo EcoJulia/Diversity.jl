@@ -1,0 +1,33 @@
+# See the mkdocs user guide for more information on these settings.
+#   http://www.mkdocs.org/user-guide/configuration/
+
+site_name:        Diversity.jl
+repo_url:         https://github.com/richardreeve/Diversity.jl
+site_description: Package for measuring and partitioning diversity
+site_author:      Richard Reeve
+
+theme: material
+
+extra_css:
+  - assets/Documenter.css
+
+markdown_extensions:
+  - codehilite
+  - extra
+  - tables
+  - fenced_code
+  - mdx_math
+  - admonition
+
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - assets/mathjaxhelper.js
+
+docs_dir: 'build'
+
+pages:
+- Introduction:     index.md
+- Submodules:
+    - Ecology:      ecology.md
+    - Hill:         hill.md
+    - Jost:         jost.md

@@ -12,3 +12,14 @@ using Diversity.Hill
 
 diversities = hillnumber(community, [0, 1, 2])
 ```
+
+```@contents
+```
+
+```@autodocs
+Modules = [Diversity.Hill]
+Private = false
+```
+
+```@index
+```

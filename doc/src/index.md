@@ -1,4 +1,4 @@
-## Diversity
+# Diversity.jl
 
 The main **Diversity** package provides basic numbers-equivalent
 diversity measures (described in
@@ -25,4 +25,15 @@ using Diversity
 ...
 diversities = supercommunityDiversity(NormalisedAlpha(Ecosystem(proportions, Z)), [0, 1, 2, Inf])
 diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
+```
+
+```@contents
+```
+
+```@autodocs
+Modules = [Diversity]
+Private = false
+```
+
+```@index
 ```

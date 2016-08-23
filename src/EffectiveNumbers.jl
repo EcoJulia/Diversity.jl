@@ -25,23 +25,23 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
     # Check whether all proportions are NaN - happens in normalisation when all
     # weights are zero in group. In that case we want to propagate the NaN
     if (all(isnan(proportions)))
-        return(NaN)
+        return(convert(S, NaN))
     end
     
     # Extract values with non-zero weights
-    present = filter(x -> !isapprox(x[1], 0.0), zip(proportions, values))
+    present = collect(filter(x -> !isapprox(x[1], 0.0), zip(proportions, values)))
     if (isinf(order))
-      if (order > 0) # +Inf -> Maximum
-        reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
-      else # -Inf -> Minimum
-        reduce((a, b) -> a[2] < b[2] ? a : b, present)[2]
-      end
+        if (order > 0) # +Inf -> Maximum
+            reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
+        else # -Inf -> Minimum
+            reduce((a, b) -> a[2] < b[2] ? a : b, present)[2]
+        end
     else
-      if (isapprox(order, 0))
-        mapreduce(pair -> pair[2] ^ pair[1], *, present)
-      else
-        mapreduce(pair -> pair[1] * pair[2] ^ order, +,
-                  present) ^ (1.0 / order)
+        if (isapprox(order, 0))
+            mapreduce(pair -> pair[2] ^ pair[1], *, present)
+        else
+            mapreduce(pair -> pair[1] * pair[2] ^ order, +,
+                      present) ^ (1.0 / order)
         end
     end
 end
@@ -63,6 +63,12 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 2},
     map(col -> powermean(values[:,col], orders, weights[:, col]), 1:size(values)[2])
 end
 
+function powermean{S <: AbstractFloat}(values::AbstractArray{S, 0},
+                                       order::Real = 1,
+                                       weights::AbstractArray{S, 0} = ones(values))
+    values[1]
+end
+
 """
 ### Calculates Hill / naive-similarity diversity
 
@@ -75,12 +81,17 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD{S <: Real}(proportions::AbstractArray{S, 1}, qs)
-    if !isapprox(sum(proportions), 1.)
-        warn("qD: Population proportions don't sum to 1, fixing...")
-        proportions /= sum(proportions)
-    end
-    powermean(proportions, qs - 1., proportions) .^ -1
+function qD(sup::AbstractSupercommunity, qs)
+    length(sup) == 1 ||
+    throw(DimensionMismatch("Can only calculate diversity of a single community"))
+
+    isa(sup.similarity, Unique) || error("Not a naive similarity type")
+
+    powermean(getabundance(sup), qs - 1, getabundance(sup)) .^ -1
+end
+
+function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
+    qD(Supercommunity(Onecommunity(proportions)), qs)
 end
 
 """
@@ -96,16 +107,20 @@ a population with given relative *proportions*, and similarity matrix
 - `Z`: similarity matrix
 
 #### Returns:
-- Diversity of order qs (single number or vector of diversities)"""
-function qDZ{S <: AbstractFloat}(proportions::AbstractArray{S, 1}, qs,
-                                 Z::AbstractArray{S, 2} = eye(length(proportions)))
-    if !isapprox(sum(proportions), 1.)
-        warn("qDZ: Population proportions don't sum to 1, fixing...")
-        proportions /= sum(proportions)
-    end
+- Diversity of order qs (single number or vector of diversities)
+"""
+function qDZ(sup::AbstractSupercommunity, qs)
+    length(sup) == 1 ||
+    throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    l = length(proportions)
-    size(Z) == (l, l) ||
-    error("qDZ: Similarity matrix size does not match species number")
-    powermean(Z * proportions, qs - 1., proportions) .^ -1
+    powermean(getordinariness!(sup), qs - 1, getabundance(sup)) .^ -1
+end
+
+function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs,
+                                  sim::AbstractSimilarity = Unique())
+    qDZ(Supercommunity(Onecommunity(proportions), sim), qs)
+end
+
+function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs, Z::Matrix{FP})
+    qDZ(Supercommunity(Onecommunity(proportions), MatrixSimilarity(Z)), qs)
 end

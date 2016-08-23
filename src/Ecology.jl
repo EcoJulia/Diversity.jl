@@ -1,4 +1,5 @@
 using Diversity
+using Diversity.α, Diversity.ᾱ, Diversity.γ
 
 """
 ### Calculate a generalised version of richness
@@ -9,7 +10,9 @@ diversity measure (passed as the second argument). It also includes a
 similarity matrix for the species
 
 #### Arguments:
-- `measure`: diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
+
+- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
 
 - `proportions`: population proportions
 
@@ -18,11 +21,11 @@ similarity matrix for the species
 ### Returns:
 - diversity (at ecosystem level) or diversities (of subcommunities)
 """
-function generalisedrichness{S <: AbstractFloat}(measure::Function,
-                                                 proportions::Matrix{S},
-                                                 Z::Matrix{S} =
-                                                 eye(size(proportions, 1)))
-    measure(proportions, 0, Z)
+function generalisedrichness{Arr <: AbstractArray,
+    Mat <: AbstractMatrix}(level::DiversityLevel, dm,
+                           proportions::Arr,
+                           Z::Mat = eye(size(proportions, 1)))
+    level(dm(Supercommunity(proportions, Z)), 0)
 end
 
 """
@@ -37,8 +40,8 @@ independent subcommunity counts, which is diversity at q = 0
 #### Returns:
 - diversities of subcommunities
 """
-function richness{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedrichness(Dᾱ, proportions)
+function richness{FP <: AbstractFloat}(proportions::Matrix{FP})
+    generalisedrichness(subcommunityDiversity, ᾱ, proportions)
 end
 
 """
@@ -50,7 +53,9 @@ any diversity measure (passed as the second argument). It also
 includes a similarity matrix for the species
 
 #### Arguments:
-- `measure`: diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
+
+- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
 
 - `proportions`: population proportions
 
@@ -59,11 +64,11 @@ includes a similarity matrix for the species
 #### Returns:
 - entropy (at ecosystem level) or entropies (of subcommunities)
 """
-function generalisedshannon{S <: AbstractFloat}(measure::Function,
-                                                proportions::Matrix{S},
-                                                Z::Matrix{S} =
-                                                eye(size(proportions, 1)))
-    log(measure(proportions, 1, Z))
+function generalisedshannon{Arr <: AbstractArray,
+    Mat <: AbstractMatrix}(level::DiversityLevel, dm,
+                           proportions::Arr,
+                           Z::Mat = eye(size(proportions, 1)))
+    log(level(dm(Supercommunity(proportions, Z)), 1))
 end
 
 """
@@ -78,8 +83,8 @@ independent subcommunity counts, which is log(diversity) at q = 1
 #### Returns:
 - entropies of subcommunities
 """
-function shannon{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedshannon(Dᾱ, proportions)
+function shannon{FP <: AbstractFloat}(proportions::Matrix{FP})
+    generalisedshannon(subcommunityDiversity, ᾱ, proportions)
 end
 
 """
@@ -91,19 +96,22 @@ any diversity measure (passed as the second argument). It also
 includes a similarity matrix for the species
 
 #### Arguments:
-- `measure`: diversity measure to use (one of Dα, Dᾱ, Dρ, Dρ̄, Dγ or Dγ̄)
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
+
+- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
 
 - `proportions`: population proportions
+
 - `Z`: similarity matrix
 
 #### Returns:
 - concentration (at ecosystem level) or concentrations (of subcommunities)
 """
-function generalisedsimpson{S <: AbstractFloat}(measure::Function ,
-                                                proportions::Matrix{S},
-                                                Z::Matrix{S} =
-                                                eye(size(proportions, 1)))
-    measure(proportions, 2, Z) .^ -1
+function generalisedsimpson{Arr <: AbstractArray,
+    Mat <: AbstractMatrix}(level::DiversityLevel, dm,
+                           proportions::Arr,
+                           Z::Mat = eye(size(proportions, 1)))
+    level(dm(Supercommunity(proportions, Z)), 2) .^ -1
 end
 
 """
@@ -119,32 +127,37 @@ concentration) at q = 2
 #### Returns:
 - concentrations of subcommunities
 """
-function simpson{S <: AbstractFloat}(proportions::Matrix{S})
-    generalisedsimpson(Dᾱ, proportions)
+function simpson{FP <: AbstractFloat}(proportions::Matrix{FP})
+    generalisedsimpson(subcommunityDiversity, ᾱ, proportions)
 end
 
 """
 ### Calculate a generalised version of the Jaccard index
 
 Calculates a generalisation of the Jaccard index of a series of
-columns representing subcommunity counts. This evaluates to is DG / DA
+columns representing subcommunity counts. This evaluates to is alpha / gamma
 for a series of orders, repesented as a vector of qs (or a single
 number).  It also includes a similarity matrix for the species. This
 gives measure of the average distinctiveness of the subcommunities.
 
 #### Arguments:
 - `proportions`: population proportions
+
 - `qs`: single number or vector of values of parameter q
+
 - `Z`: similarity matrix
 
 #### Returns:
 - Jaccard-related distinctivess measures
 """
-function generalisedjaccard(proportions::Matrix, qs,
-                            Z::Matrix = eye(size(proportions, 1)))
-    size(proportions, 2) == 2 ||
+function generalisedjaccard{Arr <: AbstractArray,
+    Mat <: AbstractMatrix}(proportions::Arr, qs,
+                           Z::Mat = eye(size(proportions, 1)))
+    eco = Supercommunity(proportions, Z)
+    length(eco) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    DA(proportions, qs, Z) ./ DG(proportions, qs, Z) - 1
+    (supercommunityDiversity(α(eco), qs) ./
+     supercommunityDiversity(γ(eco), qs)) - 1
 end
 
 """
@@ -152,7 +165,7 @@ end
 
 Calculates Jaccard index (Jaccard similarity coefficient) of two
 columns representing independent subcommunity counts, which is
-DA(proportions, 0) / DG(proportions, 0) - 1
+alpha(proportions, 0) / gamma(proportions, 0) - 1
 
 #### Arguments:
 - `proportions`: population proportions
@@ -160,6 +173,6 @@ DA(proportions, 0) / DG(proportions, 0) - 1
 #### Returns:
 - the Jaccard index
 """
-function jaccard{S <: AbstractFloat}(proportions::Matrix{S})
+function jaccard{R <: Real}(proportions::Matrix{R})
     generalisedjaccard(proportions, 0)[1]
 end

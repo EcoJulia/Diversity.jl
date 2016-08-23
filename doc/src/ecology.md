@@ -24,3 +24,14 @@ jaccard(ecosystem)
 generalisedjaccard(ecosystem, [0, 1, 2])
 generalisedjaccard(ecosystem, [0, 1, 2], Z)
 ```
+
+```@contents
+```
+
+```@autodocs
+Modules = [Diversity.Ecology]
+Private = false
+```
+
+```@index
+```

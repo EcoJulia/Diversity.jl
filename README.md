@@ -1,10 +1,19 @@
 # Diversity
-[![Diversity](http://pkg.julialang.org/badges/Diversity_0.3.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.3)
 [![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
 [![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
 
-  [![Build Status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl)
-  [![Coverage Status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/) [![Documentation Status](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
+[![Build status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl?branch=master)
+[![Build status (Windows)](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master)
+[![Coveralls status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
+[![Codecov status](https://codecov.io/gh/richardreeve/Diversity.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/richardreeve/Diversity.jl)
+
+Docs:
+[![Stable Documentation](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/)
+[![Latest Documentation](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
+
+New Docs:
+[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://richardreeve.github.io/Diversity.jl/stable)
+[![Latest Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://richardreeve.github.io/Diversity.jl/latest)
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
@@ -29,18 +38,18 @@ if you find any problems.
 
 #### Diversity
 
-The main package provides basic numbers-equivalent diversity
-measures (described in
-[Hill, 1973](http://www.jstor.org/stable/1934352)),
+The main package provides basic numbers-equivalent diversity measures
+(described in [Hill, 1973](http://www.jstor.org/stable/1934352)),
 similarity-sensitive diversity measures (generalised from Hill, and
 described in
 [Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
 and related alpha, beta and gamma diversity measures at the level of
 the supercommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
-[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The functions
-exist both with unicode names preceded by D (e.g. Dᾱ()), and with
-matching ascii names (e.g. subcommunityalphabar()). We also provide a
+[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The divesity
+functions exist both with unicode names (e.g. ᾱ()), which are not
+automatically exported as we feel they are too short and with matching
+ascii names (e.g. NormalisedAlpha()), which are. We also provide a
 general function for extract any diversity measure for a series of
 subcommunity relative abundances. The full documentation can be found
 [here](http://diversityjl.readthedocs.org/en/stable/diversity/).
@@ -50,8 +59,8 @@ Accessing the main functionality in the package is simple:
 ```julia_skip
 using Diversity
 ...
-diversities = supercommunityAbar(proportions, [0, 1, 2, Inf], Z)
-diversity = supercommunityR(proportions, 2, Z)
+diversities = supercommunityDiversity(NormalisedAlpha(Ecosystem(proportions, Z)), [0, 1, 2, Inf])
+diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 ```
 
 The package also provides sub-modules with other diversity measures:
