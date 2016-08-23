@@ -174,7 +174,9 @@ found in the **Diversity.Jost** module.
 module Jost
 
 include("Jost.jl")
-export jostbeta, jostβ, jostalpha, jostα
+export jostbeta, jostalpha
+@deprecate(jostα, jostalpha)
+@deprecate(jostβ, jostbeta)
 
 end # sub-module Jost
 
