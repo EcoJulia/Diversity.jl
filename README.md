@@ -1,19 +1,10 @@
 # Diversity
-[![Diversity](http://pkg.julialang.org/badges/Diversity_0.4.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.4)
-[![Diversity](http://pkg.julialang.org/badges/Diversity_0.5.svg)](http://pkg.julialang.org/?pkg=Diversity&ver=0.5)
 
-[![Build status](https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master)](https://travis-ci.org/richardreeve/Diversity.jl?branch=master)
-[![Build status (Windows)](https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master)](https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master)
-[![Coveralls status](https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg)](https://coveralls.io/r/richardreeve/Diversity.jl?branch=master)
-[![Codecov status](https://codecov.io/gh/richardreeve/Diversity.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/richardreeve/Diversity.jl)
+*Package for measuring and partitioning diversity*
 
-Docs:
-[![Stable Documentation](https://readthedocs.org/projects/diversityjl/badge/?version=stable)](http://diversityjl.readthedocs.org/en/stable/diversity/)
-[![Latest Documentation](https://readthedocs.org/projects/diversityjl/badge/?version=latest)](http://diversityjl.readthedocs.org/en/latest/diversity/)
-
-New Docs:
-[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://richardreeve.github.io/Diversity.jl/stable)
-[![Latest Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://richardreeve.github.io/Diversity.jl/latest)
+| **Documentation**                                                                       | **PackageEvaluator**                                            | **Build Status**                                                                                                                    |
+|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
+| [![][old-docs-stable-img]][old-docs-stable-url] [![][docs-latest-img]][docs-latest-url] | [![][pkg-0.4-img]][pkg-0.4-url] [![][pkg-0.5-img]][pkg-0.5-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url] [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
@@ -27,9 +18,7 @@ through interfacing to BioJulia.
 
 This package is still in alpha and under heavy development, and so we
 do not guarantee its correctness, although we are aware of no problems
-with it. Please
-[raise an issue](https://github.com/richardreeve/Diversity.jl/issues)
-if you find any problems.
+with it. Please [raise an issue][issues-url] if you find any problems.
 
 Version 0.3, which will be the next release, will have significant
 changes to the standard interface for calculating diversity and to the
@@ -60,8 +49,7 @@ functions exist both with unicode names (e.g. ᾱ()), which are not
 automatically exported as we feel they are too short and with matching
 ascii names (e.g. NormalisedAlpha()), which are. We also provide a
 general function for extract any diversity measure for a series of
-subcommunity relative abundances. The full documentation can be found
-[here](http://diversityjl.readthedocs.org/en/stable/diversity/).
+subcommunity relative abundances.
 
 Accessing the main functionality in the package is simple:
 
@@ -129,13 +117,37 @@ The documentation is also available online.
 ### Stable branch
 
 The online documentation for the current stable branch is
-[here](http://diversityjl.readthedocs.org/en/stable/diversity/), and
-API docs start
-[here](http://diversityjl.readthedocs.org/en/stable/api/Diversity/).
+[here]([old-docs-stable-url]).
 
 ### Master branch
 
 The online documentation for the latest master (unreleased) branch is
-[here](http://diversityjl.readthedocs.org/en/latest/diversity/), and
-API docs start
-[here](http://diversityjl.readthedocs.org/en/latest/api/Diversity/).
+[here]([docs-latest-url]).
+
+[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
+[docs-latest-url]: https://richardreeve.github.io/Diversity.jl/latest
+
+[old-docs-stable-img]: https://readthedocs.org/projects/diversityjl/badge/?version=stable
+[old-docs-stable-url]: http://diversityjl.readthedocs.org/en/stable/diversity/
+
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://richardreeve.github.io/Diversity.jl/stable
+
+[travis-img]: https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master
+[travis-url]: https://travis-ci.org/richardreeve/Diversity.jl?branch=master
+
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master
+[appveyor-url]: https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master
+
+[coveralls-img]: https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg
+[coveralls-url]: https://coveralls.io/r/richardreeve/Diversity.jl?branch=master
+
+[codecov-img]: https://codecov.io/gh/richardreeve/Diversity.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/richardreeve/Diversity.jl
+
+[issues-url]: https://github.com/richardreeve/Diversity.jl/issues
+
+[pkg-0.4-img]: http://pkg.julialang.org/badges/Diversity_0.4.svg
+[pkg-0.4-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.4
+[pkg-0.5-img]: http://pkg.julialang.org/badges/Diversity_0.5.svg
+[pkg-0.5-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.5
