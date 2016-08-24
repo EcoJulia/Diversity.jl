@@ -2,9 +2,10 @@
 
 *Package for measuring and partitioning diversity*
 
-| **Documentation**                                                                       | **PackageEvaluator**                                            | **Build Status**                                                                                                                    |
-|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
-| [![][old-docs-stable-img]][old-docs-stable-url] [![][docs-latest-img]][docs-latest-url] | [![][pkg-0.4-img]][pkg-0.4-url] [![][pkg-0.5-img]][pkg-0.5-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url] [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| **Documentation**                               | **PackageEvaluator**            | **Build Status**                                                    |
+|:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
+| [![][old-docs-stable-img]][old-docs-stable-url] | [![][pkg-0.4-img]][pkg-0.4-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
+| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.5-img]][pkg-0.5-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
@@ -117,12 +118,12 @@ The documentation is also available online.
 ### Stable branch
 
 The online documentation for the current stable branch is
-[here]([old-docs-stable-url]).
+[here][old-docs-stable-url].
 
 ### Master branch
 
 The online documentation for the latest master (unreleased) branch is
-[here]([docs-latest-url]).
+[here][docs-latest-url].
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://richardreeve.github.io/Diversity.jl/latest
