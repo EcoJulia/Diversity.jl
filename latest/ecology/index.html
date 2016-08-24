@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>Ecology - Diversity.jl</title>
+      
+      
+      
+      
+        <meta name="author" content="Richard Reeve">
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="Diversity.jl">
+    <meta property="og:image" content="None/../">
+    <meta name="apple-mobile-web-app-title" content="Diversity.jl">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../assets/fonts/icon.eot?52m981');
+      	src: url('../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+      <link rel="stylesheet" href="../assets/Documenter.css">
+    
+    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class=" ">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+              
+                Submodules <i class="icon icon-link"></i>
+              
+            
+          </span>
+        
+        Ecology
+      </div>
+    </div>
+    
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/richardreeve/Diversity.jl" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          Diversity.jl
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+          <br>
+          richardreeve/Diversity.jl
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/richardreeve/Diversity.jl/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/richardreeve/Diversity.jl/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Introduction" href="..">
+      Introduction
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Submodules</span>
+    <ul>
+      
+        
+  <li>
+    <a class="current" title="Ecology" href="./">
+      Ecology
+    </a>
+    
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Usage" href="#usage">
+                Usage
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Hill" href="../hill/">
+      Hill
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Jost" href="../jost/">
+      Jost
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+            <h1>Ecology</h1>
+          
+          <p>In the <strong>Diversity.Ecology</strong> package, we replicate old ecological diversity measures and generalised versions of them that relate to our general measures of alpha, beta and gamma diversity at subcommunity and ecosystem measures. The generalisations of the richness, Shannon and Simpson are the only standard measures we are aware of whose subcommunity components sum directly to the corresponding ecosystem measure (although note that Simpson's index decreases for increased diversity, so small components are more diverse).</p>
+<p><a id='Usage-1'></a></p>
+<h4 id="usage">Usage</h4>
+<p>Accessing the functionality in the package is simple:</p>
+<div class="codehilite"><pre><span></span>using Diversity.Ecology
+
+community = [10. 20. 20.]&#39;
+diversity = simpson(community)
+
+ecosystem = [2. 2. 0.; 0. 2. 2.]&#39;
+Z = eye(3)
+
+jaccard(ecosystem)
+generalisedjaccard(ecosystem, [0, 1, 2])
+generalisedjaccard(ecosystem, [0, 1, 2], Z)
+</pre></div>
+
+
+<ul>
+<li><a href="..#Diversity.jl-1">Diversity.jl</a></li>
+</ul>
+<p><a id='Diversity.Ecology' href='#Diversity.Ecology'>#</a>
+<strong><code>Diversity.Ecology</code></strong> &mdash; <em>Module</em>.</p>
+<p>The <strong>Diversity.Ecology</strong> module replicates old ecological diversity measures and generalised versions of them that relate to our general measures of alpha, beta and gamma diversity at subcommunity and supercommunity levels. The generalisations of the richness, Shannon and Simpson are the only standard measures we are aware of whose subcommunity components sum directly to the corresponding ecosystem measure (although note that Simpson's index decreases for increased diversity, so small components are more diverse).</p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Diversity.jl#L148-L157' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.generalisedjaccard' href='#Diversity.Ecology.generalisedjaccard'>#</a>
+<strong><code>Diversity.Ecology.generalisedjaccard</code></strong> &mdash; <em>Function</em>.</p>
+<p><strong>Calculate a generalised version of the Jaccard index</strong></p>
+<p>Calculates a generalisation of the Jaccard index of a series of columns representing subcommunity counts. This evaluates to is alpha / gamma for a series of orders, repesented as a vector of qs (or a single number).  It also includes a similarity matrix for the species. This gives measure of the average distinctiveness of the subcommunities.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>proportions</code>: population proportions</li>
+<li><code>qs</code>: single number or vector of values of parameter q</li>
+<li><code>Z</code>: similarity matrix</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Jaccard-related distinctivess measures</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L134-L152' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.generalisedrichness' href='#Diversity.Ecology.generalisedrichness'>#</a>
+<strong><code>Diversity.Ecology.generalisedrichness</code></strong> &mdash; <em>Function</em>.</p>
+<p><strong>Calculate a generalised version of richness</strong></p>
+<p>Calculates (species) richness of a series of columns representing independent subcommunity counts, which is diversity at q = 0 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>level</code>: DiversityLevel to calculate at (e.g. subcommunityDiversity)</li>
+<li><code>DM</code>: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)</li>
+<li><code>proportions</code>: population proportions</li>
+<li><code>Z</code>: similarity matrix</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>diversity (at ecosystem level) or diversities (of subcommunities)</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L4-L23' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.generalisedshannon' href='#Diversity.Ecology.generalisedshannon'>#</a>
+<strong><code>Diversity.Ecology.generalisedshannon</code></strong> &mdash; <em>Function</em>.</p>
+<p><strong>Calculate a generalised version of Shannon entropy</strong></p>
+<p>Calculates Shannon entropy of a series of columns representing independent subcommunity counts, which is log(diversity) at q = 1 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>level</code>: DiversityLevel to calculate at (e.g. subcommunityDiversity)</li>
+<li><code>DM</code>: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)</li>
+<li><code>proportions</code>: population proportions</li>
+<li><code>Z</code>: similarity matrix</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>entropy (at ecosystem level) or entropies (of subcommunities)</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L47-L66' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.generalisedsimpson' href='#Diversity.Ecology.generalisedsimpson'>#</a>
+<strong><code>Diversity.Ecology.generalisedsimpson</code></strong> &mdash; <em>Function</em>.</p>
+<p><strong>Calculate a generalised version of Simpson's index</strong></p>
+<p>Calculates Simpson's index of a series of columns representing independent subcommunity counts, which is 1 / diversity at q = 2 for any diversity measure (passed as the second argument). It also includes a similarity matrix for the species</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>level</code>: DiversityLevel to calculate at (e.g. subcommunityDiversity)</li>
+<li><code>DM</code>: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)</li>
+<li><code>proportions</code>: population proportions</li>
+<li><code>Z</code>: similarity matrix</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>concentration (at ecosystem level) or concentrations (of subcommunities)</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L90-L109' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.jaccard-Tuple{Array{R<:Real,2}}' href='#Diversity.Ecology.jaccard-Tuple{Array{R<:Real,2}}'>#</a>
+<strong><code>Diversity.Ecology.jaccard</code></strong> &mdash; <em>Method</em>.</p>
+<p><strong>Calculate the Jaccard index</strong></p>
+<p>Calculates Jaccard index (Jaccard similarity coefficient) of two columns representing independent subcommunity counts, which is alpha(proportions, 0) / gamma(proportions, 0) - 1</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>proportions</code>: population proportions</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>the Jaccard index</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L163-L175' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.richness-Tuple{Array{FP<:AbstractFloat,2}}' href='#Diversity.Ecology.richness-Tuple{Array{FP<:AbstractFloat,2}}'>#</a>
+<strong><code>Diversity.Ecology.richness</code></strong> &mdash; <em>Method</em>.</p>
+<p><strong>Calculate species richness of populations</strong></p>
+<p>Calculates (species) richness of a series of columns representing independent subcommunity counts, which is diversity at q = 0</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>proportions</code>: population proportions</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>diversities of subcommunities</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L31-L42' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.shannon-Tuple{Array{FP<:AbstractFloat,2}}' href='#Diversity.Ecology.shannon-Tuple{Array{FP<:AbstractFloat,2}}'>#</a>
+<strong><code>Diversity.Ecology.shannon</code></strong> &mdash; <em>Method</em>.</p>
+<p><strong>Calculate Shannon entropy of populations</strong></p>
+<p>Calculates shannon entropy of a series of columns representing independent subcommunity counts, which is log(diversity) at q = 1</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>proportions</code>: population proportions</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>entropies of subcommunities</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L74-L85' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Ecology.simpson-Tuple{Array{FP<:AbstractFloat,2}}' href='#Diversity.Ecology.simpson-Tuple{Array{FP<:AbstractFloat,2}}'>#</a>
+<strong><code>Diversity.Ecology.simpson</code></strong> &mdash; <em>Method</em>.</p>
+<p><strong>Calculate Simpson's index</strong></p>
+<p>Calculates Simpson's index of a series of columns representing independent subcommunity counts, which is 1 / diversity (or concentration) at q = 2</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>proportions</code>: population proportions</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>concentrations of subcommunities</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/ea1eb9125e0b91749fb8e13fad44a0925dc8d634/src/Ecology.jl#L117-L129' class='documenter-source'>source</a><br></p>
+<ul>
+<li><a href="..#Diversity"><code>Diversity</code></a></li>
+<li><a href="./#Diversity.Ecology"><code>Diversity.Ecology</code></a></li>
+<li><a href="../hill/#Diversity.Hill"><code>Diversity.Hill</code></a></li>
+<li><a href="../jost/#Diversity.Jost"><code>Diversity.Jost</code></a></li>
+<li><a href="..#Diversity.individualDiversity"><code>Diversity.individualDiversity</code></a></li>
+<li><a href="..#Diversity.subcommunityDiversity"><code>Diversity.subcommunityDiversity</code></a></li>
+<li><a href="..#Diversity.supercommunityDiversity"><code>Diversity.supercommunityDiversity</code></a></li>
+<li><a href="..#Diversity.DiversityLevel"><code>Diversity.DiversityLevel</code></a></li>
+<li><a href="..#Diversity.MatrixSimilarity-Tuple{AbstractArray{FP&lt;:AbstractFloat,2}}"><code>Diversity.MatrixSimilarity</code></a></li>
+<li><a href="..#Diversity.MatrixSimilarity"><code>Diversity.MatrixSimilarity</code></a></li>
+<li><a href="..#Diversity.Onecommunity"><code>Diversity.Onecommunity</code></a></li>
+<li><a href="..#Diversity.Species"><code>Diversity.Species</code></a></li>
+<li><a href="..#Diversity.Subcommunities"><code>Diversity.Subcommunities</code></a></li>
+<li><a href="..#Diversity.Supercommunity"><code>Diversity.Supercommunity</code></a></li>
+<li><a href="..#Diversity.Supercommunity"><code>Diversity.Supercommunity</code></a></li>
+<li><a href="..#Diversity.Supercommunity"><code>Diversity.Supercommunity</code></a></li>
+<li><a href="..#Diversity.Taxonomy"><code>Diversity.Taxonomy</code></a></li>
+<li><a href="..#Diversity.Unique"><code>Diversity.Unique</code></a></li>
+<li><a href="./#Diversity.Ecology.generalisedjaccard"><code>Diversity.Ecology.generalisedjaccard</code></a></li>
+<li><a href="./#Diversity.Ecology.generalisedrichness"><code>Diversity.Ecology.generalisedrichness</code></a></li>
+<li><a href="./#Diversity.Ecology.generalisedshannon"><code>Diversity.Ecology.generalisedshannon</code></a></li>
+<li><a href="./#Diversity.Ecology.generalisedsimpson"><code>Diversity.Ecology.generalisedsimpson</code></a></li>
+<li><a href="./#Diversity.Ecology.jaccard-Tuple{Array{R&lt;:Real,2}}"><code>Diversity.Ecology.jaccard</code></a></li>
+<li><a href="./#Diversity.Ecology.richness-Tuple{Array{FP&lt;:AbstractFloat,2}}"><code>Diversity.Ecology.richness</code></a></li>
+<li><a href="./#Diversity.Ecology.shannon-Tuple{Array{FP&lt;:AbstractFloat,2}}"><code>Diversity.Ecology.shannon</code></a></li>
+<li><a href="./#Diversity.Ecology.simpson-Tuple{Array{FP&lt;:AbstractFloat,2}}"><code>Diversity.Ecology.simpson</code></a></li>
+<li><a href="../hill/#Diversity.Hill.hillnumber-Tuple{Any,Any}"><code>Diversity.Hill.hillnumber</code></a></li>
+<li><a href="../jost/#Diversity.Jost.jostalpha-Tuple{Array{S&lt;:AbstractFloat,2},Any}"><code>Diversity.Jost.jostalpha</code></a></li>
+<li><a href="../jost/#Diversity.Jost.jostbeta-Tuple{Array{S&lt;:AbstractFloat,2},Any}"><code>Diversity.Jost.jostbeta</code></a></li>
+<li><a href="..#Diversity.diversity-Tuple{Diversity.DiversityLevel,Any,Sup&lt;:Diversity.AbstractSupercommunity,Any}"><code>Diversity.diversity</code></a></li>
+<li><a href="..#Diversity.diversity-Tuple{Set{Diversity.DiversityLevel},Set,Sup&lt;:Diversity.AbstractSupercommunity,Any}"><code>Diversity.diversity</code></a></li>
+<li><a href="..#Diversity.getASCIIName"><code>Diversity.getASCIIName</code></a></li>
+<li><a href="..#Diversity.getFullName"><code>Diversity.getFullName</code></a></li>
+<li><a href="..#Diversity.getName-Tuple{DM&lt;:Diversity.DiversityMeasure}"><code>Diversity.getName</code></a></li>
+<li><a href="..#Diversity.getabundance"><code>Diversity.getabundance</code></a></li>
+<li><a href="..#Diversity.getordinariness!-Tuple{Sup&lt;:Diversity.AbstractSupercommunity}"><code>Diversity.getordinariness!</code></a></li>
+<li><a href="..#Diversity.getsuperordinariness!-Tuple{Sup&lt;:Diversity.AbstractSupercommunity}"><code>Diversity.getsuperordinariness!</code></a></li>
+<li><a href="..#Diversity.getweight-Tuple{Sup&lt;:Diversity.AbstractSupercommunity}"><code>Diversity.getweight</code></a></li>
+<li><a href="..#Diversity.inddiv"><code>Diversity.inddiv</code></a></li>
+<li><a href="..#Diversity.qD-Tuple{Diversity.AbstractSupercommunity,Any}"><code>Diversity.qD</code></a></li>
+<li><a href="..#Diversity.qDZ-Tuple{Diversity.AbstractSupercommunity,Any}"><code>Diversity.qDZ</code></a></li>
+<li><a href="..#Diversity.subdiv"><code>Diversity.subdiv</code></a></li>
+<li><a href="..#Diversity.superdiv"><code>Diversity.superdiv</code></a></li>
+</ul>
+          <aside class="copyright" role="note">
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href=".." title="Introduction">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                Introduction
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../hill/" title="Hill">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                Hill
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '..';
+      var repo_id  = 'richardreeve/Diversity.jl';
+    </script>
+    <script src="../assets/javascripts/application-997097ee0c.js"></script>
+    
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+      <script src="../assets/mathjaxhelper.js"></script>
+    
+    
+  </body>
+</html>
