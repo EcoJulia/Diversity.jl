@@ -18,7 +18,6 @@ julia:
 
 before_install:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - openssl aes-256-cbc -K $encrypted_b827f4fd7e05_key -iv $encrypted_b827f4fd7e05_iv -in doc/.documenter.enc -out doc/.documenter -d
 
 script:
   - julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.test("Diversity", coverage=true)'
