@@ -134,11 +134,13 @@ end
 """
 ### Calculate a generalised version of the Jaccard index
 
-Calculates a generalisation of the Jaccard index of a series of
-columns representing subcommunity counts. This evaluates to is alpha / gamma
-for a series of orders, repesented as a vector of qs (or a single
-number).  It also includes a similarity matrix for the species. This
-gives measure of the average distinctiveness of the subcommunities.
+Calculates a generalisation of the Jaccard index of two columns
+representing the counts of two subcommunities. This evaluates to raw
+alpha / gamma - 1 for a series of orders, repesented as a vector of qs
+(or a single number). It also includes an optional similarity matrix
+for the species. This gives a measure of the distinctness of the
+subcommunities, though we believe that beta and normalised beta have
+better properties.
 
 #### Arguments:
 - `proportions`: population proportions
