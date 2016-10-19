@@ -25,7 +25,7 @@ function generalisedrichness{Arr <: AbstractArray,
     Mat <: AbstractMatrix}(level::DiversityLevel, dm,
                            proportions::Arr,
                            Z::Mat = eye(size(proportions, 1)))
-    level(dm(Supercommunity(proportions, Z)), 0)
+    level(dm(Metacommunity(proportions, Z)), 0)
 end
 
 """
@@ -68,7 +68,7 @@ function generalisedshannon{Arr <: AbstractArray,
     Mat <: AbstractMatrix}(level::DiversityLevel, dm,
                            proportions::Arr,
                            Z::Mat = eye(size(proportions, 1)))
-    log(level(dm(Supercommunity(proportions, Z)), 1))
+    log(level(dm(Metacommunity(proportions, Z)), 1))
 end
 
 """
@@ -111,7 +111,7 @@ function generalisedsimpson{Arr <: AbstractArray,
     Mat <: AbstractMatrix}(level::DiversityLevel, dm,
                            proportions::Arr,
                            Z::Mat = eye(size(proportions, 1)))
-    level(dm(Supercommunity(proportions, Z)), 2) .^ -1
+    level(dm(Metacommunity(proportions, Z)), 2) .^ -1
 end
 
 """
@@ -155,11 +155,11 @@ better properties.
 function generalisedjaccard{Arr <: AbstractArray,
     Mat <: AbstractMatrix}(proportions::Arr, qs,
                            Z::Mat = eye(size(proportions, 1)))
-    eco = Supercommunity(proportions, Z)
+    eco = Metacommunity(proportions, Z)
     length(eco) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    (supercommunityDiversity(α(eco), qs) ./
-     supercommunityDiversity(γ(eco), qs)) - 1
+    (metacommunityDiversity(α(eco), qs) ./
+     metacommunityDiversity(γ(eco), qs)) - 1
 end
 
 """

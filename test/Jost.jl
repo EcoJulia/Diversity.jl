@@ -26,12 +26,12 @@ allthesame = probs * colweights';
 
 @testset "Jost" begin
     @test jostbeta(communities, 1) ≈ (1.0 ./
-                                      superdiv(ρ̄(Supercommunity(communities)),
+                                      metadiv(ρ̄(Metacommunity(communities)),
                                                1))
     @test jostbeta(allthesame, qs) ≈ ones(qs)
     
     ## Check Jost's alpha diversity works for all the same subcommunity
-    @test jostalpha(allthesame, qs) ≈ superdiv(ᾱ(Supercommunity(allthesame)),
+    @test jostalpha(allthesame, qs) ≈ metadiv(ᾱ(Metacommunity(allthesame)),
                                                qs)
     
     ## And for all different subcommunities and any subcommunities with the same sizes
@@ -44,13 +44,13 @@ allthesame = probs * colweights';
     end
     evendistinct = mapslices((x) -> x / (sum(x) * numcommunities), distinct, 1)
     
-    @test jostalpha(evendistinct, qs) ≈ superdiv(ᾱ(Supercommunity(evendistinct)), qs)
+    @test jostalpha(evendistinct, qs) ≈ metadiv(ᾱ(Metacommunity(evendistinct)), qs)
     
     # Now some even communities, should see that raw and normalised
     # diversities are the same
     smoothed = communities ./ mapslices(sum, communities, 1);
     smoothed /= numcommunities;
-    @test jostalpha(smoothed, qs) ≈ superdiv(ᾱ(Supercommunity(smoothed)), qs)
+    @test jostalpha(smoothed, qs) ≈ metadiv(ᾱ(Metacommunity(smoothed)), qs)
 end
 
 end

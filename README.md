@@ -9,7 +9,7 @@
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
-of supercommunities (e.g. ecosystems) and their constituent
+of metacommunities (e.g. ecosystems) and their constituent
 subcommunities. It uses the diversity measures described in the arXiv
 paper [arXiv:1404.6520 (q-bio.QM)](http://arxiv.org/abs/1404.6520),
 *How to partition diversity*. It also provides a series of other
@@ -43,7 +43,7 @@ similarity-sensitive diversity measures (generalised from Hill, and
 described in
 [Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
 and related alpha, beta and gamma diversity measures at the level of
-the supercommunity and its component subcommunities (generalised in
+the metacommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
 [Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
 functions exist both with unicode names (e.g. ᾱ()), which are not
@@ -57,8 +57,8 @@ Accessing the main functionality in the package is simple:
 ```julia_skip
 using Diversity
 ...
-diversities = superdiv(NormalisedAlpha(Supercommunity(proportions, Z)), [0, 1, 2, Inf])
-diversity = subdiv(RawRho(Supercommunity(proportions, Z)), 2)
+diversities = metadiv(NormalisedAlpha(Metacommunity(proportions, Z)), [0, 1, 2, Inf])
+diversity = subdiv(RawRho(Metacommunity(proportions, Z)), 2)
 ```
 
 The package also provides sub-modules with other diversity measures:
@@ -69,10 +69,10 @@ Many existing ecological diversity measures can be derived from our
 diversity measures, and so we provide them in the Diversity.Ecology
 submodule along with generalised versions of them that relate to our
 general measures of alpha, beta and gamma diversity at subcommunity
-and supercommunity levels. The generalisations of species richness,
+and metacommunity levels. The generalisations of species richness,
 Shannon entropy and Simpson's index are the only standard measures we
 are aware of whose subcommunity components sum directly to the
-corresponding supercommunity measure (although note that Simpson's
+corresponding metacommunity measure (although note that Simpson's
 index decreases for increased diversity, so small components are more
 diverse). Documentation for these diversity measures can be found
 [here](http://diversityjl.readthedocs.org/en/stable/ecology/).

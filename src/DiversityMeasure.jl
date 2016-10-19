@@ -1,9 +1,9 @@
 using Compat
 
 """
-### Enumeration of levels that can exist / be calculated for a supercommunity.
+### Enumeration of levels that can exist / be calculated for a metacommunity.
 """
-@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity supercommunityDiversity metacommunityDiversity
+@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity metacommunityDiversity
 
 """
 ### Generates the function to calculate individual diversities
@@ -41,9 +41,9 @@ series of orders, represented as a vector of qs.
 subcommunityDiversity
 
 """
-### Generates the function to calculate supercommunity diversity
+### Generates the function to calculate metacommunity diversity
 
-Generates the function to calculate supercommunity diversity for a
+Generates the function to calculate metacommunity diversity for a
 series of orders, represented as a vector of qs.
 
 #### Arguments:
@@ -53,17 +53,17 @@ series of orders, represented as a vector of qs.
 #### Returns:
 
 - Function which takes a single number or vector of values of
-  parameter q, and returns the supercommunity diversities for those
+  parameter q, and returns the metacommunity diversities for those
   values.
 """
-supercommunityDiversity
+metacommunityDiversity
 
 """
-### DiversityMeasure supertype for all diversity measure types
+### DiversityMeasure metatype for all diversity measure types
 
-This type is the abstract superclass of all diversity measure types.
+This type is the abstract metaclass of all diversity measure types.
 DiversityMeasure subtypes allow you to calculate and cache any kind of
-diversity of a supercommunity.
+diversity of a metacommunity.
 """
 abstract DiversityMeasure{FP <: AbstractFloat}
 
@@ -115,22 +115,22 @@ end
 @compat (dl::DiversityLevel){DM <: DiversityMeasure}(dm::DM, qs) = getPartitionFunction(dm, dl)(qs)
 
 """
-### Supertype of all power mean-based diversity measures
+### Metatype of all power mean-based diversity measures
 
-This abstract DiversityMeasure subtype is the supertype of all
+This abstract DiversityMeasure subtype is the metatype of all
 diversity measures which are straight power means. PowerMeanMeasure
 subtypes allow you to calculate and cache any kind of diversity of a
-supercommunity.
+metacommunity.
 """
 abstract PowerMeanMeasure{FP} <: DiversityMeasure{FP}
 
 """
-### Supertype of all relative entropy-based diversity measures
+### Metatype of all relative entropy-based diversity measures
 
-This abstract DiversityMeasure subtype is the supertype of all
+This abstract DiversityMeasure subtype is the metatype of all
 diversity measures which are straight power means.
 RelativeEntropyMeasure subtypes allow you to calculate and cache any
-kind of diversity of a supercommunity.
+kind of diversity of a metacommunity.
 """
 abstract RelativeEntropyMeasure{FP} <: DiversityMeasure{FP}
 
@@ -162,7 +162,7 @@ end
     map(q -> measure.diversities, qs)
 end
 
-@inline function inddiv{Sup <: AbstractSupercommunity}(sup::Sup, qs)
+@inline function inddiv{Sup <: AbstractMetacommunity}(sup::Sup, qs)
     map(dm -> inddiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
                                     RawBeta, NormalisedBeta,
                                     RawRho, NormalisedRho, Gamma])
@@ -207,17 +207,17 @@ end
                        q - 1.0, measure.abundances), qs)
 end
 
-@inline function subdiv{Sup <: AbstractSupercommunity}(sup::Sup, qs)
+@inline function subdiv{Sup <: AbstractMetacommunity}(sup::Sup, qs)
     map(dm -> subdiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
                                     RawBeta, NormalisedBeta,
                                     RawRho, NormalisedRho, Gamma])
 end
 
 """
-### Calculates supercommunity diversities of a diversity measure
+### Calculates metacommunity diversities of a diversity measure
 
 Takes a diversity measure and single order or vector of orders, and
-calculates and returns the supercommunity diversities for those values.
+calculates and returns the metacommunity diversities for those values.
 
 #### Arguments:
 
@@ -226,24 +226,24 @@ calculates and returns the supercommunity diversities for those values.
 
 #### Returns:
 
-- Returns supercommunity diversities of `dm` for a single order `q` or a
+- Returns metacommunity diversities of `dm` for a single order `q` or a
   vector of order `qs`.
 """
-function superdiv
+function metadiv
 end
 
-@inline function superdiv{DM <: DiversityMeasure}(measure::DM, q::Real)
+@inline function metadiv{DM <: DiversityMeasure}(measure::DM, q::Real)
     powermean(subdiv(measure, q), 1.0 - q, measure.weights)
 end
 
-@inline function superdiv{DM <: DiversityMeasure,
+@inline function metadiv{DM <: DiversityMeasure,
     Vec <: AbstractVector}(measure::DM, qs::Vec)
     map(q -> powermean(subdiv(measure, q),
                        1.0 - q, measure.weights), qs)
 end
 
-@inline function superdiv{Sup <: AbstractSupercommunity}(sup::Sup, qs)
-    map(dm -> superdiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+@inline function metadiv{Sup <: AbstractMetacommunity}(sup::Sup, qs)
+    map(dm -> metadiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
                                       RawBeta, NormalisedBeta,
                                       RawRho, NormalisedRho, Gamma])
 end
@@ -258,9 +258,9 @@ function getPartitionFunction{DM <: DiversityMeasure}(measure::DM,
         function (qs)
             subdiv(measure, qs)
         end
-    elseif (level == supercommunityDiversity)
+    elseif (level == metacommunityDiversity)
         function (qs)
-            superdiv(measure, qs)
+            metadiv(measure, qs)
         end
     else
         error("Unrecognised diversity level")
@@ -272,13 +272,13 @@ end
 ### Raw alpha diversity type (α)
 
 Calculates raw alpha diversity (α) of all of the individuals in a
-supercommunity, and caches them for subsequent analysis. This is a
+metacommunity, and caches them for subsequent analysis. This is a
 subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type α{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -287,7 +287,7 @@ type α{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function α{Sup <: AbstractSupercommunity}(sup::Sup)
+function α{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     w = vec(collect(getweight(sup)))
     α{eltype(ab), typeof(ab), typeof(w)}(ab, w,
@@ -303,13 +303,13 @@ getFullName(::α) = "raw alpha diversity"
 ### Normalised alpha diversity type (ᾱ)
 
 Calculates normalised alpha diversity (ᾱ) of all of the individuals in
-a supercommunity, and caches them for subsequent analysis. This is a
+a metacommunity, and caches them for subsequent analysis. This is a
 subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type ᾱ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -318,7 +318,7 @@ type ᾱ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function ᾱ{Sup <: AbstractSupercommunity}(sup::Sup)
+function ᾱ{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)    
     w = vec(collect(ws))
@@ -335,14 +335,14 @@ getFullName(::ᾱ) = "normalised alpha diversity"
 ### Distinctiveness (β, raw beta diversity) type
 
 Calculates distinctiveness (β, raw beta diversity) of all of the individuals in a
-supercommunity, and caches them for subsequent analysis. This is a
+metacommunity, and caches them for subsequent analysis. This is a
 subtype of RelativeEntropyMeasure, meaning that subcommunity and type
 composite diversity measures are relative entropies, and their
 composite types are powermeans of those measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type β{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     RelativeEntropyMeasure{FP}
@@ -351,12 +351,12 @@ type β{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function β{Sup <: AbstractSupercommunity}(sup::Sup)
+function β{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     w = vec(collect(getweight(sup)))
     β{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          getordinariness!(sup) ./
-                                         getsuperordinariness!(sup))
+                                         getmetaordinariness!(sup))
 end
 
 typealias RawBeta β
@@ -369,14 +369,14 @@ getFullName(::β) = "distinctiveness"
 ### Normalised beta diversity type (β̄)
 
 Calculates normalised beta diversity (β̄) of all of the individuals in
-a supercommunity, and caches them for subsequent analysis. This is a
+a metacommunity, and caches them for subsequent analysis. This is a
 subtype of RelativeEntropyMeasure, meaning that subcommunity and type
 composite diversity measures are relative entropies, and their
 composite types are powermeans of those measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type β̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     RelativeEntropyMeasure{FP}
@@ -385,13 +385,13 @@ type β̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function β̄{Sup <: AbstractSupercommunity}(sup::Sup)
+function β̄{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)
     w = vec(collect(ws))
     β̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          getordinariness!(sup) ./
-                                         (getsuperordinariness!(sup) .* ws))
+                                         (getmetaordinariness!(sup) .* ws))
 end
 
 typealias NormalisedBeta β̄
@@ -403,14 +403,14 @@ getFullName(::β̄) = "effective number of subcommunities"
 ### Redundancy (ρ, raw beta diversity) type
 
 Calculates redundancy (ρ, raw beta diversity) of all of the
-individuals in a supercommunity, and caches them for subsequent
+individuals in a metacommunity, and caches them for subsequent
 analysis. This is a subtype of PowerMeanMeasure, meaning that all
 composite diversity measures are simple powermeans of the individual
 measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type ρ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -419,11 +419,11 @@ type ρ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function ρ{Sup <: AbstractSupercommunity}(sup::Sup)
+function ρ{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     w = vec(collect(getweight(sup)))
     ρ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         getsuperordinariness!(sup) ./
+                                         getmetaordinariness!(sup) ./
                                          getordinariness!(sup))
 end
 
@@ -437,14 +437,14 @@ getFullName(::ρ) = "redundancy"
 ### Representativeness (ρ̄, normalised beta diversity) type
 
 Calculates redundancy (ρ̄, normalised beta diversity) of all of the
-individuals in a supercommunity, and caches them for subsequent
+individuals in a metacommunity, and caches them for subsequent
 analysis. This is a subtype of PowerMeanMeasure, meaning that all
 composite diversity measures are simple powermeans of the individual
 measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type ρ̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -453,12 +453,12 @@ type ρ̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function ρ̄{Sup <: AbstractSupercommunity}(sup::Sup)
+function ρ̄{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)
     w = vec(collect(ws))
     ρ̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         (getsuperordinariness!(sup) .* ws) ./
+                                         (getmetaordinariness!(sup) .* ws) ./
                                          getordinariness!(sup))
 end
 
@@ -472,13 +472,13 @@ getFullName(::ρ̄) = "representativeness"
 ### Gamma diversity type (γ)
 
 Calculates gamma diversity (γ) of all of the individuals in a
-supercommunity, and caches them for subsequent analysis. This is a
+metacommunity, and caches them for subsequent analysis. This is a
 subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
 #### Constructor arguments:
 
-- `sup`: a Supercommunity
+- `sup`: a Metacommunity
 """
 type γ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -487,13 +487,13 @@ type γ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function γ{Sup <: AbstractSupercommunity}(sup::Sup)
+function γ{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)
     w = vec(collect(ws))
     γ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          ones(eltype(ws), size(ws)) ./
-                                         getsuperordinariness!(sup))
+                                         getmetaordinariness!(sup))
 end
 
 typealias Gamma γ

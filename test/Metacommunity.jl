@@ -1,4 +1,4 @@
-module TestSupercommunity
+module TestMetacommunity
 using Diversity
 if VERSION >= v"0.5.0-dev+7720"
     using Base.Test
@@ -41,16 +41,16 @@ tax = Taxonomy(Dict{AbstractString,
 end
 
 sc = Subcommunities(ab3)
-sup = Supercommunity(oc_count, ms)
+sup = Metacommunity(oc_count, ms)
 sp = Species()
-sup2 = Supercommunity(sc, sp)
-@testset "Supercommunity" begin
+sup2 = Metacommunity(sc, sp)
+@testset "Metacommunity" begin
     @test sup.similarity == ms
     @test sup.partition == oc_count
     @test isnull(sup.ordinariness)
     @test getordinariness!(sup) ≈ [0.3, 0.6, 1.0]
     @test !isnull(sup.ordinariness)
-    @test_throws DimensionMismatch Supercommunity(sc, ms)
+    @test_throws DimensionMismatch Metacommunity(sc, ms)
     @test getsimilarity(sup2) ≈ eye(size(ab3, 1))
 end
 

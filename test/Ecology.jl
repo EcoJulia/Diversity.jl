@@ -17,7 +17,7 @@ numspecies = 100;
 numcommunities = 8;
 communities = rand(numspecies, numcommunities);
 communities /= sum(communities);
-eco = Supercommunity(communities)
+eco = Metacommunity(communities)
 weights = rand(numspecies);
 weights /= sum(weights);
 Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
@@ -35,13 +35,13 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 end
 
 @testset "Generalised ecological diversities" begin
-    @test generalisedrichness(supercommunityDiversity, γ,
+    @test generalisedrichness(metacommunityDiversity, γ,
                               communities, Z1) ≈ 1
     
-    @test generalisedshannon(supercommunityDiversity, γ,
+    @test generalisedshannon(metacommunityDiversity, γ,
                              communities, Z1) ≈ 0
     
-    @test generalisedsimpson(supercommunityDiversity, γ,
+    @test generalisedsimpson(metacommunityDiversity, γ,
                              communities, Z1) ≈ 1
     
     @test generalisedjaccard([1 0 1; 0 1 1]', [0, Inf]) ≈ [1.0/3.0, 1.0]

@@ -81,7 +81,7 @@ population with given relative proportions.
 
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)"""
-function qD(sup::AbstractSupercommunity, qs)
+function qD(sup::AbstractMetacommunity, qs)
     length(sup) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
@@ -91,7 +91,7 @@ function qD(sup::AbstractSupercommunity, qs)
 end
 
 function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
-    qD(Supercommunity(Onecommunity(proportions)), qs)
+    qD(Metacommunity(Onecommunity(proportions)), qs)
 end
 
 """
@@ -109,7 +109,7 @@ a population with given relative *proportions*, and similarity matrix
 #### Returns:
 - Diversity of order qs (single number or vector of diversities)
 """
-function qDZ(sup::AbstractSupercommunity, qs)
+function qDZ(sup::AbstractMetacommunity, qs)
     length(sup) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
@@ -118,9 +118,9 @@ end
 
 function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs,
                                   sim::AbstractSimilarity = Unique())
-    qDZ(Supercommunity(Onecommunity(proportions), sim), qs)
+    qDZ(Metacommunity(Onecommunity(proportions), sim), qs)
 end
 
 function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs, Z::Matrix{FP})
-    qDZ(Supercommunity(Onecommunity(proportions), MatrixSimilarity(Z)), qs)
+    qDZ(Metacommunity(Onecommunity(proportions), MatrixSimilarity(Z)), qs)
 end

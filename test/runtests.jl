@@ -7,7 +7,7 @@ else
 end
 
 include("EffectiveNumbers.jl")
-include("Supercommunity.jl")
+include("Metacommunity.jl")
 include("DiversityMeasure.jl")
 include("GeneralisedDiversities.jl")
 include("Hill.jl")

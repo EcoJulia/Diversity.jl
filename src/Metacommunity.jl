@@ -1,9 +1,9 @@
 """
-### AbstractPartition supertype for all partitioning types
+### AbstractPartition metatype for all partitioning types
 
-This type is the abstract superclass of all partitioning types.
+This type is the abstract metaclass of all partitioning types.
 AbstractPartition subtypes allow you to define how to partition your total
-supercommunity (e.g. an ecosystem) into smaller components (e.g.
+metacommunity (e.g. an ecosystem) into smaller components (e.g.
 subcommunities).
 """
 abstract AbstractPartition{FP <: AbstractFloat, A <: AbstractArray}
@@ -51,9 +51,9 @@ function Onecommunity{IT <: Integer}(abundances::AbstractVector{IT})
 end
 
 """
-### AbstractSimilarity supertype for all similarity measures
+### AbstractSimilarity metatype for all similarity measures
 
-This type is the abstract superclass of all similarity types. Its
+This type is the abstract metaclass of all similarity types. Its
 subtypes allow you to define how similarity is measured between
 individuals.
 """
@@ -142,21 +142,21 @@ function psmatch{FP}(part::AbstractPartition{FP}, sim::MatrixSimilarity{FP})
 end
 
 """
-### AbstractSupercommunity supertype for all supercommunity types
+### AbstractMetacommunity metatype for all metacommunity types
 
-This type is the abstract superclass of all supercommunity types.
-AbstractSupercommunity subtypes allow you to define how to partition
-your total supercommunity (e.g. an ecosystem) into smaller components
+This type is the abstract metaclass of all metacommunity types.
+AbstractMetacommunity subtypes allow you to define how to partition
+your total metacommunity (e.g. an ecosystem) into smaller components
 (e.g. subcommunities), and how to assess similarity between
 individuals within it.
 """
-abstract AbstractSupercommunity{FP <: AbstractFloat, A <: AbstractArray, Part <: AbstractPartition, Sim <: AbstractSimilarity}
+abstract AbstractMetacommunity{FP <: AbstractFloat, A <: AbstractArray, Part <: AbstractPartition, Sim <: AbstractSimilarity}
 
 """
-### Supercommunity type, representing a collection of individuals
+### Metacommunity type, representing a collection of individuals
 
-Type representing a whole supercommunity containing a single community
-or a collection of subcommunities. The supercommunity of individuals
+Type representing a whole metacommunity containing a single community
+or a collection of subcommunities. The metacommunity of individuals
 *may* be further partitioned into smaller groups. For instance this
 may be an ecosystem, which consists of a series of subcommunities. The
 AbstractPartition subtype within it stores relative abundances of different
@@ -165,7 +165,7 @@ individuals.
 
 #### Constructor:
 
-**Supercommunity(part::AbstractPartition, sim::AbstractSimilarity)**
+**Metacommunity(part::AbstractPartition, sim::AbstractSimilarity)**
 
 
 - `part` is an instance of type Part, the partition type, e.g.
@@ -178,58 +178,58 @@ individuals.
 
 - `partition` the instance of the AbstractPartition subtype, containing the
   subcommunities. These should be accessed through
-  getabundance(::Supercommunity).
+  getabundance(::Metacommunity).
 
 - `similarity` The instance of the AbstractSimilarity subtype, from which
   similarities between individuals can be calculated.
 
 - `ordinariness` A cache of the ordinariness of the individuals in the
   Partition. Should only be accessed through
-  getordinariness!(::Supercommunity), which will populate the cache if
+  getordinariness!(::Metacommunity), which will populate the cache if
   it has not yet been calculated.
 
 - `FPType` is the kind of number storage, a subtype of AbstractFloat.
 
 """
-type Supercommunity{FP, A, Part, Sim} <: AbstractSupercommunity{FP, A, Part, Sim}
+type Metacommunity{FP, A, Part, Sim} <: AbstractMetacommunity{FP, A, Part, Sim}
     
     partition::Part
     similarity::Sim
     ordinariness::Nullable{A}
 end
 
-function Supercommunity{Part <: AbstractPartition, Sim <: AbstractSimilarity}(part::Part, sim::Sim)
+function Metacommunity{Part <: AbstractPartition, Sim <: AbstractSimilarity}(part::Part, sim::Sim)
     psmatch(part, sim) || throw("Type mismatch")
     A = typeof(part.abundances)
     FP = eltype(A)
-    Supercommunity{FP, A, Part, Sim}(part, sim, Nullable{A}())
+    Metacommunity{FP, A, Part, Sim}(part, sim, Nullable{A}())
 end
 
-function Supercommunity{Part <: AbstractPartition}(part::Part)
+function Metacommunity{Part <: AbstractPartition}(part::Part)
     A = typeof(part.abundances)
     FP = eltype(A)
-    Supercommunity{FP, A, Part, Unique}(part, Unique(), Nullable{A}())
+    Metacommunity{FP, A, Part, Unique}(part, Unique(), Nullable{A}())
 end
 
 """
-### Multiple subcommunity constructors for Supercommunity
+### Multiple subcommunity constructors for Metacommunity
 """
-Supercommunity{Mat <: AbstractMatrix,
+Metacommunity{Mat <: AbstractMatrix,
 Sim <: AbstractSimilarity}(ab::Mat, sim::Sim = Unique()) =
-    Supercommunity(Subcommunities(ab), sim)
-Supercommunity{Mat1 <: AbstractMatrix, Mat2 <: AbstractMatrix}(ab::Mat1,
+    Metacommunity(Subcommunities(ab), sim)
+Metacommunity{Mat1 <: AbstractMatrix, Mat2 <: AbstractMatrix}(ab::Mat1,
                                                                z::Mat2) =
-    Supercommunity(Subcommunities(ab), MatrixSimilarity(z))
+    Metacommunity(Subcommunities(ab), MatrixSimilarity(z))
 
 """
-### Single subcommunity contructor for Supercommunity
+### Single subcommunity contructor for Metacommunity
 """
-Supercommunity{Vec <: AbstractVector,
+Metacommunity{Vec <: AbstractVector,
 Sim <: AbstractSimilarity}(ab::Vec, sim::Sim = Unique()) =
-    Supercommunity(Onecommunity(ab), sim)
+    Metacommunity(Onecommunity(ab), sim)
 
 """
-### Retrieves (and possibly calculates) the similarity matrix for a supercommunity
+### Retrieves (and possibly calculates) the similarity matrix for a metacommunity
 """
 function similaritymatrix
 end
@@ -245,19 +245,19 @@ function getsimilarity(part::AbstractPartition, sim::MatrixSimilarity)
     return sim.z
 end
 
-getsimilarity{Sup <: AbstractSupercommunity}(sup::Sup) =
+getsimilarity{Sup <: AbstractMetacommunity}(sup::Sup) =
     getsimilarity(sup.partition, sup.similarity)
 
 """
-### Retrieves (and possibly calculates) the relative abundances of a supercommunity
+### Retrieves (and possibly calculates) the relative abundances of a metacommunity
 """
 function getabundance
 end
 
-getabundance{Sup <: AbstractSupercommunity}(sup::Sup) = sup.partition.abundances
+getabundance{Sup <: AbstractMetacommunity}(sup::Sup) = sup.partition.abundances
 
 """
-### Calculates the ordinarinesses of the subcommunities in a supercommunity
+### Calculates the ordinarinesses of the subcommunities in a metacommunity
 """
 function getordinariness
 end
@@ -275,9 +275,9 @@ function getordinariness{Part <: AbstractPartition}(part::Part, ::Unique)
 end
 
 """
-### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a supercommunity
+### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a metacommunity
 """
-function getordinariness!{Sup <: AbstractSupercommunity}(sup::Sup)
+function getordinariness!{Sup <: AbstractMetacommunity}(sup::Sup)
     if isnull(sup.ordinariness)
         sup.ordinariness = getordinariness(sup.partition, sup.similarity)
     end
@@ -285,9 +285,9 @@ function getordinariness!{Sup <: AbstractSupercommunity}(sup::Sup)
 end
 
 """
-### Retrieves (and possibly calculates) the ordinarinesses of a whole supercommunity
+### Retrieves (and possibly calculates) the ordinarinesses of a whole metacommunity
 """
-function getsuperordinariness!{Sup <: AbstractSupercommunity}(sup::Sup)
+function getmetaordinariness!{Sup <: AbstractMetacommunity}(sup::Sup)
     ord = getordinariness!(sup)
     sumoversubcommunities(sup.partition, ord)
 end
@@ -295,7 +295,7 @@ end
 """
 ### Retrieves (and possibly calculates) the relative weights of the subcommunities
 """
-function getweight{Sup <: AbstractSupercommunity}(sup::Sup)
+function getweight{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     sumovertypes(sup.partition, ab)
 end
@@ -321,7 +321,7 @@ end
 end
 
 ## Now create the functions for the iterator interface for Partitions
-## and Supercommunities
+## and Metacommunities
 import Base.start, Base.next, Base.done, Base.eltype, Base.length
 
 function start{FP <: AbstractFloat, V <: AbstractVector}(::Onecommunity{FP, V})
@@ -372,27 +372,27 @@ function length{FP <: AbstractFloat, M <: AbstractMatrix}(sub::Subcommunities{FP
     size(sub.abundances, 2)
 end
 
-function start{Sup <: AbstractSupercommunity}(sup::Sup)
+function start{Sup <: AbstractMetacommunity}(sup::Sup)
     (1, start(sup.partition))
 end
 
-function next{Sup <: AbstractSupercommunity}(sup::Sup, state::Tuple{Int64, Tuple})
+function next{Sup <: AbstractMetacommunity}(sup::Sup, state::Tuple{Int64, Tuple})
     index_sup, index_part = state
     item_part, index_part = next(sup.partition, index_part)
     item_sup = getordinariness!(sup)[:, index_sup]
     ((item_sup, item_part), (index_sup + 1, index_part))
 end
 
-function done{Sup <: AbstractSupercommunity}(sup::Sup, state::Tuple{Int64, Tuple})
+function done{Sup <: AbstractMetacommunity}(sup::Sup, state::Tuple{Int64, Tuple})
     index_sup, state_part = state
     done(sup.partition, state_part)
 end
 
-function eltype{Sup <: AbstractSupercommunity}(sup::Sup)
+function eltype{Sup <: AbstractMetacommunity}(sup::Sup)
     (Vector{eltype(sup.ordinariness)}, eltype(sup.partition))
 end
 
-function length{Sup <: AbstractSupercommunity}(sup::Sup)
+function length{Sup <: AbstractMetacommunity}(sup::Sup)
     length(sup.partition)
 end
 
