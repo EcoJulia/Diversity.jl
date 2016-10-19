@@ -226,12 +226,12 @@
           
           <p><a id='Diversity.jl-1'></a></p>
 <h1 id="diversityjl">Diversity.jl</h1>
-<p>The main <strong>Diversity</strong> package provides basic numbers-equivalent diversity measures (described in <a href="http://www.jstor.org/stable/1934352">Hill, 1973</a>), similarity-sensitive diversity measures (generalised from Hill, and described in <a href="http://www.esajournals.org/doi/abs/10.1890/10-2402.1">Leinster and Cobbold, 2012</a>), and related alpha, beta and gamma diversity measures at the level of the supercommunity and its component subcommunities (generalised in turn from Leinster and Cobbold, and described in <a href="http://arxiv.org/abs/1404.6520">Reeve et al, 2014</a>). The diversity functions exist both with unicode names (e.g. <code>ᾱ()</code>), which are not automatically exported (as we feel they are too short) and with matching longer ASCII names (e.g. <code>NormalisedAlpha()</code>), which are. We also provide functions to calculate appropriate <code>subcommunityDiversity()</code> and <code>supercommunityDiversity()</code> values for each measure, a general <code>diversity()</code> function for extract any diversity measure at a series of scales.</p>
+<p>The main <strong>Diversity</strong> package provides basic numbers-equivalent diversity measures (described in <a href="http://www.jstor.org/stable/1934352">Hill, 1973</a>), similarity-sensitive diversity measures (generalised from Hill, and described in <a href="http://www.esajournals.org/doi/abs/10.1890/10-2402.1">Leinster and Cobbold, 2012</a>), and related alpha, beta and gamma diversity measures at the level of the metacommunity and its component subcommunities (generalised in turn from Leinster and Cobbold, and described in <a href="http://arxiv.org/abs/1404.6520">Reeve et al, 2014</a>). The diversity functions exist both with unicode names (e.g. <code>ᾱ()</code>), which are not automatically exported (as we feel they are too short) and with matching longer ASCII names (e.g. <code>NormalisedAlpha()</code>), which are. We also provide functions to calculate appropriate <code>subcommunityDiversity()</code> and <code>metacommunityDiversity()</code> values for each measure, a general <code>diversity()</code> function for extract any diversity measure at a series of scales.</p>
 <p>Accessing the main functionality in the package is simple:</p>
 <div class="codehilite"><pre><span></span>using Diversity
 ...
-diversities = supercommunityDiversity(NormalisedAlpha(Ecosystem(proportions, Z)), [0, 1, 2, Inf])
-diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
+diversities = metacommunityDiversity(NormalisedAlpha(Metacommunity(proportions, Z)), [0, 1, 2, Inf])
+diversity = metacommunityDiversity(RawRho(Metacommunity(proportions, Z)), 2)
 </pre></div>
 
 
@@ -241,7 +241,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <p><a id='Diversity' href='#Diversity'>#</a>
 <strong><code>Diversity</code></strong> &mdash; <em>Module</em>.</p>
 <p>The main <strong>Diversity</strong> module provides basic numbers-equivalent diversity measures (described in <a href="http://www.jstor.org/stable/1934352">Hill, 1973</a>), similarity-sensitive diversity measures (generalised from Hill, and described in <a href="http://www.esajournals.org/doi/abs/10.1890/10-2402.1">Leinster and Cobbold, 2012</a>), and related alpha, beta and gamma diversity measures at the level of the metacommunity and its component subcommunities (generalised in turn from Leinster and Cobbold, and described in <a href="http://arxiv.org/abs/1404.6520">Reeve et al, 2014</a>). The diversity functions exist both with unicode names (e.g. <code>ᾱ()</code>), which are not automatically exported (as we feel they are too short) and with matching longer ASCII names (e.g. <code>NormalisedAlpha()</code>), which are. We also provide functions to calculate appropriate <code>subcommunityDiversity()</code> and <code>metacommunityDiversity()</code> values for each measure, a general <code>diversity()</code> function for extract any diversity measure at a series of scales.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Diversity.jl#L3-L21' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Diversity.jl#L3-L21' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.individualDiversity' href='#Diversity.individualDiversity'>#</a>
 <strong><code>Diversity.individualDiversity</code></strong> &mdash; <em>Constant</em>.</p>
 <p><strong>Generates the function to calculate individual diversities</strong></p>
@@ -254,7 +254,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Function which takes a single number or vector of values of parameter q, and returns the individual diversities for those values.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L8-L23' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L8-L23' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.metacommunityDiversity' href='#Diversity.metacommunityDiversity'>#</a>
 <strong><code>Diversity.metacommunityDiversity</code></strong> &mdash; <em>Constant</em>.</p>
 <p><strong>Generates the function to calculate metacommunity diversity</strong></p>
@@ -267,7 +267,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Function which takes a single number or vector of values of parameter q, and returns the metacommunity diversities for those values.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L43-L58' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L43-L58' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.subcommunityDiversity' href='#Diversity.subcommunityDiversity'>#</a>
 <strong><code>Diversity.subcommunityDiversity</code></strong> &mdash; <em>Constant</em>.</p>
 <p><strong>Generates the function to calculate subcommunity diversity</strong></p>
@@ -280,11 +280,11 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Function which takes a single number or vector of values of parameter q, and returns the subcommunity diversities for those values.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L26-L40' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L26-L40' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.DiversityLevel' href='#Diversity.DiversityLevel'>#</a>
 <strong><code>Diversity.DiversityLevel</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>Enumeration of levels that can exist / be calculated for a metacommunity.</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L3-L5' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L3-L5' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.MatrixSimilarity' href='#Diversity.MatrixSimilarity'>#</a>
 <strong><code>Diversity.MatrixSimilarity</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>A general matrix-based AbstractSimilarity subtype</strong></p>
@@ -293,7 +293,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li><code>zMatrix</code> A two-dimensional matrix representing similarity between   individuals.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L90-L100' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L90-L100' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.MatrixSimilarity-Tuple{AbstractArray{FP<:AbstractFloat,2}}' href='#Diversity.MatrixSimilarity-Tuple{AbstractArray{FP<:AbstractFloat,2}}'>#</a>
 <strong><code>Diversity.MatrixSimilarity</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Constructor for MatrixSimilarity</strong></p>
@@ -302,15 +302,11 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li><code>z</code>: similarity matrix</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L109-L116' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L109-L116' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Metacommunity' href='#Diversity.Metacommunity'>#</a>
 <strong><code>Diversity.Metacommunity</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>Multiple subcommunity constructors for Metacommunity</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L214-L216' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.Metacommunity' href='#Diversity.Metacommunity'>#</a>
-<strong><code>Diversity.Metacommunity</code></strong> &mdash; <em>Type</em>.</p>
-<p><strong>Single subcommunity contructor for Metacommunity</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L224-L226' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L214-L216' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Metacommunity' href='#Diversity.Metacommunity'>#</a>
 <strong><code>Diversity.Metacommunity</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>Metacommunity type, representing a collection of individuals</strong></p>
@@ -328,30 +324,34 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <li><code>ordinariness</code> A cache of the ordinariness of the individuals in the Partition. Should only be accessed through getordinariness!(::Metacommunity), which will populate the cache if it has not yet been calculated.</li>
 <li><code>FPType</code> is the kind of number storage, a subtype of AbstractFloat.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L155-L193' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L155-L193' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Metacommunity' href='#Diversity.Metacommunity'>#</a>
+<strong><code>Diversity.Metacommunity</code></strong> &mdash; <em>Type</em>.</p>
+<p><strong>Single subcommunity contructor for Metacommunity</strong></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L224-L226' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Onecommunity' href='#Diversity.Onecommunity'>#</a>
 <strong><code>Diversity.Onecommunity</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>Partition type allowing only one subcommunity</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L32-L34' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L32-L34' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Species' href='#Diversity.Species'>#</a>
 <strong><code>Diversity.Species</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>A subtype of AbstractSimilarity where all species are completely distinct</strong></p>
 <p>This type is the simplest AbstractSimilarity subtype, which identifies all species as unique and completely distinct from each other.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L71-L76' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L71-L76' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Subcommunities' href='#Diversity.Subcommunities'>#</a>
 <strong><code>Diversity.Subcommunities</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>Partition type with multiple subcommunities</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L11-L13' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L11-L13' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Taxonomy' href='#Diversity.Taxonomy'>#</a>
 <strong><code>Diversity.Taxonomy</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>A subtype of AbstractSimilarity with similarity between related taxa</strong></p>
 <p>This subtype of AbstractSimilarity allows taxonomic similarity matrices</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L79-L83' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L79-L83' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Unique' href='#Diversity.Unique'>#</a>
 <strong><code>Diversity.Unique</code></strong> &mdash; <em>Type</em>.</p>
 <p><strong>A subtype of AbstractSimilarity where all individuals are completely distinct</strong></p>
 <p>This type is the simplest AbstractSimilarity subtype, which identifies all individuals as unique and completely distinct from each other.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L62-L67' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L62-L67' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.diversity-Tuple{Diversity.DiversityLevel,Any,Sup<:Diversity.AbstractMetacommunity,Any}' href='#Diversity.diversity-Tuple{Diversity.DiversityLevel,Any,Sup<:Diversity.AbstractMetacommunity,Any}'>#</a>
 <strong><code>Diversity.diversity</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculates subcommunity and metacommunity diversities</strong></p>
@@ -365,7 +365,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 </ul>
 <p><strong>Returns:</strong></p>
 <p>The requested diversities.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/GeneralisedDiversities.jl#L1-L16' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/GeneralisedDiversities.jl#L1-L16' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.diversity-Tuple{Set{Diversity.DiversityLevel},Set,Sup<:Diversity.AbstractMetacommunity,Any}' href='#Diversity.diversity-Tuple{Set{Diversity.DiversityLevel},Set,Sup<:Diversity.AbstractMetacommunity,Any}'>#</a>
 <strong><code>Diversity.diversity</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculates subcommunity and metacommunity diversities</strong></p>
@@ -379,7 +379,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 </ul>
 <p><strong>Returns:</strong></p>
 <p>A vector containing all of the diversity levels of all of the requested diversities.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/GeneralisedDiversities.jl#L22-L37' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/GeneralisedDiversities.jl#L22-L37' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getASCIIName' href='#Diversity.getASCIIName'>#</a>
 <strong><code>Diversity.getASCIIName</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Return the ASCII name of the DiversityMeasure</strong></p>
@@ -391,7 +391,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>String containing simple ASCII name of DiversityMeasure</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L86-L96' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L86-L96' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getFullName' href='#Diversity.getFullName'>#</a>
 <strong><code>Diversity.getFullName</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Return the full name of the DiversityMeasure</strong></p>
@@ -403,7 +403,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>String containing full descriptive name of DiversityMeasure</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L100-L110' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L100-L110' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getName-Tuple{DM<:Diversity.DiversityMeasure}' href='#Diversity.getName-Tuple{DM<:Diversity.DiversityMeasure}'>#</a>
 <strong><code>Diversity.getName</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Return the name of the DiversityMeasure</strong></p>
@@ -415,23 +415,23 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>String containing true unicode name of DiversityMeasure</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L70-L80' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L70-L80' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getabundance' href='#Diversity.getabundance'>#</a>
 <strong><code>Diversity.getabundance</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Retrieves (and possibly calculates) the relative abundances of a metacommunity</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L251-L253' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L251-L253' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getmetaordinariness!-Tuple{Sup<:Diversity.AbstractMetacommunity}' href='#Diversity.getmetaordinariness!-Tuple{Sup<:Diversity.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getmetaordinariness!</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Retrieves (and possibly calculates) the ordinarinesses of a whole metacommunity</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L287-L289' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L287-L289' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getordinariness!-Tuple{Sup<:Diversity.AbstractMetacommunity}' href='#Diversity.getordinariness!-Tuple{Sup<:Diversity.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getordinariness!</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a metacommunity</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L277-L279' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L277-L279' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getweight-Tuple{Sup<:Diversity.AbstractMetacommunity}' href='#Diversity.getweight-Tuple{Sup<:Diversity.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getweight</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Retrieves (and possibly calculates) the relative weights of the subcommunities</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/Metacommunity.jl#L295-L297' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/Metacommunity.jl#L295-L297' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.inddiv' href='#Diversity.inddiv'>#</a>
 <strong><code>Diversity.inddiv</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Returns individual diversities of a diversity measure</strong></p>
@@ -445,7 +445,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Returns individual diversities of <code>dm</code> for a single order <code>q</code> or a vector of order <code>qs</code>.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L137-L152' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L137-L152' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.metadiv' href='#Diversity.metadiv'>#</a>
 <strong><code>Diversity.metadiv</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Calculates metacommunity diversities of a diversity measure</strong></p>
@@ -459,7 +459,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Returns metacommunity diversities of <code>dm</code> for a single order <code>q</code> or a vector of order <code>qs</code>.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L216-L231' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L216-L231' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.qD-Tuple{Diversity.AbstractMetacommunity,Any}' href='#Diversity.qD-Tuple{Diversity.AbstractMetacommunity,Any}'>#</a>
 <strong><code>Diversity.qD</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculates Hill / naive-similarity diversity</strong></p>
@@ -473,7 +473,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/EffectiveNumbers.jl#L72-L83' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/EffectiveNumbers.jl#L72-L83' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.qDZ-Tuple{Diversity.AbstractMetacommunity,Any}' href='#Diversity.qDZ-Tuple{Diversity.AbstractMetacommunity,Any}'>#</a>
 <strong><code>Diversity.qDZ</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculates Leinster-Cobbold / similarity-sensitive diversity</strong></p>
@@ -488,7 +488,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/EffectiveNumbers.jl#L97-L111' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/EffectiveNumbers.jl#L97-L111' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.subdiv' href='#Diversity.subdiv'>#</a>
 <strong><code>Diversity.subdiv</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Calculates subcommunity diversities of a diversity measure</strong></p>
@@ -502,7 +502,7 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <ul>
 <li>Returns subcommunity diversities of <code>dm</code> for a single order <code>q</code> or a vector of order <code>qs</code>.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/3de50d3c8fefa6efc37fb0b0afcf533499cf1d8f/src/DiversityMeasure.jl#L171-L186' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/70602b5959f11fcf0c172b459d934ec545b81a99/src/DiversityMeasure.jl#L171-L186' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href=".#Diversity"><code>Diversity</code></a></li>
 <li><a href="ecology/#Diversity.Ecology"><code>Diversity.Ecology</code></a></li>
@@ -512,8 +512,8 @@ diversity = supercommunityDiversity(RawRho(Ecosystem(proportions, Z)), 2)
 <li><a href=".#Diversity.metacommunityDiversity"><code>Diversity.metacommunityDiversity</code></a></li>
 <li><a href=".#Diversity.subcommunityDiversity"><code>Diversity.subcommunityDiversity</code></a></li>
 <li><a href=".#Diversity.DiversityLevel"><code>Diversity.DiversityLevel</code></a></li>
-<li><a href=".#Diversity.MatrixSimilarity"><code>Diversity.MatrixSimilarity</code></a></li>
 <li><a href=".#Diversity.MatrixSimilarity-Tuple{AbstractArray{FP&lt;:AbstractFloat,2}}"><code>Diversity.MatrixSimilarity</code></a></li>
+<li><a href=".#Diversity.MatrixSimilarity"><code>Diversity.MatrixSimilarity</code></a></li>
 <li><a href=".#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
 <li><a href=".#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
 <li><a href=".#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
