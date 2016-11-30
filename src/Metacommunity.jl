@@ -248,8 +248,8 @@ function getsimilarity(part::AbstractPartition, sim::MatrixSimilarity)
     return sim.z
 end
 
-getsimilarity{Sup <: AbstractMetacommunity}(sup::Sup) =
-    getsimilarity(sup.partition, sup.similarity)
+getsimilarity{Meta <: AbstractMetacommunity}(meta::Meta) =
+    getsimilarity(meta.partition, meta.similarity)
 
 """
 ### Retrieves (and possibly calculates) the relative abundances of a metacommunity
@@ -257,7 +257,7 @@ getsimilarity{Sup <: AbstractMetacommunity}(sup::Sup) =
 function getabundance
 end
 
-getabundance{Sup <: AbstractMetacommunity}(sup::Sup) = sup.partition.abundances
+getabundance{Meta <: AbstractMetacommunity}(meta::Meta) = meta.partition.abundances
 
 """
 ### Calculates the ordinarinesses of the subcommunities in a metacommunity
@@ -280,27 +280,27 @@ end
 """
 ### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a metacommunity
 """
-function getordinariness!{Sup <: AbstractMetacommunity}(sup::Sup)
-    if isnull(sup.ordinariness)
-        sup.ordinariness = getordinariness(sup.partition, sup.similarity)
+function getordinariness!{Meta <: AbstractMetacommunity}(meta::Meta)
+    if isnull(meta.ordinariness)
+        meta.ordinariness = getordinariness(meta.partition, meta.similarity)
     end
-    get(sup.ordinariness)
+    get(meta.ordinariness)
 end
 
 """
 ### Retrieves (and possibly calculates) the ordinarinesses of a whole metacommunity
 """
-function getmetaordinariness!{Sup <: AbstractMetacommunity}(sup::Sup)
-    ord = getordinariness!(sup)
-    sumoversubcommunities(sup.partition, ord)
+function getmetaordinariness!{Meta <: AbstractMetacommunity}(meta::Meta)
+    ord = getordinariness!(meta)
+    sumoversubcommunities(meta.partition, ord)
 end
 
 """
 ### Retrieves (and possibly calculates) the relative weights of the subcommunities
 """
-function getweight{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    sumovertypes(sup.partition, ab)
+function getweight{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    sumovertypes(meta.partition, ab)
 end
 
 """
@@ -398,26 +398,26 @@ function length{FP <: AbstractFloat, M <: AbstractMatrix}(sub::Subcommunities{FP
     size(sub.abundances, 2)
 end
 
-function start{Sup <: AbstractMetacommunity}(sup::Sup)
-    (1, start(sup.partition))
+function start{Meta <: AbstractMetacommunity}(meta::Meta)
+    (1, start(meta.partition))
 end
 
-function next{Sup <: AbstractMetacommunity}(sup::Sup, state::Tuple{Int64, Tuple})
-    index_sup, index_part = state
-    item_part, index_part = next(sup.partition, index_part)
-    item_sup = getordinariness!(sup)[:, index_sup]
-    ((item_sup, item_part), (index_sup + 1, index_part))
+function next{Meta <: AbstractMetacommunity}(meta::Meta, state::Tuple{Int64, Tuple})
+    index_meta, index_part = state
+    item_part, index_part = next(meta.partition, index_part)
+    item_meta = getordinariness!(meta)[:, index_meta]
+    ((item_meta, item_part), (index_meta + 1, index_part))
 end
 
-function done{Sup <: AbstractMetacommunity}(sup::Sup, state::Tuple{Int64, Tuple})
-    index_sup, state_part = state
-    done(sup.partition, state_part)
+function done{Meta <: AbstractMetacommunity}(meta::Meta, state::Tuple{Int64, Tuple})
+    index_meta, state_part = state
+    done(meta.partition, state_part)
 end
 
-function eltype{Sup <: AbstractMetacommunity}(sup::Sup)
-    (Vector{eltype(sup.ordinariness)}, eltype(sup.partition))
+function eltype{Meta <: AbstractMetacommunity}(meta::Meta)
+    (Vector{eltype(meta.ordinariness)}, eltype(meta.partition))
 end
 
-function length{Sup <: AbstractMetacommunity}(sup::Sup)
-    length(sup.partition)
+function length{Meta <: AbstractMetacommunity}(meta::Meta)
+    length(meta.partition)
 end

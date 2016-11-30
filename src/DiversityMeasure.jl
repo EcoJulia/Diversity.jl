@@ -162,8 +162,8 @@ end
     map(q -> measure.diversities, qs)
 end
 
-@inline function inddiv{Sup <: AbstractMetacommunity}(sup::Sup, qs)
-    map(dm -> inddiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+@inline function inddiv{Meta <: AbstractMetacommunity}(meta::Meta, qs)
+    map(dm -> inddiv(dm(meta), qs), [RawAlpha, NormalisedAlpha,
                                     RawBeta, NormalisedBeta,
                                     RawRho, NormalisedRho, Gamma])
 end
@@ -207,8 +207,8 @@ end
                        q - 1.0, measure.abundances), qs)
 end
 
-@inline function subdiv{Sup <: AbstractMetacommunity}(sup::Sup, qs)
-    map(dm -> subdiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+@inline function subdiv{Meta <: AbstractMetacommunity}(meta::Meta, qs)
+    map(dm -> subdiv(dm(meta), qs), [RawAlpha, NormalisedAlpha,
                                     RawBeta, NormalisedBeta,
                                     RawRho, NormalisedRho, Gamma])
 end
@@ -242,8 +242,8 @@ end
                        1.0 - q, measure.weights), qs)
 end
 
-@inline function metadiv{Sup <: AbstractMetacommunity}(sup::Sup, qs)
-    map(dm -> metadiv(dm(sup), qs), [RawAlpha, NormalisedAlpha,
+@inline function metadiv{Meta <: AbstractMetacommunity}(meta::Meta, qs)
+    map(dm -> metadiv(dm(meta), qs), [RawAlpha, NormalisedAlpha,
                                       RawBeta, NormalisedBeta,
                                       RawRho, NormalisedRho, Gamma])
 end
@@ -267,7 +267,6 @@ function getPartitionFunction{DM <: DiversityMeasure}(measure::DM,
     end
 end
 
-
 """
 ### Raw alpha diversity type (α)
 
@@ -278,7 +277,7 @@ measures are simple powermeans of the individual measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type α{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -287,17 +286,17 @@ type α{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function α{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    w = arrayise(slicedim(getweight(sup), 1, 1))
+function α{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    w = arrayise(slicedim(getweight(meta), 1, 1))
     α{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         getordinariness!(sup) .^ -1)
+                                         getordinariness!(meta) .^ -1)
 end
 
 typealias RawAlpha α
 
-getASCIIName(::α) = "raw alpha"
-getFullName(::α) = "raw alpha diversity"
+getASCIIName(::RawAlpha) = "raw alpha"
+getFullName(::RawAlpha) = "raw alpha diversity"
 
 """
 ### Normalised alpha diversity type (ᾱ)
@@ -309,7 +308,7 @@ measures are simple powermeans of the individual measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type ᾱ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -318,12 +317,12 @@ type ᾱ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function ᾱ{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    ws = getweight(sup)
+function ᾱ{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    ws = getweight(meta)
     w = arrayise(slicedim(ws, 1, 1))
     ᾱ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         ws ./ getordinariness!(sup))
+                                         ws ./ getordinariness!(meta))
 end
 
 typealias NormalisedAlpha ᾱ
@@ -342,7 +341,7 @@ composite types are powermeans of those measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type β{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     RelativeEntropyMeasure{FP}
@@ -351,12 +350,12 @@ type β{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function β{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    w = arrayise(slicedim(getweight(sup), 1, 1))
+function β{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    w = arrayise(slicedim(getweight(meta), 1, 1))
     β{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         getordinariness!(sup) ./
-                                         getmetaordinariness!(sup))
+                                         getordinariness!(meta) ./
+                                         getmetaordinariness!(meta))
 end
 
 typealias RawBeta β
@@ -376,7 +375,7 @@ composite types are powermeans of those measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type β̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     RelativeEntropyMeasure{FP}
@@ -385,13 +384,13 @@ type β̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function β̄{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    ws = getweight(sup)
+function β̄{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    ws = getweight(meta)
     w = arrayise(slicedim(ws, 1, 1))
     β̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         getordinariness!(sup) ./
-                                         (getmetaordinariness!(sup) .* ws))
+                                         getordinariness!(meta) ./
+                                         (getmetaordinariness!(meta) .* ws))
 end
 
 typealias NormalisedBeta β̄
@@ -410,7 +409,7 @@ measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type ρ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -419,12 +418,12 @@ type ρ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function ρ{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    w = arrayise(slicedim(getweight(sup), 1, 1))
+function ρ{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    w = arrayise(slicedim(getweight(meta), 1, 1))
     ρ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         getmetaordinariness!(sup) ./
-                                         getordinariness!(sup))
+                                         getmetaordinariness!(meta) ./
+                                         getordinariness!(meta))
 end
 
 typealias RawRho ρ
@@ -444,7 +443,7 @@ measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type ρ̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -453,13 +452,13 @@ type ρ̄{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function ρ̄{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    ws = getweight(sup)
+function ρ̄{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    ws = getweight(meta)
     w = arrayise(slicedim(ws, 1, 1))
     ρ̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
-                                         (getmetaordinariness!(sup) .* ws) ./
-                                         getordinariness!(sup))
+                                         (getmetaordinariness!(meta) .* ws) ./
+                                         getordinariness!(meta))
 end
 
 typealias NormalisedRho ρ̄
@@ -478,7 +477,7 @@ measures are simple powermeans of the individual measures.
 
 #### Constructor arguments:
 
-- `sup`: a Metacommunity
+- `meta`: a Metacommunity
 """
 type γ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     PowerMeanMeasure{FP}
@@ -487,13 +486,13 @@ type γ{FP, AbArray <: AbstractArray, WArray <: AbstractArray} <:
     diversities::AbArray
 end
 
-function γ{Sup <: AbstractMetacommunity}(sup::Sup)
-    ab = getabundance(sup)
-    ws = getweight(sup)
+function γ{Meta <: AbstractMetacommunity}(meta::Meta)
+    ab = getabundance(meta)
+    ws = getweight(meta)
     w = arrayise(slicedim(ws, 1, 1))
     γ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          ones(eltype(ws), size(ws)) ./
-                                         getmetaordinariness!(sup))
+                                         getmetaordinariness!(meta))
 end
 
 typealias Gamma γ

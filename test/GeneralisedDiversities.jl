@@ -10,12 +10,12 @@ else
     const Test = BaseTestNext
 end
 
-supcom = Metacommunity([1 2; 1 2])
+metacom = Metacommunity([1 2; 1 2])
 
 # Basic checks for the diversity() function
 @testset "diversity()" begin
-    @test diversity(metacommunityDiversity, ρ̄, supcom, 1) ≈ 1
-    @test diversity(Set([subcommunityDiversity]), Set([ρ̄]), supcom, 1)[1] ≈ [1.0, 1.0]
+    @test diversity(metacommunityDiversity, ρ̄, metacom, 1) ≈ 1
+    @test diversity(Set([subcommunityDiversity]), Set([ρ̄]), metacom, 1)[1] ≈ [1.0, 1.0]
 end
 
 end

@@ -41,17 +41,17 @@ tax = Taxonomy(Dict{AbstractString,
 end
 
 sc = Subcommunities(ab3)
-sup = Metacommunity(oc_count, ms)
+meta = Metacommunity(oc_count, ms)
 sp = Species()
-sup2 = Metacommunity(sc, sp)
+meta2 = Metacommunity(sc, sp)
 @testset "Metacommunity" begin
-    @test sup.similarity == ms
-    @test sup.partition == oc_count
-    @test isnull(sup.ordinariness)
-    @test getordinariness!(sup) ≈ [0.3, 0.6, 1.0]
-    @test !isnull(sup.ordinariness)
+    @test meta.similarity == ms
+    @test meta.partition == oc_count
+    @test isnull(meta.ordinariness)
+    @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
+    @test !isnull(meta.ordinariness)
     @test_throws DimensionMismatch Metacommunity(sc, ms)
-    @test getsimilarity(sup2) ≈ eye(size(ab3, 1))
+    @test getsimilarity(meta2) ≈ eye(size(ab3, 1))
 end
 
 end
