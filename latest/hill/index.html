@@ -254,7 +254,7 @@ diversities = hillnumber(community, [0, 1, 2])
 <p><a id='Diversity.Hill' href='#Diversity.Hill'>#</a>
 <strong><code>Diversity.Hill</code></strong> &mdash; <em>Module</em>.</p>
 <p><a href="http://www.jstor.org/stable/1934352">Hill numbers</a> are found in the <strong>Diversity.Hill</strong> package.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/d089f8e8f0bedc02cdeb6758a168021c95ee1f5d/src/Diversity.jl#L183-L186' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/e2470374e2bdbcca148c22a179ee38b15498539f/src/Diversity.jl#L201-L204' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Hill.hillnumber-Tuple{Any,Any}' href='#Diversity.Hill.hillnumber-Tuple{Any,Any}'>#</a>
 <strong><code>Diversity.Hill.hillnumber</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculates Hill numbers</strong></p>
@@ -268,7 +268,7 @@ diversities = hillnumber(community, [0, 1, 2])
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/d089f8e8f0bedc02cdeb6758a168021c95ee1f5d/src/Hill.jl#L3-L17' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/e2470374e2bdbcca148c22a179ee38b15498539f/src/Hill.jl#L3-L17' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="../ecology/#Diversity.Ecology"><code>Diversity.Ecology</code></a></li>
@@ -278,13 +278,20 @@ diversities = hillnumber(community, [0, 1, 2])
 <li><a href="..#Diversity.metacommunityDiversity"><code>Diversity.metacommunityDiversity</code></a></li>
 <li><a href="..#Diversity.subcommunityDiversity"><code>Diversity.subcommunityDiversity</code></a></li>
 <li><a href="..#Diversity.DiversityLevel"><code>Diversity.DiversityLevel</code></a></li>
+<li><a href="..#Diversity.Gamma"><code>Diversity.Gamma</code></a></li>
 <li><a href="..#Diversity.MatrixSimilarity"><code>Diversity.MatrixSimilarity</code></a></li>
 <li><a href="..#Diversity.MatrixSimilarity-Tuple{AbstractArray{FP&lt;:AbstractFloat,2}}"><code>Diversity.MatrixSimilarity</code></a></li>
 <li><a href="..#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
 <li><a href="..#Diversity.Metacommunity-Tuple{Arr&lt;:AbstractArray,Mat&lt;:AbstractArray{T,2}}"><code>Diversity.Metacommunity</code></a></li>
 <li><a href="..#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
 <li><a href="..#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
+<li><a href="..#Diversity.NormalisedAlpha"><code>Diversity.NormalisedAlpha</code></a></li>
+<li><a href="..#Diversity.NormalisedBeta"><code>Diversity.NormalisedBeta</code></a></li>
+<li><a href="..#Diversity.NormalisedRho"><code>Diversity.NormalisedRho</code></a></li>
 <li><a href="..#Diversity.Onecommunity"><code>Diversity.Onecommunity</code></a></li>
+<li><a href="..#Diversity.RawAlpha"><code>Diversity.RawAlpha</code></a></li>
+<li><a href="..#Diversity.RawBeta"><code>Diversity.RawBeta</code></a></li>
+<li><a href="..#Diversity.RawRho"><code>Diversity.RawRho</code></a></li>
 <li><a href="..#Diversity.Species"><code>Diversity.Species</code></a></li>
 <li><a href="..#Diversity.Subcommunities"><code>Diversity.Subcommunities</code></a></li>
 <li><a href="..#Diversity.Taxonomy"><code>Diversity.Taxonomy</code></a></li>
@@ -300,11 +307,11 @@ diversities = hillnumber(community, [0, 1, 2])
 <li><a href="./#Diversity.Hill.hillnumber-Tuple{Any,Any}"><code>Diversity.Hill.hillnumber</code></a></li>
 <li><a href="../jost/#Diversity.Jost.jostalpha-Tuple{Array{S&lt;:AbstractFloat,2},Any}"><code>Diversity.Jost.jostalpha</code></a></li>
 <li><a href="../jost/#Diversity.Jost.jostbeta-Tuple{Array{S&lt;:AbstractFloat,2},Any}"><code>Diversity.Jost.jostbeta</code></a></li>
-<li><a href="..#Diversity.diversity-Tuple{Diversity.DiversityLevel,Any,Meta&lt;:Diversity.AbstractMetacommunity,Any}"><code>Diversity.diversity</code></a></li>
 <li><a href="..#Diversity.diversity-Tuple{Set{Diversity.DiversityLevel},Set,Meta&lt;:Diversity.AbstractMetacommunity,Any}"><code>Diversity.diversity</code></a></li>
-<li><a href="..#Diversity.getASCIIName"><code>Diversity.getASCIIName</code></a></li>
+<li><a href="..#Diversity.diversity-Tuple{Diversity.DiversityLevel,Any,Meta&lt;:Diversity.AbstractMetacommunity,Any}"><code>Diversity.diversity</code></a></li>
+<li><a href="..#Diversity.getASCIIName-Tuple{Diversity.DiversityMeasure}"><code>Diversity.getASCIIName</code></a></li>
 <li><a href="..#Diversity.getFullName"><code>Diversity.getFullName</code></a></li>
-<li><a href="..#Diversity.getName-Tuple{DM&lt;:Diversity.DiversityMeasure}"><code>Diversity.getName</code></a></li>
+<li><a href="..#Diversity.getName"><code>Diversity.getName</code></a></li>
 <li><a href="..#Diversity.getabundance"><code>Diversity.getabundance</code></a></li>
 <li><a href="..#Diversity.getmetaordinariness!-Tuple{Meta&lt;:Diversity.AbstractMetacommunity}"><code>Diversity.getmetaordinariness!</code></a></li>
 <li><a href="..#Diversity.getordinariness!-Tuple{Meta&lt;:Diversity.AbstractMetacommunity}"><code>Diversity.getordinariness!</code></a></li>
