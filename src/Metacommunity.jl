@@ -217,9 +217,6 @@ end
 Metacommunity{Mat <: AbstractMatrix,
 Sim <: AbstractSimilarity}(ab::Mat, sim::Sim = Unique()) =
     Metacommunity(Subcommunities(ab), sim)
-Metacommunity{Mat1 <: AbstractMatrix, Mat2 <: AbstractMatrix}(ab::Mat1,
-                                                               z::Mat2) =
-    Metacommunity(Subcommunities(ab), MatrixSimilarity(z))
 
 """
 ### Single subcommunity contructor for Metacommunity
@@ -227,6 +224,12 @@ Metacommunity{Mat1 <: AbstractMatrix, Mat2 <: AbstractMatrix}(ab::Mat1,
 Metacommunity{Vec <: AbstractVector,
 Sim <: AbstractSimilarity}(ab::Vec, sim::Sim = Unique()) =
     Metacommunity(Onecommunity(ab), sim)
+
+"""
+### Constructor for Metacommunity with a similarity matrix
+"""
+Metacommunity{Arr <: AbstractArray, Mat <: AbstractMatrix}(ab::Arr, z::Mat) =
+    Metacommunity(ab, MatrixSimilarity(z))
 
 """
 ### Retrieves (and possibly calculates) the similarity matrix for a metacommunity
