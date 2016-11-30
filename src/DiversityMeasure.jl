@@ -233,12 +233,12 @@ function metadiv
 end
 
 @inline function metadiv{DM <: DiversityMeasure}(measure::DM, q::Real)
-    powermean(subdiv(measure, q), 1.0 - q, measure.weights)
+    powermean(arrayise(subdiv(measure, q)), 1.0 - q, measure.weights)
 end
 
 @inline function metadiv{DM <: DiversityMeasure,
     Vec <: AbstractVector}(measure::DM, qs::Vec)
-    map(q -> powermean(subdiv(measure, q),
+    map(q -> powermean(arrayise(subdiv(measure, q)),
                        1.0 - q, measure.weights), qs)
 end
 
@@ -289,7 +289,7 @@ end
 
 function α{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
-    w = vec(collect(getweight(sup)))
+    w = arrayise(slicedim(getweight(sup), 1, 1))
     α{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          getordinariness!(sup) .^ -1)
 end
@@ -320,8 +320,8 @@ end
 
 function ᾱ{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
-    ws = getweight(sup)    
-    w = vec(collect(ws))
+    ws = getweight(sup)
+    w = arrayise(slicedim(ws, 1, 1))
     ᾱ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          ws ./ getordinariness!(sup))
 end
@@ -353,7 +353,7 @@ end
 
 function β{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
-    w = vec(collect(getweight(sup)))
+    w = arrayise(slicedim(getweight(sup), 1, 1))
     β{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          getordinariness!(sup) ./
                                          getmetaordinariness!(sup))
@@ -388,7 +388,7 @@ end
 function β̄{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)
-    w = vec(collect(ws))
+    w = arrayise(slicedim(ws, 1, 1))
     β̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          getordinariness!(sup) ./
                                          (getmetaordinariness!(sup) .* ws))
@@ -421,7 +421,7 @@ end
 
 function ρ{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
-    w = vec(collect(getweight(sup)))
+    w = arrayise(slicedim(getweight(sup), 1, 1))
     ρ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          getmetaordinariness!(sup) ./
                                          getordinariness!(sup))
@@ -456,7 +456,7 @@ end
 function ρ̄{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)
-    w = vec(collect(ws))
+    w = arrayise(slicedim(ws, 1, 1))
     ρ̄{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          (getmetaordinariness!(sup) .* ws) ./
                                          getordinariness!(sup))
@@ -490,7 +490,7 @@ end
 function γ{Sup <: AbstractMetacommunity}(sup::Sup)
     ab = getabundance(sup)
     ws = getweight(sup)
-    w = vec(collect(ws))
+    w = arrayise(slicedim(ws, 1, 1))
     γ{eltype(ab), typeof(ab), typeof(w)}(ab, w,
                                          ones(eltype(ws), size(ws)) ./
                                          getmetaordinariness!(sup))

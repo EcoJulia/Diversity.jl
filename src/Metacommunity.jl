@@ -300,24 +300,46 @@ function getweight{Sup <: AbstractMetacommunity}(sup::Sup)
     sumovertypes(sup.partition, ab)
 end
 
+"""
+### Sums an array over its subcommunities
+
+Sums an array over its 2nd and higher dimensions (the subcommunities),
+leaving an array of the same dimensionality (but length of non-1st
+dimension is 1).
+"""
 @inline function sumoversubcommunities{FP <: AbstractFloat,
-    M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M)
-    vec(mapslices(sum, vals, 2))::Vector{FP}
+    M <: AbstractArray}(::AbstractPartition{FP, M}, vals::M)
+    mapslices(sum, vals, collect(2:ndims(vals)))::M
 end
 
 @inline function sumoversubcommunities{FP <: AbstractFloat,
-    V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V)
+    V <: AbstractVector}(::AbstractPartition{FP, V}, vals::V)
     vals
 end
 
+"""
+### Sums an array over its types
+
+Sums an array over its 1st dimension (the types), leaving an array of the
+same dimensionality (but length of 1st dimension is 1).
+"""
 @inline function sumovertypes{FP <: AbstractFloat,
-    M <: AbstractMatrix}(sc::Subcommunities{FP, M}, vals::M)
+    M <: AbstractArray}(::AbstractPartition{FP, M}, vals::M)
     mapslices(sum, vals, 1)::M
 end
 
-@inline function sumovertypes{FP <: AbstractFloat,
-    V <: AbstractVector}(oc::Onecommunity{FP, V}, vals::V)
-    sum(vals)
+"""
+### Turns its argument into an array, if necessary
+
+Returns the argument if it is an array, or an array containing the argument
+if it's a number
+"""
+@inline function arrayise(arr::AbstractArray)
+  arr
+end
+
+@inline function arrayise(num::Number)
+  [num]
 end
 
 
