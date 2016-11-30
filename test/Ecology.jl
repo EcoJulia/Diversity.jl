@@ -1,7 +1,7 @@
 module TestEcology
 
 using Diversity
-using Diversity.ᾱ, Diversity.γ
+using Diversity.ShortNames
 if VERSION >= v"0.5.0-dev+7720"
     using Base.Test
 else
@@ -35,13 +35,13 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 end
 
 @testset "Generalised ecological diversities" begin
-    @test generalisedrichness(metacommunityDiversity, γ,
+    @test generalisedrichness(metacommunityDiversity, Γ,
                               communities, Z1) ≈ 1
     
-    @test generalisedshannon(metacommunityDiversity, γ,
+    @test generalisedshannon(metacommunityDiversity, Γ,
                              communities, Z1) ≈ 0
     
-    @test generalisedsimpson(metacommunityDiversity, γ,
+    @test generalisedsimpson(metacommunityDiversity, Γ,
                              communities, Z1) ≈ 1
     
     @test generalisedjaccard([1 0 1; 0 1 1]', [0, Inf]) ≈ [1.0/3.0, 1.0]

@@ -1,5 +1,5 @@
 using Diversity
-using Diversity.α, Diversity.ᾱ, Diversity.γ
+using Diversity.ShortNames
 
 """
 ### Calculate a generalised version of richness
@@ -12,7 +12,8 @@ similarity matrix for the species
 #### Arguments:
 - `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
 
-- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
+- `DM`: diversity measure to use (one of (Raw|Normalised)Alpha,
+        (Raw|Normalised)Beta, (Raw|Normalised)Rho or Gamma)
 
 - `proportions`: population proportions
 
@@ -55,7 +56,8 @@ includes a similarity matrix for the species
 #### Arguments:
 - `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
 
-- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
+- `DM`: diversity measure to use (one of (Raw|Normalised)Alpha,
+        (Raw|Normalised)Beta, (Raw|Normalised)Rho or Gamma)
 
 - `proportions`: population proportions
 
@@ -98,7 +100,8 @@ includes a similarity matrix for the species
 #### Arguments:
 - `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
 
-- `DM`: diversity measure to use (one of α, ᾱ, β, β̄, ρ, ρ̄, γ)
+- `DM`: diversity measure to use (one of (Raw|Normalised)Alpha,
+        (Raw|Normalised)Beta, (Raw|Normalised)Rho or Gamma)
 
 - `proportions`: population proportions
 
@@ -158,8 +161,8 @@ function generalisedjaccard{Arr <: AbstractArray,
     eco = Metacommunity(proportions, Z)
     length(eco) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    (metacommunityDiversity(α(eco), qs) ./
-     metacommunityDiversity(γ(eco), qs)) - 1
+    (metadiv(α(eco), qs) ./
+     metadiv(Γ(eco), qs)) - 1
 end
 
 """

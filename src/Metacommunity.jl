@@ -332,16 +332,20 @@ same dimensionality (but length of 1st dimension is 1).
 end
 
 """
-### Turns its argument into an array, if necessary
+### Turns its argument into an vector, if necessary
 
-Returns the argument if it is an array, or an array containing the argument
-if it's a number
+Returns the argument if it is an vector, or reduce an array to a vector,
+or return a vector containing the argument if it's a number
 """
-@inline function arrayise(arr::AbstractArray)
+@inline function vectorise(arr::AbstractVector)
   arr
 end
 
-@inline function arrayise(num::Number)
+@inline function vectorise(arr::AbstractArray)
+  vec(arr)
+end
+
+@inline function vectorise(num::Real)
   [num]
 end
 

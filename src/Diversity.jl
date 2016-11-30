@@ -39,7 +39,25 @@ export individualDiversity, subcommunityDiversity, metacommunityDiversity
 export RawAlpha, NormalisedAlpha
 export RawBeta, NormalisedBeta, RawRho, NormalisedRho
 export Gamma
-## We do not export ᾱ, α, β̄, β, ρ̄, ρ, γ̄, γ as they're too short
+
+## We do not directly export ᾱ, α, β̄, β, ρ̄, ρ, γ̄, γ as they're too short, only via Diversity.ShortNames
+module ShortNames
+using Diversity
+
+typealias α RawAlpha
+typealias ᾱ NormalisedAlpha
+typealias β RawBeta
+typealias β̄ NormalisedBeta
+typealias ρ RawRho
+typealias ρ̄ NormalisedRho
+typealias γ Gamma
+
+export α, ᾱ, β, β̄, ρ, ρ̄
+# γ actually can't be exported like this - it'll always just be Shortnames.γ, so we export Γ instead
+typealias Γ Gamma
+export Γ
+
+end
 
 export getName, getASCIIName, getFullName
 

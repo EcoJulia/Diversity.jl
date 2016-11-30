@@ -1,5 +1,6 @@
 module TestDiversityMeasure
 using Diversity
+using Diversity.ShortNames
 
 if VERSION >= v"0.5.0-dev+7720"
     using Base.Test
@@ -23,13 +24,11 @@ nab = NormalisedAlpha(meta2)
 @testset "Diversity measures" begin
     diversities = [RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
                    RawRho, NormalisedRho, Gamma]
-    shortds = [Diversity.α, Diversity.ᾱ,
-               Diversity.β, Diversity.β̄,
-               Diversity.ρ, Diversity.ρ̄, Diversity.γ]
+    shortds = [α, ᾱ, β, β̄, ρ, ρ̄, Γ]
     chars = ["α", "ᾱ", "β", "β̄", "ρ", "ρ̄", "γ"]
-    asciis = ["raw alpha", "normalised alpha",
-              "raw beta", "normalised beta",
-              "raw rho", "normalised rho", "gamma"]
+    asciis = ["RawAlpha", "NormalisedAlpha",
+              "RawBeta", "NormalisedBeta",
+              "RawRho", "NormalisedRho", "Gamma"]
     fulls = ["raw alpha diversity", "normalised alpha diversity",
              "distinctiveness", "effective number of subcommunities",
              "redundancy", "representativeness", "gamma diversity"]
@@ -61,7 +60,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     @test subcommunityDiversity(nab, Inf) ≈ subdiv(nab, Inf)
     @test subdiv(nab, [4, 5])[1] ≈ subdiv(nab, 4)
     @test subdiv(meta2, Inf)[2] ≈ subdiv(nab, Inf)
-    @test metadiv(meta1, Inf)[2] ≈ metadiv(Diversity.ᾱ(meta1), Inf)
+    @test metadiv(meta1, Inf)[2] ≈ metadiv(ᾱ(meta1), Inf)
 
     scg = subcommunityDiversity(Gamma(meta2))
     @test scg(1) ≈ scg(1.0)
@@ -75,7 +74,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     @test length(sna) == 4
     for i in eachindex(sna)
         @test sna[i] ≈ ones(size(communities, 2))
-    end
+    end 
     @test subdiv(RawAlpha(Metacommunity(communities)), 0) ≈ numspecies * vec(mapslices(v -> 1. / sum(v), communities, 1))
 
     even = ones((numspecies, numcommunities)) / (numspecies * numcommunities);
