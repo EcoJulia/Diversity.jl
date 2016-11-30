@@ -233,13 +233,13 @@ function metadiv
 end
 
 @inline function metadiv{DM <: DiversityMeasure}(measure::DM, q::Real)
-    powermean(arrayise(subdiv(measure, q)), 1.0 - q, measure.weights)
+    powermean(vec(arrayise(subdiv(measure, q))), 1.0 - q, vec(measure.weights))
 end
 
 @inline function metadiv{DM <: DiversityMeasure,
     Vec <: AbstractVector}(measure::DM, qs::Vec)
-    map(q -> powermean(arrayise(subdiv(measure, q)),
-                       1.0 - q, measure.weights), qs)
+    map(q -> powermean(vec(arrayise(subdiv(measure, q))),
+                       1.0 - q, vec(measure.weights)), qs)
 end
 
 @inline function metadiv{Meta <: AbstractMetacommunity}(meta::Meta, qs)
