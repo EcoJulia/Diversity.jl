@@ -13,14 +13,14 @@ abstract AbstractPartition{FP <: AbstractFloat, A <: AbstractArray}
 """
 type Subcommunities{FP, M <: AbstractMatrix} <: AbstractPartition{FP, M}
     abundances::M
-    
+
     Subcommunities(m::AbstractMatrix{FP}) = new(m)
 end
 
 function Subcommunities{FP <: AbstractFloat}(abundances::AbstractMatrix{FP},
                                              normalise::Bool = false)
     relative = normalise ? abundances / sum(abundances) : abundances
-    isapprox(sum(relative), 1.0) || error("Not normalised")
+    sum(relative) ≈ 1.0 || error("Not normalised")
     Subcommunities{FP, typeof(relative)}(relative)
 end
 
@@ -34,14 +34,14 @@ end
 """
 type Onecommunity{FP, V <: AbstractVector} <: AbstractPartition{FP, V}
     abundances::V
-    
+
     Onecommunity(v::AbstractVector{FP}) = new(v)
 end
 
 function Onecommunity{FP <: AbstractFloat}(abundances::AbstractVector{FP},
                                            normalise::Bool = false)
     relative = normalise ? abundances / sum(abundances) : abundances
-    isapprox(sum(relative), 1.0) || error("Not normalised")
+    sum(relative) ≈ 1.0 || error("Not normalised")
     Onecommunity{FP, typeof(relative)}(relative)
 end
 
@@ -117,11 +117,11 @@ Creates an instance of the MatrixSimilarity class, with an arbitrary similarity 
 function MatrixSimilarity{FP <: AbstractFloat}(z::AbstractMatrix{FP})
     size(z, 1) == size(z, 2) ||
     throw(DimensionMismatch("Similarity matrix is not square"))
-    
+
     min(minimum(z), 0.0) ≈ 0.0 || throw(DomainError())
-    
+
     max(maximum(z), 1.0) ≈ 1.0 || warn("Similarity matrix has values above 1")
-    
+
     MatrixSimilarity{FP, typeof(z)}(z)
 end
 
@@ -192,7 +192,7 @@ individuals.
 
 """
 type Metacommunity{FP, A, Part, Sim} <: AbstractMetacommunity{FP, A, Part, Sim}
-    
+
     partition::Part
     similarity::Sim
     ordinariness::Nullable{A}
@@ -236,7 +236,7 @@ end
 
 getsimilarity{Part <: AbstractPartition}(part::Part, ::Unique) =
     convert(Array{eltype(part.abundances), 2}, eye(size(part.abundances, 1)))
-    
+
 getsimilarity(part::AbstractPartition, ::Taxonomy) =
     error("Can't generate a taxonomic similarity matrix yet")
 
@@ -320,6 +320,7 @@ end
     sum(vals)
 end
 
+
 ## Now create the functions for the iterator interface for Partitions
 ## and Metacommunities
 import Base.start, Base.next, Base.done, Base.eltype, Base.length
@@ -395,4 +396,3 @@ end
 function length{Sup <: AbstractMetacommunity}(sup::Sup)
     length(sup.partition)
 end
-

@@ -18,7 +18,7 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
                                        weights::AbstractArray{S, 1} = ones(values))
     length(values) == length(weights) ||
     throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
-    
+
     # Normalise weights to sum to 1 (as per Rényi)
     proportions = weights / sum(weights)
 
@@ -27,9 +27,9 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
     if (all(isnan(proportions)))
         return(convert(S, NaN))
     end
-    
+
     # Extract values with non-zero weights
-    present = collect(filter(x -> !isapprox(x[1], 0.0), zip(proportions, values)))
+    present = collect(filter(x -> !(x[1] ≈ 0.0), zip(proportions, values)))
     if (isinf(order))
         if (order > 0) # +Inf -> Maximum
             reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
