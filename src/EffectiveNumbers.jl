@@ -29,7 +29,7 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
     end
 
     # Extract values with non-zero weights
-    present = collect(filter(x -> !(x[1] ≈ 0.0), zip(proportions, values)))
+    present = [(proportions[i], values[i]) for i=1:length(proportions) if !(proportions[i] ≈ 0)]
     if (isinf(order))
         if (order > 0) # +Inf -> Maximum
             reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
