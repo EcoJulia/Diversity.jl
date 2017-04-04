@@ -25,7 +25,7 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 @testset "Standard ecological diversities" begin
     @test richness(communities) ≈ subdiv(ᾱ(eco), 0)
     
-    @test shannon(communities) ≈ log(subdiv(ᾱ(eco), 1))
+    @test shannon(communities) ≈ log.(subdiv(ᾱ(eco), 1))
     
     @test simpson(communities) ≈ subdiv(ᾱ(eco), 2) .^ -1
     

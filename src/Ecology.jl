@@ -70,7 +70,7 @@ function generalisedshannon{Arr <: AbstractArray,
     Mat <: AbstractMatrix}(level::DiversityLevel, dm,
                            proportions::Arr,
                            Z::Mat = eye(size(proportions, 1)))
-    log(level(dm(Metacommunity(proportions, Z)), 1))
+    log.(level(dm(Metacommunity(proportions, Z)), 1))
 end
 
 """
