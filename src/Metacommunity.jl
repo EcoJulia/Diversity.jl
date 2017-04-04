@@ -64,12 +64,12 @@ function getsimilarity(ut::UniqueTypes)
     return eye(ut.num)
 end
 
-function getordinariness(ut::UniqueTypes, abundances::AbstractArray)
+function getordinariness(::UniqueTypes, abundances::AbstractArray)
     return abundances
 end
 
 function hasnames(ut::UniqueTypes)
-    return isnull(ut.names)
+    return !isnull(ut.names)
 end
                   
 function getnames(ut::UniqueTypes)
@@ -210,7 +210,7 @@ function floattypes{FP, M}(::GeneralTypes{FP, M})
 end
 
 function hasnames(gt::GeneralTypes)
-    return isnull(gt.names)
+    return !isnull(gt.names)
 end
                   
 function getnames(gt::GeneralTypes)
