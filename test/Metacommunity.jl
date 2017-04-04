@@ -23,9 +23,9 @@ end
 
 tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
 @testset "Taxonomy" begin
-    @test counttypes(tax) == 2
-    @test hasnames(tax)
-    @test getnames(tax) == ["This", "That"]
+    @test Diversity.counttypes(tax) == 2
+    @test Diversity.hasnames(tax)
+    @test Diversity.getnames(tax) == ["This", "That"]
     @test_throws ErrorException Diversity.getsimilarity(tax)
     @test_throws ErrorException Diversity.getordinariness(tax, abnorm)
     @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
