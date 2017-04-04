@@ -123,7 +123,7 @@ function floattypes{FP}(::Taxonomy{FP})
 end
 
 function hasnames(tax::Taxonomy)
-    return :Species ∈ tax.speciesinfo.colindex.names[1]
+    return :Species ∈ tax.speciesinfo.colindex.names
 end
                   
 function getnames(tax::Taxonomy)
