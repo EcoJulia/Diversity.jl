@@ -29,9 +29,9 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
     
     @test simpson(communities) ≈ subdiv(ᾱ(eco), 2) .^ -1
     
-    @test jaccard([1 0 0; 0 1 1]') ≈ 0
-    @test jaccard([1 0 1; 0 1 1]') ≈ 1.0 / 3.0
-    @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1])
+    @test jaccard([1 0 0; 0 1 1]'/3) ≈ 0
+    @test jaccard([1 0 1; 0 1 1]'/4) ≈ 1.0 / 3.0
+    @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1]/7)
 end
 
 @testset "Generalised ecological diversities" begin
@@ -44,8 +44,8 @@ end
     @test generalisedsimpson(metacommunityDiversity, Γ,
                              communities, Z1) ≈ 1
     
-    @test generalisedjaccard([1 0 1; 0 1 1]', [0, Inf]) ≈ [1.0/3.0, 1.0]
-    @test generalisedjaccard([1 1 1; 1 1 1]', [0, 1]) ≈ [1, 1]
+    @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf]) ≈ [1.0/3.0, 1.0]
+    @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1]) ≈ [1, 1]
 end
 
 end

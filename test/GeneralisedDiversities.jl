@@ -10,7 +10,7 @@ else
     const Test = BaseTestNext
 end
 
-metacom = Metacommunity([1 2; 1 2])
+metacom = Metacommunity([1 2; 1 2]/6)
 
 # Basic checks for the diversity() function
 @testset "diversity()" begin
