@@ -24,7 +24,7 @@ module Diversity
 include("Interface.jl")
 include("Metacommunity.jl")
 export Subcommunities, Onecommunity
-export Similarity, Unique, Species, Taxonomy, MatrixSimilarity
+export GeneralTypes, UniqueTypes, Species, Taxonomy
 export Metacommunity
 export getabundance, getweight
 export getsimilarity, getordinariness!, getmetaordinariness!

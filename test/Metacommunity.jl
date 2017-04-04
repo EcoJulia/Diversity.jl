@@ -1,5 +1,6 @@
 module TestMetacommunity
 using Diversity
+using DataFrames
 if VERSION >= v"0.5.0-dev+7720"
     using Base.Test
 else
@@ -7,50 +8,43 @@ else
     const Test = BaseTestNext
 end
 
-oc_count = Onecommunity([3, 3, 4])
+three = [0.3, 0.3, 0.4]
+oc_count = Onecommunity()
 @testset "Onecommunity" begin
-    # counts (int) are normalised, relative abundances (float) should sum to 1.0
-    oc_rel = Onecommunity([0.3, 0.3, 0.4])
-    @test oc_count.abundances ≈ oc_rel.abundances
-    # force normalisation
-    oc_manual = Onecommunity([3.0, 3.0, 4.0], true)
-    @test oc_count.abundances ≈ oc_manual.abundances
-    # Not normalised
-    @test_throws ErrorException Onecommunity([3.0, 3.0, 4.0])
+    oc_2 = Onecommunity()
+    @test Diversity.countsubcommunities(oc_count) == Diversity.countsubcommunities(oc_2)
 end
 
 sim = [1.0 0.0 0.0; 1.0 1.0 0.0; 1.0 1.0 1.0]
 ab3 = [1 2; 3 0; 0 4]'
-ms = MatrixSimilarity(sim)
-@testset "MatrixSimilarity" begin
-    @test getsimilarity(oc_count, ms) ≈ sim
-    @test_throws DomainError MatrixSimilarity(-sim)
-    @test_throws MethodError MatrixSimilarity(ab3)
-    @test_throws DimensionMismatch MatrixSimilarity(convert(Matrix{Float64},
-                                                            ab3))
+abnorm = ab3 / sum(ab3)
+ms = GeneralTypes(sim)
+@testset "GeneralTypes" begin
+    @test getsimilarity(ms) == sim
+    @test_throws DomainError GeneralTypes(-sim)
+    @test_throws MethodError GeneralTypes(ab3)
+    @test_throws DimensionMismatch GeneralTypes(convert(Matrix{Float64}, ab3))
 end
 
-tax = Taxonomy(Dict{AbstractString,
-               Tuple{Float64, Dict{AbstractString,
-               AbstractString}}}())
+tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>0.5))
 @testset "Taxonomy / psmatch" begin
-    @test_throws ErrorException Diversity.psmatch(oc_count, tax)
-    @test_throws ErrorException Diversity.getsimilarity(oc_count, tax)
-    @test_throws ErrorException Diversity.getordinariness(oc_count, tax)
-    @test Diversity.psmatch(oc_count, Unique()) == true
+    @test_throws ErrorException Diversity.getsimilarity(tax)
+    @test_throws ErrorException Diversity.getordinariness(tax, abnorm)
+    @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
+                                         Dict(:Species=>0.5, :Genus=>0.3))
 end
 
-sc = Subcommunities(ab3)
-meta = Metacommunity(oc_count, ms)
-sp = Species()
-meta2 = Metacommunity(sc, sp)
+sc = Subcommunities(size(ab3, 2))
+meta = Metacommunity(three, ms, oc_count)
+sp = Species(size(ab3, 1))
+meta2 = Metacommunity(convert(Matrix{Float64}, ab3), sp, sc, true)
 @testset "Metacommunity" begin
-    @test meta.similarity == ms
-    @test meta.partition == oc_count
+    @test gettypes(meta) == ms
+    @test getpartition(meta) == oc_count
     @test isnull(meta.ordinariness)
     @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
     @test !isnull(meta.ordinariness)
-    @test_throws DimensionMismatch Metacommunity(sc, ms)
+    @test_throws DimensionMismatch Metacommunity(ab3, ms, sc)
     @test getsimilarity(meta2) ≈ eye(size(ab3, 1))
 end
 

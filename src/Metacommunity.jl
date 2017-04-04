@@ -10,7 +10,7 @@ AbstractPartition subtype with multiple subcommunities.
 immutable Subcommunities <: AbstractPartition
     numsub::Int64
 
-    function Subcommunities(nSub::Integer)
+    function Subcommunities(numsub::Integer)
         numsub > 0 || error("Too few subcommunities")
         new(numsub)
     end
@@ -264,8 +264,13 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
     function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
         A <: AbstractArray,
         Sim <: AbstractTypes,
-        Part <: AbstractPartition}(abundances::A, types::Sim, part::Part)
-        mcmatch(abundances, types, part) ||
+        Part <: AbstractPartition}(abundances::A, types::Sim,
+                                   part::Part, normalise::Bool = false)
+        ab = abundances
+        if normalise
+            ab .= ab ./ sum(ab)
+        end
+        mcmatch(ab, types, part) ||
         throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
         new{FP, A, Sim, Part}(abundances, types, part, Nullable{A}())
     end
@@ -274,8 +279,14 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
         A <: AbstractArray,
         Sim <: AbstractTypes,
         Part <: AbstractPartition}(abundances::A,
-                                   meta::Metacommunity{FP, A, Sim, Part})
-        mcmatch(abundances, meta.types, meta.part) ||
+                                   meta::Metacommunity{FP, A, Sim,
+                                   Part}, normalise::Bool = false)
+        ab = abundances
+        if normalise
+            ab .= ab ./ sum(ab)
+        end
+        
+        mcmatch(ab, meta.types, meta.part) ||
         throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
         new{FP, A, Sim, Part}(abundances, meta.types, meta.part, meta.ordinariness)
     end
