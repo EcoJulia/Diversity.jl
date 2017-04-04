@@ -22,7 +22,10 @@ ms = GeneralTypes(sim)
 end
 
 tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
-@testset "Taxonomy / psmatch" begin
+@testset "Taxonomy" begin
+    @test counttypes(tax) == 2
+    @test hasnames(tax)
+    @test getnames(tax) == ["This", "That"]
     @test_throws ErrorException Diversity.getsimilarity(tax)
     @test_throws ErrorException Diversity.getordinariness(tax, abnorm)
     @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
