@@ -1,186 +1,252 @@
-"""
-### AbstractPartition metatype for all partitioning types
-
-This type is the abstract metaclass of all partitioning types.
-AbstractPartition subtypes allow you to define how to partition your total
-metacommunity (e.g. an ecosystem) into smaller components (e.g.
-subcommunities).
-"""
-abstract AbstractPartition{FP <: AbstractFloat, A <: AbstractArray}
+using Compat
+using DataFrames
 
 """
-### Partition type with multiple subcommunities
-"""
-type Subcommunities{FP, M <: AbstractMatrix} <: AbstractPartition{FP, M}
-    abundances::M
+    Subcommunities(nSub)
 
-    Subcommunities(m::AbstractMatrix{FP}) = new(m)
+AbstractPartition subtype with multiple subcommunities.
+
+"""
+immutable Subcommunities <: AbstractPartition
+    numsub::Int64
+
+    function Subcommunities(nSub::Integer)
+        numsub > 0 || error("Too few subcommunities")
+        new(numsub)
+    end
 end
 
-function Subcommunities{FP <: AbstractFloat}(abundances::AbstractMatrix{FP},
-                                             normalise::Bool = false)
-    relative = normalise ? abundances / sum(abundances) : abundances
-    sum(relative) ≈ 1.0 || error("Not normalised")
-    Subcommunities{FP, typeof(relative)}(relative)
-end
-
-function Subcommunities{IT <: Integer}(abundances::AbstractMatrix{IT})
-    relative = abundances / sum(abundances)
-    Subcommunities{eltype(relative), typeof(relative)}(relative)
+function countsubcommunities(sub::Subcommunities)
+    return sub.numsub
 end
 
 """
-### Partition type allowing only one subcommunity
+    Onecommunity
+
+AbstractPartition subtype containing only one subcommunity.
 """
-type Onecommunity{FP, V <: AbstractVector} <: AbstractPartition{FP, V}
-    abundances::V
+immutable Onecommunity <: AbstractPartition end
 
-    Onecommunity(v::AbstractVector{FP}) = new(v)
-end
-
-function Onecommunity{FP <: AbstractFloat}(abundances::AbstractVector{FP},
-                                           normalise::Bool = false)
-    relative = normalise ? abundances / sum(abundances) : abundances
-    sum(relative) ≈ 1.0 || error("Not normalised")
-    Onecommunity{FP, typeof(relative)}(relative)
-end
-
-function Onecommunity{IT <: Integer}(abundances::AbstractVector{IT})
-    relative = abundances / sum(abundances)
-    Onecommunity{eltype(relative), typeof(relative)}(relative)
+function countsubcommunities(::Onecommunity)
+    return 1
 end
 
 """
-### AbstractSimilarity metatype for all similarity measures
+    UniqueTypes
 
-This type is the abstract metaclass of all similarity types. Its
-subtypes allow you to define how similarity is measured between
+A subtype of AbstractTypes where all individuals are completely
+distinct. This type is the simplest AbstractTypes subtype, which
+identifies all individuals as unique and completely distinct from each
+other.
+
+"""
+immutable UniqueTypes <: AbstractTypes
+    num::Int64
+    names::Nullable{Vector{String}}
+
+    function UniqueTypes(num::Integer)
+        num > 0 || error("Too few species")
+        new(num, Nullable{Vector{String}}())
+    end
+
+    function UniqueTypes(names::Vector{String})
+        num = length(names)
+        num > 0 || error("Too few species")
+        new(num, Nullable(names))
+    end
+end
+
+function numtypes(ut::UniqueTypes)
+    return ut.num
+end
+
+function getsimilarity(ut::UniqueTypes)
+    return eye(ut.num)
+end
+
+function getordinariness(ut::UniqueTypes, abundances::AbstractArray)
+    return abundances
+end
+
+function hasnames(ut::UniqueTypes)
+    return isnull(ut.names)
+end
+                  
+function getnames(ut::UniqueTypes)
+    return get(ut.names)
+end
+    
+"""
+    Species
+
+A subtype of AbstractTypes where all species are completely distinct.
+This type is the simplest AbstractTypes subtype, which identifies all
+species as unique and completely distinct from each other.
+
+"""
+const Species = UniqueTypes
+
+"""
+    Taxonomy
+
+A subtype of AbstractTypes with similarity between related taxa,
+creating taxonomic similarity matrices.
+
+"""
+immutable Taxonomy{FP <: AbstractFloat} <: AbstractTypes
+    speciesinfo::DataFrame
+    taxa::Dict{Symbol, FP}
+    
+    function (::Type{Taxonomy{FP}}){FP <:
+        AbstractFloat}(speciesinfo::DataFrame,
+                       taxa::Dict{Symbol, FP})
+        sort(speciesinfo.colindex.names) == sort([keys(taxa)...]) ||
+        error("Taxon labels do not match similarity values")
+        new{FP}(speciesinfo, taxa)
+    end
+end
+
+function Taxonomy(speciesinfo::DataFrame, taxa::Dict)
+    Taxonomy{valtype(taxa)}(speciesinfo, taxa)
+end
+
+function numtypes(tax::Taxonomy)
+    return nrow(tax.speciesinfo)
+end
+
+function getsimilarity(::Taxonomy)
+    error("Can't generate a taxonomic similarity matrix yet")
+end
+
+function floattypes{FP}(::Taxonomy{FP})
+    return Set([FP])
+end
+
+function hasnames(tax::Taxonomy)
+    return :Species ∈ tax.speciesinfo.colindex.names[1]
+end
+                  
+function getnames(tax::Taxonomy)
+    return tax.speciesinfo[:Species]
+end
+
+"""
+    GeneralTypes{FP, M}
+
+An AbstractTypes subtype with a general similarity matrix. This
+subtype simply holds a matrix with similarities between individuals.
+
+# Members:
+
+- `z` A two-dimensional matrix representing similarity between
 individuals.
 """
-abstract AbstractSimilarity{FP <: AbstractFloat, A <: AbstractMatrix}
-
-"""
-### A subtype of AbstractSimilarity where all individuals are completely distinct
-
-This type is the simplest AbstractSimilarity subtype, which identifies all
-individuals as unique and completely distinct from each other.
-"""
-immutable Unique <: AbstractSimilarity
-end
-
-"""
-### A subtype of AbstractSimilarity where all species are completely distinct
-
-This type is the simplest AbstractSimilarity subtype, which identifies all
-species as unique and completely distinct from each other.
-"""
-typealias Species Unique
-
-"""
-### A subtype of AbstractSimilarity with similarity between related taxa
-
-This subtype of AbstractSimilarity allows taxonomic similarity matrices
-"""
-immutable Taxonomy{FP, STR <: AbstractString, D <: Dict} <: AbstractSimilarity{FP}
-    labels::D
-end
-
-Taxonomy{FP <: AbstractFloat, STR <: AbstractString}(labels::Dict{STR, Tuple{FP, Dict{STR, STR}}}) = Taxonomy{FP, STR, typeof(labels)}(labels)
-
-"""
-### A general matrix-based AbstractSimilarity subtype
-
-This subtype of AbstractSimilarity simply holds a matrix with similarities
-between individuals.
-
-#### Members:
-
-- `zMatrix` A two-dimensional matrix representing similarity between
-    individuals.
-"""
-type MatrixSimilarity{FP, M <: AbstractMatrix} <: AbstractSimilarity{FP, M}
+immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractTypes
     """
+        z
+
     A two-dimensional matrix representing similarity between
     individuals.
     """
     z::M
+
+    """
+        names
+
+    Optional vector of type names.
+    """
+    names::Nullable{Vector{String}}
+
+    """
+    # Constructor for GeneralTypes
+
+    Creates an instance of the GeneralTypes class, with an arbitrary similarity matrix.
+
+    # Arguments:
+    - `zmatrix`: similarity matrix
+    """
+    function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
+        M <: AbstractMatrix}(zmatrix::M)
+        size(zmatrix, 1) == size(zmatrix, 2) ||
+        throw(DimensionMismatch("Similarity matrix is not square"))
+
+        min(minimum(zmatrix), 0) ≈ 0 || throw(DomainError())
+
+        max(maximum(zmatrix), 1) ≈ 1 || warn("Similarity matrix has values above 1")
+
+        new{FP, M}(zmatrix, Nullable{Vector{String}}())
+    end
+
+    function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
+        M <: AbstractMatrix}(zmatrix::M, names::Vector{String})
+        size(zmatrix, 1) == size(zmatrix, 2) ||
+        throw(DimensionMismatch("Similarity matrix is not square"))
+
+        min(minimum(zmatrix), 0) ≈ 0 || throw(DomainError())
+
+        max(maximum(zmatrix), 1) ≈ 1 || warn("Similarity matrix has values above 1")
+
+        num = length(names)
+        num == size(zmatrix, 1) || error("Species name vector does not match similarity matrix")
+
+        new{FP, M}(zmatrix, Nullable(names))
+    end
+end
+
+function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP})
+    GeneralTypes{FP, typeof(zmatrix)}(zmatrix)
+end
+
+function numtypes(gt::GeneralTypes)
+    return size(gt.z, 1)
+end
+
+function getsimilarity(gt::GeneralTypes)
+    return gt.z
+end
+
+function floattypes{FP, M}(::GeneralTypes{FP, M})
+    return Set([FP])
+end
+
+function hasnames(gt::GeneralTypes)
+    return isnull(gt.names)
+end
+                  
+function getnames(gt::GeneralTypes)
+    return get(gt.names)
 end
 
 """
-### Constructor for MatrixSimilarity
+    Metacommunity{FP, A, Part, Sim}
 
-Creates an instance of the MatrixSimilarity class, with an arbitrary similarity matrix.
+Metacommunity type, representing a whole metacommunity containing a
+single community or a collection of subcommunities. The metacommunity
+of individuals *may* be further partitioned into smaller groups. For
+instance this may be an ecosystem, which consists of a series of
+subcommunities. The AbstractPartition subtype within it stores
+relative abundances of different types, e.g. species, and also allows
+for similarity between individuals.
 
-#### Arguments:
-- `z`: similarity matrix
-"""
-function MatrixSimilarity{FP <: AbstractFloat}(z::AbstractMatrix{FP})
-    size(z, 1) == size(z, 2) ||
-    throw(DimensionMismatch("Similarity matrix is not square"))
+# Constructor:
 
-    min(minimum(z), 0.0) ≈ 0.0 || throw(DomainError())
-
-    max(maximum(z), 1.0) ≈ 1.0 || warn("Similarity matrix has values above 1")
-
-    MatrixSimilarity{FP, typeof(z)}(z)
-end
-
-function psmatch(part::AbstractPartition, ::Unique)
-    true
-end
-
-function psmatch{FP}(part::AbstractPartition{FP}, ::Taxonomy{FP})
-    error("Taxonomic similarity not yet implemented")
-end
-
-function psmatch{FP}(part::AbstractPartition{FP}, sim::MatrixSimilarity{FP})
-    size(part.abundances, 1) == size(sim.z, 1) ||
-    throw(DimensionMismatch("Similarity matrix size $(size(sim.z)) mismatch with number of types $(size(part.abundances, 1))"))
-    eltype(part.abundances) == eltype(sim.z) ||
-    throw("Similarity type $(eltype(part.abundances)) does not match Partition type $(eltype(sim.z))")
-    true
-end
-
-"""
-### AbstractMetacommunity metatype for all metacommunity types
-
-This type is the abstract metaclass of all metacommunity types.
-AbstractMetacommunity subtypes allow you to define how to partition
-your total metacommunity (e.g. an ecosystem) into smaller components
-(e.g. subcommunities), and how to assess similarity between
-individuals within it.
-"""
-abstract AbstractMetacommunity{FP <: AbstractFloat, A <: AbstractArray, Part <: AbstractPartition, Sim <: AbstractSimilarity}
-
-"""
-### Metacommunity type, representing a collection of individuals
-
-Type representing a whole metacommunity containing a single community
-or a collection of subcommunities. The metacommunity of individuals
-*may* be further partitioned into smaller groups. For instance this
-may be an ecosystem, which consists of a series of subcommunities. The
-AbstractPartition subtype within it stores relative abundances of different
-types, e.g. species, and also allows for similarity between
-individuals.
-
-#### Constructor:
-
-**Metacommunity(part::AbstractPartition, sim::AbstractSimilarity)**
+**Metacommunity(part::AbstractPartition, sim::AbstractTypes)**
 
 
 - `part` is an instance of type Part, the partition type, e.g.
   Subcommunities, a subtype of AbstractPartition.
 
 - `sim` is an instance of type Sim, the similarity type, e.g. Species,
-  a subtype of AbstractSimilarity.
+  a subtype of AbstractTypes.
 
-#### Members:
+# Members:
+
+- `abundances` the abundance matrix for the metacommunity.
 
 - `partition` the instance of the AbstractPartition subtype, containing the
-  subcommunities. These should be accessed through
-  getabundance(::Metacommunity).
+  subcommunities.
 
-- `similarity` The instance of the AbstractSimilarity subtype, from which
+- `types` The instance of the AbstractTypes subtype, from which
   similarities between individuals can be calculated.
 
 - `ordinariness` A cache of the ordinariness of the individuals in the
@@ -188,240 +254,85 @@ individuals.
   getordinariness!(::Metacommunity), which will populate the cache if
   it has not yet been calculated.
 
-- `FPType` is the kind of number storage, a subtype of AbstractFloat.
-
 """
-type Metacommunity{FP, A, Part, Sim} <: AbstractMetacommunity{FP, A, Part, Sim}
-
+type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
+    abundances::A
+    types::Sim
     partition::Part
-    similarity::Sim
     ordinariness::Nullable{A}
+
+    function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
+        A <: AbstractArray,
+        Sim <: AbstractTypes,
+        Part <: AbstractPartition}(abundances::A, types::Sim, part::Part)
+        mcmatch(abundances, types, part) ||
+        throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
+        new{FP, A, Sim, Part}(abundances, types, part, Nullable{A}())
+    end
+
+    function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
+        A <: AbstractArray,
+        Sim <: AbstractTypes,
+        Part <: AbstractPartition}(abundances::A,
+                                   meta::Metacommunity{FP, A, Sim, Part})
+        mcmatch(abundances, meta.types, meta.part) ||
+        throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
+        new{FP, A, Sim, Part}(abundances, meta.types, meta.part, meta.ordinariness)
+    end
 end
 
-function Metacommunity{Part <: AbstractPartition, Sim <: AbstractSimilarity}(part::Part, sim::Sim)
-    psmatch(part, sim) || throw("Type mismatch")
-    A = typeof(part.abundances)
-    FP = eltype(A)
-    Metacommunity{FP, A, Part, Sim}(part, sim, Nullable{A}())
+function Metacommunity{A <: AbstractArray,
+    Meta <: AbstractMetacommunity}(abundances::A, meta::Meta)
+    types = gettypes(meta)
+    part = getpartition(meta)
+    Metacommunity(abundances, types, part)
 end
 
-function Metacommunity{Part <: AbstractPartition}(part::Part)
-    A = typeof(part.abundances)
-    FP = eltype(A)
-    Metacommunity{FP, A, Part, Unique}(part, Unique(), Nullable{A}())
+function Metacommunity{M <: AbstractMatrix,
+    Sim <: AbstractTypes,
+    Part <: AbstractPartition}(abundances::M,
+                               types::Sim = UniqueTypes(size(abundances, 1)),
+                               part::Part = Subcommunities(size(abundances, 2)))
+    Metacommunity(abundances, types, part)
 end
 
-"""
-### Multiple subcommunity constructors for Metacommunity
-"""
-Metacommunity{Mat <: AbstractMatrix,
-Sim <: AbstractSimilarity}(ab::Mat, sim::Sim = Unique()) =
-    Metacommunity(Subcommunities(ab), sim)
-
-"""
-### Single subcommunity contructor for Metacommunity
-"""
-Metacommunity{Vec <: AbstractVector,
-Sim <: AbstractSimilarity}(ab::Vec, sim::Sim = Unique()) =
-    Metacommunity(Onecommunity(ab), sim)
-
-"""
-### Constructor for Metacommunity with a similarity matrix
-"""
-Metacommunity{Arr <: AbstractArray, Mat <: AbstractMatrix}(ab::Arr, z::Mat) =
-    Metacommunity(ab, MatrixSimilarity(z))
-
-"""
-### Retrieves (and possibly calculates) the similarity matrix for a metacommunity
-"""
-function similaritymatrix
+function Metacommunity{V <: AbstractVector,
+    Sim <: AbstractTypes,
+    Part <: AbstractPartition}(abundances::V,
+                               types::Sim = UniqueTypes(size(abundances, 1)),
+                               part::Part = Onecommunity())
+    Metacommunity{eltype(V), V, Sim, Part}(abundances, types, part)
 end
 
-getsimilarity{Part <: AbstractPartition}(part::Part, ::Unique) =
-    convert(Array{eltype(part.abundances), 2}, eye(size(part.abundances, 1)))
-
-getsimilarity(part::AbstractPartition, ::Taxonomy) =
-    error("Can't generate a taxonomic similarity matrix yet")
-
-function getsimilarity(part::AbstractPartition, sim::MatrixSimilarity)
-    psmatch(part, sim)
-    return sim.z
+function Metacommunity(abundances::AbstractVector, zmatrix::AbstractMatrix)
+    types = GeneralTypes(zmatrix)
+    Metacommunity{eltype(abundances), typeof(abundances),
+    typeof(types), Onecommunity}(abundances, types, Onecommunity())
 end
 
-getsimilarity{Meta <: AbstractMetacommunity}(meta::Meta) =
-    getsimilarity(meta.partition, meta.similarity)
-
-"""
-### Retrieves (and possibly calculates) the relative abundances of a metacommunity
-"""
-function getabundance
+function Metacommunity(abundances::AbstractMatrix, zmatrix::AbstractMatrix)
+    types = GeneralTypes(zmatrix)
+    sub = Subcommunities(size(abundances, 2))
+    
+    Metacommunity{eltype(abundances), typeof(abundances),
+    Subcommunities, typeof(types)}(abundances, types, sub)
 end
 
-getabundance{Meta <: AbstractMetacommunity}(meta::Meta) = meta.partition.abundances
-
-"""
-### Calculates the ordinarinesses of the subcommunities in a metacommunity
-"""
-function getordinariness
+function getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+    return meta.abundances
 end
 
-# Generic get ordinariness method
-function getordinariness{Part <: AbstractPartition,
-    Sim <: AbstractSimilarity}(part::Part, sim::Sim)
-    psmatch(part, sim)
-    return sim.z * part.abundances
+function gettypes{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+    return meta.types
 end
 
-# Simpler for distinct types
-function getordinariness{Part <: AbstractPartition}(part::Part, ::Unique)
-    return part.abundances
+function getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+    return meta.partition
 end
 
-"""
-### Retrieves (and possibly calculates) the ordinarinesses of the subcommunities in a metacommunity
-"""
-function getordinariness!{Meta <: AbstractMetacommunity}(meta::Meta)
+@inline function getordinariness!(meta::Metacommunity)
     if isnull(meta.ordinariness)
-        meta.ordinariness = getordinariness(meta.partition, meta.similarity)
+        meta.ordinariness = getordinariness(meta.types, meta.abundances)
     end
     get(meta.ordinariness)
-end
-
-"""
-### Retrieves (and possibly calculates) the ordinarinesses of a whole metacommunity
-"""
-function getmetaordinariness!{Meta <: AbstractMetacommunity}(meta::Meta)
-    ord = getordinariness!(meta)
-    sumoversubcommunities(meta.partition, ord)
-end
-
-"""
-### Retrieves (and possibly calculates) the relative weights of the subcommunities
-"""
-function getweight{Meta <: AbstractMetacommunity}(meta::Meta)
-    ab = getabundance(meta)
-    sumovertypes(meta.partition, ab)
-end
-
-"""
-### Sums an array over its subcommunities
-
-Sums an array over its 2nd and higher dimensions (the subcommunities),
-leaving an array of the same dimensionality (but length of non-1st
-dimension is 1).
-"""
-@inline function sumoversubcommunities{FP <: AbstractFloat,
-    M <: AbstractArray}(::AbstractPartition{FP, M}, vals::M)
-    mapslices(sum, vals, collect(2:ndims(vals)))::M
-end
-
-@inline function sumoversubcommunities{FP <: AbstractFloat,
-    V <: AbstractVector}(::AbstractPartition{FP, V}, vals::V)
-    vals
-end
-
-"""
-### Sums an array over its types
-
-Sums an array over its 1st dimension (the types), leaving an array of the
-same dimensionality (but length of 1st dimension is 1).
-"""
-@inline function sumovertypes{FP <: AbstractFloat,
-    M <: AbstractArray}(::AbstractPartition{FP, M}, vals::M)
-    mapslices(sum, vals, 1)::M
-end
-
-"""
-### Turns its argument into an vector, if necessary
-
-Returns the argument if it is an vector, or reduce an array to a vector,
-or return a vector containing the argument if it's a number
-"""
-@inline function vectorise(arr::AbstractVector)
-  arr
-end
-
-@inline function vectorise(arr::AbstractArray)
-  vec(arr)
-end
-
-@inline function vectorise(num::Real)
-  [num]
-end
-
-
-## Now create the functions for the iterator interface for Partitions
-## and Metacommunities
-import Base.start, Base.next, Base.done, Base.eltype, Base.length
-
-function start{FP <: AbstractFloat, V <: AbstractVector}(::Onecommunity{FP, V})
-    (1,)
-end
-
-function next{FP <: AbstractFloat, V <: AbstractVector}(one::Onecommunity{FP, V},
-                                                        state::Tuple{Int64})
-    index, = state
-    (one.abundances, (index + 1, ))
-end
-
-function done{FP <: AbstractFloat, V <: AbstractVector}(one::Onecommunity{FP, V},
-                                                        state::Tuple{Int64})
-    index, = state
-    index != 1
-end
-
-function eltype{FP <: AbstractFloat, V <: AbstractVector}(one::Onecommunity{FP, V})
-    V
-end
-
-function length{FP <: AbstractFloat, V <: AbstractVector}(::Onecommunity{FP, V})
-    1
-end
-
-function start{FP <: AbstractFloat, M <: AbstractMatrix}(::Subcommunities{FP, M})
-    (1,)
-end
-
-function next{FP <: AbstractFloat, M <: AbstractMatrix}(sub::Subcommunities{FP, M},
-                                                        state::Tuple{Int64})
-    index, = state
-    (sub.abundances[:, index], (index + 1,))
-end
-
-function done{FP <: AbstractFloat, M <: AbstractMatrix}(sub::Subcommunities{FP, M},
-                                                        state::Tuple{Int64})
-    index, = state
-    index > length(sub)
-end
-
-function eltype{FP <: AbstractFloat, M <: AbstractMatrix}(sub::Subcommunities{FP, M})
-    Vector{FP}
-end
-
-function length{FP <: AbstractFloat, M <: AbstractMatrix}(sub::Subcommunities{FP, M})
-    size(sub.abundances, 2)
-end
-
-function start{Meta <: AbstractMetacommunity}(meta::Meta)
-    (1, start(meta.partition))
-end
-
-function next{Meta <: AbstractMetacommunity}(meta::Meta, state::Tuple{Int64, Tuple})
-    index_meta, index_part = state
-    item_part, index_part = next(meta.partition, index_part)
-    item_meta = getordinariness!(meta)[:, index_meta]
-    ((item_meta, item_part), (index_meta + 1, index_part))
-end
-
-function done{Meta <: AbstractMetacommunity}(meta::Meta, state::Tuple{Int64, Tuple})
-    index_meta, state_part = state
-    done(meta.partition, state_part)
-end
-
-function eltype{Meta <: AbstractMetacommunity}(meta::Meta)
-    (Vector{eltype(meta.ordinariness)}, eltype(meta.partition))
-end
-
-function length{Meta <: AbstractMetacommunity}(meta::Meta)
-    length(meta.partition)
 end
