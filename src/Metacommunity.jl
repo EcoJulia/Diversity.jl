@@ -170,9 +170,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
         size(zmatrix, 1) == size(zmatrix, 2) ||
         throw(DimensionMismatch("Similarity matrix is not square"))
 
-        min(minimum(zmatrix), 0) ≈ 0 || throw(DomainError())
-
-        max(maximum(zmatrix), 1) ≈ 1 || warn("Similarity matrix has values above 1")
+        minimum(zmatrix) ≥ 0 || throw(DomainError())
+        maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
 
         new{FP, M}(zmatrix, Nullable{Vector{String}}())
     end
@@ -182,9 +181,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
         size(zmatrix, 1) == size(zmatrix, 2) ||
         throw(DimensionMismatch("Similarity matrix is not square"))
 
-        min(minimum(zmatrix), 0) ≈ 0 || throw(DomainError())
-
-        max(maximum(zmatrix), 1) ≈ 1 || warn("Similarity matrix has values above 1")
+        minimum(zmatrix) ≥ 0 || throw(DomainError())
+        maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
 
         num = length(names)
         num == size(zmatrix, 1) || error("Species name vector does not match similarity matrix")
