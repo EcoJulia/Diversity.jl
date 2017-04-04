@@ -1,24 +1,21 @@
 module TestDiversityMeasure
 using Diversity
 using Diversity.ShortNames
+using Base.Test
 
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
-
-oc = Onecommunity([3, 3, 4])
+pop = [3, 3, 4]
+pop = pop / sum(pop)
+oc = Onecommunity()
 sim = [1.0 0 0; 1.0 1.0 0.0; 1.0 1.0 1.0]
-ms = MatrixSimilarity(sim)
-meta = Metacommunity(oc, ms)
-meta1 = Metacommunity(oc)
+ms = GeneralTypes(sim)
+meta = Metacommunity(pop, ms, oc)
+meta1 = Metacommunity(pop)
 
-ab3 = [1 2; 3 0; 0 4]'
-sc = Subcommunities(ab3)
-sp = Species()
-meta2 = Metacommunity(sc, sp)
+ab3 = [1.0 2; 3 0; 0 4]'
+ab3 = ab3 / sum(ab3)
+sc = Subcommunities(3)
+sp = Species(2)
+meta2 = Metacommunity(ab3, sp, sc)
 nab = NormalisedAlpha(meta2)
 
 @testset "Diversity measures" begin

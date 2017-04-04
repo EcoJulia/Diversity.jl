@@ -180,8 +180,7 @@ Returns (and possibly calculates) the ordinariness of the metacommunity as a who
 function getmetaordinariness! end
 
 @inline function getmetaordinariness!{Meta <: AbstractMetacommunity}(meta::Meta)
-    ord = getordinariness!(meta)
-    sumoversubcommunities(meta.partition, ord)
+    sumoversubcommunities(meta, getordinariness!(meta))
 end
 
 """
@@ -191,8 +190,7 @@ Retrieves (and possibly calculates) the relative weights of the subcommunities.
 
 """
 @inline function getweight{Meta <: AbstractMetacommunity}(meta::Meta)
-    ab = getabundance(meta)
-    sumovertypes(meta.partition, ab)
+    sumovertypes(meta, getabundance(meta))
 end
 
 """
@@ -222,8 +220,8 @@ Sums an array over its types, leaving an array of the same
 dimensionality (but length of 1st dimension is 1).
 
 """
-@inline function sumovertypes{FP, A, Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part})
-    mapslices(sum, getabundance(meta), 1)::A
+@inline function sumovertypes{FP, A, Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::A)
+    mapslices(sum, values, 1)::A
 end
 
 """
@@ -235,13 +233,12 @@ dimensionality (but length of 2nd and subsequent dimensions are 1).
 """
 function sumoversubcommunities end
 
-@inline function sumoversubcommunities{FP, A, Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part})
-    ab = getabundance(meta)
-    mapslices(sum, ab, collect(2:ndims(ab)))::A
+@inline function sumoversubcommunities{FP, A, Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::A)
+    mapslices(sum, values, collect(2:ndims(values)))::A
 end
 
-@inline function sumoversubcommunities{FP, V <: AbstractVector, Sim, Part}(meta::AbstractMetacommunity{FP, V, Sim, Part})
-    getabundance(meta)::V
+@inline function sumoversubcommunities{FP, V <: AbstractVector, Sim, Part}(meta::AbstractMetacommunity{FP, V, Sim, Part}, values::V)
+    values::V
 end
 
 

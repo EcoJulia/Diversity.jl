@@ -184,8 +184,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
         minimum(zmatrix) ≥ 0 || throw(DomainError())
         maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
 
-        num = length(names)
-        num == size(zmatrix, 1) || error("Species name vector does not match similarity matrix")
+        length(names) == size(zmatrix, 1) ||
+        error("Species name vector does not match similarity matrix")
 
         new{FP, M}(zmatrix, Nullable(names))
     end
@@ -193,6 +193,10 @@ end
 
 function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP})
     GeneralTypes{FP, typeof(zmatrix)}(zmatrix)
+end
+
+function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP}, names::Vector{String})
+    GeneralTypes{FP, typeof(zmatrix)}(zmatrix, names)
 end
 
 function counttypes(gt::GeneralTypes)
@@ -228,14 +232,7 @@ for similarity between individuals.
 
 # Constructor:
 
-**Metacommunity(part::AbstractPartition, sim::AbstractTypes)**
-
-
-- `part` is an instance of type Part, the partition type, e.g.
-  Subcommunities, a subtype of AbstractPartition.
-
-- `sim` is an instance of type Sim, the similarity type, e.g. Species,
-  a subtype of AbstractTypes.
+**Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::AbstractTypes)**
 
 # Members:
 
@@ -262,13 +259,8 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
     function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
         A <: AbstractArray,
         Sim <: AbstractTypes,
-        Part <: AbstractPartition}(abundances::A, types::Sim,
-                                   part::Part, normalise::Bool = false)
-        ab = abundances
-        if normalise
-            ab .= ab ./ sum(ab)
-        end
-        mcmatch(ab, types, part) ||
+        Part <: AbstractPartition}(abundances::A, types::Sim, part::Part)
+        mcmatch(abundances, types, part) ||
         throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
         new{FP, A, Sim, Part}(abundances, types, part, Nullable{A}())
     end
@@ -276,15 +268,8 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
     function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
         A <: AbstractArray,
         Sim <: AbstractTypes,
-        Part <: AbstractPartition}(abundances::A,
-                                   meta::Metacommunity{FP, A, Sim,
-                                   Part}, normalise::Bool = false)
-        ab = abundances
-        if normalise
-            ab .= ab ./ sum(ab)
-        end
-        
-        mcmatch(ab, meta.types, meta.part) ||
+        Part <: AbstractPartition}(abundances::A, meta::Metacommunity{FP, A, Sim, Part})
+        mcmatch(abundances, meta.types, meta.part) ||
         throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
         new{FP, A, Sim, Part}(abundances, meta.types, meta.part, meta.ordinariness)
     end
@@ -294,37 +279,32 @@ function Metacommunity{A <: AbstractArray,
     Meta <: AbstractMetacommunity}(abundances::A, meta::Meta)
     types = gettypes(meta)
     part = getpartition(meta)
-    Metacommunity(abundances, types, part)
+    Metacommunity{eltype{A}, A, typeof(types), typeof(part)}(abundances, types, part)
 end
 
-function Metacommunity{M <: AbstractMatrix,
-    Sim <: AbstractTypes,
+function Metacommunity{M <: AbstractMatrix, Sim <: AbstractTypes,
     Part <: AbstractPartition}(abundances::M,
                                types::Sim = UniqueTypes(size(abundances, 1)),
                                part::Part = Subcommunities(size(abundances, 2)))
-    Metacommunity(abundances, types, part)
+    Metacommunity{eltype(M), M, Sim, Part}(abundances, types, part)
 end
 
-function Metacommunity{V <: AbstractVector,
-    Sim <: AbstractTypes,
+function Metacommunity{V <: AbstractVector, Sim <: AbstractTypes,
     Part <: AbstractPartition}(abundances::V,
                                types::Sim = UniqueTypes(size(abundances, 1)),
                                part::Part = Onecommunity())
     Metacommunity{eltype(V), V, Sim, Part}(abundances, types, part)
 end
 
-function Metacommunity(abundances::AbstractVector, zmatrix::AbstractMatrix)
-    types = GeneralTypes(zmatrix)
-    Metacommunity{eltype(abundances), typeof(abundances),
-    typeof(types), Onecommunity}(abundances, types, Onecommunity())
+function Metacommunity{V <: AbstractVector, M <: AbstractMatrix}(abundances::V, zmatrix::M)
+    Metacommunity{eltype(V), V,
+    GeneralTypes, Onecommunity}(abundances, GeneralTypes(zmatrix), Onecommunity())
 end
 
-function Metacommunity(abundances::AbstractMatrix, zmatrix::AbstractMatrix)
-    types = GeneralTypes(zmatrix)
-    sub = Subcommunities(size(abundances, 2))
-    
-    Metacommunity{eltype(abundances), typeof(abundances),
-    Subcommunities, typeof(types)}(abundances, types, sub)
+function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
+    Metacommunity{eltype(M), M,
+    GeneralTypes, Subcommunities}(abundances, GeneralTypes(zmatrix),
+                                  Subcommunities(size(abundances, 2)))
 end
 
 function getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})

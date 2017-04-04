@@ -32,15 +32,17 @@ end
 sc = Subcommunities(size(ab3, 2))
 meta = Metacommunity(three, ms, oc_count)
 sp = Species(size(ab3, 1))
-meta2 = Metacommunity(convert(Matrix{Float64}, ab3), sp, sc, true)
+abf = ab3 ./ sum(ab3)
+meta2 = Metacommunity(abf, sp, sc)
 @testset "Metacommunity" begin
-    @test gettypes(meta) == ms
-    @test getpartition(meta) == oc_count
+    @test Diversity.gettypes(meta) == ms
+    @test Diversity.getpartition(meta) == oc_count
     @test isnull(meta.ordinariness)
     @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
     @test !isnull(meta.ordinariness)
-    @test_throws DimensionMismatch Metacommunity(ab3, ms, sc)
-    @test getsimilarity(meta2) ≈ eye(size(ab3, 1))
+    @test_throws TypeError Metacommunity(ab3, ms, sc)
+    @test_throws ErrorException Metacommunity(-abf, ms, sc)
+    @test Diversity.getsimilarity(Diversity.gettypes(meta2)) ≈ eye(size(ab3, 1))
 end
 
 end
