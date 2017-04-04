@@ -26,12 +26,12 @@ ms = GeneralTypes(sim)
     @test_throws DimensionMismatch GeneralTypes(convert(Matrix{Float64}, ab3))
 end
 
-tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>0.5))
+tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
 @testset "Taxonomy / psmatch" begin
     @test_throws ErrorException Diversity.getsimilarity(tax)
     @test_throws ErrorException Diversity.getordinariness(tax, abnorm)
     @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
-                                         Dict(:Species=>0.5, :Genus=>0.3))
+                                         Dict(:Species=>1.0, :Genus=>0.5))
 end
 
 sc = Subcommunities(size(ab3, 2))
