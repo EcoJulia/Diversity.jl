@@ -2,7 +2,7 @@ using Compat
 using DataFrames
 
 """
-    Subcommunities(nSub)
+    Subcommunities(numsub)
 
 AbstractPartition subtype with multiple subcommunities.
 
@@ -56,7 +56,7 @@ immutable UniqueTypes <: AbstractTypes
     end
 end
 
-function numtypes(ut::UniqueTypes)
+function counttypes(ut::UniqueTypes)
     return ut.num
 end
 
@@ -110,7 +110,7 @@ function Taxonomy(speciesinfo::DataFrame, taxa::Dict)
     Taxonomy{valtype(taxa)}(speciesinfo, taxa)
 end
 
-function numtypes(tax::Taxonomy)
+function counttypes(tax::Taxonomy)
     return nrow(tax.speciesinfo)
 end
 
@@ -197,7 +197,7 @@ function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP})
     GeneralTypes{FP, typeof(zmatrix)}(zmatrix)
 end
 
-function numtypes(gt::GeneralTypes)
+function counttypes(gt::GeneralTypes)
     return size(gt.z, 1)
 end
 

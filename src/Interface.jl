@@ -80,12 +80,12 @@ define how similarity is measured between individuals.
 @compat abstract type AbstractTypes end
 
 """
-    numtypes(t::AbstractTypes)
+    counttypes(t::AbstractTypes)
 
 Returns number of types in an AbstractTypes object, t.
 
 """
-function numtypes end
+function counttypes end
 
 """
     getsimilarity(t::AbstractTypes)
@@ -128,14 +128,14 @@ function mcmatch end
 
 function mcmatch(ab::AbstractMatrix, sim::AbstractTypes, part::AbstractPartition)
     typematch(ab, sim, part) &&
-    numtypes(sim) == size(ab, 1) &&
+    counttypes(sim) == size(ab, 1) &&
     countsubcommunities(part) == size(ab, 2) &&
     sum(ab) ≈ 1
 end
 
 function mcmatch(ab::AbstractVector, sim::AbstractTypes, part::AbstractPartition)
     typematch(ab, sim, part) &&
-    numtypes(sim) == size(ab, 1) &&
+    counttypes(sim) == size(ab, 1) &&
     countsubcommunities(part) == 1 &&
     sum(ab) ≈ 1
 end
