@@ -3,7 +3,7 @@ using Compat
 """
 ### Enumeration of levels that can exist / be calculated for a metacommunity.
 """
-@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity metacommunityDiversity
+@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity
 
 """
 ### Generates the function to calculate individual diversities
