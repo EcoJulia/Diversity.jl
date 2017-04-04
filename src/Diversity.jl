@@ -45,17 +45,17 @@ export Gamma
 module ShortNames
 using Diversity
 
-typealias α RawAlpha
-typealias ᾱ NormalisedAlpha
-typealias β RawBeta
-typealias β̄ NormalisedBeta
-typealias ρ RawRho
-typealias ρ̄ NormalisedRho
-typealias γ Gamma
+const α = RawAlpha
+const ᾱ = NormalisedAlpha
+const β = RawBeta
+const β̄ = NormalisedBeta
+const ρ = RawRho
+const ρ̄ = NormalisedRho
+const γ = Gamma
 
 export α, ᾱ, β, β̄, ρ, ρ̄
 # γ actually can't be exported like this - it'll always just be Shortnames.γ, so we export Γ instead
-typealias Γ Gamma
+const Γ = Gamma
 export Γ
 
 end

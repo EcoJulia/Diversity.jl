@@ -65,7 +65,7 @@ This type is the abstract metaclass of all diversity measure types.
 DiversityMeasure subtypes allow you to calculate and cache any kind of
 diversity of a metacommunity.
 """
-abstract DiversityMeasure{FP <: AbstractFloat, AbArray <: AbstractArray}
+@compat abstract type DiversityMeasure{FP <: AbstractFloat, AbArray <: AbstractArray} end
 
 """
 ### Return the ASCII name of the DiversityMeasure
@@ -122,7 +122,7 @@ diversity measures which are straight power means. PowerMeanMeasure
 subtypes allow you to calculate and cache any kind of diversity of a
 metacommunity.
 """
-abstract PowerMeanMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray}
+@compat abstract type PowerMeanMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray} end
 
 """
 ### Metatype of all relative entropy-based diversity measures
@@ -132,7 +132,7 @@ diversity measures which are straight power means.
 RelativeEntropyMeasure subtypes allow you to calculate and cache any
 kind of diversity of a metacommunity.
 """
-abstract RelativeEntropyMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray}
+@compat abstract type RelativeEntropyMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray} end
 
 """
 ### Returns individual diversities of a diversity measure
@@ -345,7 +345,7 @@ function RawBeta(meta::AbstractMetacommunity)
                                     getmetaordinariness!(meta))
 end
 
-typealias Distinctiveness RawBeta
+const Distinctiveness = RawBeta
 
 getName(::RawBeta) = "β"
 getFullName(::RawBeta) = "distinctiveness"
@@ -408,7 +408,7 @@ function RawRho(meta::AbstractMetacommunity)
                                    getordinariness!(meta))
 end
 
-typealias Redundancy RawRho
+const Redundancy = RawRho
 
 getName(::RawRho) = "ρ"
 getFullName(::RawRho) = "redundancy"
@@ -441,7 +441,7 @@ function NormalisedRho(meta::AbstractMetacommunity)
                                           getordinariness!(meta))
 end
 
-typealias Representativeness NormalisedRho
+const Representativeness = NormalisedRho
 
 getName(::NormalisedRho) = "ρ̄"
 getFullName(::NormalisedRho) = "representativeness"

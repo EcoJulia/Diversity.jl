@@ -1,12 +1,7 @@
 module TestMetacommunity
 using Diversity
 using DataFrames
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
+using Base.Test
 
 three = [0.3, 0.3, 0.4]
 oc_count = Onecommunity()
