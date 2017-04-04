@@ -29,6 +29,13 @@ tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
                                          Dict(:Species=>1.0, :Genus=>0.5))
 end
 
+@testset "Type names" begin
+    @test !Diversity.hasnames(Species(3))
+    @test Diversity.hasnames(Species(["My species"]))
+    @test Diversity.getnames(GeneralTypes(eye(1), ["My species"])) == ["My species"]
+    @test Diversity.getnames(UniqueTypes(["One", "Two"])) == ["One", "Two"]
+end
+
 sc = Subcommunities(size(ab3, 2))
 meta = Metacommunity(three, ms, oc_count)
 sp = Species(size(ab3, 1))
