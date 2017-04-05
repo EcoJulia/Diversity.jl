@@ -26,7 +26,9 @@ include("Metacommunity.jl")
 export Subcommunities, Onecommunity
 export GeneralTypes, UniqueTypes, Species, Taxonomy
 export Metacommunity
-export getabundance, getweight
+export getabundance, getweight, getpartition, gettypes
+export hasnames, getnames
+export counttypes, countsubcommunities
 export getsimilarity, getordinariness!, getmetaordinariness!
 export inddiv, subdiv, metadiv
 
