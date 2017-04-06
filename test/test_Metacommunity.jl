@@ -1,7 +1,13 @@
 module TestMetacommunity
+using Base.Test
+if VERSION <= v"0.6.0-pre.beta"
+    # Ignore @test_warn unless it's there...
+    macro test_warn(str, test)
+    end
+end
+
 using Diversity
 using DataFrames
-using Base.Test
 
 three = [0.3, 0.3, 0.4]
 oc_count = Onecommunity()
