@@ -49,10 +49,6 @@ the names of the types of the AbstractTypes.
 """
 function getnames end
 
-function getnames(::AbstractPartition)
-    throw(NullException())
-end
-
 function floattypes(::AbstractPartition)
     return Set(subtypes(AbstractFloat))
 end
@@ -92,10 +88,6 @@ function getordinariness end
 
 function getordinariness(t::AbstractTypes, a::AbstractArray)
     getsimilarity(t) * a
-end
-
-function getnames(::AbstractTypes)
-    throw(NullException())
 end
 
 function floattypes(::AbstractTypes)
