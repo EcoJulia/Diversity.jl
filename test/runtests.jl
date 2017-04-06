@@ -1,15 +1,12 @@
 using Diversity
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
 
-include("EffectiveNumbers.jl")
-include("Metacommunity.jl")
-include("DiversityMeasure.jl")
-include("GeneralisedDiversities.jl")
-include("Hill.jl")
-include("Jost.jl")
-include("Ecology.jl")
+tests = ["EffectiveNumbers", "Metacommunity", "DiversityMeasure",
+         "GeneralisedDiversities", "Ecology", "Hill", "Jost"]
+
+println("Running tests ...")
+
+for t in tests
+    fn = "$t.jl"
+    println("* $fn ...")
+    include(fn)
+end
