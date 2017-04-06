@@ -9,10 +9,11 @@ ab3 = [1 2; 3 0; 0 4]'
 abnorm = ab3 / sum(ab3)
 sc = Subcommunities(size(ab3, 2))
 @testset "Communities" begin
-    oc_2 = Onecommunity()
+    oc_2 = Onecommunity("All of it")
     @test countsubcommunities(oc_count) == countsubcommunities(oc_2)
-    @test !hasnames(oc_2)
-    @test_throws NullException getnames(sc)
+    @test getnames(oc_2) == ["All of it"]
+    @test getnames(oc_count) == ["1"]
+    @test getnames(sc) == map(x -> "$x", 1:3)
 end
 
 sim = [1.0 0.0 0.0; 1.0 1.0 0.0; 1.0 1.0 1.0]
@@ -27,17 +28,20 @@ end
 tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
 @testset "Taxonomy" begin
     @test counttypes(tax) == 2
-    @test hasnames(tax)
     @test getnames(tax) == ["This", "That"]
     @test_throws ErrorException getsimilarity(tax)
     @test_throws ErrorException Diversity.getordinariness(tax, abnorm)
     @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
                                          Dict(:Species=>1.0, :Genus=>0.5))
+    @test_throws ErrorException Taxonomy(DataFrame(Genus=["This", "That"]),
+                                         Dict(:Genus=>1.0))
+    @test getnames(Taxonomy(DataFrame(Genus=["This", "That"]),
+                            Dict(:Genus=>1.0), :Genus)) == ["This", "That"]
 end
 
 @testset "Type names" begin
-    @test !hasnames(Species(3))
-    @test hasnames(Species(["My species"]))
+    @test getnames(Species(3)) == map(x -> "$x", 1:3)
+    @test getnames(Species(["My species"])) == ["My species"]
     @test getnames(GeneralTypes(eye(1), ["My species"])) == ["My species"]
     @test getnames(UniqueTypes(["One", "Two"])) == ["One", "Two"]
 end
