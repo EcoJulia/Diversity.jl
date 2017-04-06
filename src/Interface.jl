@@ -41,19 +41,6 @@ Returns number of subcommunities in a partition, p.
 function countsubcommunities end
 
 """
-    hasnames(arg)
-
-Tests whether AbstractPartition has names assigned to the
-subcommunities, or AbstractTypes has names assigned to types.
-
-"""
-function hasnames end
-
-function hasnames(::AbstractPartition)
-    return false
-end
-
-"""
     getnames(arg)
 
 Returns the names of the subcommunities of the AbstractPartition or
@@ -105,10 +92,6 @@ function getordinariness end
 
 function getordinariness(t::AbstractTypes, a::AbstractArray)
     getsimilarity(t) * a
-end
-
-function hasnames(::AbstractTypes)
-    return false
 end
 
 function getnames(::AbstractTypes)

@@ -2,22 +2,33 @@ using Compat
 using DataFrames
 
 """
-    Subcommunities(numsub)
+    Subcommunities(num)
 
 AbstractPartition subtype with multiple subcommunities.
 
 """
 immutable Subcommunities <: AbstractPartition
-    numsub::Int64
+    num::Int64
+    names::Vector{String}
 
-    function Subcommunities(numsub::Integer)
-        numsub > 0 || error("Too few subcommunities")
-        new(numsub)
+    function Subcommunities(num::Integer)
+        num > 0 || error("Too few subcommunities")
+        new(num, map(x -> "$x", 1:num))
+    end
+
+    function Subcommunities(names::Vector{String})
+        num = length(names)
+        num > 0 || error("Too few subcommunities")
+        new(num, names)
     end
 end
 
 function countsubcommunities(sub::Subcommunities)
-    return sub.numsub
+    return sub.num
+end
+
+function getnames(sc::Subcommunities)
+    return sc.names
 end
 
 """
@@ -25,10 +36,20 @@ end
 
 AbstractPartition subtype containing only one subcommunity.
 """
-immutable Onecommunity <: AbstractPartition end
+immutable Onecommunity <: AbstractPartition
+    name::Vector{String}
+
+    function Onecommunity(name::String = "1")
+        new([name])
+    end
+end
 
 function countsubcommunities(::Onecommunity)
     return 1
+end
+
+function getnames(oc::Onecommunity)
+    return oc.name
 end
 
 """
@@ -42,17 +63,17 @@ other.
 """
 immutable UniqueTypes <: AbstractTypes
     num::Int64
-    names::Nullable{Vector{String}}
+    names::Vector{String}
 
     function UniqueTypes(num::Integer)
         num > 0 || error("Too few species")
-        new(num, Nullable{Vector{String}}())
+        new(num, map(x -> "$x", 1:num))
     end
 
     function UniqueTypes(names::Vector{String})
         num = length(names)
         num > 0 || error("Too few species")
-        new(num, Nullable(names))
+        new(num, names)
     end
 end
 
@@ -68,12 +89,8 @@ function getordinariness(::UniqueTypes, abundances::AbstractArray)
     return abundances
 end
 
-function hasnames(ut::UniqueTypes)
-    return !isnull(ut.names)
-end
-                  
 function getnames(ut::UniqueTypes)
-    return get(ut.names)
+    return ut.names
 end
     
 """
@@ -96,18 +113,21 @@ creating taxonomic similarity matrices.
 immutable Taxonomy{FP <: AbstractFloat} <: AbstractTypes
     speciesinfo::DataFrame
     taxa::Dict{Symbol, FP}
+    typelabel::Symbol
     
-    function (::Type{Taxonomy{FP}}){FP <:
-        AbstractFloat}(speciesinfo::DataFrame,
-                       taxa::Dict{Symbol, FP})
+    function (::Type{Taxonomy{FP}}){FP <: AbstractFloat}(speciesinfo::DataFrame,
+                                                         taxa::Dict{Symbol, FP},
+                                                         typelabel::Symbol)
         sort(speciesinfo.colindex.names) == sort([keys(taxa)...]) ||
         error("Taxon labels do not match similarity values")
-        new{FP}(speciesinfo, taxa)
+        typelabel ∈ speciesinfo.colindex.names ||
+        error("$typelabel not found in DataFrame column names")
+        new{FP}(speciesinfo, taxa, typelabel)
     end
 end
 
-function Taxonomy(speciesinfo::DataFrame, taxa::Dict)
-    Taxonomy{valtype(taxa)}(speciesinfo, taxa)
+function Taxonomy(speciesinfo::DataFrame, taxa::Dict, typelabel::Symbol = :Species)
+    Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
 end
 
 function counttypes(tax::Taxonomy)
@@ -122,12 +142,8 @@ function floattypes{FP}(::Taxonomy{FP})
     return Set([FP])
 end
 
-function hasnames(tax::Taxonomy)
-    return :Species ∈ tax.speciesinfo.colindex.names
-end
-                  
 function getnames(tax::Taxonomy)
-    return tax.speciesinfo[:Species]
+    return tax.speciesinfo[tax.typelabel]
 end
 
 """
@@ -155,7 +171,7 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
 
     Optional vector of type names.
     """
-    names::Nullable{Vector{String}}
+    names::Vector{String}
 
     """
     # Constructor for GeneralTypes
@@ -173,7 +189,7 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
         minimum(zmatrix) ≥ 0 || throw(DomainError())
         maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
 
-        new{FP, M}(zmatrix, Nullable{Vector{String}}())
+        new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
     end
 
     function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
@@ -187,7 +203,7 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
         length(names) == size(zmatrix, 1) ||
         error("Species name vector does not match similarity matrix")
 
-        new{FP, M}(zmatrix, Nullable(names))
+        new{FP, M}(zmatrix, names)
     end
 end
 
@@ -211,12 +227,8 @@ function floattypes{FP, M}(::GeneralTypes{FP, M})
     return Set([FP])
 end
 
-function hasnames(gt::GeneralTypes)
-    return !isnull(gt.names)
-end
-                  
 function getnames(gt::GeneralTypes)
-    return get(gt.names)
+    return gt.names
 end
 
 """
