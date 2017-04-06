@@ -11,14 +11,16 @@ diversity, so small components are more diverse).
 
 Accessing the functionality in the package is simple:
 
-```julia_skip
+```julia
 using Diversity.Ecology
 
-community = [10. 20. 20.]'
+community = [10, 20, 20]
+community /= sum(community);
 diversity = simpson(community)
 
-ecosystem = [2. 2. 0.; 0. 2. 2.]'
-Z = eye(3)
+ecosystem = [2 2 0.; 0 2 2]'
+ecosystem /= sum(ecosystem);
+Z = eye(3);
 
 jaccard(ecosystem)
 generalisedjaccard(ecosystem, [0, 1, 2])

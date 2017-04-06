@@ -5,11 +5,13 @@
 
 Accessing the main functionality in the package is simple:
 
-```julia_skip
+```julia
 using Diversity.Hill
 
 # Load community to study
 
+community = [10, 20, 20, 0, 3];
+community /= sum(community);
 diversities = hillnumber(community, [0, 1, 2])
 ```
 
