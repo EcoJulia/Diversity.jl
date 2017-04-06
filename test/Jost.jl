@@ -1,16 +1,9 @@
 module TestJost
-
-using Diversity
-using Diversity.ᾱ, Diversity.ρ̄
-
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
+using Base.Test
 
 # Checking Jost's diversities
+using Diversity
+using Diversity.ShortNames
 using Diversity.Jost
 
 qs = [0, 1, 2, 3, 4, 5, 6, Inf];
@@ -25,14 +18,14 @@ colweights /= sum(colweights);
 allthesame = probs * colweights';
 
 @testset "Jost" begin
-    @test jostbeta(communities, 1) ≈ (1.0 ./
-                                      metadiv(ρ̄(Metacommunity(communities)),
-                                               1))
-    @test jostbeta(allthesame, qs) ≈ ones(qs)
+    @test jostbeta(communities, 1)[:diversity] ≈ (1.0 ./
+                                                  metadiv(ρ̄(Metacommunity(communities)),
+                                                          1)[:diversity])
+    @test jostbeta(allthesame, qs)[:diversity] ≈ ones(qs)
     
     ## Check Jost's alpha diversity works for all the same subcommunity
-    @test jostalpha(allthesame, qs) ≈ metadiv(ᾱ(Metacommunity(allthesame)),
-                                               qs)
+    @test jostalpha(allthesame, qs)[:diversity] ≈ metadiv(ᾱ(Metacommunity(allthesame)),
+                                                          qs)[:diversity]
     
     ## And for all different subcommunities and any subcommunities with the same sizes
     weights = rand(numspecies);
@@ -44,13 +37,15 @@ allthesame = probs * colweights';
     end
     evendistinct = mapslices((x) -> x / (sum(x) * numcommunities), distinct, 1)
     
-    @test jostalpha(evendistinct, qs) ≈ metadiv(ᾱ(Metacommunity(evendistinct)), qs)
+    @test jostalpha(evendistinct, qs)[:diversity] ≈ metadiv(ᾱ(Metacommunity(evendistinct)),
+                                                            qs)[:diversity]
     
     # Now some even communities, should see that raw and normalised
     # diversities are the same
     smoothed = communities ./ mapslices(sum, communities, 1);
     smoothed /= numcommunities;
-    @test jostalpha(smoothed, qs) ≈ metadiv(ᾱ(Metacommunity(smoothed)), qs)
+    @test jostalpha(smoothed, qs)[:diversity] ≈ metadiv(ᾱ(Metacommunity(smoothed)),
+                                                        qs)[:diversity]
 end
 
 end

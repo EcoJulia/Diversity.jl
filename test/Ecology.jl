@@ -1,17 +1,11 @@
 module TestEcology
-
-using Diversity
-using Diversity.ShortNames
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
+using Base.Test
 
 # Looking at relations to historical measures, updated with similarity
 # and partitioning
+using Diversity
 using Diversity.Ecology
+using Diversity.ShortNames
 
 numspecies = 100;
 numcommunities = 8;
@@ -23,29 +17,29 @@ weights /= sum(weights);
 Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 
 @testset "Standard ecological diversities" begin
-    @test richness(communities) ≈ subdiv(ᾱ(eco), 0)
+    @test richness(communities)[:diversity] ≈ subdiv(ᾱ(eco), 0)[:diversity]
     
-    @test shannon(communities) ≈ log.(subdiv(ᾱ(eco), 1))
+    @test shannon(communities)[:diversity] ≈ log.(subdiv(ᾱ(eco), 1)[:diversity])
     
-    @test simpson(communities) ≈ subdiv(ᾱ(eco), 2) .^ -1
+    @test simpson(communities)[:diversity] ≈ subdiv(ᾱ(eco), 2)[:diversity] .^ -1
     
-    @test jaccard([1 0 0; 0 1 1]'/3) ≈ 0
-    @test jaccard([1 0 1; 0 1 1]'/4) ≈ 1.0 / 3.0
+    @test jaccard([1 0 0; 0 1 1]'/3)[:diversity] ≈ [0]
+    @test jaccard([1 0 1; 0 1 1]'/4)[:diversity] ≈ [1.0 / 3.0]
     @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1]/7)
 end
 
 @testset "Generalised ecological diversities" begin
-    @test generalisedrichness(metacommunityDiversity, Γ,
-                              communities, Z1) ≈ 1
+    @test generalisedrichness(metacommunityDiversity,
+                              communities, Z1)[:diversity] ≈ [1]
     
-    @test generalisedshannon(metacommunityDiversity, Γ,
-                             communities, Z1) ≈ 0
+    @test generalisedshannon(metacommunityDiversity,
+                             communities, Z1)[:diversity] ≈ [0]
     
-    @test generalisedsimpson(metacommunityDiversity, Γ,
-                             communities, Z1) ≈ 1
+    @test generalisedsimpson(metacommunityDiversity,
+                             communities, Z1)[:diversity] ≈ [1]
     
-    @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf]) ≈ [1.0/3.0, 1.0]
-    @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1]) ≈ [1, 1]
+    @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf])[:diversity] ≈ [1.0/3.0, 1.0]
+    @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1])[:diversity] ≈ [1, 1]
 end
 
 end
