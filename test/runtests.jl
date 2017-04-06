@@ -6,7 +6,7 @@ tests = ["EffectiveNumbers", "Metacommunity", "DiversityMeasure",
 println("Running tests ...")
 
 for t in tests
-    fn = "$t.jl"
-    println("* $fn ...")
+    fn = "test_$t.jl"
+    println("* Testing $t.jl ...")
     include(fn)
 end
