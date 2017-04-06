@@ -43,7 +43,7 @@ export RawAlpha, NormalisedAlpha
 export RawBeta, NormalisedBeta, RawRho, NormalisedRho
 export Gamma
 
-## We do not directly export ᾱ, α, β̄, β, ρ̄, ρ, γ̄, γ as they're too short, only via Diversity.ShortNames
+## We do not directly export ᾱ, α, β̄, β, ρ̄, ρ, γ as they're too short, only via Diversity.ShortNames
 module ShortNames
 using Diversity
 
