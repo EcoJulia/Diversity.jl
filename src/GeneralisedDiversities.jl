@@ -50,29 +50,8 @@ Calculates any diversity of a Metacommunity for a series of orders,
 repesented as one or a vector of qs.
 
 #### Arguments:
-- `dl`: a DiversityLevel
-- `dm`: a DiversityMeasure
-- `meta`: a Metacommunity
-- `qs`: single number or vector of values of parameter q
-
-#### Returns:
-
-The requested diversities.
-"""
-function diversity{Meta <: AbstractMetacommunity}(dl::DiversityLevel,
-                                                  dm, meta::Meta, qs)
-    dl(dm(meta), qs)
-end
-
-"""
-### Calculates subcommunity and metacommunity diversities
-
-Calculates any diversity of a Metacommunity for a series of orders,
-repesented as one or a vector of qs.
-
-#### Arguments:
-- `dls`: a Set of DiversityLevels
-- `dms`: a Set of DiversityMeasures
+- `dls`: an iterable collection of DiversityLevels
+- `dms`: an iterable collection of DiversityMeasures
 - `meta`: a Metacommunity
 - `qs`: single number or vector of values of parameter q
 
@@ -80,14 +59,7 @@ repesented as one or a vector of qs.
 
 A vector containing all of the diversity levels of all of the requested diversities.
 """
-function diversity{Meta <: AbstractMetacommunity}(dls::Set{DiversityLevel},
-                                                  dms::Set, meta::Meta, qs)
-    ret = Vector()
-    for dm in dms
-        dmv = dm(meta)
-        for dl in dls
-            push!(ret, dl(dmv, qs))
-        end
-    end
-    ret
+function diversity(dls, dms, meta::AbstractMetacommunity, qs)
+    return mapreduce(measure -> mapreduce(dl -> dl(measure, qs), append!, dls),
+                     append!, map(dm -> dm(meta), dms))
 end
