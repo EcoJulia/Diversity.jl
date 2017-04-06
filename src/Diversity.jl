@@ -66,105 +66,105 @@ export getName, getASCIIName, getFullName
 
 include("GeneralisedDiversities.jl")
 export diversity
-export normsubalpha, rawsubalpha, normsubbeta, rawsubbeta
-export normsubrho, rawsubrho, subgamma
-export normmetaalpha, rawmetaalpha, normmetabeta, rawmetabeta
-export normmetarho, rawmetarho, metagamma
+export norm_sub_alpha, raw_sub_alpha, norm_sub_beta, raw_sub_beta
+export norm_sub_rho, raw_sub_rho, sub_gamma
+export norm_meta_alpha, raw_meta_alpha, norm_meta_beta, raw_meta_beta
+export norm_meta_rho, raw_meta_rho, meta_gamma
 
 ## Deprecate short names as too ambiguous
-@deprecate(Dᾱ, normsubalpha)
-@deprecate(Dα, rawsubalpha)
-@deprecate(Dβ̄, normsubbeta)
-@deprecate(Dβ, rawsubbeta)
-@deprecate(Dρ̄, normsubrho)
-@deprecate(Dρ, rawsubrho)
-@deprecate(Dγ̄, subgamma)
-@deprecate(Dγ, subgamma)
-@deprecate(DĀ, normmetaalpha)
-@deprecate(DA, rawmetaalpha)
-@deprecate(DB̄, normmetabeta)
-@deprecate(DB, rawmetabeta)
-@deprecate(DR̄, normmetarho)
-@deprecate(DR, rawmetarho)
-@deprecate(DḠ, metagamma)
-@deprecate(DG, metagamma)
+@deprecate(Dᾱ, norm_sub_alpha)
+@deprecate(Dα, raw_sub_alpha)
+@deprecate(Dβ̄, norm_sub_beta)
+@deprecate(Dβ, raw_sub_beta)
+@deprecate(Dρ̄, norm_sub_rho)
+@deprecate(Dρ, raw_sub_rho)
+@deprecate(Dγ̄, sub_gamma)
+@deprecate(Dγ, sub_gamma)
+@deprecate(DĀ, norm_meta_alpha)
+@deprecate(DA, raw_meta_alpha)
+@deprecate(DB̄, norm_meta_beta)
+@deprecate(DB, raw_meta_beta)
+@deprecate(DR̄, norm_meta_rho)
+@deprecate(DR, raw_meta_rho)
+@deprecate(DḠ, meta_gamma)
+@deprecate(DG, meta_gamma)
 
 ## Deprecate ecosystem-related names
-@deprecate(ecosystemAbar, normmetaalpha)
-@deprecate(ecosystemA, rawmetaalpha)
-@deprecate(ecosystemBbar, normmetabeta)
-@deprecate(ecosystemB, rawmetabeta)
-@deprecate(ecosystemRbar, normmetarho)
-@deprecate(ecosystemR, rawmetarho)
-@deprecate(ecosystemGbar, metagamma)
-@deprecate(ecosystemG, metagamma)
+@deprecate(ecosystemAbar, norm_meta_alpha)
+@deprecate(ecosystemA, raw_meta_alpha)
+@deprecate(ecosystemBbar, norm_meta_beta)
+@deprecate(ecosystemB, raw_meta_beta)
+@deprecate(ecosystemRbar, norm_meta_rho)
+@deprecate(ecosystemR, raw_meta_rho)
+@deprecate(ecosystemGbar, meta_gamma)
+@deprecate(ecosystemG, meta_gamma)
 
 ## Deprecate all-in-one names, as we divide calculation into type of
 ## diversity and scale
 @deprecate(normsubalpha(pop::AbstractArray, Z, qs),
-           normsubalpha(Metacommunity(pop, Z), qs))
+           norm_sub_alpha(Metacommunity(pop, Z), qs))
 @deprecate(rawsubalpha(pop::AbstractArray, Z, qs),
-           rawsubalpha(Metacommunity(pop, Z), qs))
+           raw_sub_alpha(Metacommunity(pop, Z), qs))
 @deprecate(normsubbeta(pop::AbstractArray, Z, qs),
-           normsubbeta(Metacommunity(pop, Z), qs))
+           norm_sub_beta(Metacommunity(pop, Z), qs))
 @deprecate(rawsubbeta(pop::AbstractArray, Z, qs),
-           rawsubbeta(Metacommunity(pop, Z), qs))
+           raw_sub_beta(Metacommunity(pop, Z), qs))
 @deprecate(normsubrho(pop::AbstractArray, Z, qs),
-           normsubrho(Metacommunity(pop, Z), qs))
+           norm_sub_rho(Metacommunity(pop, Z), qs))
 @deprecate(rawsubrho(pop::AbstractArray, Z, qs),
-           rawsubrho(Metacommunity(pop, Z), qs))
+           raw_sub_rho(Metacommunity(pop, Z), qs))
 @deprecate(subgamma(pop::AbstractArray, Z, qs),
-           subgamma(Metacommunity(pop, Z), qs))
+           sub_gamma(Metacommunity(pop, Z), qs))
 @deprecate(normmetaalpha(pop::AbstractArray, Z, qs),
-           normmetaalpha(Metacommunity(pop, Z), qs))
+           norm_meta_alpha(Metacommunity(pop, Z), qs))
 @deprecate(rawmetaalpha(pop::AbstractArray, Z, qs),
-           rawmetaalpha(Metacommunity(pop, Z), qs))
+           raw_meta_alpha(Metacommunity(pop, Z), qs))
 @deprecate(normmetabeta(pop::AbstractArray, Z, qs),
-           normmetabeta(Metacommunity(pop, Z), qs))
+           norm_meta_beta(Metacommunity(pop, Z), qs))
 @deprecate(rawmetabeta(pop::AbstractArray, Z, qs),
-           rawmetabeta(Metacommunity(pop, Z), qs))
+           raw_meta_beta(Metacommunity(pop, Z), qs))
 @deprecate(normmetarho(pop::AbstractArray, Z, qs),
-           normmetarho(Metacommunity(pop, Z), qs))
+           norm_meta_rho(Metacommunity(pop, Z), qs))
 @deprecate(rawmetarho(pop::AbstractArray, Z, qs),
-           rawmetarho(Metacommunity(pop, Z), qs))
+           raw_meta_rho(Metacommunity(pop, Z), qs))
 @deprecate(metagamma(pop::AbstractArray, Z, qs),
-           metagamma(Metacommunity(pop, Z), qs))
+           meta_gamma(Metacommunity(pop, Z), qs))
 
 @deprecate(normsubalpha(pop::AbstractArray, qs),
-           normsubalpha(Metacommunity(pop), qs))
+           norm_sub_alpha(Metacommunity(pop), qs))
 @deprecate(rawsubalpha(pop::AbstractArray, qs),
-           rawsubalpha(Metacommunity(pop), qs))
+           raw_sub_alpha(Metacommunity(pop), qs))
 @deprecate(normsubbeta(pop::AbstractArray, qs),
-           normsubbeta(Metacommunity(pop), qs))
+           norm_sub_beta(Metacommunity(pop), qs))
 @deprecate(rawsubbeta(pop::AbstractArray, qs),
-           rawsubbeta(Metacommunity(pop), qs))
+           raw_sub_beta(Metacommunity(pop), qs))
 @deprecate(normsubrho(pop::AbstractArray, qs),
-           normsubrho(Metacommunity(pop), qs))
+           norm_sub_rho(Metacommunity(pop), qs))
 @deprecate(rawsubrho(pop::AbstractArray, qs),
-           rawsubrho(Metacommunity(pop), qs))
+           raw_sub_rho(Metacommunity(pop), qs))
 @deprecate(subgamma(pop::AbstractArray, qs),
-           subgamma(Metacommunity(pop), qs))
+           sub_gamma(Metacommunity(pop), qs))
 @deprecate(normmetaalpha(pop::AbstractArray, qs),
-           normmetaalpha(Metacommunity(pop), qs))
+           norm_meta_alpha(Metacommunity(pop), qs))
 @deprecate(rawmetaalpha(pop::AbstractArray, qs),
-           rawmetaalpha(Metacommunity(pop), qs))
+           raw_meta_alpha(Metacommunity(pop), qs))
 @deprecate(normmetabeta(pop::AbstractArray, qs),
-           normmetabeta(Metacommunity(pop), qs))
+           norm_meta_beta(Metacommunity(pop), qs))
 @deprecate(rawmetabeta(pop::AbstractArray, qs),
-           rawmetabeta(Metacommunity(pop), qs))
+           raw_meta_beta(Metacommunity(pop), qs))
 @deprecate(normmetarho(pop::AbstractArray, qs),
-           normmetarho(Metacommunity(pop), qs))
+           norm_meta_rho(Metacommunity(pop), qs))
 @deprecate(rawmetarho(pop::AbstractArray, qs),
-           rawmetarho(Metacommunity(pop), qs))
+           raw_meta_rho(Metacommunity(pop), qs))
 @deprecate(metagamma(pop::AbstractArray, qs),
-           metagamma(Metacommunity(pop), qs))
+           meta_gamma(Metacommunity(pop), qs))
 
 ## Deprecate anything related to ϵ as it has been replaced by ρ̄
 @deprecate(subcommunityepsilon, Dρ̄)
 @deprecate(Dϵ, Dρ̄)
-@deprecate(ecosystemE, normmetarho)
-@deprecate(metacommunityE, normmetarho)
-@deprecate(DE, normmetarho)
+@deprecate(ecosystemE, norm_meta_rho)
+@deprecate(metacommunityE, norm_meta_rho)
+@deprecate(DE, norm_meta_rho)
 
 """
 The **Diversity.Ecology** module replicates old ecological

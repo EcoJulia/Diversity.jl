@@ -1,45 +1,45 @@
 using Diversity.ShortNames
 
-function normsubalpha(meta::AbstractMetacommunity, qs)
+function norm_sub_alpha(meta::AbstractMetacommunity, qs)
     subdiv(ᾱ(meta), qs)
 end
-function rawsubalpha(meta::AbstractMetacommunity, qs)
+function raw_sub_alpha(meta::AbstractMetacommunity, qs)
     subdiv(α(meta), qs)
 end
-function normsubbeta(meta::AbstractMetacommunity, qs)
+function norm_sub_beta(meta::AbstractMetacommunity, qs)
     subdiv(β̄(meta), qs)
 end
-function rawsubbeta(meta::AbstractMetacommunity, qs)
+function raw_sub_beta(meta::AbstractMetacommunity, qs)
     subdiv(β(meta), qs)
 end
-function normsubrho(meta::AbstractMetacommunity, qs)
+function norm_sub_rho(meta::AbstractMetacommunity, qs)
     subdiv(ρ̄(meta), qs)
 end
-function rawsubrho(meta::AbstractMetacommunity, qs)
+function raw_sub_rho(meta::AbstractMetacommunity, qs)
     subdiv(ρ(meta), qs)
 end
-function subgamma(meta::AbstractMetacommunity, qs)
+function sub_gamma(meta::AbstractMetacommunity, qs)
     subdiv(Γ(meta), qs)
 end
-function normmetaalpha(meta::AbstractMetacommunity, qs)
+function norm_meta_alpha(meta::AbstractMetacommunity, qs)
     metadiv(ᾱ(meta), qs)
 end
-function rawmetaalpha(meta::AbstractMetacommunity, qs)
+function raw_meta_alpha(meta::AbstractMetacommunity, qs)
     metadiv(α(meta), qs)
 end
-function normmetabeta(meta::AbstractMetacommunity, qs)
+function norm_meta_beta(meta::AbstractMetacommunity, qs)
     metadiv(β̄(meta), qs)
 end
-function rawmetabeta(meta::AbstractMetacommunity, qs)
+function raw_meta_beta(meta::AbstractMetacommunity, qs)
     metadiv(β(meta), qs)
 end
-function normmetarho(meta::AbstractMetacommunity, qs)
+function norm_meta_rho(meta::AbstractMetacommunity, qs)
     metadiv(ρ̄(meta), qs)
 end
-function rawmetarho(meta::AbstractMetacommunity, qs)
+function raw_meta_rho(meta::AbstractMetacommunity, qs)
     metadiv(ρ(meta), qs)
 end
-function metagamma(meta::AbstractMetacommunity, qs)
+function meta_gamma(meta::AbstractMetacommunity, qs)
     metadiv(Γ(meta), qs)
 end
 
