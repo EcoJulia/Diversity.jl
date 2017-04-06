@@ -4,8 +4,8 @@
 
 | **Documentation**                               | **PackageEvaluator**            | **Build Status**                                                    |
 |:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
-| [![][old-docs-stable-img]][old-docs-stable-url] | [![][pkg-0.4-img]][pkg-0.4-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.5-img]][pkg-0.5-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.5-img]][pkg-0.5-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
+| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.6-img]][pkg-0.6-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
@@ -14,20 +14,23 @@ subcommunities. It uses the diversity measures described in the arXiv
 paper [arXiv:1404.6520 (q-bio.QM)](http://arxiv.org/abs/1404.6520),
 *How to partition diversity*. It also provides a series of other
 related and older diversity measures through sub-modules. Currently
-these are all ecological diversity measures, but this will be expanded
-through interfacing to BioJulia.
+these are all ecological diversity measures, but this will be
+expanded, possibly through interfacing to BioJulia.
 
 This package is still in alpha and under heavy development, and so we
 do not guarantee its correctness, although we are aware of no problems
 with it. Please [raise an issue][issues-url] if you find any problems.
 
-Version 0.3, which will be the next release, will have significant
-changes to the standard interface for calculating diversity and to the
-output format to provide consistency with our R package
-[rdiversity](https://github.com/boydorr/rdiversity). Older interfaces
-will be deprecated. The new interface is currently available on master
-if you want to try it out - it passes all of our tests, but currently
-has a very clunky output format, which will be fixed next.
+**Version 0.3, which has just been released, has significant breaking
+changes to the standard interface for calculating diversity and
+especially to the output format to provide consistency with our R
+package [rdiversity](https://github.com/boydorr/rdiversity).** In
+particular, we now use a DataFrame as the common output format for all
+of the diversity calculations. The code is certainly not optimised for
+speed at the moment due to the substantial changes that have happened
+to it under the hood.
+
+Older interfaces have been deprecated, and will be removed in v0.4.
 
 ## Install
 
@@ -101,7 +104,7 @@ online via the
 
 ### Usage
 
-Accessing the documentation in Julia is easy in v0.4 onwards:
+Accessing the documentation in Julia is easy in v0.5 onwards:
 
 ```julia
 using Diversity
@@ -118,7 +121,7 @@ The documentation is also available online.
 ### Stable branch
 
 The online documentation for the current stable branch is
-[here][old-docs-stable-url].
+[here][docs-stable-url].
 
 ### Master branch
 
@@ -127,9 +130,6 @@ The online documentation for the latest master (unreleased) branch is
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://richardreeve.github.io/Diversity.jl/latest
-
-[old-docs-stable-img]: https://readthedocs.org/projects/diversityjl/badge/?version=stable
-[old-docs-stable-url]: http://diversityjl.readthedocs.org/en/stable/diversity/
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://richardreeve.github.io/Diversity.jl/stable
@@ -148,7 +148,7 @@ The online documentation for the latest master (unreleased) branch is
 
 [issues-url]: https://github.com/richardreeve/Diversity.jl/issues
 
-[pkg-0.4-img]: http://pkg.julialang.org/badges/Diversity_0.4.svg
-[pkg-0.4-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.4
 [pkg-0.5-img]: http://pkg.julialang.org/badges/Diversity_0.5.svg
 [pkg-0.5-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.5
+[pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
+[pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
