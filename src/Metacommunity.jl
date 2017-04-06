@@ -346,9 +346,6 @@ function Metacommunity{V <: AbstractVector, M <: AbstractMatrix}(abundances::V, 
 end
 
 function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
-    Metacommunity{eltype(M), M,
-    GeneralTypes, Subcommunities}(abundances, GeneralTypes(zmatrix),
-                                  Subcommunities(size(abundances, 2)))
     if sum(abundances) ≈ one(eltype(abundances))
         return Metacommunity{eltype(M), M,
         GeneralTypes, Subcommunities}(abundances, GeneralTypes(zmatrix),
