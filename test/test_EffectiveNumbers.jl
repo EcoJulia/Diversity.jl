@@ -61,7 +61,7 @@ end
     end
 
     # Diversities are not normalised, so generate an error
-    @test_throws ErrorException qD([0.1, 0.1], 1)
+    @test_warn "Abundances not normalised to 1, correcting..." qD([0.1, 0.1], 1)
 end
 
 @testset "qDZ" begin
@@ -77,8 +77,7 @@ end
     end
     
     # Diversities are not normalised, so generate an error
-    @test_throws ErrorException qDZ([0.1, 0.1], 1)
+    @test_warn "Abundances not normalised to 1, correcting..." qDZ([0.1, 0.1], 1)
 end
 
 end
-

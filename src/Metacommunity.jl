@@ -291,32 +291,75 @@ function Metacommunity{A <: AbstractArray,
     Meta <: AbstractMetacommunity}(abundances::A, meta::Meta)
     types = gettypes(meta)
     part = getpartition(meta)
-    Metacommunity{eltype{A}, A, typeof(types), typeof(part)}(abundances, types, part)
+    if sum(abundances) ≈ one(eltype(abundances))
+        return Metacommunity{eltype(A), A,
+        typeof(types), typeof(part)}(abundances, types, part)
+    else
+        warn("Abundances not normalised to 1, correcting...")
+        ab = abundances / sum(abundances)
+        return Metacommunity{eltype(ab), typeof(ab),
+        typeof(types), typeof(part)}(ab, types, part)
+    end
 end
 
 function Metacommunity{M <: AbstractMatrix, Sim <: AbstractTypes,
     Part <: AbstractPartition}(abundances::M,
                                types::Sim = UniqueTypes(size(abundances, 1)),
                                part::Part = Subcommunities(size(abundances, 2)))
-    Metacommunity{eltype(M), M, Sim, Part}(abundances, types, part)
+    if sum(abundances) ≈ one(eltype(abundances))
+        return Metacommunity{eltype(M), M,
+        typeof(types), typeof(part)}(abundances, types, part)
+    else
+        warn("Abundances not normalised to 1, correcting...")
+        ab = abundances / sum(abundances)
+        return Metacommunity{eltype(ab), typeof(ab),
+        typeof(types), typeof(part)}(ab, types, part)
+    end
 end
 
 function Metacommunity{V <: AbstractVector, Sim <: AbstractTypes,
     Part <: AbstractPartition}(abundances::V,
                                types::Sim = UniqueTypes(size(abundances, 1)),
                                part::Part = Onecommunity())
-    Metacommunity{eltype(V), V, Sim, Part}(abundances, types, part)
+    if sum(abundances) ≈ one(eltype(abundances))
+        return Metacommunity{eltype(V), V,
+        typeof(types), typeof(part)}(abundances, types, part)
+    else
+        warn("Abundances not normalised to 1, correcting...")
+        ab = abundances / sum(abundances)
+        return Metacommunity{eltype(ab), typeof(ab),
+        typeof(types), typeof(part)}(ab, types, part)
+    end
 end
 
 function Metacommunity{V <: AbstractVector, M <: AbstractMatrix}(abundances::V, zmatrix::M)
-    Metacommunity{eltype(V), V,
-    GeneralTypes, Onecommunity}(abundances, GeneralTypes(zmatrix), Onecommunity())
+    if sum(abundances) ≈ one(eltype(abundances))
+        return Metacommunity{eltype(V), V,
+        GeneralTypes, Onecommunity}(abundances, GeneralTypes(zmatrix), Onecommunity())
+    else
+        warn("Abundances not normalised to 1, correcting...")
+        ab = abundances / sum(abundances)
+        return Metacommunity{eltype(ab), typeof(ab),
+        GeneralTypes, Onecommunity}(ab, GeneralTypes(zmatrix), Onecommunity())
+    end
+    
 end
 
 function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
     Metacommunity{eltype(M), M,
     GeneralTypes, Subcommunities}(abundances, GeneralTypes(zmatrix),
                                   Subcommunities(size(abundances, 2)))
+    if sum(abundances) ≈ one(eltype(abundances))
+        return Metacommunity{eltype(M), M,
+        GeneralTypes, Subcommunities}(abundances, GeneralTypes(zmatrix),
+                                      Subcommunities(size(abundances, 2)))
+    else
+        warn("Abundances not normalised to 1, correcting...")
+        ab = abundances / sum(abundances)
+        return Metacommunity{eltype(ab), typeof(ab),
+        GeneralTypes, Subcommunities}(ab, GeneralTypes(zmatrix),
+                                      Subcommunities(size(ab, 2)))
+    end
 end
 
 function getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})

@@ -50,14 +50,16 @@ meta = Metacommunity(three, ms, oc_count)
 sp = Species(size(ab3, 1))
 abf = ab3 ./ sum(ab3)
 meta2 = Metacommunity(abf, sp, sc)
+g2 = GeneralTypes(eye(2))
 @testset "Metacommunity" begin
     @test gettypes(meta) == ms
     @test getpartition(meta) == oc_count
     @test isnull(meta.ordinariness)
     @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
     @test !isnull(meta.ordinariness)
-    @test_throws TypeError Metacommunity(ab3, ms, sc)
-    @test_throws ErrorException Metacommunity(-abf, ms, sc)
+    @test_warn "Abundances not normalised to 1, correcting..." Metacommunity(ab3, g2, sc)
+    @test_throws ErrorException Metacommunity(abf, ms, sc)
+    #@test_throws ErrorException Metacommunity(-abf, g2, sc)
     @test getsimilarity(gettypes(meta2)) ≈ eye(size(ab3, 1))
     @test Diversity.floattypes(meta) ⊆ mapreduce(Diversity.floattypes, ∩,
                                                  [getabundance(meta),
@@ -66,4 +68,3 @@ meta2 = Metacommunity(abf, sp, sc)
 end
 
 end
-
