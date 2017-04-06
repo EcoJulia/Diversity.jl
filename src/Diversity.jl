@@ -72,32 +72,127 @@ export norm_meta_alpha, raw_meta_alpha, norm_meta_beta, raw_meta_beta
 export norm_meta_rho, raw_meta_rho, meta_gamma
 
 ## Deprecate short names as too ambiguous
-@deprecate(Dᾱ, norm_sub_alpha)
-@deprecate(Dα, raw_sub_alpha)
-@deprecate(Dβ̄, norm_sub_beta)
-@deprecate(Dβ, raw_sub_beta)
-@deprecate(Dρ̄, norm_sub_rho)
-@deprecate(Dρ, raw_sub_rho)
-@deprecate(Dγ̄, sub_gamma)
-@deprecate(Dγ, sub_gamma)
-@deprecate(DĀ, norm_meta_alpha)
-@deprecate(DA, raw_meta_alpha)
-@deprecate(DB̄, norm_meta_beta)
-@deprecate(DB, raw_meta_beta)
-@deprecate(DR̄, norm_meta_rho)
-@deprecate(DR, raw_meta_rho)
-@deprecate(DḠ, meta_gamma)
-@deprecate(DG, meta_gamma)
+@deprecate(Dᾱ, subcommunityalphabar)
+@deprecate(Dα, subcommunityalpha)
+@deprecate(Dβ̄, subcommunitybetabar)
+@deprecate(Dβ, subcommunitybeta)
+@deprecate(Dρ̄, subcommunityrhobar)
+@deprecate(Dρ, subcommunityrho)
+@deprecate(Dγ̄, subcommunitygammabar)
+@deprecate(Dγ, subcommunitygamma)
+@deprecate(DĀ, supercommunityAbar)
+@deprecate(DA, supercommunityA)
+@deprecate(DB̄, supercommunityBbar)
+@deprecate(DB, supercommunityB)
+@deprecate(DR̄, supercommunityRbar)
+@deprecate(DR, supercommunityR)
+@deprecate(DḠ, supercommunityGbar)
+@deprecate(DG, supercommunityG)
 
 ## Deprecate ecosystem-related names
-@deprecate(ecosystemAbar, norm_meta_alpha)
-@deprecate(ecosystemA, raw_meta_alpha)
-@deprecate(ecosystemBbar, norm_meta_beta)
-@deprecate(ecosystemB, raw_meta_beta)
-@deprecate(ecosystemRbar, norm_meta_rho)
-@deprecate(ecosystemR, raw_meta_rho)
-@deprecate(ecosystemGbar, meta_gamma)
-@deprecate(ecosystemG, meta_gamma)
+@deprecate(ecosystemAbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_alpha(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemA(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_alpha(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemBbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_beta(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemB(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_beta(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemRbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_rho(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemR(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_rho(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemGbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           meta_gamma(Metacommunity(pop, Z), qs))
+@deprecate(ecosystemG(pop::AbstractArray, qs, Z::AbstractMatrix),
+           meta_gamma(Metacommunity(pop, Z), qs))
+
+@deprecate(ecosystemAbar(pop::AbstractArray, qs),
+           norm_meta_alpha(Metacommunity(pop), qs))
+@deprecate(ecosystemA(pop::AbstractArray, qs),
+           raw_meta_alpha(Metacommunity(pop), qs))
+@deprecate(ecosystemBbar(pop::AbstractArray, qs),
+           norm_meta_beta(Metacommunity(pop), qs))
+@deprecate(ecosystemB(pop::AbstractArray, qs),
+           raw_meta_beta(Metacommunity(pop), qs))
+@deprecate(ecosystemRbar(pop::AbstractArray, qs),
+           norm_meta_rho(Metacommunity(pop), qs))
+@deprecate(ecosystemR(pop::AbstractArray, qs),
+           raw_meta_rho(Metacommunity(pop), qs))
+@deprecate(ecosystemGbar(pop::AbstractArray),
+           meta_gamma(Metacommunity(pop), qs))
+@deprecate(ecosystemG(pop::AbstractArray, qs),
+           meta_gamma(Metacommunity(pop), qs))
+
+## Deprecate supercommunity-related names
+@deprecate(supercommunityAbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_alpha(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityA(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_alpha(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityBbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_beta(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityB(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_beta(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityRbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_rho(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityR(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_rho(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityGbar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           meta_gamma(Metacommunity(pop, Z), qs))
+@deprecate(supercommunityG(pop::AbstractArray, qs, Z::AbstractMatrix),
+           meta_gamma(Metacommunity(pop, Z), qs))
+
+@deprecate(supercommunityAbar(pop::AbstractArray, qs),
+           norm_meta_alpha(Metacommunity(pop), qs))
+@deprecate(supercommunityA(pop::AbstractArray, qs),
+           raw_meta_alpha(Metacommunity(pop), qs))
+@deprecate(supercommunityBbar(pop::AbstractArray, qs),
+           norm_meta_beta(Metacommunity(pop), qs))
+@deprecate(supercommunityB(pop::AbstractArray, qs),
+           raw_meta_beta(Metacommunity(pop), qs))
+@deprecate(supercommunityRbar(pop::AbstractArray, qs),
+           norm_meta_rho(Metacommunity(pop), qs))
+@deprecate(supercommunityR(pop::AbstractArray, qs),
+           raw_meta_rho(Metacommunity(pop), qs))
+@deprecate(supercommunityGbar(pop::AbstractArray),
+           meta_gamma(Metacommunity(pop), qs))
+@deprecate(supercommunityG(pop::AbstractArray, qs),
+           meta_gamma(Metacommunity(pop), qs))
+
+## Deprecate subcommunity-related names
+@deprecate(subcommunityalphabar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_alpha(Metacommunity(pop, Z), qs))
+@deprecate(subcommunityalpha(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_alpha(Metacommunity(pop, Z), qs))
+@deprecate(subcommunitybetabar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_beta(Metacommunity(pop, Z), qs))
+@deprecate(subcommunitybeta(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_beta(Metacommunity(pop, Z), qs))
+@deprecate(subcommunityrhobar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           norm_meta_rho(Metacommunity(pop, Z), qs))
+@deprecate(subcommunityrho(pop::AbstractArray, qs, Z::AbstractMatrix),
+           raw_meta_rho(Metacommunity(pop, Z), qs))
+@deprecate(subcommunitygammabar(pop::AbstractArray, qs, Z::AbstractMatrix),
+           meta_gamma(Metacommunity(pop, Z), qs))
+@deprecate(subcommunitygamma(pop::AbstractArray, qs, Z::AbstractMatrix),
+           meta_gamma(Metacommunity(pop, Z), qs))
+
+@deprecate(subcommunityalphabar(pop::AbstractArray, qs),
+           norm_meta_alpha(Metacommunity(pop), qs))
+@deprecate(subcommunityalpha(pop::AbstractArray, qs),
+           raw_meta_alpha(Metacommunity(pop), qs))
+@deprecate(subcommunitybetabar(pop::AbstractArray, qs),
+           norm_meta_beta(Metacommunity(pop), qs))
+@deprecate(subcommunitybeta(pop::AbstractArray, qs),
+           raw_meta_beta(Metacommunity(pop), qs))
+@deprecate(subcommunityrhobar(pop::AbstractArray, qs),
+           norm_meta_rho(Metacommunity(pop), qs))
+@deprecate(subcommunityrho(pop::AbstractArray, qs),
+           raw_meta_rho(Metacommunity(pop), qs))
+@deprecate(subcommunitygammabar(pop::AbstractArray),
+           meta_gamma(Metacommunity(pop), qs))
+@deprecate(subcommunitygamma(pop::AbstractArray, qs),
+           meta_gamma(Metacommunity(pop), qs))
 
 ## Deprecate all-in-one names, as we divide calculation into type of
 ## diversity and scale
@@ -162,9 +257,10 @@ export norm_meta_rho, raw_meta_rho, meta_gamma
 ## Deprecate anything related to ϵ as it has been replaced by ρ̄
 @deprecate(subcommunityepsilon, Dρ̄)
 @deprecate(Dϵ, Dρ̄)
-@deprecate(ecosystemE, norm_meta_rho)
-@deprecate(metacommunityE, norm_meta_rho)
-@deprecate(DE, norm_meta_rho)
+@deprecate(ecosystemE, ecosystemRbar)
+@deprecate(supercommunityE, supercommunityRbar)
+@deprecate(metacommunityE, metacommunityRbar)
+@deprecate(DE, metacommunityE)
 
 """
 The **Diversity.Ecology** module replicates old ecological
