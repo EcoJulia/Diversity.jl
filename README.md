@@ -55,7 +55,6 @@ ascii names (e.g. NormalisedAlpha()), which are. We also provide a
 general function for extract any diversity measure for a series of
 subcommunity relative abundances.
 
-
 #### Getting started
 
 Before calculating diversity a `Metacommunity` object must be created. This object contains all the information needed to calculate diversity.
@@ -76,7 +75,7 @@ meta = Metacommunity(pop)
 First we need to calculate the low-level diversity component seperately, by passing a `metacommunity` object to the appropriate function; `RawAlpha()`, `NormalisedAlpha()`, `RawBeta()`, `NormalisedBeta()`, `RawRho()`, `NormalisedRho()`, or `Gamma()`. 
 
 ```julia
-# First, calculate the normalised subcommunity alpha component
+# First, calculate the normalised alpha component
 component = NormalisedAlpha(meta)
 ```
 
@@ -138,14 +137,14 @@ are aware of whose subcommunity components sum directly to the
 corresponding metacommunity measure (although note that Simpson's
 index decreases for increased diversity, so small components are more
 diverse). Documentation for these diversity measures can be found
-[here](http://diversityjl.readthedocs.org/en/stable/ecology/).
+[here](http://richardreeve.github.io/Diversity.jl/stable/ecology/).
 
 #### Diversity.Hill
 
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 Diversity.Hill sub-module.
 Documentation for these diversity measures can be found
-[here](http://diversityjl.readthedocs.org/en/stable/hill/).
+[here](http://richardreeve.github.io/Diversity.jl/stable/hill/).
 
 #### Diversity.Jost
 
@@ -154,7 +153,7 @@ Lou Jost's
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
 found in the Diversity.Jost sub-module.
 Documentation for these diversity measures is
-[here](http://diversityjl.readthedocs.org/en/stable/jost/).
+[here](http://richardreeve.github.io/Diversity.jl/stable/jost/).
 
 ## Documentation
 
@@ -164,12 +163,12 @@ online via the
 
 ### Usage
 
-Accessing the documentation in Julia is easy in v0.5 onwards:
+Accessing the documentation in Julia is easy:
 
 ```julia
 using Diversity
 
-# Returns any documentation for the qDZ function and all qDZ methods
+# Returns any documentation for the subdiv() function
 ?subdiv
 ```
 
