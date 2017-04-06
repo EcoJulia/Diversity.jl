@@ -47,7 +47,7 @@ columns representing independent subcommunity counts.
 #### Returns:
 - diversities of subcommunities
 """
-function richness(proportions::AbstractMatrix)
+function richness(proportions::AbstractVecOrMat)
     generalisedrichness(subcommunityDiversity, proportions)
 end
 
@@ -96,7 +96,7 @@ columns representing independent subcommunity counts.
 #### Returns:
 - entropies of subcommunities
 """
-function shannon(proportions::AbstractMatrix)
+function shannon(proportions::AbstractVecOrMat)
     generalisedshannon(subcommunityDiversity, proportions)
 end
 
@@ -147,7 +147,7 @@ columns representing independent subcommunity counts.
 
 - concentrations of subcommunities
 """
-function simpson(proportions::AbstractMatrix)
+function simpson(proportions::AbstractVecOrMat)
     generalisedsimpson(subcommunityDiversity, proportions)
 end
 
