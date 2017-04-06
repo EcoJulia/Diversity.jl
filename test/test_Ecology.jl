@@ -31,12 +31,18 @@ end
 @testset "Generalised ecological diversities" begin
     @test generalisedrichness(metacommunityDiversity,
                               communities, Z1)[:diversity] ≈ [1]
+    @test_throws ErrorException generalisedrichness(individualDiversity,
+                                                    communities, Z1)
     
     @test generalisedshannon(metacommunityDiversity,
                              communities, Z1)[:diversity] ≈ [0]
+    @test_throws ErrorException generalisedshannon(individualDiversity,
+                                                   communities, Z1)
     
     @test generalisedsimpson(metacommunityDiversity,
                              communities, Z1)[:diversity] ≈ [1]
+    @test_throws ErrorException generalisedsimpson(individualDiversity,
+                                                   communities, Z1)
     
     @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf])[:diversity] ≈ [1.0/3.0, 1.0]
     @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1])[:diversity] ≈ [1, 1]

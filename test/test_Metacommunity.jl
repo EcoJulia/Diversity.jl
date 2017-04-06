@@ -16,10 +16,11 @@ abnorm = ab3 / sum(ab3)
 sc = Subcommunities(size(ab3, 2))
 @testset "Communities" begin
     oc_2 = Onecommunity("All of it")
-    @test countsubcommunities(oc_count) == countsubcommunities(oc_2)
+    @test countsubcommunities(Onecommunity("Hello")) == countsubcommunities(oc_2)
     @test getnames(oc_2) == ["All of it"]
     @test getnames(oc_count) == ["1"]
-    @test getnames(sc) == map(x -> "$x", 1:3)
+    @test getnames(sc) == map(x -> "$x", 1:countsubcommunities(sc))
+    @test getnames(Subcommunities(["a", "b"])) == ["a", "b"]
 end
 
 sim = [1.0 0.0 0.0; 1.0 1.0 0.0; 1.0 1.0 1.0]
