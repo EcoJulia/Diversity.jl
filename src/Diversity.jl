@@ -119,7 +119,7 @@ export norm_meta_rho, raw_meta_rho, meta_gamma
            norm_meta_rho(Metacommunity(pop), qs))
 @deprecate(ecosystemR(pop::AbstractArray, qs),
            raw_meta_rho(Metacommunity(pop), qs))
-@deprecate(ecosystemGbar(pop::AbstractArray),
+@deprecate(ecosystemGbar(pop::AbstractArray, qs),
            meta_gamma(Metacommunity(pop), qs))
 @deprecate(ecosystemG(pop::AbstractArray, qs),
            meta_gamma(Metacommunity(pop), qs))
@@ -154,7 +154,7 @@ export norm_meta_rho, raw_meta_rho, meta_gamma
            norm_meta_rho(Metacommunity(pop), qs))
 @deprecate(supercommunityR(pop::AbstractArray, qs),
            raw_meta_rho(Metacommunity(pop), qs))
-@deprecate(supercommunityGbar(pop::AbstractArray),
+@deprecate(supercommunityGbar(pop::AbstractArray, qs),
            meta_gamma(Metacommunity(pop), qs))
 @deprecate(supercommunityG(pop::AbstractArray, qs),
            meta_gamma(Metacommunity(pop), qs))
@@ -189,7 +189,7 @@ export norm_meta_rho, raw_meta_rho, meta_gamma
            norm_meta_rho(Metacommunity(pop), qs))
 @deprecate(subcommunityrho(pop::AbstractArray, qs),
            raw_meta_rho(Metacommunity(pop), qs))
-@deprecate(subcommunitygammabar(pop::AbstractArray),
+@deprecate(subcommunitygammabar(pop::AbstractArray, qs),
            meta_gamma(Metacommunity(pop), qs))
 @deprecate(subcommunitygamma(pop::AbstractArray, qs),
            meta_gamma(Metacommunity(pop), qs))
