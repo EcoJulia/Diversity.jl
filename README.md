@@ -11,7 +11,7 @@
 provides functionality for measuring alpha, beta and gamma diversity
 of metacommunities (e.g. ecosystems) and their constituent
 subcommunities. It uses the diversity measures described in the arXiv
-paper [arXiv:1404.6520 (q-bio.QM)](http://arxiv.org/abs/1404.6520),
+paper [arXiv:1404.6520 (q-bio.QM)][paper-url],
 *How to partition diversity*. It also provides a series of other
 related and older diversity measures through sub-modules. Currently
 these are all ecological diversity measures, but this will be
@@ -48,11 +48,11 @@ described in
 and related alpha, beta and gamma diversity measures at the level of
 the metacommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
-[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
-functions exist both with unicode names (e.g. ᾱ()), which are not
-automatically exported as we feel they are too short and with matching
-ascii names (e.g. NormalisedAlpha()), which are. We also provide a
-general function for extract any diversity measure for a series of
+[arXiv:1404.6520 (q-bio.QM)][paper-url]). The diversity functions
+exist both with unicode names (e.g. ᾱ()), which are not automatically
+exported as we feel they are too short and with matching ascii names
+(e.g. NormalisedAlpha()), which are. We also provide a general
+function for extract any diversity measure for a series of
 subcommunity relative abundances.
 
 #### Getting started
@@ -208,3 +208,5 @@ The online documentation for the latest master (unreleased) branch is
 [pkg-0.5-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.5
 [pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
 [pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
+
+[paper-url]: http://arxiv.org/abs/1404.6520
