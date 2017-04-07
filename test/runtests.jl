@@ -1,4 +1,5 @@
-using Diversity
+# Identify files in test/ that are testing matching files in src/
+#  - src/Source.jl will be matched by test/test_Source.jl
 
 filebase = map(file -> replace(file, r"(.*).jl", s"\1"),
                 filter(file -> ismatch(r".*\.jl", file), readdir("../src")))
@@ -37,4 +38,24 @@ if length(missing) > 0
         println("    - $f.jl")
     end
     println()
+end
+
+# Identify files that are cross-validating results against other packages
+pkgbase = map(file -> replace(file, r"pkg_(.*).jl", s"\1"),
+                   filter(str -> ismatch(r"pkg_.*\.jl", str), readdir()))
+
+if length(pkgbase) > 0
+    println("Running cross-validation against:")
+    for p in pkgbase
+        println("    = $p")
+    end
+    println()
+    
+    println("Running validation...")
+    for p in pkgbase
+        fn = "pkg_$p.jl"
+        println("    * Validating against $p ...")
+        include(fn)
+        println()
+    end
 end
