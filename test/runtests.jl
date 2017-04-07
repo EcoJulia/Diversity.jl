@@ -43,6 +43,8 @@ end
 # Identify files that are cross-validating results against other packages
 pkgbase = map(file -> replace(file, r"pkg_(.*).jl", s"\1"),
                    filter(str -> ismatch(r"pkg_.*\.jl", str), readdir()))
+# Miss for now
+pkgbase = []
 
 if length(pkgbase) > 0
     println("Running cross-validation against:")
