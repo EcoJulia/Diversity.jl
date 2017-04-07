@@ -1,7 +1,8 @@
 module TestDiversityMeasure
+using Base.Test
+
 using Diversity
 using Diversity.ShortNames
-using Base.Test
 using DataFrames
 
 pop = [3, 3, 4]
