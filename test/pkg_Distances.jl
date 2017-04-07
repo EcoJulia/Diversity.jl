@@ -24,7 +24,7 @@ using Diversity.ShortNames
         rb = ρ̄(meta)
         n = β(meta)
         r = ρ(meta)
-        for q in [rand(10)*7..., 0, 1, Inf]
+        for q in [rand(7)*10..., 0, 1, Inf]
             @test exp.(colwise(RenyiDivergence(q),
                                pops_norm, metapop)) ≈ subdiv(nb, q)[:diversity]
             @test exp.(-colwise(RenyiDivergence(q),
