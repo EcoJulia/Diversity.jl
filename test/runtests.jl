@@ -6,13 +6,13 @@ filebase = map(file -> replace(file, r"(.*).jl", s"\1"),
 testbase = map(file -> replace(file, r"test_(.*).jl", s"\1"),
                 filter(str -> ismatch(r"test_.*\.jl", str), readdir()))
 
-println("Running tests for files:")
+info("Running tests for files:")
 for t in testbase
     println("    = $t.jl")
 end
 println()
 
-println("Running tests...")
+info("Running tests...")
 for t in testbase
     fn = "test_$t.jl"
     println("    * Testing $t.jl ...")
@@ -23,7 +23,7 @@ end
 # Identify tests with no matching file
 superfluous = filter(f -> f ∉ filebase, testbase)
 if length(superfluous) > 0
-    println("Potentially superfluous tests:")
+    info("Potentially superfluous tests:")
     for f in superfluous
         println("    + $f.jl")
     end
@@ -33,7 +33,7 @@ end
 # Identify files with no matching test
 missing = filter(f -> f ∉ testbase, filebase)
 if length(missing) > 0
-    println("Potentially missing tests:")
+    info("Potentially missing tests:")
     for f in missing
         println("    - $f.jl")
     end
@@ -45,13 +45,13 @@ pkgbase = map(file -> replace(file, r"pkg_(.*).jl", s"\1"),
                    filter(str -> ismatch(r"pkg_.*\.jl", str), readdir()))
 
 if length(pkgbase) > 0
-    println("Running cross-validation against:")
+    info("Running cross-validation against:")
     for p in pkgbase
         println("    = $p")
     end
     println()
     
-    println("Running validation...")
+    info("Running validation...")
     for p in pkgbase
         fn = "pkg_$p.jl"
         println("    * Validating against $p ...")
