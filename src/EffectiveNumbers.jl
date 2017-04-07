@@ -24,7 +24,7 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 1},
 
     # Check whether all proportions are NaN - happens in normalisation when all
     # weights are zero in group. In that case we want to propagate the NaN
-    if (all(isnan(proportions)))
+    if (all(isnan.(proportions)))
         return(convert(S, NaN))
     end
 
@@ -70,45 +70,58 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 0},
 end
 
 """
-### Calculates Hill / naive-similarity diversity
+    qD
 
-Calculates Hill number or naive diversity of order(s) *qs* of a
+Calculates Hill / naive-similarity diversity of order(s) *qs* of a
 population with given relative proportions.
 
-#### Arguments:
+# Arguments:
+
 - `proportions`: relative proportions of different types in population
+
 - `qs`: single number or vector of orders of diversity measurement
 
-#### Returns:
-- Diversity of order qs (single number or vector of diversities)"""
-function qD(meta::AbstractMetacommunity, qs)
+# Returns:
+
+- Diversity of order qs (single number or vector of diversities)
+
+"""
+function qD end
+
+function qD{FP <: AbstractFloat, A <: AbstractArray,
+    Part <: AbstractPartition}(meta::AbstractMetacommunity{FP, A, UniqueTypes, Part}, qs)
     length(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
-
-    isa(meta.similarity, Unique) || error("Not a naive similarity type")
 
     powermean(getabundance(meta), qs - 1, getabundance(meta)) .^ -1
 end
 
 function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
-    qD(Metacommunity(Onecommunity(proportions)), qs)
+    qD(Metacommunity(proportions), qs)
 end
 
 """
-### Calculates Leinster-Cobbold / similarity-sensitive diversity
+    qDZ
 
-Calculates Leinster-Cobbold general diversity of >= 1 order(s) *qs* of
-a population with given relative *proportions*, and similarity matrix
-*Z*.
+Calculates Leinster-Cobbold / similarity-sensitive diversity of >= 1
+order(s) *qs* of a population with given relative *proportions*, and
+similarity matrix *Z*.
 
-#### Arguments:
+# Arguments:
+
 - `proportions`: relative proportions of different types in a population
+
 - `qs`: single number or vector of orders of diversity measurement
+
 - `Z`: similarity matrix
 
-#### Returns:
+# Returns:
+
 - Diversity of order qs (single number or vector of diversities)
-"""
+
+    """
+function qDZ end
+
 function qDZ(meta::AbstractMetacommunity, qs)
     length(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
@@ -116,11 +129,11 @@ function qDZ(meta::AbstractMetacommunity, qs)
     powermean(getordinariness!(meta), qs - 1, getabundance(meta)) .^ -1
 end
 
-function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs,
-                                  sim::AbstractSimilarity = Unique())
-    qDZ(Metacommunity(Onecommunity(proportions), sim), qs)
+function qDZ{FP <: AbstractFloat, Sim <: AbstractTypes}(proportions::Vector{FP}, qs,
+                                                        sim::Sim = UniqueTypes(size(proportions, 1)))
+    qDZ(Metacommunity(proportions, sim), qs)
 end
 
-function qDZ{FP <: AbstractFloat}(proportions::Vector{FP}, qs, Z::Matrix{FP})
-    qDZ(Metacommunity(Onecommunity(proportions), MatrixSimilarity(Z)), qs)
+function qDZ{FP <: AbstractFloat, A <: AbstractMatrix}(proportions::Vector{FP}, qs, Z::A)
+    qDZ(Metacommunity(proportions, GeneralTypes(Z)), qs)
 end

@@ -1,13 +1,13 @@
 module TestEffectiveNumbers
+using Base.Test
+if VERSION <= v"0.6.0-pre.beta"
+    # Ignore @test_warn unless it's there...
+    macro test_warn(str, test)
+    end
+end
+
 using Diversity
 using Diversity.powermean
-
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
 
 numbers = [1.0, 2, 4, 8, 16];
 numspecies = 100;
@@ -61,7 +61,7 @@ end
     end
 
     # Diversities are not normalised, so generate an error
-    @test_throws ErrorException qD([0.1, 0.1], 1)
+    @test_warn "Abundances not normalised to 1, correcting..." qD([0.1, 0.1], 1)
 end
 
 @testset "qDZ" begin
@@ -77,8 +77,7 @@ end
     end
     
     # Diversities are not normalised, so generate an error
-    @test_throws ErrorException qDZ([0.1, 0.1], 1)
+    @test_warn "Abundances not normalised to 1, correcting..." qDZ([0.1, 0.1], 1)
 end
 
 end
-

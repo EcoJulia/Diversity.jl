@@ -1,48 +1,59 @@
 using Diversity
 
 """
-### Calculates Jost's alpha diversity
+    jostalpha(proportions::AbstractMatrix, qs)
 
 Calculates Jost's alpha diversity of a series of columns representing
 independent community counts, for a series of orders, repesented as a
 vector of qs. This is just the naive-community ecosystem diversity
 divided by the naive-community beta diversity.
 
-### Arguments:
+# Arguments:
+
 - `proportions` relative proportions of different individuals / species
                 in population (vector, or matrix where columns are
                 for individual sub-communities)
 
 - `qs` single number or vector of orders of diversity measurement
 
-### Returns:
-- array of diversities, first dimension representing sub-communities, and
-  last representing values of q
+# Returns:
+
+- DataFrame of diversities
 """
-function jostalpha{S <: AbstractFloat}(proportions::Matrix{S}, qs)
-    metacommunityDiversity(RawAlpha(Metacommunity(proportions)), qs) ./
-    qD(reshape(mapslices(sum, proportions, (1,)), size(proportions)[2]), qs)
+function jostalpha(proportions::AbstractMatrix, qs)
+    md = metacommunityDiversity(RawAlpha(Metacommunity(proportions)), qs)
+    md[:diversity] = md[:diversity] ./ qD(reshape(mapslices(sum, proportions, (1,)),
+                                                  size(proportions)[2]), qs)
+    md[:measure] = "JostAlpha"
+    return md
 end
 
 """
-### Calculates Jost's beta diversity
+    jostbeta(proportions::AbstractMatrix, qs)
 
 Calculates Jost's beta diversity of a series of columns representing
 independent community counts, for a series of orders, repesented as a
 vector of qs. This is just the naive gamma diversity divided by
 Jost's alpha diversity
 
-### Arguments:
+# Arguments:
+
 - `proportions` relative proportions of different individuals / species
                 in population (vector, or matrix where columns are
                 for individual sub-communities)
 
 - `qs` single number or vector of orders of diversity measurement
 
-### Returns:
-- array of diversities, first dimension representing sub-communities, and
-  last representing values of q
+# Returns:
+
+- DataFrame of diversities
 """
-function jostbeta{S <: AbstractFloat}(proportions::Matrix{S}, qs)
-    metacommunityDiversity(Gamma(Metacommunity(proportions)), qs) ./ jostalpha(proportions, qs)
+function jostbeta(proportions::AbstractMatrix, qs)
+    md = metacommunityDiversity(Gamma(Metacommunity(proportions)), qs)
+    ja = jostalpha(proportions, qs)
+    j = join(md, ja, on=[:q, :type_level, :type_name, :partition_level, :partition_name])
+    j[:diversity] = j[:diversity] ./ j[:diversity_1]
+    j[:measure] = "JostBeta"
+    delete!(j, [:diversity_1, :measure_1])
+    return j
 end

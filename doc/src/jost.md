@@ -7,12 +7,15 @@ found in the **Diversity.Jost** package.
 
 Accessing the main functionality in the package is simple:
 
-```julia_skip
+```julia
 using Diversity.Jost
 
 # Load community to study
 
-diversities = jostβ(community, [0, 1, 2])
+ecosystem = [2 2 0.; 0 2 2]'
+ecosystem /= sum(ecosystem);
+
+diversities = jostbeta(ecosystem, [0, 1, 2])
 ```
 
 ```@contents

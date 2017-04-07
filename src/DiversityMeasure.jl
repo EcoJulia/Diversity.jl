@@ -1,9 +1,10 @@
 using Compat
+using DataFrames
 
 """
 ### Enumeration of levels that can exist / be calculated for a metacommunity.
 """
-@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity metacommunityDiversity
+@enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity
 
 """
 ### Generates the function to calculate individual diversities
@@ -59,22 +60,58 @@ series of orders, represented as a vector of qs.
 metacommunityDiversity
 
 """
-### DiversityMeasure metatype for all diversity measure types
+    DiversityMeasure
 
-This type is the abstract metaclass of all diversity measure types.
+This type is the abstract supertype of all diversity measure types.
 DiversityMeasure subtypes allow you to calculate and cache any kind of
 diversity of a metacommunity.
 """
-abstract DiversityMeasure{FP <: AbstractFloat, AbArray <: AbstractArray}
+@compat abstract type DiversityMeasure{FP <: AbstractFloat, AbArray <: AbstractArray} end
 
 """
-### Return the ASCII name of the DiversityMeasure
+    getscnames(dm::DiversityMeasure)
 
-#### Arguments:
+Return the names of the subcommunities of the metacommunity being analysed
+
+# Arguments:
 
 - `dm`: DiversityMeasure
 
-#### Returns:
+# Returns:
+
+- Vector of Strings of names of subcommunities.
+"""
+function getscnames(dm::DiversityMeasure)
+    return dm.scnames
+end
+
+"""
+    gettypenames(dm::DiversityMeasure)
+
+Return the names of the types of the metacommunity being analysed
+
+# Arguments:
+
+- `dm`: DiversityMeasure
+
+# Returns:
+
+- Vector of Strings of names of types.
+"""
+function gettypenames(dm::DiversityMeasure)
+    return dm.typenames
+end
+
+"""
+    getASCIIName(dm::DiversityMeasure)
+
+Return the ASCII name of the DiversityMeasure
+
+# Arguments:
+
+- `dm`: DiversityMeasure
+
+# Returns:
 
 - String containing simple ASCII name of DiversityMeasure
 """
@@ -84,164 +121,199 @@ function getASCIIName(dm::DiversityMeasure)
 end
 
 """
-### Return the character corresponding to the DiversityMeasure
+    getName(dm::DiversityMeasure)
 
-#### Arguments:
+Return the character corresponding to the DiversityMeasure.
 
-- `dm`: DiversityMeasure
-
-#### Returns:
-
-- String containing unicode (greek) name of DiversityMeasure
-"""
-function getName
-end
-
-"""
-### Return the full name of the DiversityMeasure
-
-#### Arguments:
+# Arguments:
 
 - `dm`: DiversityMeasure
 
-#### Returns:
+# Returns:
+
+- String containing unicode (greek) name of DiversityMeasure.
+"""
+function getName end
+
+"""
+    getFullName(dm::DiversityMeasure)
+
+Return the full name of the DiversityMeasure.
+
+# Arguments:
+
+- `dm`: DiversityMeasure
+
+# Returns:
 
 - String containing full descriptive name of DiversityMeasure
 """
-function getFullName
-end
+function getFullName end
 
 @compat (dl::DiversityLevel)(dm::DiversityMeasure) = getPartitionFunction(dm, dl)
 @compat (dl::DiversityLevel)(dm::DiversityMeasure, qs) = getPartitionFunction(dm, dl)(qs)
 
 """
-### Metatype of all power mean-based diversity measures
+    PowerMeanMeasure
 
-This abstract DiversityMeasure subtype is the metatype of all
+This abstract DiversityMeasure subtype is the supertype of all
 diversity measures which are straight power means. PowerMeanMeasure
 subtypes allow you to calculate and cache any kind of diversity of a
 metacommunity.
 """
-abstract PowerMeanMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray}
+@compat abstract type PowerMeanMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray} end
 
 """
-### Metatype of all relative entropy-based diversity measures
+    RelativeEntropyMeasure
 
-This abstract DiversityMeasure subtype is the metatype of all
-diversity measures which are straight power means.
+This abstract DiversityMeasure subtype is the supertype of all
+diversity measures which are relative entropy-based diversity measures.
 RelativeEntropyMeasure subtypes allow you to calculate and cache any
 kind of diversity of a metacommunity.
 """
-abstract RelativeEntropyMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray}
+@compat abstract type RelativeEntropyMeasure{FP, AbArray} <: DiversityMeasure{FP, AbArray} end
 
 """
-### Returns individual diversities of a diversity measure
+    inddiv(measure::DiversityMeasure, q::Real)
+    inddiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 
 Takes a diversity measure and single order or vector of orders, and
-returns the individual diversities for those values.
+returns a DataFrame containing the individual diversities for those values.
 
-#### Arguments:
+# Arguments:
 
 - `dm`: DiversityMeasure
 - `q` / `qs`: a single order or a vector of orders
 
-#### Returns:
+# Returns:
 
 - Returns individual diversities of `dm` for a single order `q` or a
   vector of order `qs`.
 """
-function inddiv
-end
+function inddiv end
 
-@inline function inddiv(measure::DiversityMeasure, ::Real)
-    measure.diversities
+@inline function inddiv(measure::DiversityMeasure, q::Real)
+    raw = inddiv_raw(measure, q)
+    types = gettypenames(measure)
+    scn = getscnames(measure)
+    scs = reshape(scn, 1, length(scn))
+    dfs = broadcast((div, tn, pn) -> DataFrame(measure=getASCIIName(measure), q=q,
+                                               type_level="type", type_name=tn,
+                                               partition_level="subcommunity",
+                                               partition_name=pn,
+                                               diversity=div),
+                    raw, types, scs)
+    return reduce(append!, dfs)
 end
 
 @inline function inddiv(measure::DiversityMeasure, qs::AbstractVector)
-    map(q -> measure.diversities, qs)
+    mapreduce(q -> inddiv(measure, q), append!, qs)
 end
 
 @inline function inddiv(meta::AbstractMetacommunity, qs)
-    map(dm -> inddiv(dm(meta), qs), [RawAlpha, NormalisedAlpha,
-                                    RawBeta, NormalisedBeta,
-                                    RawRho, NormalisedRho, Gamma])
+    mapreduce(dm -> inddiv(dm(meta), qs),
+              append!,
+              [RawAlpha, NormalisedAlpha,
+               RawBeta, NormalisedBeta,
+               RawRho, NormalisedRho, Gamma])
+end
+
+@inline function inddiv_raw(measure::DiversityMeasure, ::Real)
+    measure.diversities
 end
 
 """
-### Calculates subcommunity diversities of a diversity measure
+    subdiv(measure::DiversityMeasure, q::Real)
+    subdiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 
 Takes a diversity measure and single order or vector of orders, and
 calculates and returns the subcommunity diversities for those values.
 
-#### Arguments:
-
+# Arguments:
 - `dm`: DiversityMeasure
-- `q`: a single order or a vector of orders
+- `q` / `qs`: a single order or a vector of orders
 
-#### Returns:
+# Returns:
 
 - Returns subcommunity diversities of `dm` for a single order `q` or a
   vector of order `qs`.
 """
-function subdiv
+function subdiv end
+
+@inline function subdiv(measure::DiversityMeasure, q::Real)
+    raw = subdiv_raw(measure, q)
+    scs = getscnames(measure)
+    dfs = broadcast((div, pn) -> DataFrame(measure=getASCIIName(measure), q=q,
+                                           type_level="types", type_name="",
+                                           partition_level="subcommunity",
+                                           partition_name=pn,
+                                           diversity=div),
+                    raw, scs)
+    return reduce(append!, dfs)
 end
 
-@inline function subdiv(measure::PowerMeanMeasure, q::Real)
-    powermean(inddiv(measure, q), 1.0 - q, measure.abundances)
-end
-
-@inline function subdiv(measure::PowerMeanMeasure, qs::AbstractVector)
-    map(q -> powermean(inddiv(measure, q),
-                       1.0 - q, measure.abundances), qs)
-end
-
-@inline function subdiv(measure::RelativeEntropyMeasure, q::Real)
-    powermean(inddiv(measure, q), q - 1.0, measure.abundances)
-end
-
-@inline function subdiv(measure::RelativeEntropyMeasure, qs::AbstractVector)
-    map(q -> powermean(inddiv(measure, q),
-                       q - 1.0, measure.abundances), qs)
+@inline function subdiv(measure::DiversityMeasure, qs::AbstractVector)
+    mapreduce(q -> subdiv(measure, q), append!, qs)
 end
 
 @inline function subdiv(meta::AbstractMetacommunity, qs)
-    map(dm -> subdiv(dm(meta), qs), [RawAlpha, NormalisedAlpha,
-                                    RawBeta, NormalisedBeta,
-                                    RawRho, NormalisedRho, Gamma])
+    mapreduce(dm -> subdiv(dm(meta), qs),
+              append!,
+              [RawAlpha, NormalisedAlpha,
+               RawBeta, NormalisedBeta,
+               RawRho, NormalisedRho, Gamma])
+end
+
+@inline function subdiv_raw(measure::PowerMeanMeasure, q::Real)
+    powermean(inddiv_raw(measure, q), 1.0 - q, measure.abundances)
+end
+
+@inline function subdiv_raw(measure::RelativeEntropyMeasure, q::Real)
+    powermean(inddiv_raw(measure, q), q - 1.0, measure.abundances)
 end
 
 """
-### Calculates metacommunity diversities of a diversity measure
+    metadiv(measure::DiversityMeasure, q::Real)
+    metadiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 
 Takes a diversity measure and single order or vector of orders, and
 calculates and returns the metacommunity diversities for those values.
 
-#### Arguments:
+# Arguments:
 
 - `dm`: DiversityMeasure
-- `q`: a single order or a vector of orders
+- `q` / `qs`: a single order or a vector of orders
 
-#### Returns:
+# Returns:
 
 - Returns metacommunity diversities of `dm` for a single order `q` or a
   vector of order `qs`.
 """
-function metadiv
-end
+function metadiv end
 
 @inline function metadiv(measure::DiversityMeasure, q::Real)
-    powermean(vectorise(subdiv(measure, q)), 1.0 - q, measure.weights)
+    raw = metadiv_raw(measure, q)
+    return DataFrame(measure=getASCIIName(measure), q=q,
+                     type_level="types", type_name="",
+                     partition_level="metacommunity",
+                     partition_name="",
+                     diversity=raw)
 end
 
 @inline function metadiv(measure::DiversityMeasure, qs::AbstractVector)
-    map(q -> powermean(vectorise(subdiv(measure, q)),
-                       1.0 - q, measure.weights), qs)
+    mapreduce(q -> metadiv(measure, q), append!, qs)
 end
 
 @inline function metadiv(meta::AbstractMetacommunity, qs)
-    map(dm -> metadiv(dm(meta), qs), [RawAlpha, NormalisedAlpha,
-                                      RawBeta, NormalisedBeta,
-                                      RawRho, NormalisedRho, Gamma])
+    mapreduce(dm -> metadiv(dm(meta), qs),
+              append!,
+              [RawAlpha, NormalisedAlpha,
+               RawBeta, NormalisedBeta,
+               RawRho, NormalisedRho, Gamma])
+end
+
+@inline function metadiv_raw(measure::DiversityMeasure, q::Real)
+    powermean(vectorise(subdiv_raw(measure, q)), 1.0 - q, measure.weights)
 end
 
 function getPartitionFunction(measure::DiversityMeasure, level::DiversityLevel)
@@ -278,12 +350,18 @@ type RawAlpha{FP, AbArray} <: PowerMeanMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function RawAlpha(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     w = vectorise(getweight(meta))
-    RawAlpha{eltype(ab), typeof(ab)}(ab, w, getordinariness!(meta) .^ -1)
+    types = gettypes(meta)
+    part = getpartition(meta)
+    RawAlpha{eltype(ab), typeof(ab)}(ab, w, getordinariness!(meta) .^ -1,
+                                     getnames(types), getnames(part))
+    
 end
 
 getName(::RawAlpha) = "α"
@@ -305,14 +383,19 @@ type NormalisedAlpha{FP, AbArray} <: PowerMeanMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function NormalisedAlpha(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     ws = getweight(meta)
     w = vectorise(ws)
+    types = gettypes(meta)
+    part = getpartition(meta)
     NormalisedAlpha{eltype(ab), typeof(ab)}(ab, w,
-                                            ws ./ getordinariness!(meta))
+                                            ws ./ getordinariness!(meta),
+                                            getnames(types), getnames(part))
 end
 
 getName(::NormalisedAlpha) = "ᾱ"
@@ -335,17 +418,22 @@ type RawBeta{FP, AbArray} <: RelativeEntropyMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function RawBeta(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     w = vectorise(getweight(meta))
+    types = gettypes(meta)
+    part = getpartition(meta)
     RawBeta{eltype(ab), typeof(ab)}(ab, w,
                                     getordinariness!(meta) ./
-                                    getmetaordinariness!(meta))
+                                    getmetaordinariness!(meta),
+                                    getnames(types), getnames(part))
 end
 
-typealias Distinctiveness RawBeta
+const Distinctiveness = RawBeta
 
 getName(::RawBeta) = "β"
 getFullName(::RawBeta) = "distinctiveness"
@@ -367,15 +455,20 @@ type NormalisedBeta{FP, AbArray} <: RelativeEntropyMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function NormalisedBeta(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     ws = getweight(meta)
     w = vectorise(ws)
+    types = gettypes(meta)
+    part = getpartition(meta)
     NormalisedBeta{eltype(ab), typeof(ab)}(ab, w,
                                            getordinariness!(meta) ./
-                                           (getmetaordinariness!(meta) .* ws))
+                                           (getmetaordinariness!(meta) .* ws),
+                                           getnames(types), getnames(part))
 end
 
 getName(::NormalisedBeta) = "β̄"
@@ -398,17 +491,22 @@ type RawRho{FP, AbArray} <: PowerMeanMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function RawRho(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     w = vectorise(getweight(meta))
+    types = gettypes(meta)
+    part = getpartition(meta)
     RawRho{eltype(ab), typeof(ab)}(ab, w,
                                    getmetaordinariness!(meta) ./
-                                   getordinariness!(meta))
+                                   getordinariness!(meta),
+                                   getnames(types), getnames(part))
 end
 
-typealias Redundancy RawRho
+const Redundancy = RawRho
 
 getName(::RawRho) = "ρ"
 getFullName(::RawRho) = "redundancy"
@@ -430,18 +528,23 @@ type NormalisedRho{FP, AbArray} <: PowerMeanMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function NormalisedRho(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     ws = getweight(meta)
     w = vectorise(ws)
+    types = gettypes(meta)
+    part = getpartition(meta)
     NormalisedRho{eltype(ab), typeof(ab)}(ab, w,
                                           (getmetaordinariness!(meta) .* ws) ./
-                                          getordinariness!(meta))
+                                          getordinariness!(meta),
+                                          getnames(types), getnames(part))
 end
 
-typealias Representativeness NormalisedRho
+const Representativeness = NormalisedRho
 
 getName(::NormalisedRho) = "ρ̄"
 getFullName(::NormalisedRho) = "representativeness"
@@ -462,15 +565,20 @@ type Gamma{FP, AbArray} <: PowerMeanMeasure{FP, AbArray}
     abundances::AbArray
     weights::Vector{FP}
     diversities::AbArray
+    typenames::Vector{String}
+    scnames::Vector{String}
 end
 
 function Gamma(meta::AbstractMetacommunity)
     ab = getabundance(meta)
     ws = getweight(meta)
     w = vectorise(ws)
+    types = gettypes(meta)
+    part = getpartition(meta)
     Gamma{eltype(ab), typeof(ab)}(ab, w,
                                   ones(eltype(ws), size(ws)) ./
-                                  getmetaordinariness!(meta))
+                                  getmetaordinariness!(meta),
+                                  getnames(types), getnames(part))
 end
 
 getName(::Gamma) = "γ"
