@@ -6,7 +6,7 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
-R"install.packages('devtools', repos='http://cran.r-project.org')
+R"install.packages('devtools', repos='http://cran.r-project.org', type='binary', lib=.libPaths()[1])
   devtools::install_github('boydorr/rdiversity')
   library(rdiversity)"
         
