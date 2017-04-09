@@ -7,13 +7,18 @@ using RCall
 using DataFrames
 
 # We can't do the R testing on windows or macs because I can't install the packages...
-if is_linux() || (haskey(ENV, "USER") && ENV["USER"] == "richardr")
-    libdir = mktempdir()
-    @rput libdir
-    R".libPaths(libdir)
-      install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)
-      devtools::install_github('boydorr/rdiversity', lib=libdir)
-      library(rdiversity, lib.loc=c(libdir, .libPaths()))"
+is_me = haskey(ENV, "USER") && ENV["USER"] == "richardr"
+if is_linux() || is_me
+    if is_me
+        R"library(rdiversity)"
+    else
+        libdir = mktempdir()
+        @rput libdir
+        R".libPaths(libdir)
+          install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)
+          devtools::install_github('boydorr/rdiversity', lib=libdir)
+          library(rdiversity, lib.loc=c(libdir, .libPaths()))"
+    end
 
 @testset "RCall - rdiversity" begin
     @testset "Random rdiversity $i" for i in 1:20
