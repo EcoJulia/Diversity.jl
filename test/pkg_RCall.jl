@@ -9,11 +9,11 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
-R".libPaths("/tmp/R/lib")
-  install.packages('devtools', repos='http://cran.r-project.org', lib="/tmp/R/lib")
+R".libPaths('/tmp/R/lib')
+  install.packages('devtools', repos='http://cran.r-project.org', lib='/tmp/R/lib')
   devtools::install_github('boydorr/rdiversity')
   library(rdiversity)"
-        
+
 @testset "RCall - rdiversity" begin
     @testset "Random rdiversity $i" for i in 1:20
         types = rand(1:(i*10))
