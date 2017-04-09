@@ -2,8 +2,8 @@ module ValidateEntropies
 using Base.Test
 
 using Diversity
-using StatsBase
 using Diversity.ShortNames
+using StatsBase
 
 @testset "renyientropy" begin
     @testset "Random renyientropy $i" for i in 1:20
