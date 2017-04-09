@@ -1,19 +1,19 @@
 module ValidateRCall_rdiversity
 using Base.Test
 
-
 using Diversity
 using Diversity.ShortNames
 using RCall
 using DataFrames
 
 # We can't do the R testing on windows or macs because I can't install the packages...
-if is_linux()
-
-R".libPaths('/tmp/R/lib')
-  install.packages('devtools', repos='http://cran.r-project.org', lib='/tmp/R/lib')
-  devtools::install_github('boydorr/rdiversity')
-  library(rdiversity)"
+if is_linux() || (haskey(ENV, "USER") && ENV["USER"] == "richardr")
+    libdir = mktempdir()
+    @rput libdir
+    R".libPaths(libdir)
+      install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)
+      devtools::install_github('boydorr/rdiversity', lib=libdir)
+      library(rdiversity, lib.loc=c(libdir, .libPaths()))"
 
 @testset "RCall - rdiversity" begin
     @testset "Random rdiversity $i" for i in 1:20
