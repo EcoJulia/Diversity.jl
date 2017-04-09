@@ -1,13 +1,14 @@
 module ValidateRCall_rdiversity
 using Base.Test
 
-# We can't do the R testing on windows, because I don't know how to install R for appveyor
-@static if is_linux()
 
 using Diversity
 using Diversity.ShortNames
 using RCall
 using DataFrames
+
+# We can't do the R testing on windows or macs because I can't install the packages...
+if is_linux()
 
 R".libPaths('/tmp/R/lib')
   install.packages('devtools', repos='http://cran.r-project.org', lib='/tmp/R/lib')
