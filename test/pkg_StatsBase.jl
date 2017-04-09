@@ -20,11 +20,11 @@ using Diversity.ShortNames
         ra = α(meta)
         qs = [rand(7)*10..., 0, 1, Inf]
         entropies = map(q -> renyientropy(pop, q), qs)
-        @test log(subdiv(na, qs)[:diversity]) ≈ entropies
-        @test log(subdiv(ra, qs)[:diversity]) ≈ entropies
-        @test log(subdiv(g, qs)[:diversity]) ≈ entropies
-        @test log(qD(pop, qs)) ≈ entropies
-        @test log(qDZ(pop, qs, UniqueTypes(types))) ≈ entropies
+        @test log.(subdiv(na, qs)[:diversity]) ≈ entropies
+        @test log.(subdiv(ra, qs)[:diversity]) ≈ entropies
+        @test log.(subdiv(g, qs)[:diversity]) ≈ entropies
+        @test log.(qD(pop, qs)) ≈ entropies
+        @test log.(qDZ(pop, qs, UniqueTypes(types))) ≈ entropies
     end
 end
 
