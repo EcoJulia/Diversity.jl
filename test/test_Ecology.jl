@@ -23,7 +23,7 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
     
     @test simpson(communities)[:diversity] ≈ subdiv(ᾱ(eco), 2)[:diversity] .^ -1
     
-    @test jaccard([1 0 0; 0 1 1]'/3)[:diversity] ≈ [0]
+    @test jaccard([1 0 0; 0 1 1]'/3)[:diversity] + 1.0 ≈ [1.0]
     @test jaccard([1 0 1; 0 1 1]'/4)[:diversity] ≈ [1.0 / 3.0]
     @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1]/7)
 end
@@ -35,17 +35,17 @@ end
                                                     communities, Z1)
     
     @test generalisedshannon(metacommunityDiversity,
-                             communities, Z1)[:diversity] ≈ [0]
+                             communities, Z1)[:diversity] + 1.0 ≈ [1.0]
     @test_throws ErrorException generalisedshannon(individualDiversity,
                                                    communities, Z1)
     
     @test generalisedsimpson(metacommunityDiversity,
-                             communities, Z1)[:diversity] ≈ [1]
+                             communities, Z1)[:diversity] ≈ [1.0]
     @test_throws ErrorException generalisedsimpson(individualDiversity,
                                                    communities, Z1)
     
     @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf])[:diversity] ≈ [1.0/3.0, 1.0]
-    @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1])[:diversity] ≈ [1, 1]
+    @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1])[:diversity] ≈ [1.0, 1.0]
 end
 
 end
