@@ -10,14 +10,14 @@ using DataFrames
 is_me = haskey(ENV, "USER") && ENV["USER"] == "richardr"
 if is_linux() || is_me
     if is_me
-        R"library(rdiversity)"
+        R"library(rdiversity)";
     else
         libdir = mktempdir()
         @rput libdir
-        R".libPaths(libdir)"
-        R"install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)"
-        R"devtools::install_github('boydorr/rdiversity', lib=libdir)"
-        R"library(rdiversity, lib.loc=c(libdir, .libPaths()))"
+        R".libPaths(libdir)";
+        R"install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)";
+        R"devtools::install_github('boydorr/rdiversity', lib=libdir)";
+        R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
     end
 
 @testset "RCall - rdiversity" begin
