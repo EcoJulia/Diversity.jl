@@ -14,10 +14,10 @@ if is_linux() || is_me
     else
         libdir = mktempdir()
         @rput libdir
-        R".libPaths(libdir)
-          install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)
-          devtools::install_github('boydorr/rdiversity', lib=libdir)
-          library(rdiversity, lib.loc=c(libdir, .libPaths()))"
+        R".libPaths(libdir)"
+        R"install.packages('devtools', repos='http://cran.r-project.org', lib=libdir)"
+        R"devtools::install_github('boydorr/rdiversity', lib=libdir)"
+        R"library(rdiversity, lib.loc=c(libdir, .libPaths()))"
     end
 
 @testset "RCall - rdiversity" begin
