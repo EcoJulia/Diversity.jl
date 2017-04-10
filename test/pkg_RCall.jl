@@ -6,23 +6,22 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
-# We can't do the R testing on windows or macs because I can't install the packages...
+# Save the R package installation step for me as it's so slow!
 is_me = haskey(ENV, "USER") && ENV["USER"] == "richardr"
-if is_linux() || is_me
-    if is_me
-        R"library(rdiversity)";
-    else
-        libdir = mktempdir();
-        rcall(Symbol(".libPaths"), libdir);
-        rcall(Symbol("install.packages"),
-              ["devtools", "methods", "ggplot2", "ape",
-               "phangorn", "tidyr", "tibble", "phytools", "reshape2"],
-              repos="http://cran.r-project.org", lib=libdir);
-        @rput libdir
-        R"library(devtools, lib.loc=c(libdir, .libPaths()))";
-        rcall(Symbol("install_github"), "boydorr/rdiversity", lib=libdir);
-        R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
-    end
+if is_me
+    R"library(rdiversity)";
+else
+    libdir = mktempdir();
+    rcall(Symbol(".libPaths"), libdir);
+    rcall(Symbol("install.packages"),
+          ["devtools", "methods", "ggplot2", "ape",
+           "phangorn", "tidyr", "tibble", "phytools", "reshape2"],
+          repos="http://cran.r-project.org", lib=libdir);
+    @rput libdir
+    R"library(devtools, lib.loc=c(libdir, .libPaths()))";
+    rcall(Symbol("install_github"), "boydorr/rdiversity", lib=libdir);
+    R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
+end
 
 @testset "RCall - rdiversity" begin
     @testset "Random rdiversity $i" for i in 1:20
@@ -104,8 +103,6 @@ if is_linux() || is_me
             @test subdiv(g, qs)[:diversity] ≈ r_sg[:diversity]
         end
     end
-end
-
 end
 
 end
