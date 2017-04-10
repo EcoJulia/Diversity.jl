@@ -6,23 +6,23 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
-# Save the R package installation step for me as it's so slow!
-is_me = haskey(ENV, "USER") && ENV["USER"] == "richardr"
-if is_me
-    R"library(rdiversity)";
-else
-    libdir = mktempdir();
-    rcall(Symbol(".libPaths"), libdir);
-    rcall(Symbol("install.packages"),
-          ["devtools", "methods", "ggplot2", "ape",
-           "phangorn", "tidyr", "tibble", "phytools", "reshape2"],
-          lib=libdir, repos="http://cran.r-project.org");
-    @rput libdir
-    R"library(devtools, lib.loc=c(libdir, .libPaths()))";
-    rcall(Symbol("install_git"),
-          "https://github.com/boydorr/rdiversity.git", lib=libdir);
-    R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
-end
+# Only run R on unix as appveyor is being difficult
+if is_unix()
+    # Environment variable to allow me to avoid boring R package builds
+    is_me = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
+    # Skip the R package installation step for me as it's so slow!
+    if is_me
+        R"library(rdiversity)";
+    else
+        libdir = mktempdir();
+        rcall(Symbol(".libPaths"), libdir);
+        rcall(Symbol("install.packages"), "devtools",
+              lib=libdir, repos="http://cran.r-project.org");
+        @rput libdir
+        R"library(devtools, lib.loc=c(libdir, .libPaths()))";
+        rcall(Symbol("install_github"), "boydorr/rdiversity", lib=libdir);
+        R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
+    end
 
 @testset "RCall - rdiversity" begin
     @testset "Random rdiversity $i" for i in 1:20
@@ -90,6 +90,7 @@ end
             @test subdiv(nr, qs)[:diversity] ≈ rcopy(r_nsr[:diversity])
             r_sg = rcall(:sub_gamma, r_meta, qs)
             @test subdiv(g, qs)[:diversity] ≈ rcopy(r_sg[:diversity])
+            end
         end
     end
 end
