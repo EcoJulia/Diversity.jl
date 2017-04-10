@@ -6,11 +6,11 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
-# Only run R on unix as appveyor is being difficult
+# Only run R on unix
 if is_unix()
-    # Environment variable to allow me to avoid boring R package builds
+    # Environment variable to avoid boring R package builds
     is_me = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
-    # Skip the R package installation step for me as it's so slow!
+    # Skip the (slow!) R package installation step
     if is_me
         R"library(rdiversity)";
     else
@@ -24,6 +24,7 @@ if is_unix()
         R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
     end
 
+    # Run diversity comparisons on increasing numbers of types and subcommunities
     @testset "RCall - rdiversity" begin
         @testset "Random rdiversity $i" for i in 1:20
             types = rand(1:(i*10))
