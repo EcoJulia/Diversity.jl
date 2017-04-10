@@ -22,7 +22,7 @@ if is_unix()
               lib=libdir, repos="http://cran.r-project.org");
         @rput libdir
         R"library(devtools, lib.loc=c(libdir, .libPaths()))";
-        rcall(:install_github, "boydorr/rdiversity", lib=libdir);
+        rcall(:install_git, "https://github.com/boydorr/rdiversity.git", lib=libdir);
         R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
     end
 
