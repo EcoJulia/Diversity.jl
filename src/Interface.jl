@@ -216,8 +216,25 @@ end
     values::V
 end
 
-# We want to calculate the length of a metacommunity in terms of its subcommunities
-import Base.length
+
+## Now create the functions for the iterator interface for Metacommunities
+import Base.start, Base.next, Base.done, Base.eltype, Base.length
+
+@inline function start(meta::AbstractMetacommunity)
+    1::Int64
+end
+
+@inline function next{Meta <: AbstractMetacommunity}(meta::Meta, state::Int64)
+    (view(getabundance(meta), :, state), state + 1)
+end
+
+@inline function done{Meta <: AbstractMetacommunity}(meta::Meta, state::Int64)
+    index > countsubcommunities(getpartition(meta))
+end
+
+@inline function eltype{FP, A, Sim, Part}(::AbstractMetacommunity{FP, A, Sim, Part})
+    FP
+end
 
 @inline function length{Meta <: AbstractMetacommunity}(meta::Meta)
     countsubcommunities(getpartition(meta))
