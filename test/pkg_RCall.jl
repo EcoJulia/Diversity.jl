@@ -55,52 +55,40 @@ end
             @rput pops
             @rput qs
             @rput Z
-            # Checking out metacommunity diversities
-            R"r_meta = metacommunity(pops, Z)
-              r_rma = raw_meta_alpha(r_meta, qs)
-              r_nma = norm_meta_alpha(r_meta, qs)
-              r_rmb = raw_meta_beta(r_meta, qs)
-              r_nmb = norm_meta_beta(r_meta, qs)
-              r_rmr = raw_meta_rho(r_meta, qs)
-              r_nmr = norm_meta_rho(r_meta, qs)
-              r_mg  = meta_gamma(r_meta, qs)"
-            @rget r_rma
-            @test metadiv(ra, qs)[:diversity] ≈ r_rma[:diversity]
-            @rget r_nma
-            @test metadiv(na, qs)[:diversity] ≈ r_nma[:diversity]
-            @rget r_rmb
-            @test metadiv(rb, qs)[:diversity] ≈ r_rmb[:diversity]
-            @rget r_nmb
-            @test metadiv(nb, qs)[:diversity] ≈ r_nmb[:diversity]
-            @rget r_rmr
-            @test metadiv(rr, qs)[:diversity] ≈ r_rmr[:diversity]
-            @rget r_nmr
-            @test metadiv(nr, qs)[:diversity] ≈ r_nmr[:diversity]
-            @rget r_mg
-            @test metadiv(g, qs)[:diversity] ≈ r_mg[:diversity]
+            # Create the metacommunity in R
+            r_meta = rcall(:metacommunity, pops, Z)
+
+            # Check out metacommunity diversities
+            r_rma = rcall(:raw_meta_alpha, r_meta, qs)
+            @test metadiv(ra, qs)[:diversity] ≈ rcopy(r_rma[:diversity])
+            r_nma = rcall(:norm_meta_alpha, r_meta, qs)
+            @test metadiv(na, qs)[:diversity] ≈ rcopy(r_nma[:diversity])
+            r_rmb = rcall(:raw_meta_beta, r_meta, qs)
+            @test metadiv(rb, qs)[:diversity] ≈ rcopy(r_rmb[:diversity])
+            r_nmb = rcall(:norm_meta_beta, r_meta, qs)
+            @test metadiv(nb, qs)[:diversity] ≈ rcopy(r_nmb[:diversity])
+            r_rmr = rcall(:raw_meta_rho, r_meta, qs)
+            @test metadiv(rr, qs)[:diversity] ≈ rcopy(r_rmr[:diversity])
+            r_nmr = rcall(:norm_meta_rho, r_meta, qs)
+            @test metadiv(nr, qs)[:diversity] ≈ rcopy(r_nmr[:diversity])
+            r_mg = rcall(:meta_gamma, r_meta, qs)
+            @test metadiv(g, qs)[:diversity] ≈ rcopy(r_mg[:diversity])
             
-            # Checking out subcommunity diversities
-            R"r_rsa = raw_sub_alpha(r_meta, qs)
-              r_nsa = norm_sub_alpha(r_meta, qs)
-              r_rsb = raw_sub_beta(r_meta, qs)
-              r_nsb = norm_sub_beta(r_meta, qs)
-              r_rsr = raw_sub_rho(r_meta, qs)
-              r_nsr = norm_sub_rho(r_meta, qs)
-              r_sg  = sub_gamma(r_meta, qs)"
-            @rget r_rsa
-            @test subdiv(ra, qs)[:diversity] ≈ r_rsa[:diversity]
-            @rget r_nsa
-            @test subdiv(na, qs)[:diversity] ≈ r_nsa[:diversity]
-            @rget r_rsb
-            @test subdiv(rb, qs)[:diversity] ≈ r_rsb[:diversity]
-            @rget r_nsb
-            @test subdiv(nb, qs)[:diversity] ≈ r_nsb[:diversity]
-            @rget r_rsr
-            @test subdiv(rr, qs)[:diversity] ≈ r_rsr[:diversity]
-            @rget r_nsr
-            @test subdiv(nr, qs)[:diversity] ≈ r_nsr[:diversity]
-            @rget r_sg
-            @test subdiv(g, qs)[:diversity] ≈ r_sg[:diversity]
+            # Check out subcommunity diversities
+            r_rsa = rcall(:raw_sub_alpha, r_meta, qs)
+            @test subdiv(ra, qs)[:diversity] ≈ rcopy(r_rsa[:diversity])
+            r_nsa = rcall(:norm_sub_alpha, r_meta, qs)
+            @test subdiv(na, qs)[:diversity] ≈ rcopy(r_nsa[:diversity])
+            r_rsb = rcall(:raw_sub_beta, r_meta, qs)
+            @test subdiv(rb, qs)[:diversity] ≈ rcopy(r_rsb[:diversity])
+            r_nsb = rcall(:norm_sub_beta, r_meta, qs)
+            @test subdiv(nb, qs)[:diversity] ≈ rcopy(r_nsb[:diversity])
+            r_rsr = rcall(:raw_sub_rho, r_meta, qs)
+            @test subdiv(rr, qs)[:diversity] ≈ rcopy(r_rsr[:diversity])
+            r_nsr = rcall(:norm_sub_rho, r_meta, qs)
+            @test subdiv(nr, qs)[:diversity] ≈ rcopy(r_nsr[:diversity])
+            r_sg = rcall(:sub_gamma, r_meta, qs)
+            @test subdiv(g, qs)[:diversity] ≈ rcopy(r_sg[:diversity])
         end
     end
 end
