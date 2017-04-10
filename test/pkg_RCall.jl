@@ -14,7 +14,9 @@ if is_linux() || is_me
     else
         libdir = mktempdir();
         rcall(Symbol(".libPaths"), libdir);
-        rcall(Symbol("install.packages"), "devtools",
+        rcall(Symbol("install.packages"),
+              ["devtools", "methods", "ggplot2", "ape",
+               "phangorn", "tidyr", "tibble", "phytools", "reshape2"],
               repos="http://cran.r-project.org", lib=libdir);
         @rput libdir
         R"library(devtools, lib.loc=c(libdir, .libPaths()))";
