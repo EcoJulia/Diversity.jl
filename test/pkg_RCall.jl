@@ -42,7 +42,7 @@ end
         qs = sort([rand(7)*10..., 0, 1, Inf])
         names = ["symmetric", "asymmetric"]
         Zs = [Zsym, Zasym]
-        @testset "Z matrix ($names[k])" for k in 1:length(Zs)
+        @testset "Z matrix - $(names[k])" for k in 1:length(Zs)
             Z = Zs[k]
             meta = Metacommunity(pops, Z)
             ra = α(meta)
