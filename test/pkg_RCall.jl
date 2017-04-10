@@ -54,9 +54,6 @@ if is_unix()
                 rr = ρ(meta)
                 nr = ρ̄(meta)
                 g  = Γ(meta)
-                @rput pops
-                @rput qs
-                @rput Z
                 # Create the metacommunity in R
                 r_meta = rcall(:metacommunity, pops, Z)
 
