@@ -17,18 +17,20 @@ related and older diversity measures through sub-modules. Currently
 these are all ecological diversity measures, but this will be
 expanded, possibly through interfacing to BioJulia.
 
-This package is still in alpha and under heavy development, and so we
-do not guarantee its correctness, although we are aware of no problems
-with it. Please [raise an issue][issues-url] if you find any problems.
+This package is in beta now, but under heavy development so we cannot
+guarantee its correctness. However, it is cross-validated against our
+R package [boydorr/rdiversity][rdiversity-url],
+which is developed independently, so please
+[raise an issue][issues-url] if you find any problems.
 
-**Version 0.3, which has just been released, has significant breaking
-changes to the standard interface for calculating diversity and
-especially to the output format to provide consistency with our R
-package [rdiversity](https://github.com/boydorr/rdiversity).** In
-particular, we now use a DataFrame as the common output format for all
-of the diversity calculations. The code is certainly not optimised for
-speed at the moment due to the substantial changes that have happened
-to it under the hood.
+Version 0.3, which has been recently released, has significant
+breaking changes to the standard interface for calculating diversity
+and especially to the output format to provide consistency with our R
+package [rdiversity][rdiversity-url]. In particular, we now use a
+DataFrame as the common output format for all of the diversity
+calculations. The code is certainly not optimised for speed at the
+moment due to the substantial changes that have happened to it under
+the hood.
 
 Older interfaces have been deprecated, and will be removed in v0.4.
 
@@ -210,3 +212,5 @@ The online documentation for the latest master (unreleased) branch is
 [pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
 
 [paper-url]: http://arxiv.org/abs/1404.6520
+
+[rdiversity-url]: https://github.com/boydorr/rdiversity
