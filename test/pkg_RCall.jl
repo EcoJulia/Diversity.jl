@@ -16,9 +16,9 @@ if is_linux() || is_me
         rcall(Symbol(".libPaths"), libdir);
         rcall(Symbol("install.packages"), "devtools",
               repos="http://cran.r-project.org", lib=libdir);
+        @rput libdir
         R"library(devtools, lib.loc=c(libdir, .libPaths()))";
         rcall(Symbol("install_github"), "boydorr/rdiversity", lib=libdir);
-        @rput libdir
         R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
     end
 
