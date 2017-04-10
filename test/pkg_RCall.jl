@@ -16,12 +16,13 @@ if is_unix()
     else
         libdir = mktempdir();
         rcall(Symbol(".libPaths"), libdir);
-        rcall(Symbol("install.packages"), "devtools",
+        rcall(Symbol("install.packages"),
+              ["devtools", "methods", "ggplot2", "ape",
+               "phangorn", "tidyr", "tibble", "phytools", "reshape2"],
               lib=libdir, repos="http://cran.r-project.org");
         @rput libdir
         R"library(devtools, lib.loc=c(libdir, .libPaths()))";
-        rcall(:install_git,
-              "https://github.com/boydorr/rdiversity.git", lib=libdir);
+        rcall(:install_github, "boydorr/rdiversity", lib=libdir);
         R"library(rdiversity, lib.loc=c(libdir, .libPaths()))";
     end
 
