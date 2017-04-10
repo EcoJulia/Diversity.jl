@@ -1,6 +1,6 @@
 module TestDiversity
 using Base.Test
-if VERSION <= v"0.6.0-pre.beta"
+if !isdefined(Base.Test, Symbol("@test_warn"))
     # Ignore @test_warn unless it's there...
     macro test_warn(str, test)
     end
