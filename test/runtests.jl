@@ -4,7 +4,7 @@
 filebase = map(file -> replace(file, r"(.*).jl", s"\1"),
                 filter(file -> ismatch(r".*\.jl", file), readdir("../src")))
 testbase = map(file -> replace(file, r"test_(.*).jl", s"\1"),
-                filter(str -> ismatch(r"test_.*\.jl", str), readdir()))
+                filter(str -> ismatch(r"^test_.*\.jl$", str), readdir()))
 
 info("Running tests for files:")
 for t in testbase
@@ -42,7 +42,7 @@ end
 
 # Identify files that are cross-validating results against other packages
 pkgbase = map(file -> replace(file, r"pkg_(.*).jl", s"\1"),
-                   filter(str -> ismatch(r"pkg_.*\.jl", str), readdir()))
+                   filter(str -> ismatch(r"^pkg_.*\.jl$", str), readdir()))
 
 if length(pkgbase) > 0
     info("Running cross-validation against:")
