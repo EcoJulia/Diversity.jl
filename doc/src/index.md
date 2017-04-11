@@ -12,10 +12,10 @@ turn from Leinster and Cobbold, and described in
 [Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
 functions exist both with unicode names (e.g. ```ᾱ()```), which are
 not automatically exported (as we feel they are too short) and with
-matching longer ASCII names (e.g. ```NormalisedAlpha()```), which are.
+matching longer ASCII names (e.g. `NormalisedAlpha()`), which are.
 We also provide functions to calculate appropriate
-```subcommunityDiversity()``` and ```metacommunityDiversity()```
-values for each measure, a general ```diversity()``` function for
+`subdiv()` and `metadiv()`
+values for each measure, a general `diversity()` function for
 extract any diversity measure at a series of scales.
 
 Accessing the main functionality in the package is simple:

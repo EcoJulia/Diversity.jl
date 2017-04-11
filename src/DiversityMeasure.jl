@@ -335,7 +335,7 @@ function getPartitionFunction(measure::DiversityMeasure, level::DiversityLevel)
 end
 
 """
-### Raw alpha diversity type (α)
+    RawAlpha
 
 Calculates raw alpha diversity (α) of all of the individuals in a
 metacommunity, and caches them for subsequent analysis. This is a
@@ -368,7 +368,7 @@ getName(::RawAlpha) = "α"
 getFullName(::RawAlpha) = "raw alpha diversity"
 
 """
-### Normalised alpha diversity type (ᾱ)
+    NormalisedAlpha
 
 Calculates normalised alpha diversity (ᾱ) of all of the individuals in
 a metacommunity, and caches them for subsequent analysis. This is a
@@ -402,7 +402,7 @@ getName(::NormalisedAlpha) = "ᾱ"
 getFullName(::NormalisedAlpha) = "normalised alpha diversity"
 
 """
-### Distinctiveness (β, raw beta diversity) type
+    RawBeta
 
 Calculates distinctiveness (β, raw beta diversity) of all of the individuals in a
 metacommunity, and caches them for subsequent analysis. This is a
@@ -439,7 +439,7 @@ getName(::RawBeta) = "β"
 getFullName(::RawBeta) = "distinctiveness"
 
 """
-### Normalised beta diversity type (β̄)
+    NormalisedBeta
 
 Calculates normalised beta diversity (β̄) of all of the individuals in
 a metacommunity, and caches them for subsequent analysis. This is a
@@ -475,7 +475,7 @@ getName(::NormalisedBeta) = "β̄"
 getFullName(::NormalisedBeta) = "effective number of subcommunities"
 
 """
-### Redundancy (ρ, raw beta diversity) type
+    RawRho
 
 Calculates redundancy (ρ, raw beta diversity) of all of the
 individuals in a metacommunity, and caches them for subsequent
@@ -512,7 +512,7 @@ getName(::RawRho) = "ρ"
 getFullName(::RawRho) = "redundancy"
 
 """
-### Representativeness (ρ̄, normalised beta diversity) type
+    NormalisedRho
 
 Calculates redundancy (ρ̄, normalised beta diversity) of all of the
 individuals in a metacommunity, and caches them for subsequent
@@ -550,7 +550,7 @@ getName(::NormalisedRho) = "ρ̄"
 getFullName(::NormalisedRho) = "representativeness"
 
 """
-### Gamma diversity type (γ)
+    Gamma
 
 Calculates gamma diversity (γ) of all of the individuals in a
 metacommunity, and caches them for subsequent analysis. This is a
