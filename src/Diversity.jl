@@ -23,11 +23,11 @@ module Diversity
 
 include("Interface.jl")
 include("Metacommunity.jl")
-export Subcommunities, Onecommunity
-export GeneralTypes, UniqueTypes, Species, Taxonomy
-export Metacommunity
+export AbstractPartition, Subcommunities, Onecommunity
+export AbstractTypes, GeneralTypes, UniqueTypes, Species, Taxonomy
+export AbstractMetacommunity, Metacommunity
 export getabundance, getweight, getpartition, gettypes
-export hasnames, getnames
+export getnames, getscnames, gettypenames
 export counttypes, countsubcommunities
 export getsimilarity, getordinariness!, getmetaordinariness!
 export inddiv, subdiv, metadiv
@@ -39,11 +39,13 @@ include("DiversityMeasure.jl")
 export DiversityLevel
 export individualDiversity, subcommunityDiversity, metacommunityDiversity
 
+export DiversityMeasure, PowerMeanMeasure, RelativeEntropyMeasure
 export RawAlpha, NormalisedAlpha
 export RawBeta, NormalisedBeta, RawRho, NormalisedRho
 export Gamma
 
-## We do not directly export ᾱ, α, β̄, β, ρ̄, ρ, γ as they're too short, only via Diversity.ShortNames
+## We do not directly export ᾱ, α, β̄, β, ρ̄, ρ, γ as they're too short
+## only via Diversity.ShortNames
 module ShortNames
 using Diversity
 
