@@ -339,13 +339,25 @@
 <p><a id='Usage-1'></a></p>
 <h4 id="usage">Usage</h4>
 <p>Accessing the main functionality in the package is simple:</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Diversity</span><span class="o">.</span><span class="n">Hill</span>
+<div class="codehilite"><pre><span></span><span class="gp">julia&gt;</span> <span class="k">using</span> <span class="n">Diversity</span><span class="o">.</span><span class="n">Hill</span>
 
-<span class="c"># Load community to study</span>
+<span class="gp">julia&gt;</span> <span class="n">community</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
 
-<span class="n">community</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
-<span class="n">community</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">community</span><span class="p">);</span>
-<span class="n">diversities</span> <span class="o">=</span> <span class="n">hillnumber</span><span class="p">(</span><span class="n">community</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">julia&gt;</span> <span class="n">community</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">community</span><span class="p">);</span>
+
+<span class="gp">julia&gt;</span> <span class="n">diversities</span> <span class="o">=</span> <span class="n">hillnumber</span><span class="p">(</span><span class="n">community</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">3×7 DataFrames.DataFrame</span>
+<span class="go">│ Row │ measure      │ q │ type_level │ type_name │ partition_level │</span>
+<span class="go">├─────┼──────────────┼───┼────────────┼───────────┼─────────────────┤</span>
+<span class="go">│ 1   │ &quot;HillNumber&quot; │ 0 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;subcommunity&quot;  │</span>
+<span class="go">│ 2   │ &quot;HillNumber&quot; │ 1 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;subcommunity&quot;  │</span>
+<span class="go">│ 3   │ &quot;HillNumber&quot; │ 2 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;subcommunity&quot;  │</span>
+
+<span class="go">│ Row │ partition_name │ diversity │</span>
+<span class="go">├─────┼────────────────┼───────────┤</span>
+<span class="go">│ 1   │ &quot;1&quot;            │ 4.0       │</span>
+<span class="go">│ 2   │ &quot;1&quot;            │ 3.36264   │</span>
+<span class="go">│ 3   │ &quot;1&quot;            │ 3.09021   │</span>
 </pre></div>
 
 
@@ -355,7 +367,7 @@
 <p><a id='Diversity.Hill' href='#Diversity.Hill'>#</a>
 <strong><code>Diversity.Hill</code></strong> &mdash; <em>Module</em>.</p>
 <p><a href="http://www.jstor.org/stable/1934352">Hill numbers</a> are found in the <strong>Diversity.Hill</strong> package.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Diversity.jl#L300-L303' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Diversity.jl#L302-L305' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Hill.hillnumber-Tuple{Any,Any}' href='#Diversity.Hill.hillnumber-Tuple{Any,Any}'>#</a>
 <strong><code>Diversity.Hill.hillnumber</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>hillnumber(proportions, qs)
@@ -372,7 +384,7 @@
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Hill.jl#L3-L20' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Hill.jl#L3-L20' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="../ecology/#Diversity.Ecology"><code>Diversity.Ecology</code></a></li>
@@ -381,7 +393,11 @@
 <li><a href="..#Diversity.individualDiversity"><code>Diversity.individualDiversity</code></a></li>
 <li><a href="..#Diversity.metacommunityDiversity"><code>Diversity.metacommunityDiversity</code></a></li>
 <li><a href="..#Diversity.subcommunityDiversity"><code>Diversity.subcommunityDiversity</code></a></li>
+<li><a href="..#Diversity.AbstractMetacommunity"><code>Diversity.AbstractMetacommunity</code></a></li>
+<li><a href="..#Diversity.AbstractPartition"><code>Diversity.AbstractPartition</code></a></li>
+<li><a href="..#Diversity.AbstractTypes"><code>Diversity.AbstractTypes</code></a></li>
 <li><a href="..#Diversity.DiversityLevel"><code>Diversity.DiversityLevel</code></a></li>
+<li><a href="..#Diversity.DiversityMeasure"><code>Diversity.DiversityMeasure</code></a></li>
 <li><a href="..#Diversity.Gamma"><code>Diversity.Gamma</code></a></li>
 <li><a href="..#Diversity.GeneralTypes"><code>Diversity.GeneralTypes</code></a></li>
 <li><a href="..#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
@@ -389,9 +405,11 @@
 <li><a href="..#Diversity.NormalisedBeta"><code>Diversity.NormalisedBeta</code></a></li>
 <li><a href="..#Diversity.NormalisedRho"><code>Diversity.NormalisedRho</code></a></li>
 <li><a href="..#Diversity.Onecommunity"><code>Diversity.Onecommunity</code></a></li>
+<li><a href="..#Diversity.PowerMeanMeasure"><code>Diversity.PowerMeanMeasure</code></a></li>
 <li><a href="..#Diversity.RawAlpha"><code>Diversity.RawAlpha</code></a></li>
 <li><a href="..#Diversity.RawBeta"><code>Diversity.RawBeta</code></a></li>
 <li><a href="..#Diversity.RawRho"><code>Diversity.RawRho</code></a></li>
+<li><a href="..#Diversity.RelativeEntropyMeasure"><code>Diversity.RelativeEntropyMeasure</code></a></li>
 <li><a href="..#Diversity.Species"><code>Diversity.Species</code></a></li>
 <li><a href="..#Diversity.Subcommunities"><code>Diversity.Subcommunities</code></a></li>
 <li><a href="..#Diversity.Taxonomy"><code>Diversity.Taxonomy</code></a></li>
@@ -418,7 +436,9 @@
 <li><a href="..#Diversity.getnames"><code>Diversity.getnames</code></a></li>
 <li><a href="..#Diversity.getordinariness!"><code>Diversity.getordinariness!</code></a></li>
 <li><a href="..#Diversity.getpartition"><code>Diversity.getpartition</code></a></li>
+<li><a href="..#Diversity.getscnames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.getscnames</code></a></li>
 <li><a href="..#Diversity.getsimilarity"><code>Diversity.getsimilarity</code></a></li>
+<li><a href="..#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.gettypenames</code></a></li>
 <li><a href="..#Diversity.gettypes"><code>Diversity.gettypes</code></a></li>
 <li><a href="..#Diversity.getweight-Tuple{Meta&lt;:Diversity.AbstractMetacommunity}"><code>Diversity.getweight</code></a></li>
 <li><a href="..#Diversity.inddiv"><code>Diversity.inddiv</code></a></li>

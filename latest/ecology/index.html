@@ -339,19 +339,63 @@
 <p><a id='Usage-1'></a></p>
 <h4 id="usage">Usage</h4>
 <p>Accessing the functionality in the package is simple:</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Diversity</span><span class="o">.</span><span class="n">Ecology</span>
+<div class="codehilite"><pre><span></span><span class="gp">julia&gt;</span> <span class="k">using</span> <span class="n">Diversity</span><span class="o">.</span><span class="n">Ecology</span>
 
-<span class="n">community</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
-<span class="n">community</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">community</span><span class="p">);</span>
-<span class="n">diversity</span> <span class="o">=</span> <span class="n">simpson</span><span class="p">(</span><span class="n">community</span><span class="p">)</span>
+<span class="gp">julia&gt;</span> <span class="n">community</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">];</span>
 
-<span class="n">ecosystem</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mf">0.</span><span class="p">;</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span><span class="p">]</span><span class="o">&#39;</span>
-<span class="n">ecosystem</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">);</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="gp">julia&gt;</span> <span class="n">community</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">community</span><span class="p">);</span>
 
-<span class="n">jaccard</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">)</span>
-<span class="n">generalisedjaccard</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">generalisedjaccard</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">Z</span><span class="p">)</span>
+<span class="gp">julia&gt;</span> <span class="n">diversity</span> <span class="o">=</span> <span class="n">simpson</span><span class="p">(</span><span class="n">community</span><span class="p">)</span>
+<span class="go">1×7 DataFrames.DataFrame</span>
+<span class="go">│ Row │ measure   │ q │ type_level │ type_name │ partition_level │</span>
+<span class="go">├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤</span>
+<span class="go">│ 1   │ &quot;Simpson&quot; │ 2 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;subcommunity&quot;  │</span>
+
+<span class="go">│ Row │ partition_name │ diversity │</span>
+<span class="go">├─────┼────────────────┼───────────┤</span>
+<span class="go">│ 1   │ &quot;1&quot;            │ 0.36      │</span>
+
+<span class="gp">julia&gt;</span> <span class="n">ecosystem</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mf">0.</span><span class="p">;</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span>
+
+<span class="gp">julia&gt;</span> <span class="n">ecosystem</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">);</span>
+
+<span class="gp">julia&gt;</span> <span class="n">jaccard</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">)</span>
+<span class="go">1×7 DataFrames.DataFrame</span>
+<span class="go">│ Row │ measure   │ q │ type_level │ type_name │ partition_level │</span>
+<span class="go">├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤</span>
+<span class="go">│ 1   │ &quot;Jaccard&quot; │ 0 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+
+<span class="go">│ Row │ partition_name │ diversity │</span>
+<span class="go">├─────┼────────────────┼───────────┤</span>
+<span class="go">│ 1   │ &quot;&quot;             │ 0.333333  │</span>
+
+<span class="gp">julia&gt;</span> <span class="n">generalisedjaccard</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">3×7 DataFrames.DataFrame</span>
+<span class="go">│ Row │ measure   │ q │ type_level │ type_name │ partition_level │</span>
+<span class="go">├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤</span>
+<span class="go">│ 1   │ &quot;Jaccard&quot; │ 0 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+<span class="go">│ 2   │ &quot;Jaccard&quot; │ 1 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+<span class="go">│ 3   │ &quot;Jaccard&quot; │ 2 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+
+<span class="go">│ Row │ partition_name │ diversity │</span>
+<span class="go">├─────┼────────────────┼───────────┤</span>
+<span class="go">│ 1   │ &quot;&quot;             │ 0.333333  │</span>
+<span class="go">│ 2   │ &quot;&quot;             │ 0.414214  │</span>
+<span class="go">│ 3   │ &quot;&quot;             │ 0.5       │</span>
+
+<span class="gp">julia&gt;</span> <span class="n">generalisedjaccard</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">3×7 DataFrames.DataFrame</span>
+<span class="go">│ Row │ measure   │ q │ type_level │ type_name │ partition_level │</span>
+<span class="go">├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤</span>
+<span class="go">│ 1   │ &quot;Jaccard&quot; │ 0 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+<span class="go">│ 2   │ &quot;Jaccard&quot; │ 1 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+<span class="go">│ 3   │ &quot;Jaccard&quot; │ 2 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+
+<span class="go">│ Row │ partition_name │ diversity │</span>
+<span class="go">├─────┼────────────────┼───────────┤</span>
+<span class="go">│ 1   │ &quot;&quot;             │ 0.333333  │</span>
+<span class="go">│ 2   │ &quot;&quot;             │ 0.414214  │</span>
+<span class="go">│ 3   │ &quot;&quot;             │ 0.5       │</span>
 </pre></div>
 
 
@@ -361,7 +405,7 @@
 <p><a id='Diversity.Ecology' href='#Diversity.Ecology'>#</a>
 <strong><code>Diversity.Ecology</code></strong> &mdash; <em>Module</em>.</p>
 <p>The <strong>Diversity.Ecology</strong> module replicates old ecological diversity measures and generalised versions of them that relate to our general measures of alpha, beta and gamma diversity at subcommunity and metacommunity levels. The generalisations of the richness, Shannon and Simpson are the only standard measures we are aware of whose subcommunity components sum directly to the corresponding ecosystem measure (although note that Simpson's index decreases for increased diversity, so small components are more diverse).</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Diversity.jl#L265-L274' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Diversity.jl#L267-L276' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedjaccard' href='#Diversity.Ecology.generalisedjaccard'>#</a>
 <strong><code>Diversity.Ecology.generalisedjaccard</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>generalisedjaccard(proportions::AbstractArray, qs, Z::AbstractMatrix)
@@ -379,7 +423,7 @@
 <ul>
 <li>Jaccard-related distinctivess measures</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L154-L176' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L154-L176' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedrichness' href='#Diversity.Ecology.generalisedrichness'>#</a>
 <strong><code>Diversity.Ecology.generalisedrichness</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>generalisedrichness(level::DiversityLevel, proportions::AbstractArray, Z::AbstractMatrix)
@@ -397,7 +441,7 @@
 <ul>
 <li>diversity (at ecosystem level) or diversities (of subcommunities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L4-L22' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L4-L22' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedshannon' href='#Diversity.Ecology.generalisedshannon'>#</a>
 <strong><code>Diversity.Ecology.generalisedshannon</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>generalisedshannon(level::DiversityLevel, proportions::AbstractArray, Z::AbstractMatrix)
@@ -415,7 +459,7 @@
 <ul>
 <li>entropy (at metacommunity level) or entropies (of subcommunities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L54-L70' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L54-L70' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedsimpson' href='#Diversity.Ecology.generalisedsimpson'>#</a>
 <strong><code>Diversity.Ecology.generalisedsimpson</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Calculate a generalised version of Simpson's index</strong></p>
@@ -430,7 +474,7 @@
 <ul>
 <li>concentration (at ecosystem level) or concentrations (of subcommunities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L103-L119' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L103-L119' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.jaccard-Tuple{AbstractArray{T,2}}' href='#Diversity.Ecology.jaccard-Tuple{AbstractArray{T,2}}'>#</a>
 <strong><code>Diversity.Ecology.jaccard</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>jaccard(proportions::AbstractMatrix)
@@ -446,7 +490,7 @@
 <ul>
 <li>the Jaccard index</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L191-L205' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L191-L205' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.richness-Tuple{Union{AbstractArray{T,1},AbstractArray{T,2}}}' href='#Diversity.Ecology.richness-Tuple{Union{AbstractArray{T,1},AbstractArray{T,2}}}'>#</a>
 <strong><code>Diversity.Ecology.richness</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>richness(proportions::AbstractMatrix)
@@ -462,7 +506,7 @@
 <ul>
 <li>diversities of subcommunities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L38-L49' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L38-L49' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.shannon-Tuple{Union{AbstractArray{T,1},AbstractArray{T,2}}}' href='#Diversity.Ecology.shannon-Tuple{Union{AbstractArray{T,1},AbstractArray{T,2}}}'>#</a>
 <strong><code>Diversity.Ecology.shannon</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculate Shannon entropy of populations</strong></p>
@@ -475,7 +519,7 @@
 <ul>
 <li>entropies of subcommunities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L87-L98' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L87-L98' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.simpson-Tuple{Union{AbstractArray{T,1},AbstractArray{T,2}}}' href='#Diversity.Ecology.simpson-Tuple{Union{AbstractArray{T,1},AbstractArray{T,2}}}'>#</a>
 <strong><code>Diversity.Ecology.simpson</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>simpson(proportions::AbstractMatrix)
@@ -491,7 +535,7 @@
 <ul>
 <li>concentrations of subcommunities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/43b2af5be0751c4925c8da125fa5d717cdfc4500/src/Ecology.jl#L136-L149' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/6f595ef7ec3f37a2df251cde7dd571d913f17d6c/src/Ecology.jl#L136-L149' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="./#Diversity.Ecology"><code>Diversity.Ecology</code></a></li>
@@ -500,7 +544,11 @@
 <li><a href="..#Diversity.individualDiversity"><code>Diversity.individualDiversity</code></a></li>
 <li><a href="..#Diversity.metacommunityDiversity"><code>Diversity.metacommunityDiversity</code></a></li>
 <li><a href="..#Diversity.subcommunityDiversity"><code>Diversity.subcommunityDiversity</code></a></li>
+<li><a href="..#Diversity.AbstractMetacommunity"><code>Diversity.AbstractMetacommunity</code></a></li>
+<li><a href="..#Diversity.AbstractPartition"><code>Diversity.AbstractPartition</code></a></li>
+<li><a href="..#Diversity.AbstractTypes"><code>Diversity.AbstractTypes</code></a></li>
 <li><a href="..#Diversity.DiversityLevel"><code>Diversity.DiversityLevel</code></a></li>
+<li><a href="..#Diversity.DiversityMeasure"><code>Diversity.DiversityMeasure</code></a></li>
 <li><a href="..#Diversity.Gamma"><code>Diversity.Gamma</code></a></li>
 <li><a href="..#Diversity.GeneralTypes"><code>Diversity.GeneralTypes</code></a></li>
 <li><a href="..#Diversity.Metacommunity"><code>Diversity.Metacommunity</code></a></li>
@@ -508,9 +556,11 @@
 <li><a href="..#Diversity.NormalisedBeta"><code>Diversity.NormalisedBeta</code></a></li>
 <li><a href="..#Diversity.NormalisedRho"><code>Diversity.NormalisedRho</code></a></li>
 <li><a href="..#Diversity.Onecommunity"><code>Diversity.Onecommunity</code></a></li>
+<li><a href="..#Diversity.PowerMeanMeasure"><code>Diversity.PowerMeanMeasure</code></a></li>
 <li><a href="..#Diversity.RawAlpha"><code>Diversity.RawAlpha</code></a></li>
 <li><a href="..#Diversity.RawBeta"><code>Diversity.RawBeta</code></a></li>
 <li><a href="..#Diversity.RawRho"><code>Diversity.RawRho</code></a></li>
+<li><a href="..#Diversity.RelativeEntropyMeasure"><code>Diversity.RelativeEntropyMeasure</code></a></li>
 <li><a href="..#Diversity.Species"><code>Diversity.Species</code></a></li>
 <li><a href="..#Diversity.Subcommunities"><code>Diversity.Subcommunities</code></a></li>
 <li><a href="..#Diversity.Taxonomy"><code>Diversity.Taxonomy</code></a></li>
@@ -537,7 +587,9 @@
 <li><a href="..#Diversity.getnames"><code>Diversity.getnames</code></a></li>
 <li><a href="..#Diversity.getordinariness!"><code>Diversity.getordinariness!</code></a></li>
 <li><a href="..#Diversity.getpartition"><code>Diversity.getpartition</code></a></li>
+<li><a href="..#Diversity.getscnames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.getscnames</code></a></li>
 <li><a href="..#Diversity.getsimilarity"><code>Diversity.getsimilarity</code></a></li>
+<li><a href="..#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.gettypenames</code></a></li>
 <li><a href="..#Diversity.gettypes"><code>Diversity.gettypes</code></a></li>
 <li><a href="..#Diversity.getweight-Tuple{Meta&lt;:Diversity.AbstractMetacommunity}"><code>Diversity.getweight</code></a></li>
 <li><a href="..#Diversity.inddiv"><code>Diversity.inddiv</code></a></li>
