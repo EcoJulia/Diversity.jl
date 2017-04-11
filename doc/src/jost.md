@@ -7,15 +7,26 @@ found in the **Diversity.Jost** package.
 
 Accessing the main functionality in the package is simple:
 
-```julia
-using Diversity.Jost
+```jldoctest
+julia> using Diversity.Jost
 
-# Load community to study
+julia> ecosystem = [2 2 0; 0 2 2]';
 
-ecosystem = [2 2 0.; 0 2 2]'
-ecosystem /= sum(ecosystem);
+julia> ecosystem /= sum(ecosystem);
 
-diversities = jostbeta(ecosystem, [0, 1, 2])
+julia> diversities = jostbeta(ecosystem, [0, 1, 2])
+3×7 DataFrames.DataFrame
+│ Row │ measure    │ q │ type_level │ type_name │ partition_level │
+├─────┼────────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "JostBeta" │ 0 │ "types"    │ ""        │ "metacommunity" │
+│ 2   │ "JostBeta" │ 1 │ "types"    │ ""        │ "metacommunity" │
+│ 3   │ "JostBeta" │ 2 │ "types"    │ ""        │ "metacommunity" │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ ""             │ 1.5       │
+│ 2   │ ""             │ 1.41421   │
+│ 3   │ ""             │ 1.33333   │
 ```
 
 ```@contents

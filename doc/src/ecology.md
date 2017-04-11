@@ -11,20 +11,64 @@ diversity, so small components are more diverse).
 
 Accessing the functionality in the package is simple:
 
-```julia
-using Diversity.Ecology
+```jldoctest
+julia> using Diversity.Ecology
 
-community = [10, 20, 20]
-community /= sum(community);
-diversity = simpson(community)
+julia> community = [10, 20, 20];
 
-ecosystem = [2 2 0.; 0 2 2]'
-ecosystem /= sum(ecosystem);
-Z = eye(3);
+julia> community /= sum(community);
 
-jaccard(ecosystem)
-generalisedjaccard(ecosystem, [0, 1, 2])
-generalisedjaccard(ecosystem, [0, 1, 2], Z)
+julia> diversity = simpson(community)
+1×7 DataFrames.DataFrame
+│ Row │ measure   │ q │ type_level │ type_name │ partition_level │
+├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "Simpson" │ 2 │ "types"    │ ""        │ "subcommunity"  │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ "1"            │ 0.36      │
+
+julia> ecosystem = [2 2 0.; 0 2 2]';
+
+julia> ecosystem /= sum(ecosystem);
+
+julia> jaccard(ecosystem)
+1×7 DataFrames.DataFrame
+│ Row │ measure   │ q │ type_level │ type_name │ partition_level │
+├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "Jaccard" │ 0 │ "types"    │ ""        │ "metacommunity" │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ ""             │ 0.333333  │
+
+julia> generalisedjaccard(ecosystem, [0, 1, 2])
+3×7 DataFrames.DataFrame
+│ Row │ measure   │ q │ type_level │ type_name │ partition_level │
+├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "Jaccard" │ 0 │ "types"    │ ""        │ "metacommunity" │
+│ 2   │ "Jaccard" │ 1 │ "types"    │ ""        │ "metacommunity" │
+│ 3   │ "Jaccard" │ 2 │ "types"    │ ""        │ "metacommunity" │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ ""             │ 0.333333  │
+│ 2   │ ""             │ 0.414214  │
+│ 3   │ ""             │ 0.5       │
+
+julia> generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
+3×7 DataFrames.DataFrame
+│ Row │ measure   │ q │ type_level │ type_name │ partition_level │
+├─────┼───────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "Jaccard" │ 0 │ "types"    │ ""        │ "metacommunity" │
+│ 2   │ "Jaccard" │ 1 │ "types"    │ ""        │ "metacommunity" │
+│ 3   │ "Jaccard" │ 2 │ "types"    │ ""        │ "metacommunity" │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ ""             │ 0.333333  │
+│ 2   │ ""             │ 0.414214  │
+│ 3   │ ""             │ 0.5       │
 ```
 
 ```@contents

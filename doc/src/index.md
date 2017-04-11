@@ -20,11 +20,53 @@ extract any diversity measure at a series of scales.
 
 Accessing the main functionality in the package is simple:
 
-```julia_skip
-using Diversity
-...
-diversities = metacommunityDiversity(NormalisedAlpha(Metacommunity(proportions, Z)), [0, 1, 2, Inf])
-diversity = metacommunityDiversity(RawRho(Metacommunity(proportions, Z)), 2)
+```jldoctest
+julia> # Load the package into R
+       using Diversity
+
+julia> # Example population
+       pop = [1 1 0; 2 0 0; 3 1 4];
+
+julia> pop = pop / sum(pop);
+
+julia> # Create Metacommunity object
+       meta = Metacommunity(pop);
+
+julia> diversities = norm_meta_alpha(meta, [0, 1, 2, Inf])
+4×7 DataFrames.DataFrame
+│ Row │ measure           │ q   │ type_level │ type_name │ partition_level │
+├─────┼───────────────────┼─────┼────────────┼───────────┼─────────────────┤
+│ 1   │ "NormalisedAlpha" │ 0.0 │ "types"    │ ""        │ "metacommunity" │
+│ 2   │ "NormalisedAlpha" │ 1.0 │ "types"    │ ""        │ "metacommunity" │
+│ 3   │ "NormalisedAlpha" │ 2.0 │ "types"    │ ""        │ "metacommunity" │
+│ 4   │ "NormalisedAlpha" │ Inf │ "types"    │ ""        │ "metacommunity" │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ ""             │ 2.16667   │
+│ 2   │ ""             │ 1.86121   │
+│ 3   │ ""             │ 1.63636   │
+│ 4   │ ""             │ 1.0       │
+
+julia> Z = [1.0 0 0; 0 1 1; 1 1 1];
+
+julia> meta_z = Metacommunity(pop, Z);
+
+julia> rho = RawRho(meta_z);
+
+julia> redundancies = subdiv(rho, 2)
+3×7 DataFrames.DataFrame
+│ Row │ measure  │ q │ type_level │ type_name │ partition_level │
+├─────┼──────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "RawRho" │ 2 │ "types"    │ ""        │ "subcommunity"  │
+│ 2   │ "RawRho" │ 2 │ "types"    │ ""        │ "subcommunity"  │
+│ 3   │ "RawRho" │ 2 │ "types"    │ ""        │ "subcommunity"  │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ "1"            │ 2.0       │
+│ 2   │ "2"            │ 3.0       │
+│ 3   │ "3"            │ 3.0       │
 ```
 
 ```@contents

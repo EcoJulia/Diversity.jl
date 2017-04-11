@@ -5,14 +5,26 @@
 
 Accessing the main functionality in the package is simple:
 
-```julia
-using Diversity.Hill
+```jldoctest
+julia> using Diversity.Hill
 
-# Load community to study
+julia> community = [10, 20, 20, 0, 3];
 
-community = [10, 20, 20, 0, 3];
-community /= sum(community);
-diversities = hillnumber(community, [0, 1, 2])
+julia> community /= sum(community);
+
+julia> diversities = hillnumber(community, [0, 1, 2])
+3×7 DataFrames.DataFrame
+│ Row │ measure      │ q │ type_level │ type_name │ partition_level │
+├─────┼──────────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "HillNumber" │ 0 │ "types"    │ ""        │ "subcommunity"  │
+│ 2   │ "HillNumber" │ 1 │ "types"    │ ""        │ "subcommunity"  │
+│ 3   │ "HillNumber" │ 2 │ "types"    │ ""        │ "subcommunity"  │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ "1"            │ 4.0       │
+│ 2   │ "1"            │ 3.36264   │
+│ 3   │ "1"            │ 3.09021   │
 ```
 
 ```@contents
