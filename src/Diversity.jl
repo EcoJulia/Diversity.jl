@@ -29,7 +29,7 @@ export AbstractMetacommunity, Metacommunity
 export getabundance, getweight, getpartition, gettypes
 export getnames, getscnames, gettypenames
 export counttypes, countsubcommunities
-export getsimilarity, getordinariness!, getmetaordinariness!
+export getsimilarity, getordinariness!, getmetaordinariness!, getordinariness
 export inddiv, subdiv, metadiv
 
 include("EffectiveNumbers.jl")

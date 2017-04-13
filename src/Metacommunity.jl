@@ -244,7 +244,7 @@ for similarity between individuals.
 
 # Constructor:
 
-**Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::AbstractTypes)**
+Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::AbstractTypes)
 
 # Members:
 
