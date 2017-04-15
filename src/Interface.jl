@@ -195,8 +195,8 @@ Sums an array over its types, leaving an array of the same
 dimensionality (but length of 1st dimension is 1).
 
 """
-@inline function sumovertypes{FP, A, Sim, Part, M <: AbstractMatrix}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::M)
-    mapslices(sum, values, 1)::M
+@inline function sumovertypes{FP, A, Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::A)
+    mapslices(sum, values, 1)::A
 end
 
 """
@@ -208,8 +208,8 @@ dimensionality (but length of 2nd and subsequent dimensions are 1).
 """
 function sumoversubcommunities end
 
-@inline function sumoversubcommunities{FP, A, Sim, Part, M <: AbstractMatrix}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::M)
-    mapslices(sum, values, collect(2:ndims(values)))::M
+@inline function sumoversubcommunities{FP, A, Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::A)
+    mapslices(sum, values, collect(2:ndims(values)))::A
 end
 
 @inline function sumoversubcommunities{FP, V <: AbstractVector, Sim, Part}(meta::AbstractMetacommunity{FP, V, Sim, Part}, values::V)
