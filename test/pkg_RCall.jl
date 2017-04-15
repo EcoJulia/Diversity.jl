@@ -6,8 +6,8 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
-# Only run R on unix
-if is_unix()
+# Only run R on macs
+if is_apple()
     # Environment variable to avoid boring R package builds
     is_me = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
     # Skip the (slow!) R package installation step

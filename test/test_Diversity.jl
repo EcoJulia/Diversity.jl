@@ -9,7 +9,8 @@ end
 using Diversity
 
 @testset "Deprecations" begin
-    if is_apple
+    # Only run deprecation checks on macs
+    if is_apple()
         @test_warn "deprecated" subcommunityalpha([1:3...]/6, 1)
         @test_warn "deprecated" subcommunityalphabar([1:3...]/6, 1)
         @test_warn "deprecated" subcommunitybeta([1:3...]/6, 1)
