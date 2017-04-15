@@ -6,6 +6,9 @@ using Diversity.ShortNames
 using RCall
 using DataFrames
 
+# Create a temporary directory to work in
+libdir = mktempdir();
+
 # Only run R on macs
 if is_apple()
     # Environment variable to avoid boring R package builds
@@ -14,7 +17,6 @@ if is_apple()
     if is_me
         R"library(rdiversity)";
     else
-        libdir = mktempdir();
         rcall(Symbol(".libPaths"), libdir);
         rcall(Symbol("install.packages"),
               ["devtools", "methods", "ggplot2", "ape",
@@ -94,5 +96,7 @@ if is_apple()
         end
     end
 end
+
+rm(libdir, force=true, recursive=true);
 
 end
