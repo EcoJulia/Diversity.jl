@@ -5,9 +5,15 @@ using Diversity
 using Diversity.ShortNames
 using DataFrames
 
+Rinstalled = false
 try
     using RCall
+    Rinstalled = true
+catch
+    warn("R not installed, skipping R cross-validation.")
+end
 
+if Rinstalled
     # Create a temporary directory to work in
     libdir = mktempdir();
 
@@ -30,10 +36,10 @@ try
         end
 
         # Run diversity comparisons on increasing numbers of types and subcommunities
-        @testset "RCall - rdiversity" begin
+        @testset "RCall - testing boydorr/rdiversity" begin
             @testset "Random rdiversity $i" for i in 1:20
-                types = rand(1:(i*10))
-                sc = rand(1:(i*10))
+                types = rand(2:(i*10))
+                sc = rand(2:(i*10))
                 pops = rand(types, sc)
                 Zasym = rand(types, types)
                 Zsym = Zasym/2 + Zasym'/2
@@ -52,55 +58,89 @@ try
                 @testset "Z matrix - $(names[k])" for k in 1:length(Zs)
                     Z = Zs[k]
                     meta = Metacommunity(pops, Z)
-                    ra = α(meta)
-                    na = ᾱ(meta)
-                    rb = β(meta)
-                    nb = β̄(meta)
-                    rr = ρ(meta)
-                    nr = ρ̄(meta)
-                    g  = Γ(meta)
+                    diversities = Dict(:raw_alpha  => α(meta), :norm_alpha => ᾱ(meta),
+                                       :raw_beta   => β(meta), :norm_beta  => β̄(meta),
+                                       :raw_rho    => ρ(meta), :norm_rho   => ρ̄(meta),
+                                       :raw_gamma  => Γ(meta));
                     # Create the metacommunity in R
                     r_meta = rcall(:metacommunity, pops, Z)
 
-                    # Check out metacommunity diversities
-                    r_rma = rcall(:raw_meta_alpha, r_meta, qs)
-                    @test metadiv(ra, qs)[:diversity] ≈ rcopy(r_rma[:diversity])
-                    r_nma = rcall(:norm_meta_alpha, r_meta, qs)
-                    @test metadiv(na, qs)[:diversity] ≈ rcopy(r_nma[:diversity])
-                    r_rmb = rcall(:raw_meta_beta, r_meta, qs)
-                    @test metadiv(rb, qs)[:diversity] ≈ rcopy(r_rmb[:diversity])
-                    r_nmb = rcall(:norm_meta_beta, r_meta, qs)
-                    @test metadiv(nb, qs)[:diversity] ≈ rcopy(r_nmb[:diversity])
-                    r_rmr = rcall(:raw_meta_rho, r_meta, qs)
-                    @test metadiv(rr, qs)[:diversity] ≈ rcopy(r_rmr[:diversity])
-                    r_nmr = rcall(:norm_meta_rho, r_meta, qs)
-                    @test metadiv(nr, qs)[:diversity] ≈ rcopy(r_nmr[:diversity])
-                    r_mg = rcall(:meta_gamma, r_meta, qs)
-                    @test metadiv(g, qs)[:diversity] ≈ rcopy(r_mg[:diversity])
-                    
-                    # Check out subcommunity diversities
-                    r_rsa = rcall(:raw_sub_alpha, r_meta, qs)
-                    @test subdiv(ra, qs)[:diversity] ≈ rcopy(r_rsa[:diversity])
-                    r_nsa = rcall(:norm_sub_alpha, r_meta, qs)
-                    @test subdiv(na, qs)[:diversity] ≈ rcopy(r_nsa[:diversity])
-                    r_rsb = rcall(:raw_sub_beta, r_meta, qs)
-                    @test subdiv(rb, qs)[:diversity] ≈ rcopy(r_rsb[:diversity])
-                    r_nsb = rcall(:norm_sub_beta, r_meta, qs)
-                    @test subdiv(nb, qs)[:diversity] ≈ rcopy(r_nsb[:diversity])
-                    r_rsr = rcall(:raw_sub_rho, r_meta, qs)
-                    @test subdiv(rr, qs)[:diversity] ≈ rcopy(r_rsr[:diversity])
-                    r_nsr = rcall(:norm_sub_rho, r_meta, qs)
-                    @test subdiv(nr, qs)[:diversity] ≈ rcopy(r_nsr[:diversity])
-                    r_sg = rcall(:sub_gamma, r_meta, qs)
-                    @test subdiv(g, qs)[:diversity] ≈ rcopy(r_sg[:diversity])
+                    for (r_func, juliadiv) in diversities
+                        r_div = rcall(r_func, r_meta);
+                        # Check the metacommunity diversity
+                        @test metadiv(juliadiv, qs)[:diversity] ≈
+                            rcopy(rcall(:metadiv, r_div, qs)[:diversity])
+                        # and subcommunity diversity
+                        @test subdiv(juliadiv, qs)[:diversity] ≈
+                            rcopy(rcall(:subdiv, r_div, qs)[:diversity])
+                    end
+                end
+            end
+            
+            @testset "Trying out empty types and subcommunities" begin
+                types = 10
+                sc = 10
+                pops = rand(types, sc)
+                Zasym = rand(types, types)
+                Z = Zasym/2 + Zasym'/2
+                for j in 1:types
+                    Z[j, j] = 1.0
+                end
+                Z[Z .< median(Z)] = 0.0
+                # Make sure not to remove all of the non-zeros from any column
+                for j in 1:sc
+                    pops[pops[:, j] .< median(pops[:, j])/2, j] = 0.0
+                end
+                qs = sort([rand(7)*10..., 0, 1, Inf])
+                
+                # Check they match when there's an empty type
+                pops[rand(1:types), :] = 0
+                pops /= sum(pops)
+                meta = Metacommunity(pops, Z)
+                diversities = Dict(:raw_alpha  => α(meta), :norm_alpha => ᾱ(meta),
+                                   :raw_beta   => β(meta), :norm_beta  => β̄(meta),
+                                   :raw_rho    => ρ(meta), :norm_rho   => ρ̄(meta),
+                                   :raw_gamma  => Γ(meta));
+                # Create the metacommunity in R
+                r_meta = rcall(:metacommunity, pops, Z)
+                
+                for (r_func, juliadiv) in diversities
+                    r_div = rcall(r_func, r_meta);
+                    # Check the metacommunity diversity
+                    @test metadiv(juliadiv, qs)[:diversity] ≈
+                        rcopy(rcall(:metadiv, r_div, qs)[:diversity])
+                    # and subcommunity diversity
+                    @test subdiv(juliadiv, qs)[:diversity] ≈
+                        rcopy(rcall(:subdiv, r_div, qs)[:diversity])
+                end
+                
+                # Check they match when there's an empty subcommunity too
+                pops[:, rand(1:sc)] = 0
+                pops /= sum(pops)
+                meta = Metacommunity(pops, Z)
+                diversities = Dict(:raw_alpha  => α(meta), :norm_alpha => ᾱ(meta),
+                                   :raw_beta   => β(meta), :norm_beta  => β̄(meta),
+                                   :raw_rho    => ρ(meta), :norm_rho   => ρ̄(meta),
+                                   :raw_gamma  => Γ(meta));
+                # Create the metacommunity in R
+                r_meta = rcall(:metacommunity, pops, Z)
+                
+                for (r_func, juliadiv) in diversities
+                    r_div = rcall(r_func, r_meta);
+                    # Check out metacommunity diversity
+                    @test metadiv(juliadiv, qs)[:diversity] ≈
+                        rcopy(rcall(:metadiv, r_div, qs)[:diversity])
+                    # and subcommunity diversity
+                    sdj = subdiv(juliadiv, qs)[:diversity]
+                    sdr = rcopy(rcall(:subdiv, r_div, qs)[:diversity])
+                    for (r, j) in zip(sdr, sdj)
+                        @test isnan(j) == isnan(r) && (isnan(j) || j ≈ r)
+                    end
                 end
             end
         end
     end
-
     rm(libdir, force=true, recursive=true);
-catch
-    warn("R not installed, skipping R cross-validation.")
 end
 
 end
