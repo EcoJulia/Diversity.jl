@@ -85,6 +85,13 @@ end
 
 export getName, getASCIIName, getFullName
 
+module Phylogenetics
+
+include("Phylogenetics.jl")
+export Phylogeny
+
+end
+
 include("GeneralisedDiversities.jl")
 export diversity
 export norm_sub_alpha, raw_sub_alpha, norm_sub_beta, raw_sub_beta
