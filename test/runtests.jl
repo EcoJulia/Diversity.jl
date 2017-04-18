@@ -5,6 +5,10 @@
 testphylo = true
 if Pkg.installed("PhyloTrees") == nothing
     Pkg.clone("https://github.com/boydorr/PhyloTrees.jl.git")
+    # And need to reinclude test REQUIRE packages as they get dropped(?)
+    Pkg.add("StatsBase")
+    Pkg.add("Distances")
+    Pkg.add("RCall")
 elseif Pkg.installed("PhyloTrees") <= v"0.7.0"
     warn("Unable to run tests on phlyogenetic section")
     testphylo = false
