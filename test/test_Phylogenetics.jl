@@ -1,16 +1,21 @@
 module TestPhylogenetics
 using Base.Test
-if !isdefined(Base.Test, Symbol("@test_warn"))
-    # Ignore @test_warn unless it's there...
-    macro test_warn(str, test)
-    end
-    macro test_nowarn(test)
-    end
-end
 
-using Diversity
-using DataFrames
 using PhyloTrees
-info("Testing phylogenetics")
+using Diversity
+using Diversity.Phylogenetics
+
+@testset "PhyloTrees" begin
+    species = ["Dog", "Cat", "Human"]
+    nt = NodeTree(species, Vector{Float64})
+    n = addnode!(nt)
+    addbranch!(nt, n, "Dog", 1.0)
+    addbranch!(nt, n, "Cat", 1.0)
+    r = addnode!(nt)
+    addbranch!(nt, r, "Human", 2.0)
+    addbranch!(nt, r, n, 1.0)
+    ph = Phylogeny(nt)
+    @test Set(species) == Set(getnames(ph))
+end
 
 end
