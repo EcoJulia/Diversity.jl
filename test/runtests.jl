@@ -41,6 +41,8 @@ if length(missing) > 0
 end
 
 # Identify files that are cross-validating results against other packages
+# test/pkg_Package.jl should validate results against the Package package
+
 pkgbase = map(file -> replace(file, r"pkg_(.*).jl", s"\1"),
                    filter(str -> ismatch(r"^pkg_.*\.jl$", str), readdir()))
 
