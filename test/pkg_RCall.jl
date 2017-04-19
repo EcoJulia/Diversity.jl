@@ -58,9 +58,12 @@ if Rinstalled
                 @testset "Z matrix - $(names[k])" for k in 1:length(Zs)
                     Z = Zs[k]
                     meta = Metacommunity(pops, Z)
-                    diversities = Dict(:raw_alpha  => α(meta), :norm_alpha => ᾱ(meta),
-                                       :raw_beta   => β(meta), :norm_beta  => β̄(meta),
-                                       :raw_rho    => ρ(meta), :norm_rho   => ρ̄(meta),
+                    diversities = Dict(:raw_alpha  => α(meta),
+                                       :norm_alpha => ᾱ(meta),
+                                       :raw_beta   => β(meta),
+                                       :norm_beta  => β̄(meta),
+                                       :raw_rho    => ρ(meta),
+                                       :norm_rho   => ρ̄(meta),
                                        :raw_gamma  => Γ(meta));
                     # Create the metacommunity in R
                     r_meta = rcall(:metacommunity, pops, Z)
@@ -97,9 +100,12 @@ if Rinstalled
                 pops[rand(1:types), :] = 0
                 pops /= sum(pops)
                 meta = Metacommunity(pops, Z)
-                diversities = Dict(:raw_alpha  => α(meta), :norm_alpha => ᾱ(meta),
-                                   :raw_beta   => β(meta), :norm_beta  => β̄(meta),
-                                   :raw_rho    => ρ(meta), :norm_rho   => ρ̄(meta),
+                diversities = Dict(:raw_alpha  => α(meta),
+                                   :norm_alpha => ᾱ(meta),
+                                   :raw_beta   => β(meta),
+                                   :norm_beta  => β̄(meta),
+                                   :raw_rho    => ρ(meta),
+                                   :norm_rho   => ρ̄(meta),
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
                 r_meta = rcall(:metacommunity, pops, Z)
@@ -118,9 +124,12 @@ if Rinstalled
                 pops[:, rand(1:sc)] = 0
                 pops /= sum(pops)
                 meta = Metacommunity(pops, Z)
-                diversities = Dict(:raw_alpha  => α(meta), :norm_alpha => ᾱ(meta),
-                                   :raw_beta   => β(meta), :norm_beta  => β̄(meta),
-                                   :raw_rho    => ρ(meta), :norm_rho   => ρ̄(meta),
+                diversities = Dict(:raw_alpha  => α(meta),
+                                   :norm_alpha => ᾱ(meta),
+                                   :raw_beta   => β(meta),
+                                   :norm_beta  => β̄(meta),
+                                   :raw_rho    => ρ(meta),
+                                   :norm_rho   => ρ̄(meta),
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
                 r_meta = rcall(:metacommunity, pops, Z)
