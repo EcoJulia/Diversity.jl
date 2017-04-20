@@ -35,7 +35,7 @@ export _getabundance, _getmetaabundance, _getweight
 export _getordinariness!, _getmetaordinariness!
 export _calcabundance, _calcsimilarity, _calcordinariness
 export floattypes, typematch, mcmatch
-export sumovertypes, sumoversubcommunities, vectorise
+export sumovertypes, sumoversubcommunities
 end
 
 include("Interface.jl")

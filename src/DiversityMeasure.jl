@@ -1,5 +1,6 @@
 using Compat
 using DataFrames
+using Diversity.API.vectorise
 
 """
 ### Enumeration of levels that can exist / be calculated for a metacommunity.

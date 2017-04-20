@@ -16,9 +16,9 @@ using Distances
         end
         pops /= sum(pops)
         meta = Metacommunity(pops)
-        metapop = Diversity.vectorise(getmetaordinariness!(meta))
+        metapop = Diversity.API.vectorise(getmetaordinariness!(meta))
         weight_row = getweight(meta)
-        weights = Diversity.vectorise(weight_row)
+        weights = Diversity.API.vectorise(weight_row)
         pops_norm = pops ./ weight_row
         nb = β̄(meta)
         nr = ρ̄(meta)
