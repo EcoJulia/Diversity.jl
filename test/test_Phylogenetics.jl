@@ -7,7 +7,7 @@ using Diversity.Phylogenetics
 
 @testset "PhyloTrees" begin
     species = ["Dog", "Cat", "Human"]
-    nt = NodeTree(species, Vector{Float64})
+    nt = NodeTree(species, nodetype=Vector{Float64})
     n = addnode!(nt)
     addbranch!(nt, n, "Dog", 1.0)
     addbranch!(nt, n, "Cat", 1.0)
