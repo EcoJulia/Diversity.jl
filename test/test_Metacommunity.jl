@@ -28,7 +28,7 @@ end
 sim = [1.0 0.0 0.0; 1.0 1.0 0.0; 1.0 1.0 1.0]
 ms = GeneralTypes(sim)
 @testset "GeneralTypes" begin
-    @test getsimilarity(ms) == sim
+    @test calcsimilarity(ms, Matrix{Float64}(3,3)) == sim
     @test_throws DomainError GeneralTypes(-sim)
     @test_throws MethodError GeneralTypes(ab3)
     @test_throws DimensionMismatch GeneralTypes(convert(Matrix{Float64}, ab3))
@@ -38,8 +38,8 @@ tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
 @testset "Taxonomy" begin
     @test counttypes(tax) == 2
     @test getnames(tax) == ["This", "That"]
-    @test_throws ErrorException getsimilarity(tax)
-    @test_throws ErrorException Diversity.getordinariness(tax, abnorm)
+    @test_throws ErrorException calcsimilarity(tax, Matrix{Float64}(2,2))
+    @test_throws ErrorException calcordinariness(tax, abnorm)
     @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
                                          Dict(:Species=>1.0, :Genus=>0.5))
     @test_throws ErrorException Taxonomy(DataFrame(Genus=["This", "That"]),
@@ -76,7 +76,8 @@ g2 = GeneralTypes(eye(2))
     @test_throws ErrorException getabundance(Metacommunity([0.5 0.5]', meta2))
     @test getabundance(Metacommunity(abf, eye(2))) ≈ getabundance(Metacommunity(abf, meta2))
     #@test_throws ErrorException Metacommunity(-abf, g2, sc)
-    @test getsimilarity(gettypes(meta2)) ≈ eye(size(ab3, 1))
+    @test calcsimilarity(gettypes(meta2), getabundance(meta2)) ≈
+    eye(size(ab3, 1))
     @test Diversity.floattypes(meta) ⊆ mapreduce(Diversity.floattypes, ∩,
                                                  [getabundance(meta),
                                                   getpartition(meta),

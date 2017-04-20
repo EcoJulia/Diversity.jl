@@ -1,8 +1,7 @@
 module TestInterface
 using Base.Test
 
-using Diversity
-using Diversity.floattypes
+using Diversity.API
 
 @testset "FP" begin
     @test Float32 ∈ floattypes(Float32[1.0])

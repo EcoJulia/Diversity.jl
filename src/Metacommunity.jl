@@ -1,5 +1,7 @@
 using Compat
 using DataFrames
+using Diversity
+importall Diversity.API
 
 """
     Subcommunities(num)
@@ -23,11 +25,11 @@ immutable Subcommunities <: AbstractPartition
     end
 end
 
-function countsubcommunities(sub::Subcommunities)
+function _countsubcommunities(sub::Subcommunities)
     return sub.num
 end
 
-function getnames(sc::Subcommunities)
+function _getnames(sc::Subcommunities)
     return sc.names
 end
 
@@ -44,11 +46,11 @@ immutable Onecommunity <: AbstractPartition
     end
 end
 
-function countsubcommunities(::Onecommunity)
+function _countsubcommunities(::Onecommunity)
     return 1
 end
 
-function getnames(oc::Onecommunity)
+function _getnames(oc::Onecommunity)
     return oc.name
 end
 
@@ -77,19 +79,19 @@ immutable UniqueTypes <: AbstractTypes
     end
 end
 
-function counttypes(ut::UniqueTypes)
+function _counttypes(ut::UniqueTypes)
     return ut.num
 end
 
-function getsimilarity(ut::UniqueTypes)
+function _calcsimilarity(ut::UniqueTypes, ::AbstractArray)
     return eye(ut.num)
 end
 
-function getordinariness(::UniqueTypes, abundances::AbstractArray)
+function _calcordinariness(::UniqueTypes, abundances::AbstractArray)
     return abundances
 end
 
-function getnames(ut::UniqueTypes)
+function _getnames(ut::UniqueTypes)
     return ut.names
 end
     
@@ -130,11 +132,11 @@ function Taxonomy(speciesinfo::DataFrame, taxa::Dict, typelabel::Symbol = :Speci
     Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
 end
 
-function counttypes(tax::Taxonomy)
+function _counttypes(tax::Taxonomy)
     return nrow(tax.speciesinfo)
 end
 
-function getsimilarity(::Taxonomy)
+function _calcsimilarity(::Taxonomy, ::AbstractArray)
     error("Can't generate a taxonomic similarity matrix yet")
 end
 
@@ -142,7 +144,7 @@ function floattypes{FP}(::Taxonomy{FP})
     return Set([FP])
 end
 
-function getnames(tax::Taxonomy)
+function _getnames(tax::Taxonomy)
     return tax.speciesinfo[tax.typelabel]
 end
 
@@ -215,11 +217,11 @@ function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP}, names::V
     GeneralTypes{FP, typeof(zmatrix)}(zmatrix, names)
 end
 
-function counttypes(gt::GeneralTypes)
+function _counttypes(gt::GeneralTypes)
     return size(gt.z, 1)
 end
 
-function getsimilarity(gt::GeneralTypes)
+function _calcsimilarity(gt::GeneralTypes, ::AbstractArray)
     return gt.z
 end
 
@@ -227,7 +229,7 @@ function floattypes{FP, M}(::GeneralTypes{FP, M})
     return Set([FP])
 end
 
-function getnames(gt::GeneralTypes)
+function _getnames(gt::GeneralTypes)
     return gt.names
 end
 
@@ -359,21 +361,21 @@ function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
     end
 end
 
-function getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
     return meta.abundances
 end
 
-function gettypes{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+function _gettypes{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
     return meta.types
 end
 
-function getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+function _getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
     return meta.partition
 end
 
-@inline function getordinariness!(meta::Metacommunity)
+function _getordinariness!(meta::Metacommunity)
     if isnull(meta.ordinariness)
-        meta.ordinariness = getordinariness(meta.types, meta.abundances)
+        meta.ordinariness = calcordinariness(meta.types, meta.abundances)
     end
     get(meta.ordinariness)
 end
