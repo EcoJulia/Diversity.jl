@@ -381,7 +381,7 @@ end
 
 function _getordinariness!(meta::Metacommunity)
     if isnull(meta.ordinariness)
-        meta.ordinariness = calcordinariness(meta.types, meta.abundances)
+        meta.ordinariness = _calcordinariness(meta.types, meta.abundances)
     end
     get(meta.ordinariness)
 end
