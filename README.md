@@ -2,7 +2,7 @@
 
 *Package for measuring and partitioning diversity*
 
-| **Documentation**                               | **PackageEvaluator**            | **Build Status**                                                    |
+| **Documentation**                               | **PackageEvaluator**            | **Build Status of master**                                                    |
 |:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
 | [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.5-img]][pkg-0.5-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
 | [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.6-img]][pkg-0.6-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
