@@ -1,6 +1,6 @@
 using Compat
 using DataFrames
-using Diversity
+
 importall Diversity.API
 
 """
@@ -83,6 +83,10 @@ function _counttypes(ut::UniqueTypes)
     return ut.num
 end
 
+function _getnames(ut::UniqueTypes)
+    return ut.names
+end
+    
 function _calcsimilarity(ut::UniqueTypes, ::AbstractArray)
     return eye(ut.num)
 end
@@ -91,10 +95,6 @@ function _calcordinariness(::UniqueTypes, abundances::AbstractArray)
     return abundances
 end
 
-function _getnames(ut::UniqueTypes)
-    return ut.names
-end
-    
 """
     Species
 
@@ -128,24 +128,25 @@ immutable Taxonomy{FP <: AbstractFloat} <: AbstractTypes
     end
 end
 
-function Taxonomy(speciesinfo::DataFrame, taxa::Dict, typelabel::Symbol = :Species)
+function Taxonomy(speciesinfo::DataFrame, taxa::Dict,
+                  typelabel::Symbol = :Species)
     Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
-end
-
-function _counttypes(tax::Taxonomy)
-    return nrow(tax.speciesinfo)
-end
-
-function _calcsimilarity(::Taxonomy, ::AbstractArray)
-    error("Can't generate a taxonomic similarity matrix yet")
 end
 
 function floattypes{FP}(::Taxonomy{FP})
     return Set([FP])
 end
 
+function _counttypes(tax::Taxonomy)
+    return nrow(tax.speciesinfo)
+end
+
 function _getnames(tax::Taxonomy)
     return tax.speciesinfo[tax.typelabel]
+end
+
+function _calcsimilarity(::Taxonomy, ::AbstractArray)
+    error("Can't generate a taxonomic similarity matrix yet")
 end
 
 """
@@ -178,10 +179,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
     """
     # Constructor for GeneralTypes
 
-    Creates an instance of the GeneralTypes class, with an arbitrary similarity matrix.
-
-    # Arguments:
-    - `zmatrix`: similarity matrix
+    Creates an instance of the GeneralTypes class, with an arbitrary
+    similarity matrix.
     """
     function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
         M <: AbstractMatrix}(zmatrix::M)
@@ -213,24 +212,25 @@ function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP})
     GeneralTypes{FP, typeof(zmatrix)}(zmatrix)
 end
 
-function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP}, names::Vector{String})
+function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP},
+                                           names::Vector{String})
     GeneralTypes{FP, typeof(zmatrix)}(zmatrix, names)
-end
-
-function _counttypes(gt::GeneralTypes)
-    return size(gt.z, 1)
-end
-
-function _calcsimilarity(gt::GeneralTypes, ::AbstractArray)
-    return gt.z
 end
 
 function floattypes{FP, M}(::GeneralTypes{FP, M})
     return Set([FP])
 end
 
+function _counttypes(gt::GeneralTypes)
+    return size(gt.z, 1)
+end
+
 function _getnames(gt::GeneralTypes)
     return gt.names
+end
+
+function _calcsimilarity(gt::GeneralTypes, ::AbstractArray)
+    return gt.z
 end
 
 """
@@ -282,10 +282,12 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
     function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
         A <: AbstractArray,
         Sim <: AbstractTypes,
-        Part <: AbstractPartition}(abundances::A, meta::Metacommunity{FP, A, Sim, Part})
+        Part <: AbstractPartition}(abundances::A,
+                                   meta::Metacommunity{FP, A, Sim, Part})
         mcmatch(abundances, meta.types, meta.part) ||
         throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        new{FP, A, Sim, Part}(abundances, meta.types, meta.part, meta.ordinariness)
+        new{FP, A, Sim, Part}(abundances, meta.types,
+                              meta.part, meta.ordinariness)
     end
 end
 
@@ -334,10 +336,13 @@ function Metacommunity{V <: AbstractVector, Sim <: AbstractTypes,
     end
 end
 
-function Metacommunity{V <: AbstractVector, M <: AbstractMatrix}(abundances::V, zmatrix::M)
+function Metacommunity{V <: AbstractVector,
+    M <: AbstractMatrix}(abundances::V, zmatrix::M)
     if sum(abundances) ≈ one(eltype(abundances))
         return Metacommunity{eltype(V), V,
-        GeneralTypes, Onecommunity}(abundances, GeneralTypes(zmatrix), Onecommunity())
+        GeneralTypes, Onecommunity}(abundances,
+                                    GeneralTypes(zmatrix),
+                                    Onecommunity())
     else
         warn("Abundances not normalised to 1, correcting...")
         ab = abundances / sum(abundances)
@@ -350,7 +355,8 @@ end
 function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
     if sum(abundances) ≈ one(eltype(abundances))
         return Metacommunity{eltype(M), M,
-        GeneralTypes, Subcommunities}(abundances, GeneralTypes(zmatrix),
+        GeneralTypes, Subcommunities}(abundances,
+                                      GeneralTypes(zmatrix),
                                       Subcommunities(size(abundances, 2)))
     else
         warn("Abundances not normalised to 1, correcting...")
@@ -361,16 +367,16 @@ function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
     end
 end
 
-function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
-    return meta.abundances
-end
-
 function _gettypes{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
     return meta.types
 end
 
 function _getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
     return meta.partition
+end
+
+function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+    return meta.abundances
 end
 
 function _getordinariness!(meta::Metacommunity)
