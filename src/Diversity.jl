@@ -21,7 +21,7 @@ extract any diversity measure at a series of scales.
 """
 module Diversity
 
-include("Interface.jl")
+include("API.jl")
 include("Metacommunity.jl")
 export AbstractPartition, Subcommunities, Onecommunity
 export AbstractTypes, GeneralTypes, UniqueTypes, Species, Taxonomy
