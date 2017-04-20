@@ -3,20 +3,35 @@ using Diversity
 import Diversity.counttypes, Diversity.getsimilarity
 import Diversity.getordinariness, Diversity.getnames
 
-type Phylogeny{ND} <: AbstractTypes
+type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
     num::Int64
-    names::Vector{String}
-    phylo::NodeTree{ND}
+    leafnames::Vector{String}
+    tree::Tree
+    speciesnames::Vector{String}
+    ancestralmatrix::Matrix{Float64}
+    Zmatrix::Matrix{Float64}
 
-    function (::Type{Phylogeny{ND}}){ND}(phylo::NodeTree{ND})
-        names = getleafnames(phylo)
-        num = length(names)
+    function (::Type{Phylogeny{Tree}}){Tree <: AbstractTree}(tree::Tree)
+        leafnames = getleafnames(tree)
+        num = length(leafnames)
         num > 0 || error("Too few species")
-        new{ND}(num, names, phylo)
+        leafinfo = Dict{String, Float64}()
+        speciesinfo = Dict{String, Tuple{String, Float64}}()
+        for leaf in leafnames
+            branches = branchpath(tree, leaf)
+            leafinfo[leaf] = getrootdistance(tree, leaf)
+            for branch in branches
+                name = "$leaf : $branch"
+                speciesinfo[name] = tuple(leaf, getlength(tree, branch))
+            end
+        end
+        
+        new{Tree}(num, leafnames, tree, collect(keys(speciesinfo)),
+                  Matrix{Float64}(), Matrix{Float64}())
     end
 end
 
-Phylogeny{ND}(phylo::NodeTree{ND}) = Phylogeny{ND}(phylo)
+Phylogeny{Tree <: AbstractTree}(tree::Tree) = Phylogeny{Tree}(tree)
               
 function counttypes(phy::Phylogeny)
     return phy.num
@@ -27,9 +42,13 @@ function getsimilarity(phy::Phylogeny)
 end
 
 function getordinariness(::Phylogeny, abundances::AbstractArray)
-    return abundances
+    return Zmatrix * abundances
+end
+
+function getabundance(::Phylogeny, abundances::AbstractArray)
+    return ancestralmatrix * abundances
 end
 
 function getnames(phy::Phylogeny)
-    return phy.names
+    return phy.leafnames
 end
