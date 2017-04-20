@@ -113,8 +113,11 @@ if Rinstalled
                 for (r_func, juliadiv) in diversities
                     r_div = rcall(r_func, r_meta);
                     # Check the metacommunity diversity
-                    @test metadiv(juliadiv, qs)[:diversity] ≈
-                        rcopy(rcall(:metadiv, r_div, qs)[:diversity])
+                    jmd = metadiv(juliadiv, qs);
+                    rmd = rcall(:metadiv, r_div, qs);
+                    @test Set(map(string, names(jmd))) ==
+                        Set(rcopy(rcall(:colnames, rmd)))
+                    @test jmd[:diversity] ≈ rcopy(rmd[:diversity])
                     # and subcommunity diversity
                     @test subdiv(juliadiv, qs)[:diversity] ≈
                         rcopy(rcall(:subdiv, r_div, qs)[:diversity])
