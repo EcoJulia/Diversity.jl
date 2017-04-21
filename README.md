@@ -46,7 +46,7 @@ The main package provides basic numbers-equivalent diversity measures
 (described in [Hill, 1973](http://www.jstor.org/stable/1934352)),
 similarity-sensitive diversity measures (generalised from Hill, and
 described in
-[Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
+[Leinster and Cobbold, 2012][leinster-cobbold-url]),
 and related alpha, beta and gamma diversity measures at the level of
 the metacommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
@@ -116,7 +116,7 @@ A complete list of these functions is shown below:
 * `norm_sub_rho()` : representativeness of individual subcommunities
 * `raw_sub_beta()` : distinctiveness of individual subcommunities
 * `norm_sub_beta()` : per-subcommunity estimate of effective number of distinct subcommunities
-* `raw_sub_gamma()` : contribution per individual in a subcommunity toward metacommunity diversity
+* `sub_gamma()` : contribution per individual in a subcommunity toward metacommunity diversity
 * `raw_meta_alpha()` : naive-community metacommunity diversity
 * `norm_meta_alpha()` : average similarity-sensitive diversity of subcommunities
 * `raw_meta_rho()` : average redundancy of subcommunities
@@ -125,7 +125,15 @@ A complete list of these functions is shown below:
 * `norm_meta_beta()` : effective number of distinct subcommunities
 * `meta_gamma()` : metacommunity similarity-sensitive diversity
 
-The package also provides sub-modules with other diversity measures:
+#### Diversity.Phylogenetics
+
+Phylogenetic diversity (described [here][leinster-cobbold-url]) is
+included in the Diversity.Phylogenetics submodule. Documentation for
+these diversity measures can be found
+[here](http://richardreeve.github.io/Diversity.jl/stable/phylogenetics/).
+
+
+The package also provides some other sub-modules for related measures:
 
 #### Diversity.Ecology
 
@@ -214,3 +222,5 @@ The online documentation for the latest master (unreleased) branch is
 [paper-url]: http://arxiv.org/abs/1404.6520
 
 [rdiversity-url]: https://github.com/boydorr/rdiversity
+
+[leinster-cobbold-url]: http://www.esajournals.org/doi/abs/10.1890/10-2402.1
