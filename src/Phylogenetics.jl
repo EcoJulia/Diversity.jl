@@ -1,19 +1,17 @@
 using PhyloTrees
-using Diversity
-import Diversity.counttypes, Diversity.getsimilarity, Diversity.getabundance
-import Diversity.getordinariness, Diversity.getnames
+importall Diversity.API
 
 type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
     tree::Tree
     nleaf::Int64
     nancestral::Int64
     leafnames::Vector{String}
-    speciesnames::Vector{String}
+    ancestralnames::Vector{String}
     ancestralmatrix::Matrix{Float64}
     Zmatrix::Matrix{Float64}
 
     function (::Type{Phylogeny{Tree}}){Tree <: AbstractTree}(tree::Tree)
-        leafnames = getleafnames(tree)
+        leafnames = PhyloTrees.getleafnames(tree)
         nleaf = length(leafnames)
         nleaf > 0 || error("Too few species")
         leafinfo = Dict{String, Float64}()
@@ -27,16 +25,16 @@ type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
                                           getlength(tree, branch) / leafinfo["$leaf"])
             end
         end
-        speciesnames = collect(keys(speciesinfo))
-        nancestral = length(speciesnames)
+        ancestralnames = collect(keys(speciesinfo))
+        nancestral = length(ancestralnames)
         Lbar = mean(values(leafinfo))
         ancestralmatrix = Matrix{Float64}(nancestral, nleaf)
         fill!(ancestralmatrix, 0)
         for i in 1:nancestral
             for j in 1:nleaf
-                if speciesinfo[speciesnames[i]][1] == leafnames[j]
+                if speciesinfo[ancestralnames[i]][1] == leafnames[j]
                     ancestralmatrix[i, j] =
-                        speciesinfo[speciesnames[i]][3] * leafinfo[leafnames[j]]
+                        speciesinfo[ancestralnames[i]][3] * leafinfo[leafnames[j]]
                 end
             end
         end
@@ -45,34 +43,41 @@ type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
         for i in 1:nancestral
             for j in 1:nancestral
                 if haskey(speciesinfo,
-                          "$(speciesinfo[speciesnames[j]][1]) : $(speciesinfo[speciesnames[i]][2])")
-                    Zmatrix[i, j] = 1.0 / leafinfo[speciesinfo[speciesnames[j]][1]]
+                          "$(speciesinfo[ancestralnames[j]][1]) : $(speciesinfo[ancestralnames[i]][2])")
+                    Zmatrix[i, j] = 1.0 / leafinfo[speciesinfo[ancestralnames[j]][1]]
                 end
             end
         end
-        new{Tree}(tree, nleaf, nancestral, leafnames, speciesnames,
+        new{Tree}(tree, nleaf, nancestral, leafnames, ancestralnames,
                   ancestralmatrix, Zmatrix)
     end
 end
 
 Phylogeny{Tree <: AbstractTree}(tree::Tree) = Phylogeny{Tree}(tree)
-              
-function counttypes(phy::Phylogeny)
+
+function getphylonames(phy::Phylogeny)
+    return phy.leafnames
+end
+
+function _getnames(phy::Phylogeny)
+    return phy.ancestralnames
+end
+
+function _counttypes(phy::Phylogeny)
     return phy.nancestral
 end
 
-function getsimilarity(phy::Phylogeny)
-    return phy.Zmatrix * phy.ancestralmatrix
+function _calcabundance(phy::Phylogeny, abundances::AbstractArray)
+    asabundances = phy.ancestralmatrix * abundances
+    asabundances /= sum(asabundances)
+    return asabundances
 end
 
-function getordinariness(phy::Phylogeny, abundances::AbstractArray)
+function _calcsimilarity(phy::Phylogeny, abundances::AbstractArray)
+    asabundances = phy.ancestralmatrix * abundances
+    return phy.Zmatrix * sum(asabundances)
+end
+
+function _calcordinariness(phy::Phylogeny, abundances::AbstractArray)
     return phy.Zmatrix * phy.ancestralmatrix * abundances
-end
-
-function getabundance(phy::Phylogeny, abundances::AbstractArray)
-    return phy.ancestralmatrix * abundances
-end
-
-function getnames(phy::Phylogeny)
-    return phy.speciesnames
 end

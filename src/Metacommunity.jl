@@ -266,6 +266,7 @@ Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::Abstrac
 """
 type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
     abundances::A
+    realabundances::A
     types::Sim
     partition::Part
     ordinariness::Nullable{A}
@@ -275,8 +276,9 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
         Sim <: AbstractTypes,
         Part <: AbstractPartition}(abundances::A, types::Sim, part::Part)
         mcmatch(abundances, types, part) ||
-        throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        new{FP, A, Sim, Part}(abundances, types, part, Nullable{A}())
+            throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
+        realabundances = calcabundance(types, abundances)
+        new{FP, A, Sim, Part}(abundances, realabundances, types, part, Nullable{A}())
     end
 
     function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
@@ -285,8 +287,9 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
         Part <: AbstractPartition}(abundances::A,
                                    meta::Metacommunity{FP, A, Sim, Part})
         mcmatch(abundances, meta.types, meta.part) ||
-        throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        new{FP, A, Sim, Part}(abundances, meta.types,
+            throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
+        realabundances = calcabundance(types, abundances)
+        new{FP, A, Sim, Part}(abundances, realabundances, meta.types,
                               meta.part, meta.ordinariness)
     end
 end
@@ -376,7 +379,7 @@ function _getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
 end
 
 function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
-    return meta.abundances
+    return meta.realabundances
 end
 
 function _getordinariness!(meta::Metacommunity)

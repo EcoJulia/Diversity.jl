@@ -224,17 +224,19 @@ Checks for type and size compatibility for elements contributing to a Metacommun
 function mcmatch end
 
 function mcmatch(m::AbstractMatrix, sim::AbstractTypes, part::AbstractPartition)
-    return typematch(m, sim, part) &&
-    _counttypes(sim) == size(m, 1) &&
-    _countsubcommunities(part) == size(m, 2) &&
-    sum(m) ≈ 1
+    realm = _calcabundance(sim, m)
+    return typematch(realm, sim, part) &&
+    _counttypes(sim) == size(realm, 1) &&
+    _countsubcommunities(part) == size(realm, 2) &&
+    sum(realm) ≈ 1
 end
 
 function mcmatch(v::AbstractVector, sim::AbstractTypes, part::AbstractPartition)
-    return typematch(v, sim, part) &&
-    _counttypes(sim) == size(v, 1) &&
+    realv = _calcabundance(sim, v)
+    return typematch(realv, sim, part) &&
+    _counttypes(sim) == size(realv, 1) &&
     _countsubcommunities(part) == 1 &&
-    sum(v) ≈ 1
+    sum(realv) ≈ 1
 end
 
 """
