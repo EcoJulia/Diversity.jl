@@ -21,15 +21,35 @@ extract any diversity measure at a series of scales.
 """
 module Diversity
 
+"""
+The Diversity.API submodule should be `import`ed if you want to create a
+new type, partition or metacommunity subtype. Otherwise it can be
+ignored.
+"""
+module API
+include("API.jl")
+export AbstractTypes, AbstractPartition, AbstractMetacommunity
+export _gettypes, _getpartition
+export _counttypes, _countsubcommunities, _getnames
+export _getabundance, _getmetaabundance, _getweight
+export _getordinariness!, _getmetaordinariness!
+export _calcabundance, _calcsimilarity, _calcordinariness
+export floattypes, typematch, mcmatch
+export sumovertypes, sumoversubcommunities
+end
+
 include("Interface.jl")
-include("Metacommunity.jl")
-export AbstractPartition, Subcommunities, Onecommunity
-export AbstractTypes, GeneralTypes, UniqueTypes, Species, Taxonomy
-export AbstractMetacommunity, Metacommunity
-export getabundance, getweight, getpartition, gettypes
-export getnames, getscnames, gettypenames
+export gettypes, getpartition
 export counttypes, countsubcommunities
-export getsimilarity, getordinariness!, getmetaordinariness!, getordinariness
+export gettypenames, getsubcommunitynames, getnames
+export getabundance, getmetaabundance, getweight
+export getordinariness!, getmetaordinariness!
+export calcabundance, calcsimilarity, calcordinariness
+
+include("Metacommunity.jl")
+export Subcommunities, Onecommunity
+export GeneralTypes, UniqueTypes, Species, Taxonomy
+export Metacommunity
 export inddiv, subdiv, metadiv
 
 include("EffectiveNumbers.jl")
@@ -38,7 +58,6 @@ export qD, qDZ
 include("DiversityMeasure.jl")
 export DiversityLevel
 export individualDiversity, subcommunityDiversity, metacommunityDiversity
-
 export DiversityMeasure, PowerMeanMeasure, RelativeEntropyMeasure
 export RawAlpha, NormalisedAlpha
 export RawBeta, NormalisedBeta, RawRho, NormalisedRho
