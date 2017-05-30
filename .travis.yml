@@ -26,7 +26,7 @@ before_install:
   # faster than using homebrew/science tap
   # but no permalink to release download
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://cran.rstudio.com/bin/macosx/ -r --level=1 --accept-regex "R-[0-9.]*.pkg" -nd; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then for file in R-*.pkg; sudo installer -pkg $file -target /; break; done; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then for file in R-*.pkg; do sudo installer -pkg $file -target /; break; done; fi
 
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
