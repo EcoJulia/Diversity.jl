@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -15,7 +15,7 @@
       
         <link rel="shortcut icon" href="../assets/images/favicon.png">
       
-      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.5.5">
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.6.4">
     
     
       
@@ -23,10 +23,10 @@
       
     
     
-      <script src="../assets/javascripts/modernizr-56ade86843.js"></script>
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application-b1a1975878.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-e2807e330f.css">
       
     
     
@@ -93,7 +93,7 @@
           <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
           
 <div class="md-search" data-md-component="search">
-  <div class="md-search__overlay"></div>
+  <label class="md-search__overlay" for="search"></label>
   <div class="md-search__inner">
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
@@ -339,25 +339,25 @@
 <p><a id='Usage-1'></a></p>
 <h4 id="usage">Usage</h4>
 <p>Accessing the main functionality in the package is simple:</p>
-<div class="codehilite"><pre><span></span><span class="gp">julia&gt;</span> <span class="k">using</span> <span class="n">Diversity</span><span class="o">.</span><span class="n">Jost</span>
+<div class="codehilite"><pre><span></span>julia&gt; using Diversity.Jost
 
-<span class="gp">julia&gt;</span> <span class="n">ecosystem</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span>
+julia&gt; ecosystem = [2 2 0; 0 2 2]&#39;;
 
-<span class="gp">julia&gt;</span> <span class="n">ecosystem</span> <span class="o">/=</span> <span class="n">sum</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">);</span>
+julia&gt; ecosystem /= sum(ecosystem);
 
-<span class="gp">julia&gt;</span> <span class="n">diversities</span> <span class="o">=</span> <span class="n">jostbeta</span><span class="p">(</span><span class="n">ecosystem</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="go">3×7 DataFrames.DataFrame</span>
-<span class="go">│ Row │ measure    │ q │ type_level │ type_name │ partition_level │</span>
-<span class="go">├─────┼────────────┼───┼────────────┼───────────┼─────────────────┤</span>
-<span class="go">│ 1   │ &quot;JostBeta&quot; │ 0 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
-<span class="go">│ 2   │ &quot;JostBeta&quot; │ 1 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
-<span class="go">│ 3   │ &quot;JostBeta&quot; │ 2 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │</span>
+julia&gt; diversities = jostbeta(ecosystem, [0, 1, 2])
+3×7 DataFrames.DataFrame
+│ Row │ measure    │ q │ type_level │ type_name │ partition_level │
+├─────┼────────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ &quot;JostBeta&quot; │ 0 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │
+│ 2   │ &quot;JostBeta&quot; │ 1 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │
+│ 3   │ &quot;JostBeta&quot; │ 2 │ &quot;types&quot;    │ &quot;&quot;        │ &quot;metacommunity&quot; │
 
-<span class="go">│ Row │ partition_name │ diversity │</span>
-<span class="go">├─────┼────────────────┼───────────┤</span>
-<span class="go">│ 1   │ &quot;&quot;             │ 1.5       │</span>
-<span class="go">│ 2   │ &quot;&quot;             │ 1.41421   │</span>
-<span class="go">│ 3   │ &quot;&quot;             │ 1.33333   │</span>
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ &quot;&quot;             │ 1.5       │
+│ 2   │ &quot;&quot;             │ 1.41421   │
+│ 3   │ &quot;&quot;             │ 1.33333   │
 </pre></div>
 
 
@@ -367,7 +367,7 @@
 <p><a id='Diversity.Jost' href='#Diversity.Jost'>#</a>
 <strong><code>Diversity.Jost</code></strong> &mdash; <em>Module</em>.</p>
 <p>Lou Jost's <a href="http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x">diversity</a> <a href="http://www.esajournals.org/doi/abs/10.1890/06-1736.1">measures</a> are found in the <strong>Diversity.Jost</strong> module.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/a0e57369ea7ae1ee79405694e1c0a2b273758316/src/Diversity.jl#L306-L311' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/fe4542db4eacc84e0c94e2f8e09d1d9ba709e8a8/src/Diversity.jl#L306-L311' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Jost.jostalpha-Tuple{AbstractArray{T,2},Any}' href='#Diversity.Jost.jostalpha-Tuple{AbstractArray{T,2},Any}'>#</a>
 <strong><code>Diversity.Jost.jostalpha</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>jostalpha(proportions::AbstractMatrix, qs)
@@ -384,7 +384,7 @@
 <ul>
 <li>DataFrame of diversities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/a0e57369ea7ae1ee79405694e1c0a2b273758316/src/Jost.jl#L3-L22' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/fe4542db4eacc84e0c94e2f8e09d1d9ba709e8a8/src/Jost.jl#L3-L22' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Jost.jostbeta-Tuple{AbstractArray{T,2},Any}' href='#Diversity.Jost.jostbeta-Tuple{AbstractArray{T,2},Any}'>#</a>
 <strong><code>Diversity.Jost.jostbeta</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>jostbeta(proportions::AbstractMatrix, qs)
@@ -401,7 +401,7 @@
 <ul>
 <li>DataFrame of diversities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/a0e57369ea7ae1ee79405694e1c0a2b273758316/src/Jost.jl#L31-L50' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/fe4542db4eacc84e0c94e2f8e09d1d9ba709e8a8/src/Jost.jl#L31-L50' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="../ecology/#Diversity.Ecology"><code>Diversity.Ecology</code></a></li>
@@ -521,7 +521,7 @@
       
     </div>
     
-      <script src="../assets/javascripts/application-ad1183cb07.js"></script>
+      <script src="../assets/javascripts/application-06a3e72efd.js"></script>
       <script>app.initialize({url:{base:".."}})</script>
       
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
