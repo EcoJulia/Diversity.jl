@@ -25,8 +25,8 @@ end
 
 Returns number of types in an AbstractTypes object, t.
 """
-function counttypes(t::AbstractTypes)
-    return _counttypes(t)
+function counttypes(t::AbstractTypes, input::Bool = false)
+    return _counttypes(t, input)
 end
 
 """
@@ -43,8 +43,8 @@ end
 
 Returns the names of the types of the AbstractTypes.
 """
-function getnames(t::AbstractTypes)
-    return _getnames(t)
+function getnames(t::AbstractTypes, input::Bool = false)
+    return _getnames(t, input)
 end
 
 """
@@ -61,8 +61,8 @@ end
 
 Returns the names of the types of the AbstractMetacommunity.
 """
-function gettypenames(m::AbstractMetacommunity)
-    return getnames(gettypes(m))
+function gettypenames(m::AbstractMetacommunity, input::Bool = false)
+    return getnames(gettypes(m, input))
 end
 
 """
@@ -79,8 +79,8 @@ end
 
 Returns the abundances array of the metacommunity.
 """
-function getabundance(m::AbstractMetacommunity)
-    return _getabundance(m)
+function getabundance(m::AbstractMetacommunity, input::Bool = false)
+    return _getabundance(m, input)
 end
 
 """
@@ -88,8 +88,8 @@ end
 
 Returns the metacommunity abundances of the metacommunity.
 """
-function getmetaabundance(m::AbstractMetacommunity)
-    return _getmetaabundance(m)
+function getmetaabundance(m::AbstractMetacommunity, input::Bool = false)
+    return _getmetaabundance(m, input)
 end
 
 """

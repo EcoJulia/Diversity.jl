@@ -79,11 +79,11 @@ immutable UniqueTypes <: AbstractTypes
     end
 end
 
-function _counttypes(ut::UniqueTypes)
+function _counttypes(ut::UniqueTypes, ::Bool)
     return ut.num
 end
 
-function _getnames(ut::UniqueTypes)
+function _getnames(ut::UniqueTypes, ::Bool)
     return ut.names
 end
     
@@ -137,11 +137,11 @@ function floattypes{FP}(::Taxonomy{FP})
     return Set([FP])
 end
 
-function _counttypes(tax::Taxonomy)
+function _counttypes(tax::Taxonomy, ::Bool)
     return nrow(tax.speciesinfo)
 end
 
-function _getnames(tax::Taxonomy)
+function _getnames(tax::Taxonomy, ::Bool)
     return tax.speciesinfo[tax.typelabel]
 end
 
@@ -221,11 +221,11 @@ function floattypes{FP, M}(::GeneralTypes{FP, M})
     return Set([FP])
 end
 
-function _counttypes(gt::GeneralTypes)
+function _counttypes(gt::GeneralTypes, ::Bool)
     return size(gt.z, 1)
 end
 
-function _getnames(gt::GeneralTypes)
+function _getnames(gt::GeneralTypes, ::Bool)
     return gt.names
 end
 
@@ -265,8 +265,8 @@ Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::Abstrac
 
 """
 type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
-    abundances::A
-    realabundances::A
+    sourceabundances::A
+    internalabundances::A
     types::Sim
     partition::Part
     ordinariness::Nullable{A}
@@ -277,8 +277,8 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
         Part <: AbstractPartition}(abundances::A, types::Sim, part::Part)
         mcmatch(abundances, types, part) ||
             throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        realabundances = calcabundance(types, abundances)
-        new{FP, A, Sim, Part}(abundances, realabundances, types, part, Nullable{A}())
+        internalabundances = calcabundance(types, abundances)
+        new{FP, A, Sim, Part}(abundances, internalabundances, types, part, Nullable{A}())
     end
 
     function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
@@ -288,8 +288,8 @@ type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
                                    meta::Metacommunity{FP, A, Sim, Part})
         mcmatch(abundances, meta.types, meta.part) ||
             throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        realabundances = calcabundance(types, abundances)
-        new{FP, A, Sim, Part}(abundances, realabundances, meta.types,
+        internalabundances = calcabundance(types, abundances)
+        new{FP, A, Sim, Part}(abundances, internalabundances, meta.types,
                               meta.part, meta.ordinariness)
     end
 end
@@ -378,13 +378,14 @@ function _getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
     return meta.partition
 end
 
-function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
-    return meta.realabundances
+function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part},
+                                         input::Bool)
+    return input ? meta.sourceabundances : meta.internalabundances
 end
 
 function _getordinariness!(meta::Metacommunity)
     if isnull(meta.ordinariness)
-        meta.ordinariness = _calcordinariness(meta.types, meta.abundances)
+        meta.ordinariness = _calcordinariness(meta.types, meta.sourceabundances)
     end
     get(meta.ordinariness)
 end

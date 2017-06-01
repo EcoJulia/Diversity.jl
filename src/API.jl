@@ -73,8 +73,8 @@ implemented by each AbstractTypes subtype.
 """
 function _counttypes end
 
-function _counttypes(t::AbstractTypes)
-    return length(_getnames(t))
+function _counttypes(t::AbstractTypes, input::Bool)
+    return length(_getnames(t, input))
 end
 
 """
@@ -113,8 +113,8 @@ Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-function _getmetaabundance(m::AbstractMetacommunity)
-    return sumoversubcommunities(m, _getabundance(m))
+function _getmetaabundance(m::AbstractMetacommunity, input::Bool = false)
+    return sumoversubcommunities(m, _getabundance(m, input))
 end
 
 """
@@ -125,7 +125,7 @@ implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
 function _getweight(m::AbstractMetacommunity)
-    return sumovertypes(m, _getabundance(m))
+    return sumovertypes(m, _getabundance(m, false))
 end
 
 """
@@ -226,7 +226,7 @@ function mcmatch end
 function mcmatch(m::AbstractMatrix, sim::AbstractTypes, part::AbstractPartition)
     realm = _calcabundance(sim, m)
     return typematch(realm, sim, part) &&
-    _counttypes(sim) == size(realm, 1) &&
+    _counttypes(sim, false) == size(realm, 1) &&
     _countsubcommunities(part) == size(realm, 2) &&
     sum(realm) ≈ 1
 end
@@ -234,7 +234,7 @@ end
 function mcmatch(v::AbstractVector, sim::AbstractTypes, part::AbstractPartition)
     realv = _calcabundance(sim, v)
     return typematch(realv, sim, part) &&
-    _counttypes(sim) == size(realv, 1) &&
+    _counttypes(sim, false) == size(realv, 1) &&
     _countsubcommunities(part) == 1 &&
     sum(realv) ≈ 1
 end

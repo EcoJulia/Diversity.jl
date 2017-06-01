@@ -55,16 +55,12 @@ end
 
 Phylogeny{Tree <: AbstractTree}(tree::Tree) = Phylogeny{Tree}(tree)
 
-function getphylonames(phy::Phylogeny)
-    return phy.leafnames
+function _getnames(phy::Phylogeny, input::Bool)
+    return input ? phy.leafnames : phy.ancestralnames
 end
 
-function _getnames(phy::Phylogeny)
-    return phy.ancestralnames
-end
-
-function _counttypes(phy::Phylogeny)
-    return phy.nancestral
+function _counttypes(phy::Phylogeny, input::Bool)
+    return input ? phy.nleaf : phy.nancestral
 end
 
 function _calcabundance(phy::Phylogeny, abundances::AbstractArray)
