@@ -17,7 +17,7 @@ type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
         leafinfo = Dict{String, Float64}()
         speciesinfo = Dict{String, Tuple{String, String, Float64}}()
         for leaf in leafnames
-            branches = treehistory(tree, leaf)
+            branches = branchhistory(tree, leaf)
             leafinfo["$leaf"] = heighttoroot(tree, leaf)
             for branch in branches
                 name = "$leaf : $branch"
