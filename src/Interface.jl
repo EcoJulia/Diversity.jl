@@ -62,7 +62,7 @@ end
 Returns the names of the types of the AbstractMetacommunity.
 """
 function gettypenames(m::AbstractMetacommunity, input::Bool = false)
-    return getnames(gettypes(m, input))
+    return getnames(_gettypes(m), input)
 end
 
 """

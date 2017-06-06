@@ -1,4 +1,4 @@
-using PhyloTrees
+using Phylo
 importall Diversity.API
 
 type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
@@ -11,14 +11,14 @@ type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
     Zmatrix::Matrix{Float64}
 
     function (::Type{Phylogeny{Tree}}){Tree <: AbstractTree}(tree::Tree)
-        leafnames = PhyloTrees.getleafnames(tree)
+        leafnames = getleafnames(tree)
         nleaf = length(leafnames)
         nleaf > 0 || error("Too few species")
         leafinfo = Dict{String, Float64}()
         speciesinfo = Dict{String, Tuple{String, String, Float64}}()
         for leaf in leafnames
-            branches = branchpath(tree, leaf)
-            leafinfo["$leaf"] = getrootdistance(tree, leaf)
+            branches = treehistory(tree, leaf)
+            leafinfo["$leaf"] = heighttoroot(tree, leaf)
             for branch in branches
                 name = "$leaf : $branch"
                 speciesinfo[name] = tuple("$leaf", "$branch",
