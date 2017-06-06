@@ -3,7 +3,7 @@
 
 # Need to install our version of PhyloTrees for the time-being
 testphylo = true
-if Pkg.installed("Phylo") == nothing
+if !isdir(Pkg.dir("Phylo"))
     Pkg.clone("https://github.com/richardreeve/Phylo.jl.git")
     # And need to reinclude test REQUIRE packages as they get dropped(?)
     Pkg.add("StatsBase")
