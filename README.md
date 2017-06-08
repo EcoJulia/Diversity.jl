@@ -131,6 +131,8 @@ Phylogenetic diversity (described [here][leinster-cobbold-url]) is
 included in the Diversity.Phylogenetics submodule. Documentation for
 these diversity measures can be found
 [here](http://richardreeve.github.io/Diversity.jl/stable/phylogenetics/).
+The phylogenetics code relies on the [Phylo][phylo-url] package to
+generate trees to incorporate into the diversity code.
 
 
 The package also provides some other sub-modules for related measures:
@@ -224,3 +226,5 @@ The online documentation for the latest master (unreleased) branch is
 [rdiversity-url]: https://github.com/boydorr/rdiversity
 
 [leinster-cobbold-url]: http://www.esajournals.org/doi/abs/10.1890/10-2402.1
+
+[phylo-url]: https://github.com/richardreeve/Phylo.jl
