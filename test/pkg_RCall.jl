@@ -17,8 +17,6 @@ Rinstalled = false
 try
     skipR && error("Skipping R testing...")
     using RCall
-    skipRinstall || warn("For now, We need to check out the master branch of Phylo to do our testing")
-    skipRinstall || Pkg.checkout("Phylo") # Need to check out right branch for now
     include(Pkg.dir("Phylo", "src/rcall.jl"))
     Rinstalled = true
 catch
