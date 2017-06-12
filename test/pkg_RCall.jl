@@ -7,9 +7,18 @@ using Diversity.Phylogenetics
 using DataFrames
 using Phylo
 
+# Only run R on macs
+skipR = !is_apple()
+
+# Environment variable to avoid boring R package builds
+skipRinstall = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
+
 Rinstalled = false
 try
+    skipR && error("Skipping R testing...")
     using RCall
+    skipRinstall || warn("For now, We need to check out the master branch of Phylo to do our testing")
+    skipRinstall || Pkg.checkout("Phylo") # Need to check out right branch for now
     include(Pkg.dir("Phylo", "src/rcall.jl"))
     Rinstalled = true
 catch
@@ -20,10 +29,7 @@ if Rinstalled
     # Create a temporary directory to work in
     libdir = mktempdir();
 
-    # Only run R on macs
-    if is_apple()
-        # Environment variable to avoid boring R package builds
-        skipRinstall = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
+    if !skipR
         # Skip the (slow!) R package installation step
         if skipRinstall
             reval("library(ape)");
@@ -38,8 +44,6 @@ if Rinstalled
             rcall(:install_git, "https://github.com/boydorr/rdiversity.git", lib=libdir);
             reval("library(ape, lib.loc=c(\"$libdir\", .libPaths()))");
             reval("library(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))");
-            warn("For now, We need to check out the master branch of Phylo to do our testing")
-            Pkg.checkout("Phylo") # Need to check out right branch for now
         end
 
         # Run diversity comparisons on increasing numbers of types and subcommunities
