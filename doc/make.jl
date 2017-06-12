@@ -1,7 +1,8 @@
 using Documenter
 using Diversity
 
-makedocs(modules = [Diversity, Diversity.Ecology, Diversity.Jost, Diversity.Hill],
+makedocs(modules = [Diversity, Diversity.Phylogenetics,
+                    Diversity.Ecology, Diversity.Jost, Diversity.Hill],
          clean   = false)
 
 deploydocs(deps = Deps.pip("pygments",
@@ -9,5 +10,5 @@ deploydocs(deps = Deps.pip("pygments",
                            "mkdocs-material",
                            "python-markdown-math"),
            repo = "github.com/richardreeve/Diversity.jl.git",
-           julia="0.5",
+           julia="0.6",
            osname="linux")
