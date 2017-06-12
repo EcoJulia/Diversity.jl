@@ -12,9 +12,9 @@ expanded, possibly through interfacing to BioJulia.
 
 This package is in beta now, but under heavy development so we cannot
 guarantee its correctness. However, it is cross-validated against our
-R package [boydorr/rdiversity][rdiversity-url], which is developed
-independently, so please [raise an issue][issues-url] if you find any
-problems.
+R package [boydorr/rdiversity][rdiversity-url],
+which is developed independently, so please
+[raise an issue][issues-url] if you find any problems.
 
 Version 0.3, which has been recently released, has significant
 breaking changes to the standard interface for calculating diversity
@@ -39,7 +39,7 @@ The main package provides basic numbers-equivalent diversity measures
 (described in [Hill, 1973](http://www.jstor.org/stable/1934352)),
 similarity-sensitive diversity measures (generalised from Hill, and
 described in
-[Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
+[Leinster and Cobbold, 2012][leinster-cobbold-url]),
 and related alpha, beta and gamma diversity measures at the level of
 the metacommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
@@ -109,7 +109,7 @@ A complete list of these functions is shown below:
 * `norm_sub_rho()` : representativeness of individual subcommunities
 * `raw_sub_beta()` : distinctiveness of individual subcommunities
 * `norm_sub_beta()` : per-subcommunity estimate of effective number of distinct subcommunities
-* `raw_sub_gamma()` : contribution per individual in a subcommunity toward metacommunity diversity
+* `sub_gamma()` : contribution per individual in a subcommunity toward metacommunity diversity
 * `raw_meta_alpha()` : naive-community metacommunity diversity
 * `norm_meta_alpha()` : average similarity-sensitive diversity of subcommunities
 * `raw_meta_rho()` : average redundancy of subcommunities
@@ -117,6 +117,40 @@ A complete list of these functions is shown below:
 * `raw_meta_beta()` : average distinctiveness of subcommunities
 * `norm_meta_beta()` : effective number of distinct subcommunities
 * `meta_gamma()` : metacommunity similarity-sensitive diversity
+
+#### Diversity.Phylogenetics
+
+Phylogenetic diversity (described [here][leinster-cobbold-url]) is
+included in the Diversity.Phylogenetics submodule. Documentation for
+these diversity measures can be found
+[here](http://richardreeve.github.io/Diversity.jl/latest/phylogenetics/).
+The phylogenetics code relies on the [Phylo][phylo-url] package to
+generate trees to incorporate into the diversity code:
+
+```julia
+julia> using Diversity, Phylo, Diversity.Phylogenetics
+
+julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
+
+julia> nt = rand(Nonultrametric(4))
+NamedTree phylogenetic tree with 7 nodes and 6 branches
+Leaf names:
+String["tip 1", "tip 2", "tip 3", "tip 4"]
+
+julia> metaphylo = Metacommunity(communities, PhyloTypes(nt));
+
+julia> raw_meta_rho(metaphylo, [1, 2])
+2×7 DataFrames.DataFrame
+│ Row │ measure  │ q │ type_level │ type_name │ partition_level │
+├─────┼──────────┼───┼────────────┼───────────┼─────────────────┤
+│ 1   │ "RawRho" │ 1 │ "types"    │ ""        │ "metacommunity" │
+│ 2   │ "RawRho" │ 2 │ "types"    │ ""        │ "metacommunity" │
+
+│ Row │ partition_name │ diversity │
+├─────┼────────────────┼───────────┤
+│ 1   │ ""             │ 1.66187   │
+│ 2   │ ""             │ 1.51391   │
+```
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://richardreeve.github.io/Diversity.jl/latest
@@ -146,3 +180,7 @@ A complete list of these functions is shown below:
 [paper-url]: http://arxiv.org/abs/1404.6520
 
 [rdiversity-url]: https://github.com/boydorr/rdiversity
+
+[leinster-cobbold-url]: http://www.esajournals.org/doi/abs/10.1890/10-2402.1
+
+[phylo-url]: https://github.com/richardreeve/Phylo.jl
