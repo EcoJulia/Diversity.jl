@@ -15,7 +15,7 @@ using Diversity.Phylogenetics
     r = addnode!(nt)
     addbranch!(nt, r, "Human", 2.0)
     addbranch!(nt, r, n, 1.0)
-    ph = Phylogeny(nt)
+    ph = PhyloTypes(nt)
     leafnames = getnames(ph, true)
     order = mapreduce(name -> find(species .== name), append!, leafnames)
     @test species[order] == getnames(ph, true)

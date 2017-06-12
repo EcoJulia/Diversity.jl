@@ -176,7 +176,7 @@ if Rinstalled
                 end
                 pops /= sum(pops)
                 qs = sort([rand(7)*10..., 0, 1, Inf])
-                meta = Metacommunity(pops, Phylogeny(tree))
+                meta = Metacommunity(pops, PhyloTypes(tree))
                 diversities = Dict(:raw_alpha  => α(meta),
                                    :norm_alpha => ᾱ(meta),
                                    :raw_beta   => β(meta),
@@ -209,7 +209,7 @@ if Rinstalled
                 # Check they match when there's an empty type
                 pops[rand(1:types), :] = 0
                 pops /= sum(pops)
-                meta = Metacommunity(pops, Phylogeny(tree))
+                meta = Metacommunity(pops, PhyloTypes(tree))
                 diversities = Dict(:raw_alpha  => α(meta),
                                    :norm_alpha => ᾱ(meta),
                                    :raw_beta   => β(meta),
@@ -236,7 +236,7 @@ if Rinstalled
                 # Check they match when there's an empty subcommunity too
                 pops[:, rand(1:sc)] = 0
                 pops /= sum(pops)
-                meta = Metacommunity(pops, Phylogeny(tree))
+                meta = Metacommunity(pops, PhyloTypes(tree))
                 diversities = Dict(:raw_alpha  => α(meta),
                                    :norm_alpha => ᾱ(meta),
                                    :raw_beta   => β(meta),

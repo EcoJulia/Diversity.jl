@@ -88,7 +88,7 @@ export getName, getASCIIName, getFullName
 module Phylogenetics
 
 include("Phylogenetics.jl")
-export Phylogeny
+export PhyloTypes
 
 end
 

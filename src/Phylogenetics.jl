@@ -1,7 +1,7 @@
 using Phylo
 importall Diversity.API
 
-type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
+type PhyloTypes{Tree <: AbstractTree} <: AbstractTypes
     tree::Tree
     nleaf::Int64
     nancestral::Int64
@@ -10,7 +10,7 @@ type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
     ancestralmatrix::Matrix{Float64}
     Zmatrix::Matrix{Float64}
 
-    function (::Type{Phylogeny{Tree}}){Tree <: AbstractTree}(tree::Tree)
+    function (::Type{PhyloTypes{Tree}}){Tree <: AbstractTree}(tree::Tree)
         leafnames = getleafnames(tree)
         nleaf = length(leafnames)
         nleaf > 0 || error("Too few species")
@@ -53,27 +53,27 @@ type Phylogeny{Tree <: AbstractTree} <: AbstractTypes
     end
 end
 
-Phylogeny{Tree <: AbstractTree}(tree::Tree) = Phylogeny{Tree}(tree)
+PhyloTypes{Tree <: AbstractTree}(tree::Tree) = PhyloTypes{Tree}(tree)
 
-function _getnames(phy::Phylogeny, input::Bool)
+function _getnames(phy::PhyloTypes, input::Bool)
     return input ? phy.leafnames : phy.ancestralnames
 end
 
-function _counttypes(phy::Phylogeny, input::Bool)
+function _counttypes(phy::PhyloTypes, input::Bool)
     return input ? phy.nleaf : phy.nancestral
 end
 
-function _calcabundance(phy::Phylogeny, abundances::AbstractArray)
+function _calcabundance(phy::PhyloTypes, abundances::AbstractArray)
     asabundances = phy.ancestralmatrix * abundances
     asabundances /= sum(asabundances)
     return asabundances
 end
 
-function _calcsimilarity(phy::Phylogeny, abundances::AbstractArray)
+function _calcsimilarity(phy::PhyloTypes, abundances::AbstractArray)
     asabundances = phy.ancestralmatrix * abundances
     return phy.Zmatrix * sum(asabundances)
 end
 
-function _calcordinariness(phy::Phylogeny, abundances::AbstractArray)
+function _calcordinariness(phy::PhyloTypes, abundances::AbstractArray)
     return phy.Zmatrix * phy.ancestralmatrix * abundances
 end
