@@ -38,8 +38,8 @@ if Rinstalled
             rcall(:install_git, "https://github.com/boydorr/rdiversity.git", lib=libdir);
             reval("library(ape, lib.loc=c(\"$libdir\", .libPaths()))");
             reval("library(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))");
-            warn("For now, We need to check out the R branch of Phylo to do our testing")
-            Pkg.checkout("Phylo", "R") # Need to check out right branch for now
+            warn("For now, We need to check out the master branch of Phylo to do our testing")
+            Pkg.checkout("Phylo") # Need to check out right branch for now
         end
 
         # Run diversity comparisons on increasing numbers of types and subcommunities
