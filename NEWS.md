@@ -1,0 +1,10 @@
+- v0.4.0
+  - Add in phylogenetic diversity
+  - Create a formal API (in `API.jl`) for extending to new types of diversity
+  - Extract interface into `Interface.jl`
+- v0.3.1
+  - Include validation against boydorr/rdiversity R package
+- v0.3.0
+  - Update input interface and deprecate old format
+  - Update output format to use DataFrames
+  - Remove deprecations for Julia v0.6 and drop support for v0.4
