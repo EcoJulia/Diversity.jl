@@ -30,7 +30,7 @@ module API
 include("API.jl")
 export AbstractTypes, AbstractPartition, AbstractMetacommunity
 export _gettypes, _getpartition
-export _counttypes, _countsubcommunities, _getnames
+export _counttypes, _countsubcommunities, _gettypenames, _getsubcommunitynames
 export _getabundance, _getmetaabundance, _getweight
 export _getordinariness!, _getmetaordinariness!
 export _calcabundance, _calcsimilarity, _calcordinariness
@@ -41,7 +41,7 @@ end
 include("Interface.jl")
 export gettypes, getpartition
 export counttypes, countsubcommunities
-export gettypenames, getsubcommunitynames, getnames
+export gettypenames, getsubcommunitynames
 export getabundance, getmetaabundance, getweight
 export getordinariness!, getmetaordinariness!
 export calcabundance, calcsimilarity, calcordinariness

@@ -21,57 +21,75 @@ function getpartition(m::AbstractMetacommunity)
 end
 
 """
-    counttypes(t::AbstractTypes)
+    counttypes(m::AbstractMetacommunity[, input::Bool = false])
+    counttypes(t::AbstractTypes[, input::Bool = false])
 
-Returns number of types in an AbstractTypes object, t.
+Returns number of types in an `AbstractTypes` object or the
+`AbstractMetacommunity` containing it. `input` determines whether to
+count the number of input or output types, which varies, for instance,
+when the types are determined by a phylogeny.
 """
+function counttypes end
+
+function counttypes(m::AbstractMetacommunity, input::Bool = false)
+    return _counttypes(_gettypes(m), input)
+end
+
 function counttypes(t::AbstractTypes, input::Bool = false)
     return _counttypes(t, input)
 end
 
 """
+    countsubcommunities(m::AbstractMetacommunity)
     countsubcommunities(p::AbstractPartition)
 
-Returns number of subcommunities in a partition, p.
+Returns number of subcommunities in an `AbstractPartition` object or the
+`AbstractMetacommunity` containing it.
 """
+function countsubcommunities end
+
+function countsubcommunities(m::AbstractMetacommunity)
+    return _countsubcommunities(_getsubcommunities(m))
+end
+
 function countsubcommunities(p::AbstractPartition)
     return _countsubcommunities(p)
 end
 
 """
-    getnames(t::AbstractTypes)
+    gettypenames(m::AbstractMetacommunity[, input::Bool = false])
+    gettypenames(t::AbstractTypes[, input::Bool = false])
 
-Returns the names of the types of the AbstractTypes.
+Returns the names of the types of the `AbstractTypes` object or the
+`AbstractMetacommunity` containing it. `input` determines whether to
+count the number of input or output types, which varies, for instance,
+when the types are determined by a phylogeny.
 """
-function getnames(t::AbstractTypes, input::Bool = false)
-    return _getnames(t, input)
-end
+function gettypenames end
 
-"""
-    getnames(p::AbstractPartition)
-
-Returns the names of the subcommunities of the AbstractPartition.
-"""
-function getnames(p::AbstractPartition)
-    return _getnames(p)
-end
-
-"""
-    gettypenames(m::AbstractMetacommunity)
-
-Returns the names of the types of the AbstractMetacommunity.
-"""
 function gettypenames(m::AbstractMetacommunity, input::Bool = false)
-    return getnames(_gettypes(m), input)
+    return _gettypenames(_gettypes(m), input)
+end
+
+function gettypenames(t::AbstractTypes, input::Bool = false)
+    return _gettypenames(t, input)
 end
 
 """
     getsubcommunitynames(m::AbstractMetacommunity)
+    getsubcommunitynames(p::AbstractPartition)
 
-Returns the names of the subcommunities of the AbstractMetacommunity.
+Returns the names of the subcommunities in an `AbstractPartition` object or the
+`AbstractMetacommunity` containing it.
 """
+function getsubcommunitynames end
+
 function getsubcommunitynames(m::AbstractMetacommunity)
-    return getnames(getpartition(m))
+    return _getsubcommunitynames(_getpartition(m))
+end
+
+function getsubcommunitynames(p::AbstractPartition)
+    return _getsubcommunitynames(p)
 end
 
 """

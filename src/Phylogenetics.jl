@@ -55,7 +55,7 @@ end
 
 PhyloTypes{Tree <: AbstractTree}(tree::Tree) = PhyloTypes{Tree}(tree)
 
-function _getnames(phy::PhyloTypes, input::Bool)
+function _gettypenames(phy::PhyloTypes, input::Bool)
     return input ? phy.leafnames : phy.ancestralnames
 end
 

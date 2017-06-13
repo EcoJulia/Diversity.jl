@@ -29,7 +29,7 @@ function _countsubcommunities(sub::Subcommunities)
     return sub.num
 end
 
-function _getnames(sc::Subcommunities)
+function _getsubcommunitynames(sc::Subcommunities)
     return sc.names
 end
 
@@ -50,7 +50,7 @@ function _countsubcommunities(::Onecommunity)
     return 1
 end
 
-function _getnames(oc::Onecommunity)
+function _getsubcommunitynames(oc::Onecommunity)
     return oc.name
 end
 
@@ -83,7 +83,7 @@ function _counttypes(ut::UniqueTypes, ::Bool)
     return ut.num
 end
 
-function _getnames(ut::UniqueTypes, ::Bool)
+function _gettypenames(ut::UniqueTypes, ::Bool)
     return ut.names
 end
     
@@ -141,7 +141,7 @@ function _counttypes(tax::Taxonomy, ::Bool)
     return nrow(tax.speciesinfo)
 end
 
-function _getnames(tax::Taxonomy, ::Bool)
+function _gettypenames(tax::Taxonomy, ::Bool)
     return tax.speciesinfo[tax.typelabel]
 end
 
@@ -225,7 +225,7 @@ function _counttypes(gt::GeneralTypes, ::Bool)
     return size(gt.z, 1)
 end
 
-function _getnames(gt::GeneralTypes, ::Bool)
+function _gettypenames(gt::GeneralTypes, ::Bool)
     return gt.names
 end
 

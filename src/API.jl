@@ -66,15 +66,17 @@ implemented by each AbstractMetacommunity subtype.
 function _getpartition end
 
 """
-    _counttypes(::AbstractTypes)
+    _counttypes(::AbstractTypes, input::Bool)
 
 Returns number of types in an AbstractTypes object, t. May be
-implemented by each AbstractTypes subtype.
+implemented by each AbstractTypes subtype. `input` determines whether
+to count the number of input or output types, which varies, for
+instance, when the types are determined by a phylogeny.
 """
 function _counttypes end
 
 function _counttypes(t::AbstractTypes, input::Bool)
-    return length(_getnames(t, input))
+    return length(_gettypenames(t, input))
 end
 
 """
@@ -85,18 +87,26 @@ by each AbstractPartition subtype.
 """
 function _countsubcommunities end
 function _countsubcommunities(p::AbstractPartition)
-    return length(_getnames(p))
+    return length(_gettypenames(p))
 end
 
 """
-    _getnames(t::AbstractTypes)
-    _getnames(p::AbstractPartition)
+    _gettypenames(t::AbstractTypes, input::Bool)
 
-Returns the names of the types in the AbstractTypes or the names of
-subcommunities in the AbstractPartition. Must be implemented by each
-AbstractTypes and AbstractPartition subtype.
+Returns the names of the types in an AbstractTypes object. Must be
+implemented by each AbstractTypes subtype. `input` determines whether
+to count the number of input or output types, which varies, for
+instance, when the types are determined by a phylogeny.
 """
-function _getnames end
+function _gettypenames end
+
+"""
+    _getsubcommunitynames(p::AbstractPartition)
+
+Returns the names of the subcommunities in the AbstractPartition
+object. Must be implemented by each AbstractPartition subtype.
+"""
+function _getsubcommunitynames end
 
 """
     _getabundance(m::AbstractMetacommunity)

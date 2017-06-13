@@ -16,9 +16,9 @@ using Diversity.Phylogenetics
     addbranch!(nt, r, "Human", 2.0)
     addbranch!(nt, r, n, 1.0)
     ph = PhyloTypes(nt)
-    leafnames = getnames(ph, true)
+    leafnames = gettypenames(ph, true)
     order = mapreduce(name -> find(species .== name), append!, leafnames)
-    @test species[order] == getnames(ph, true)
+    @test species[order] == gettypenames(ph, true)
     metaphylo = Metacommunity(abund[order], ph)
     @test gettypenames(metaphylo, true) == species[order]
     @test getabundance(metaphylo, true) ≈ abund[order]

@@ -361,7 +361,8 @@ function RawAlpha(meta::AbstractMetacommunity)
     types = gettypes(meta)
     part = getpartition(meta)
     RawAlpha{eltype(ab), typeof(ab)}(ab, w, getordinariness!(meta) .^ -1,
-                                     getnames(types), getnames(part))
+                                     gettypenames(types),
+                                     getsubcommunitynames(part))
     
 end
 
@@ -396,7 +397,8 @@ function NormalisedAlpha(meta::AbstractMetacommunity)
     part = getpartition(meta)
     NormalisedAlpha{eltype(ab), typeof(ab)}(ab, w,
                                             ws ./ getordinariness!(meta),
-                                            getnames(types), getnames(part))
+                                            gettypenames(types),
+                                            getsubcommunitynames(part))
 end
 
 getName(::NormalisedAlpha) = "ᾱ"
@@ -431,7 +433,8 @@ function RawBeta(meta::AbstractMetacommunity)
     RawBeta{eltype(ab), typeof(ab)}(ab, w,
                                     getordinariness!(meta) ./
                                     getmetaordinariness!(meta),
-                                    getnames(types), getnames(part))
+                                    gettypenames(types),
+                                    getsubcommunitynames(part))
 end
 
 const Distinctiveness = RawBeta
@@ -469,7 +472,8 @@ function NormalisedBeta(meta::AbstractMetacommunity)
     NormalisedBeta{eltype(ab), typeof(ab)}(ab, w,
                                            getordinariness!(meta) ./
                                            (getmetaordinariness!(meta) .* ws),
-                                           getnames(types), getnames(part))
+                                           gettypenames(types),
+                                           getsubcommunitynames(part))
 end
 
 getName(::NormalisedBeta) = "β̄"
@@ -504,7 +508,8 @@ function RawRho(meta::AbstractMetacommunity)
     RawRho{eltype(ab), typeof(ab)}(ab, w,
                                    getmetaordinariness!(meta) ./
                                    getordinariness!(meta),
-                                   getnames(types), getnames(part))
+                                   gettypenames(types),
+                                   getsubcommunitynames(part))
 end
 
 const Redundancy = RawRho
@@ -542,7 +547,8 @@ function NormalisedRho(meta::AbstractMetacommunity)
     NormalisedRho{eltype(ab), typeof(ab)}(ab, w,
                                           (getmetaordinariness!(meta) .* ws) ./
                                           getordinariness!(meta),
-                                          getnames(types), getnames(part))
+                                          gettypenames(types),
+                                          getsubcommunitynames(part))
 end
 
 const Representativeness = NormalisedRho
@@ -579,7 +585,8 @@ function Gamma(meta::AbstractMetacommunity)
     Gamma{eltype(ab), typeof(ab)}(ab, w,
                                   ones(eltype(ws), size(ws)) ./
                                   getmetaordinariness!(meta),
-                                  getnames(types), getnames(part))
+                                  gettypenames(types),
+                                  getsubcommunitynames(part))
 end
 
 getName(::Gamma) = "γ"
