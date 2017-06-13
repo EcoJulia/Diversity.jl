@@ -17,7 +17,9 @@ Rinstalled = false
 try
     skipR && error("Skipping R testing...")
     using RCall
-    include(Pkg.dir("Phylo", "src/rcall.jl"))
+    # Pkg.dir("Phylo") doesn't guarantee to give the correct directory for the package,
+    # but nor does anything else insanely! Skips cross-validation on failure.
+    include(joinpath(Pkg.dir("Phylo"), "src", "rcall.jl"))
     Rinstalled = true
 catch
     warn("R or appropriate Phylo package not installed, skipping R cross-validation.")
