@@ -36,10 +36,7 @@ if Rinstalled
             reval("library(rdiversity)");
         else
             rcall(Symbol(".libPaths"), libdir);
-            rcall(Symbol("install.packages"),
-                  ["devtools", "ggplot2", "ape", "plyr",
-                   "phangorn", "tidyr", "tibble", "phytools", "reshape2", "ggthemes"],
-                  lib=libdir, repos="http://cran.r-project.org", type="binary");
+            reval("install.packages(c(\"devtools\", \"ggplot2\", \"ape\", \"plyr\", \"phangorn\", \"tidyr\", \"tibble\", \"phytools\", \"reshape2\", \"ggthemes\"), lib=\"$libdir\", repos=\"http://cran.r-project.org\", type=\"binary\")");
             reval("library(devtools, lib.loc=c(\"$libdir\", .libPaths()))");
             rcall(:install_git, "https://github.com/boydorr/rdiversity.git", lib=libdir);
             reval("library(ape, lib.loc=c(\"$libdir\", .libPaths()))");
