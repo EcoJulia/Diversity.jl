@@ -37,7 +37,7 @@ if Rinstalled
         else
             rcall(Symbol(".libPaths"), libdir);
             rcall(Symbol("install.packages"),
-                  ["devtools", "ggplot2", "ape",
+                  ["devtools", "ggplot2", "ape", "plyr",
                    "phangorn", "tidyr", "tibble", "phytools", "reshape2", "ggthemes"],
                   lib=libdir, repos="http://cran.r-project.org");
             reval("library(devtools, lib.loc=c(\"$libdir\", .libPaths()))");
