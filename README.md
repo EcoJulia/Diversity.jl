@@ -17,11 +17,11 @@ related and older diversity measures through sub-modules. Currently
 these are all ecological diversity measures, but this will be
 expanded, possibly through interfacing to BioJulia.
 
-This package is in beta now, but under heavy development so we cannot
-guarantee its correctness. However, it is cross-validated against our
-R package [boydorr/rdiversity][rdiversity-url],
-which is developed independently, so please
-[raise an issue][issues-url] if you find any problems.
+This package is in beta now, but is cross-validated against our R
+package [boydorr/rdiversity][rdiversity-url], which is developed
+independently, so please [raise an issue][issues-url] if you find any
+problems. The phylogenetics submodule in particular is currently under
+heavy development.
 
 Version 0.3, which has been recently released, has significant
 breaking changes to the standard interface for calculating diversity
