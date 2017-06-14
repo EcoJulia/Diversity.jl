@@ -7,8 +7,8 @@ using Diversity.Phylogenetics
 using DataFrames
 using Phylo
 
-# Only run R on macs
-skipR = !is_apple()
+# Only run R on unix (macs and linux)
+skipR = !is_unix()
 
 # Environment variable to avoid boring R package builds
 skipRinstall = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
