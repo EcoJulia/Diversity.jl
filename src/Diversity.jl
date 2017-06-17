@@ -46,6 +46,9 @@ export getabundance, getmetaabundance, getweight
 export getordinariness!, getmetaordinariness!
 export calcabundance, calcsimilarity, calcordinariness
 
+include("Iterators.jl")
+export TypeIterator, SubcommunityIterator
+
 include("Metacommunity.jl")
 export Subcommunities, Onecommunity
 export GeneralTypes, UniqueTypes, Species, Taxonomy

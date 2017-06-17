@@ -32,18 +32,6 @@ individuals within it.
     Sim <: AbstractTypes,
     Part <: AbstractPartition} end
 
-import Base.length
-
-# length of an AbstractTypes is the number of types
-function length(t::AbstractTypes)
-    return _counttypes(t)
-end
-
-# length of an AbstractPartition is the number of subcommunities
-function length(p::AbstractPartition)
-    return _countsubcommunities(p)
-end
-
 """
     _gettypes(::AbstractMetacommunity)
 
