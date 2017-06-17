@@ -49,7 +49,7 @@ Returns number of subcommunities in an `AbstractPartition` object or the
 function countsubcommunities end
 
 function countsubcommunities(m::AbstractMetacommunity)
-    return _countsubcommunities(_getsubcommunities(m))
+    return _countsubcommunities(_getpartition(m))
 end
 
 function countsubcommunities(p::AbstractPartition)
