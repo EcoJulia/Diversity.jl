@@ -90,7 +90,7 @@ function qD end
 
 function qD{FP <: AbstractFloat, A <: AbstractArray,
     Part <: AbstractPartition}(meta::AbstractMetacommunity{FP, A, UniqueTypes, Part}, qs)
-    length(meta) == 1 ||
+    countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
     powermean(getabundance(meta), qs - 1, getabundance(meta)) .^ -1
@@ -123,7 +123,7 @@ similarity matrix *Z*.
 function qDZ end
 
 function qDZ(meta::AbstractMetacommunity, qs)
-    length(meta) == 1 ||
+    countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
     powermean(getordinariness!(meta), qs - 1, getabundance(meta)) .^ -1

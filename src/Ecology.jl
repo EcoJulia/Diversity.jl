@@ -177,7 +177,7 @@ better properties.
 function generalisedjaccard(proportions::AbstractArray, qs,
                             Z::AbstractMatrix = eye(size(proportions, 1)))
     meta = Metacommunity(proportions, Z)
-    length(meta) == 2 ||
+    countsubcommunities(meta) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
     ab = metadiv(α(meta), qs)
     g = metadiv(Γ(meta), qs)

@@ -44,11 +44,6 @@ function length(p::AbstractPartition)
     return _countsubcommunities(p)
 end
 
-# We calculate the length of a metacommunity in terms of its subcommunities
-function length(meta::AbstractMetacommunity)
-    return length(_getpartition(meta))
-end
-
 """
     _gettypes(::AbstractMetacommunity)
 
