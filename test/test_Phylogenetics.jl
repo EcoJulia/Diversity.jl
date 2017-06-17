@@ -17,11 +17,10 @@ using Diversity.Phylogenetics
     addbranch!(nt, r, n, 1.0)
     ph = PhyloTypes(nt)
     leafnames = gettypenames(ph, true)
-    order = mapreduce(name -> find(species .== name), append!, leafnames)
-    @test species[order] == gettypenames(ph, true)
-    metaphylo = Metacommunity(abund[order], ph)
-    @test gettypenames(metaphylo, true) == species[order]
-    @test getabundance(metaphylo, true) ≈ abund[order]
+    @test species == gettypenames(ph, true)
+    metaphylo = Metacommunity(abund, ph)
+    @test gettypenames(metaphylo, true) == species
+    @test getabundance(metaphylo, true) ≈ abund
     @test getabundance(metaphylo) ≈ [0.15, 0.2, 0.3, 0.15, 0.2]
     @test getordinariness!(metaphylo) ≈ [0.7, 0.7, 0.3, 0.3, 0.4]
     @test meta_gamma(metaphylo, 0)[:diversity] == [2.5]
