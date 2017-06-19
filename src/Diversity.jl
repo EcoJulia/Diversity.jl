@@ -61,9 +61,13 @@ export calcabundance, calcsimilarity, calcordinariness
 include("Iterators.jl")
 export TypeIterator, SubcommunityIterator
 
-include("Metacommunity.jl")
+include("Types.jl")
+export UniqueTypes, Species, Taxonomy, GeneralTypes
+
+include("Partition.jl")
 export Subcommunities, Onecommunity
-export GeneralTypes, UniqueTypes, Species, Taxonomy
+
+include("Metacommunity.jl")
 export Metacommunity
 export inddiv, subdiv, metadiv
 
