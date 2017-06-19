@@ -3,16 +3,6 @@ using Diversity.API
 import Base.start, Base.next, Base.done
 import Base.iteratorsize, Base.length, Base.iteratoreltype, Base.eltype
 
-# length of an AbstractTypes is the number of types
-function length(t::AbstractTypes)
-    return _counttypes(t)
-end
-
-# length of an AbstractPartition is the number of subcommunities
-function length(p::AbstractPartition)
-    return _countsubcommunities(p)
-end
-
 immutable TypeIterator{M <: AbstractMetacommunity}
     metacommunity::M
     viewfn::Function
