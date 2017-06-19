@@ -28,14 +28,26 @@ ignored.
 """
 module API
 include("API.jl")
-export AbstractTypes, AbstractPartition, AbstractMetacommunity
-export _gettypes, _getpartition
-export _counttypes, _countsubcommunities, _gettypenames, _getsubcommunitynames
-export _getabundance, _getmetaabundance, _getweight
-export _getordinariness!, _getmetaordinariness!
-export _calcabundance, _calcsimilarity, _calcordinariness
-export floattypes, typematch, mcmatch
-export sumovertypes, sumoversubcommunities
+# Base class and functions required for each partition
+export AbstractPartition
+export _getsubcommunitynames # required
+export _countsubcommunities  # optional
+
+# Base class and functions required for each type
+export AbstractTypes
+export _gettypenames, _calcsimilarity                 # required
+export _counttypes, _calcabundance, _calcordinariness # optional
+
+# Base class and functions required for each metacommunity
+export AbstractMetacommunity
+export _gettypes, _getpartition, _getabundance  # required
+export _getmetaabundance, _getweight            # optional
+export _getordinariness!, _getmetaordinariness! # optional
+
+# Function with minimal default implementation for types and partitions
+export floattypes
+# Functions with standard implementations
+export typematch, mcmatch
 end
 
 include("Interface.jl")

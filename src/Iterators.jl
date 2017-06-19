@@ -8,7 +8,8 @@ immutable TypeIterator{M <: AbstractMetacommunity}
     viewfn::Function
 
     (::Type{TypeIterator{M}}){M}(metacommunity::M,
-                                 viewfn::Function) = new{M}(metacommunity, viewfn)    
+                                 viewfn::Function) =
+                                     new{M}(metacommunity, viewfn)    
 end
 
 function TypeIterator(meta::AbstractMetacommunity,
@@ -23,7 +24,7 @@ function TypeIterator(meta::AbstractMetacommunity,
     end
     return TypeIterator{typeof(meta)}(meta, viewfn)
 end
- 
+
 function start(ti::TypeIterator)
     return 1
 end
@@ -59,7 +60,8 @@ immutable SubcommunityIterator{M <: AbstractMetacommunity}
     viewfn::Function
 
     (::Type{SubcommunityIterator{M}}){M}(metacommunity::M,
-                                         viewfn::Function) = new{M}(metacommunity, viewfn)
+                                         viewfn::Function) =
+                                             new{M}(metacommunity, viewfn)
 end
 
 function SubcommunityIterator(meta::AbstractMetacommunity,
@@ -74,7 +76,7 @@ function SubcommunityIterator(meta::AbstractMetacommunity,
     end
     return SubcommunityIterator{typeof(meta)}(meta, viewfn)
 end
- 
+
 function start(si::SubcommunityIterator)
     return 1
 end
