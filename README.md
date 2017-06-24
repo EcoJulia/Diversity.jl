@@ -7,6 +7,26 @@
 | [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.5-img]][pkg-0.5-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
 | [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.6-img]][pkg-0.6-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
+## Installation
+
+The package is registered in `METADATA.jl` and so can be installed with `Pkg.add`.
+
+```julia
+julia> Pkg.add("Diversity")
+```
+
+## Project Status
+
+The package is tested against the current Julia `0.6` release, the
+last Julia `0.5` release and nightly on Linux, OS X, and Windows.
+
+## Contributing and Questions
+
+Contributions are very welcome, as are feature requests and suggestions. Please open an
+[issue][issues-url] if you encounter any problems or would just like to ask a question.
+
+## Summary
+
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
 of metacommunities (e.g. ecosystems) and their constituent
