@@ -114,7 +114,8 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     for q in qs
         @test subnr[isapprox.(subnr[:q], q), :diversity] ≈ vec(sum(distinct, 1))
     end
-    @test metadiv(NormalisedBeta(Metacommunity(distinct)), qs)[:diversity] ≈ qD(reshape(sum(distinct, 1), numcommunities), qs)
+    @test metadiv(NormalisedBeta(Metacommunity(distinct)), qs)[:diversity] ≈
+        qD(reshape(sum(distinct, 1), numcommunities), qs)
     @test metadiv(RawBeta(Metacommunity(distinct)), qs)[:diversity] ≈ ones(length(qs))
 
     # many (unexported!) diversity levels not yet implemented

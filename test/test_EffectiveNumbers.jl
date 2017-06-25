@@ -28,7 +28,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     @test_throws DimensionMismatch powermean(numbers, 0, weights)
     
     # Some simple values
-    @test powermean(collect(1.0), 0.0, collect(1.0)) ≈ 1.0
+    @test powermean([1.0], 0.0, [1.0]) ≈ 1.0
     @test powermean(numbers, 0.0) ≈ 4.0
     @test powermean(numbers, [-Inf]) ≈ [1]
     @test powermean(numbers, [1.0, -1.0]) ≈ [31.0/5.0, 80.0/31.0]

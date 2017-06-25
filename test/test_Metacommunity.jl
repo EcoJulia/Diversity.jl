@@ -11,9 +11,12 @@ end
 using Diversity
 using DataFrames
 
-three = [0.3, 0.3, 0.4]
+three = [0.3
+         0.3
+         0.4]
 oc_count = Onecommunity()
-ab3 = [1 2; 3 0; 0 4]'
+ab3 = [1 3 0
+       2 0 4]
 abnorm = ab3 / sum(ab3)
 sc = Subcommunities(size(ab3, 2))
 @testset "Communities" begin
@@ -25,7 +28,9 @@ sc = Subcommunities(size(ab3, 2))
     @test getsubcommunitynames(Subcommunities(["a", "b"])) == ["a", "b"]
 end
 
-sim = [1.0 0.0 0.0; 1.0 1.0 0.0; 1.0 1.0 1.0]
+sim = [1.0 0.0 0.0
+       1.0 1.0 0.0
+       1.0 1.0 1.0]
 ms = GeneralTypes(sim)
 @testset "GeneralTypes" begin
     @test calcsimilarity(ms, Matrix{Float64}(3,3)) == sim
