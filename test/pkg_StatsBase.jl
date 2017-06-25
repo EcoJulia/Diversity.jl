@@ -12,9 +12,6 @@ using StatsBase
         pop[pop .< median(pop)/2] = 0.0
         pop /= sum(pop)
         meta = Metacommunity(pop)
-        metapop = Diversity.API.vectorise(getmetaordinariness!(meta))
-        weight_row = getweight(meta)
-        weights = Diversity.API.vectorise(weight_row)
         g = Γ(meta)
         na = ᾱ(meta)
         ra = α(meta)
