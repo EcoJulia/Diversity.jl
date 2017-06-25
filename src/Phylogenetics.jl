@@ -55,25 +55,25 @@ end
 
 PhyloTypes{Tree <: AbstractTree}(tree::Tree) = PhyloTypes{Tree}(tree)
 
-function _gettypenames(phy::PhyloTypes, input::Bool)
-    return input ? phy.leafnames : phy.ancestralnames
+function _gettypenames(phy::PhyloTypes, raw::Bool)
+    return raw ? phy.leafnames : phy.ancestralnames
 end
 
-function _counttypes(phy::PhyloTypes, input::Bool)
-    return input ? phy.nleaf : phy.nancestral
+function _counttypes(phy::PhyloTypes, raw::Bool)
+    return raw ? phy.nleaf : phy.nancestral
 end
 
-function _calcabundance(phy::PhyloTypes, abundances::AbstractArray)
-    asabundances = phy.ancestralmatrix * abundances
-    asabundances /= sum(asabundances)
-    return asabundances
+function _calcabundance(phy::PhyloTypes, raw::AbstractArray)
+    processed = phy.ancestralmatrix * raw
+    scale = sum(processed)
+    processed ./= scale
+    return processed, scale
 end
 
-function _calcsimilarity(phy::PhyloTypes, abundances::AbstractArray)
-    asabundances = phy.ancestralmatrix * abundances
-    return phy.Zmatrix * sum(asabundances)
+function _calcsimilarity(phy::PhyloTypes, scale::Real)
+    return phy.Zmatrix .* scale
 end
 
-function _calcordinariness(phy::PhyloTypes, abundances::AbstractArray)
-    return phy.Zmatrix * phy.ancestralmatrix * abundances
+function _calcordinariness(phy::PhyloTypes, processed::AbstractArray, scale::Real)
+    return (phy.Zmatrix * processed) .* scale
 end

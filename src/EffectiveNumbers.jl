@@ -60,13 +60,8 @@ function powermean{S <: AbstractFloat}(values::AbstractArray{S, 2},
     size(values) == size(weights) ||
     throw(DimensionMismatch("powermean: Weight and value matrixes must be the same size"))
 
-    map(col -> powermean(values[:,col], orders, weights[:, col]), 1:size(values)[2])
-end
-
-function powermean{S <: AbstractFloat}(values::AbstractArray{S, 0},
-                                       order::Real = 1,
-                                       weights::AbstractArray{S, 0} = ones(values))
-    values[1]
+    map(col -> powermean(view(values, :, col), orders,
+                         view(weights, :, col)), 1:size(values, 2))
 end
 
 """
@@ -88,15 +83,14 @@ population with given relative proportions.
 """
 function qD end
 
-function qD{FP <: AbstractFloat, A <: AbstractArray,
-    Part <: AbstractPartition}(meta::AbstractMetacommunity{FP, A, UniqueTypes, Part}, qs)
+function qD(meta::AbstractMetacommunity, qs)
     countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getabundance(meta), qs - 1, getabundance(meta)) .^ -1
+    powermean(getabundance(meta), qs - 1, getabundance(meta))[1] .^ -1
 end
 
-function qD{FP <: AbstractFloat}(proportions::Vector{FP}, qs)
+function qD(proportions::Vector, qs)
     qD(Metacommunity(proportions), qs)
 end
 
@@ -126,14 +120,14 @@ function qDZ(meta::AbstractMetacommunity, qs)
     countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getordinariness!(meta), qs - 1, getabundance(meta)) .^ -1
+    powermean(getordinariness!(meta), qs - 1, getabundance(meta))[1] .^ -1
 end
 
-function qDZ{FP <: AbstractFloat, Sim <: AbstractTypes}(proportions::Vector{FP}, qs,
-                                                        sim::Sim = UniqueTypes(size(proportions, 1)))
+function qDZ{Sim <: AbstractTypes}(proportions::Vector, qs,
+                                   sim::Sim = UniqueTypes(size(proportions, 1)))
     qDZ(Metacommunity(proportions, sim), qs)
 end
 
-function qDZ{FP <: AbstractFloat, A <: AbstractMatrix}(proportions::Vector{FP}, qs, Z::A)
+function qDZ(proportions::Vector, qs, Z::AbstractMatrix)
     qDZ(Metacommunity(proportions, GeneralTypes(Z)), qs)
 end

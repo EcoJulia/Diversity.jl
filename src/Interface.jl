@@ -21,22 +21,22 @@ function getpartition(m::AbstractMetacommunity)
 end
 
 """
-    counttypes(m::AbstractMetacommunity[, input::Bool = false])
-    counttypes(t::AbstractTypes[, input::Bool = false])
+    counttypes(m::AbstractMetacommunity[, raw::Bool = false])
+    counttypes(t::AbstractTypes[, raw::Bool = false])
 
 Returns number of types in an `AbstractTypes` object or the
-`AbstractMetacommunity` containing it. `input` determines whether to
-count the number of input or output types, which varies, for instance,
+`AbstractMetacommunity` containing it. `raw` determines whether to
+count the number of raw or processed types, which varies, for instance,
 when the types are determined by a phylogeny.
 """
 function counttypes end
 
-function counttypes(m::AbstractMetacommunity, input::Bool = false)
-    return _counttypes(_gettypes(m), input)
+function counttypes(m::AbstractMetacommunity, raw::Bool = false)
+    return _counttypes(_gettypes(m), raw)
 end
 
-function counttypes(t::AbstractTypes, input::Bool = false)
-    return _counttypes(t, input)
+function counttypes(t::AbstractTypes, raw::Bool = false)
+    return _counttypes(t, raw)
 end
 
 """
@@ -57,22 +57,22 @@ function countsubcommunities(p::AbstractPartition)
 end
 
 """
-    gettypenames(m::AbstractMetacommunity[, input::Bool = false])
-    gettypenames(t::AbstractTypes[, input::Bool = false])
+    gettypenames(m::AbstractMetacommunity[, raw::Bool = false])
+    gettypenames(t::AbstractTypes[, raw::Bool = false])
 
 Returns the names of the types of the `AbstractTypes` object or the
-`AbstractMetacommunity` containing it. `input` determines whether to
-count the number of input or output types, which varies, for instance,
+`AbstractMetacommunity` containing it. `raw` determines whether to
+count the number of raw or processed types, which varies, for instance,
 when the types are determined by a phylogeny.
 """
 function gettypenames end
 
-function gettypenames(m::AbstractMetacommunity, input::Bool = false)
-    return _gettypenames(_gettypes(m), input)
+function gettypenames(m::AbstractMetacommunity, raw::Bool = false)
+    return _gettypenames(_gettypes(m), raw)
 end
 
-function gettypenames(t::AbstractTypes, input::Bool = false)
-    return _gettypenames(t, input)
+function gettypenames(t::AbstractTypes, raw::Bool = false)
+    return _gettypenames(t, raw)
 end
 
 """
@@ -97,8 +97,8 @@ end
 
 Returns the abundances array of the metacommunity.
 """
-function getabundance(m::AbstractMetacommunity, input::Bool = false)
-    return _getabundance(m, input)
+function getabundance(m::AbstractMetacommunity, raw::Bool = false)
+    return _getabundance(m, raw)
 end
 
 """
@@ -106,8 +106,8 @@ end
 
 Returns the metacommunity abundances of the metacommunity.
 """
-function getmetaabundance(m::AbstractMetacommunity, input::Bool = false)
-    return _getmetaabundance(m, input)
+function getmetaabundance(m::AbstractMetacommunity, raw::Bool = false)
+    return _getmetaabundance(m, raw)
 end
 
 """
@@ -139,28 +139,10 @@ function getmetaordinariness!(m::AbstractMetacommunity)
 end
 
 """
-    calcabundance(t::AbstractTypes, a::AbstractArray)
-
-Calculates the abundance a for AbstractTypes, t (if necessary).
-"""
-function calcabundance(t::AbstractTypes, a::AbstractArray)
-    return _calcabundance(t, a)
-end
-
-"""
-    calcsimilarity(t::AbstractTypes, a::AbstractArray)
+    calcsimilarity(t::AbstractTypes, scale::Real)
 
 Retrieves (and possibly calculates) a similarity matrix from t.
 """
-function calcsimilarity(t::AbstractTypes, a::AbstractArray)
-    return _calcsimilarity(t, a)
-end
-
-"""
-    calcordinariness(t::AbstractTypes, a::AbstractArray)
-
-Calculates the ordinariness of abundance a from AbstractTypes, t.
-"""
-function calcordinariness(t::AbstractTypes, a::AbstractArray)
-    return _calcordinariness(t, a)
+function calcsimilarity(t::AbstractTypes, scale::Real)
+    return _calcsimilarity(t, scale)
 end

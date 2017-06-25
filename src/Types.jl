@@ -35,11 +35,11 @@ function _gettypenames(ut::UniqueTypes, ::Bool)
     return ut.names
 end
 
-function _calcsimilarity(ut::UniqueTypes, ::AbstractArray)
+function _calcsimilarity(ut::UniqueTypes, ::Real)
     return eye(ut.num)
 end
 
-function _calcordinariness(::UniqueTypes, abundances::AbstractArray)
+function _calcordinariness(::UniqueTypes, abundances::AbstractArray, ::Real)
     return abundances
 end
 
@@ -93,7 +93,7 @@ function _gettypenames(tax::Taxonomy, ::Bool)
     return tax.speciesinfo[tax.typelabel]
 end
 
-function _calcsimilarity(::Taxonomy, ::AbstractArray)
+function _calcsimilarity(::Taxonomy, ::Real)
     error("Can't generate a taxonomic similarity matrix yet")
 end
 
@@ -178,6 +178,6 @@ function _gettypenames(gt::GeneralTypes, ::Bool)
     return gt.names
 end
 
-function _calcsimilarity(gt::GeneralTypes, ::AbstractArray)
+function _calcsimilarity(gt::GeneralTypes, ::Real)
     return gt.z
 end
