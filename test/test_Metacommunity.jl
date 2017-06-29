@@ -78,10 +78,8 @@ g2 = GeneralTypes(eye(2))
     @test_warn "not normalised" Metacommunity(ab3 * 1.0, meta2)
     @test_nowarn Metacommunity([0.5, 0.5], eye(2))
     @test_throws ErrorException Metacommunity(abf, ms, sc)
-    if !is_windows() # Gives a different error on 32-bit windows
-        @test_throws DimensionMismatch Metacommunity([1, 2, 3]/6, meta2)
-        @test_throws DimensionMismatch getabundance(Metacommunity([0.5, 0.5], meta2))
-    end
+    @test_throws DimensionMismatch Metacommunity([1, 2, 3]/6, meta2)
+    @test_throws DimensionMismatch getabundance(Metacommunity([0.5, 0.5], meta2))
     @test getabundance(Metacommunity(abf, eye(2))) ≈
         getabundance(Metacommunity(abf, meta2))
     #@test_throws ErrorException Metacommunity(-abf, g2, sc)
