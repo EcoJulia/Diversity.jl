@@ -82,7 +82,7 @@ subcommunity relative abundances.
 Before calculating diversity a `Metacommunity` object must be created. This object contains all the information needed to calculate diversity.
 
 ```julia
-# Load the package into R
+# Load the package into Julia
 using Diversity
 
 # Example population
