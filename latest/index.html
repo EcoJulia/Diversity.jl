@@ -1,4 +1,7 @@
 
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <head>
@@ -14,9 +17,22 @@
         <meta name="author" content="Richard Reeve">
       
       
-        <link rel="shortcut icon" href="./assets/images/favicon.png">
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
       
-      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.7.4">
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="./assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.2.2">
     
     
       
@@ -24,17 +40,14 @@
       
     
     
-      <script src="./assets/javascripts/modernizr-1df76c4e58.js"></script>
-    
-    
-      <link rel="stylesheet" href="./assets/stylesheets/application-769c285a91.css">
+      <link rel="stylesheet" href="./assets/stylesheets/application.7a4cdee3.css">
       
     
     
+      <script src="./assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
       
-        
-        
-        
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
@@ -45,9 +58,6 @@
     
     
   </head>
-  
-  
-  
   
     <body>
   
@@ -67,40 +77,46 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        
-          <a href="." title="Diversity.jl" class="md-icon md-icon--home md-header-nav__button">
-          </a>
-        
+        <a href="." title="Diversity.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
-        <span class="md-flex__ellipsis md-header-nav__title">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             
-              
+              <span class="md-header-nav__topic">
+                Diversity.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Introduction
+              </span>
             
-            Introduction
           
-        </span>
+        </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
           
-<div class="md-search" data-md-component="search">
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="search"></label>
   <div class="md-search__inner">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
       <label class="md-icon md-search__icon" for="search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result" data-md-lang-search="">
-          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
             Type to start searching
           </div>
           <ol class="md-search-result__list"></ol>
@@ -109,6 +125,7 @@
     </div>
   </div>
 </div>
+          
         
       </div>
       
@@ -120,7 +137,7 @@
   
 
 
-  <a href="https://github.com/richardreeve/Diversity.jl" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.com/richardreeve/Diversity.jl/" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -142,6 +159,8 @@
     
     <div class="md-container">
       
+        
+      
       
       <main class="md-main">
         <div class="md-main__inner md-grid" data-md-component="container">
@@ -152,9 +171,11 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
-    
-      <i class="md-icon md-icon--home md-nav__button"></i>
-    
+    <span class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </span>
     Diversity.jl
   </label>
   
@@ -165,7 +186,7 @@
   
 
 
-  <a href="https://github.com/richardreeve/Diversity.jl" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.com/richardreeve/Diversity.jl/" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -338,7 +359,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/richardreeve/Diversity.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/richardreeve/Diversity.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <p><a id='Diversity.jl-1'></a></p>
@@ -400,7 +421,50 @@ julia&gt; redundancies = subdiv(rho, 2)
 <p><a id='Diversity' href='#Diversity'>#</a>
 <strong><code>Diversity</code></strong> &mdash; <em>Module</em>.</p>
 <p>The main <strong>Diversity</strong> module provides basic numbers-equivalent diversity measures (described in <a href="http://www.jstor.org/stable/1934352">Hill, 1973</a>), similarity-sensitive diversity measures (generalised from Hill, and described in <a href="http://www.esajournals.org/doi/abs/10.1890/10-2402.1">Leinster and Cobbold, 2012</a>), and related alpha, beta and gamma diversity measures at the level of the metacommunity and its component subcommunities (generalised in turn from Leinster and Cobbold, and described in <a href="http://arxiv.org/abs/1404.6520">Reeve et al, 2014</a>). The diversity functions exist both with unicode names (e.g. <code>ᾱ()</code>), which are not automatically exported (as we feel they are too short) and with matching longer ASCII names (e.g. <code>NormalisedAlpha()</code>), which are. We also provide functions to calculate appropriate <code>subcommunityDiversity()</code> and <code>metacommunityDiversity()</code> values for each measure, a general <code>diversity()</code> function for extract any diversity measure at a series of scales.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Diversity.jl#L3-L21' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Diversity.jl#L3-L21' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.individualDiversity' href='#Diversity.individualDiversity'>#</a>
+<strong><code>Diversity.individualDiversity</code></strong> &mdash; <em>Constant</em>.</p>
+<p><strong>Generates the function to calculate individual diversities</strong></p>
+<p>Generates the function to calculate individual diversities for a series of orders, represented as a vector of qs.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>dm</code>: DiversityMeasure</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Function which takes a single number or vector of values of parameter q, and returns the individual diversities for those values.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L10-L25' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.metacommunityDiversity' href='#Diversity.metacommunityDiversity'>#</a>
+<strong><code>Diversity.metacommunityDiversity</code></strong> &mdash; <em>Constant</em>.</p>
+<p><strong>Generates the function to calculate metacommunity diversity</strong></p>
+<p>Generates the function to calculate metacommunity diversity for a series of orders, represented as a vector of qs.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>dm</code>: DiversityMeasure</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Function which takes a single number or vector of values of parameter q, and returns the metacommunity diversities for those values.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L45-L60' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.subcommunityDiversity' href='#Diversity.subcommunityDiversity'>#</a>
+<strong><code>Diversity.subcommunityDiversity</code></strong> &mdash; <em>Constant</em>.</p>
+<p><strong>Generates the function to calculate subcommunity diversity</strong></p>
+<p>Generates the function to calculate subcommunity diversity for a series of orders, represented as a vector of qs.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>dm</code>: DiversityMeasure</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Function which takes a single number or vector of values of parameter q, and returns the subcommunity diversities for those values.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L28-L42' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.DiversityLevel' href='#Diversity.DiversityLevel'>#</a>
+<strong><code>Diversity.DiversityLevel</code></strong> &mdash; <em>Type</em>.</p>
+<p><strong>Enumeration of levels that can exist / be calculated for a metacommunity.</strong></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L5-L7' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.DiversityMeasure' href='#Diversity.DiversityMeasure'>#</a>
 <strong><code>Diversity.DiversityMeasure</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>DiversityMeasure
@@ -408,7 +472,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>This type is the abstract supertype of all diversity measure types. DiversityMeasure subtypes allow you to calculate and cache any kind of diversity of a metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L63-L69' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L63-L69' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Gamma' href='#Diversity.Gamma'>#</a>
 <strong><code>Diversity.Gamma</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>Gamma
@@ -420,7 +484,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L559-L570' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L559-L570' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.GeneralTypes' href='#Diversity.GeneralTypes'>#</a>
 <strong><code>Diversity.GeneralTypes</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>GeneralTypes{FP, M}
@@ -433,7 +497,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <li><code>z</code> A two-dimensional matrix representing similarity between</li>
 </ul>
 <p>individuals.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L152-L162' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L152-L162' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Metacommunity' href='#Diversity.Metacommunity'>#</a>
 <strong><code>Diversity.Metacommunity</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>Metacommunity{FP, A, Part, Sim}
@@ -450,7 +514,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <li><code>types</code> The instance of the AbstractTypes subtype, from which similarities between individuals can be calculated.</li>
 <li><code>ordinariness</code> A cache of the ordinariness of the individuals in the Partition. Should only be accessed through getordinariness!(::Metacommunity), which will populate the cache if it has not yet been calculated.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L236-L266' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L236-L266' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.NormalisedAlpha' href='#Diversity.NormalisedAlpha'>#</a>
 <strong><code>Diversity.NormalisedAlpha</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>NormalisedAlpha
@@ -462,7 +526,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L372-L383' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L372-L383' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.NormalisedBeta' href='#Diversity.NormalisedBeta'>#</a>
 <strong><code>Diversity.NormalisedBeta</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>NormalisedBeta
@@ -474,7 +538,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L445-L457' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L445-L457' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.NormalisedRho' href='#Diversity.NormalisedRho'>#</a>
 <strong><code>Diversity.NormalisedRho</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>NormalisedRho
@@ -486,7 +550,15 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L520-L532' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L520-L532' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Onecommunity' href='#Diversity.Onecommunity'>#</a>
+<strong><code>Diversity.Onecommunity</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>Onecommunity
+</pre></div>
+
+
+<p>AbstractPartition subtype containing only one subcommunity.</p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L36-L40' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.PowerMeanMeasure' href='#Diversity.PowerMeanMeasure'>#</a>
 <strong><code>Diversity.PowerMeanMeasure</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>PowerMeanMeasure
@@ -494,7 +566,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>This abstract DiversityMeasure subtype is the supertype of all diversity measures which are straight power means. PowerMeanMeasure subtypes allow you to calculate and cache any kind of diversity of a metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L157-L164' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L157-L164' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.RawAlpha' href='#Diversity.RawAlpha'>#</a>
 <strong><code>Diversity.RawAlpha</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>RawAlpha
@@ -506,7 +578,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L338-L349' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L338-L349' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.RawBeta' href='#Diversity.RawBeta'>#</a>
 <strong><code>Diversity.RawBeta</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>RawBeta
@@ -518,7 +590,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L407-L419' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L407-L419' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.RawRho' href='#Diversity.RawRho'>#</a>
 <strong><code>Diversity.RawRho</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>RawRho
@@ -530,7 +602,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 <ul>
 <li><code>meta</code>: a Metacommunity</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L482-L494' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L482-L494' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.RelativeEntropyMeasure' href='#Diversity.RelativeEntropyMeasure'>#</a>
 <strong><code>Diversity.RelativeEntropyMeasure</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>RelativeEntropyMeasure
@@ -538,66 +610,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>This abstract DiversityMeasure subtype is the supertype of all diversity measures which are relative entropy-based diversity measures. RelativeEntropyMeasure subtypes allow you to calculate and cache any kind of diversity of a metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L167-L174' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.Taxonomy' href='#Diversity.Taxonomy'>#</a>
-<strong><code>Diversity.Taxonomy</code></strong> &mdash; <em>Type</em>.</p>
-<div class="codehilite"><pre><span></span>Taxonomy
-</pre></div>
-
-
-<p>A subtype of AbstractTypes with similarity between related taxa, creating taxonomic similarity matrices.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L108-L114' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.individualDiversity' href='#Diversity.individualDiversity'>#</a>
-<strong><code>Diversity.individualDiversity</code></strong> &mdash; <em>Constant</em>.</p>
-<p><strong>Generates the function to calculate individual diversities</strong></p>
-<p>Generates the function to calculate individual diversities for a series of orders, represented as a vector of qs.</p>
-<p><strong>Arguments:</strong></p>
-<ul>
-<li><code>dm</code>: DiversityMeasure</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<ul>
-<li>Function which takes a single number or vector of values of parameter q, and returns the individual diversities for those values.</li>
-</ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L10-L25' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.metacommunityDiversity' href='#Diversity.metacommunityDiversity'>#</a>
-<strong><code>Diversity.metacommunityDiversity</code></strong> &mdash; <em>Constant</em>.</p>
-<p><strong>Generates the function to calculate metacommunity diversity</strong></p>
-<p>Generates the function to calculate metacommunity diversity for a series of orders, represented as a vector of qs.</p>
-<p><strong>Arguments:</strong></p>
-<ul>
-<li><code>dm</code>: DiversityMeasure</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<ul>
-<li>Function which takes a single number or vector of values of parameter q, and returns the metacommunity diversities for those values.</li>
-</ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L45-L60' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.subcommunityDiversity' href='#Diversity.subcommunityDiversity'>#</a>
-<strong><code>Diversity.subcommunityDiversity</code></strong> &mdash; <em>Constant</em>.</p>
-<p><strong>Generates the function to calculate subcommunity diversity</strong></p>
-<p>Generates the function to calculate subcommunity diversity for a series of orders, represented as a vector of qs.</p>
-<p><strong>Arguments:</strong></p>
-<ul>
-<li><code>dm</code>: DiversityMeasure</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<ul>
-<li>Function which takes a single number or vector of values of parameter q, and returns the subcommunity diversities for those values.</li>
-</ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L28-L42' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.DiversityLevel' href='#Diversity.DiversityLevel'>#</a>
-<strong><code>Diversity.DiversityLevel</code></strong> &mdash; <em>Type</em>.</p>
-<p><strong>Enumeration of levels that can exist / be calculated for a metacommunity.</strong></p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L5-L7' class='documenter-source'>source</a><br></p>
-<p><a id='Diversity.Onecommunity' href='#Diversity.Onecommunity'>#</a>
-<strong><code>Diversity.Onecommunity</code></strong> &mdash; <em>Type</em>.</p>
-<div class="codehilite"><pre><span></span>Onecommunity
-</pre></div>
-
-
-<p>AbstractPartition subtype containing only one subcommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L36-L40' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L167-L174' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Species' href='#Diversity.Species'>#</a>
 <strong><code>Diversity.Species</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>Species
@@ -605,7 +618,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>A subtype of AbstractTypes where all species are completely distinct. This type is the simplest AbstractTypes subtype, which identifies all species as unique and completely distinct from each other.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L98-L105' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L98-L105' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Subcommunities' href='#Diversity.Subcommunities'>#</a>
 <strong><code>Diversity.Subcommunities</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>Subcommunities(num)
@@ -613,7 +626,15 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>AbstractPartition subtype with multiple subcommunities.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L6-L11' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L6-L11' class='documenter-source'>source</a><br></p>
+<p><a id='Diversity.Taxonomy' href='#Diversity.Taxonomy'>#</a>
+<strong><code>Diversity.Taxonomy</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>Taxonomy
+</pre></div>
+
+
+<p>A subtype of AbstractTypes with similarity between related taxa, creating taxonomic similarity matrices.</p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L108-L114' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.UniqueTypes' href='#Diversity.UniqueTypes'>#</a>
 <strong><code>Diversity.UniqueTypes</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>UniqueTypes
@@ -621,7 +642,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>A subtype of AbstractTypes where all individuals are completely distinct. This type is the simplest AbstractTypes subtype, which identifies all individuals as unique and completely distinct from each other.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Metacommunity.jl#L57-L65' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Metacommunity.jl#L57-L65' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.calcabundance-Tuple{Diversity.API.AbstractTypes,AbstractArray}' href='#Diversity.calcabundance-Tuple{Diversity.API.AbstractTypes,AbstractArray}'>#</a>
 <strong><code>Diversity.calcabundance</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>calcabundance(t::AbstractTypes, a::AbstractArray)
@@ -629,7 +650,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>Calculates the abundance a for AbstractTypes, t (if necessary).</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L141-L145' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L141-L145' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.calcordinariness-Tuple{Diversity.API.AbstractTypes,AbstractArray}' href='#Diversity.calcordinariness-Tuple{Diversity.API.AbstractTypes,AbstractArray}'>#</a>
 <strong><code>Diversity.calcordinariness</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>calcordinariness(t::AbstractTypes, a::AbstractArray)
@@ -637,7 +658,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>Calculates the ordinariness of abundance a from AbstractTypes, t.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L159-L163' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L159-L163' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.calcsimilarity-Tuple{Diversity.API.AbstractTypes,AbstractArray}' href='#Diversity.calcsimilarity-Tuple{Diversity.API.AbstractTypes,AbstractArray}'>#</a>
 <strong><code>Diversity.calcsimilarity</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>calcsimilarity(t::AbstractTypes, a::AbstractArray)
@@ -645,7 +666,7 @@ julia&gt; redundancies = subdiv(rho, 2)
 
 
 <p>Retrieves (and possibly calculates) a similarity matrix from t.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L150-L154' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L150-L154' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.countsubcommunities' href='#Diversity.countsubcommunities'>#</a>
 <strong><code>Diversity.countsubcommunities</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>countsubcommunities(m::AbstractMetacommunity)
@@ -654,7 +675,7 @@ countsubcommunities(p::AbstractPartition)
 
 
 <p>Returns number of subcommunities in an <code>AbstractPartition</code> object or the <code>AbstractMetacommunity</code> containing it.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L42-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L42-L48' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.counttypes' href='#Diversity.counttypes'>#</a>
 <strong><code>Diversity.counttypes</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>counttypes(m::AbstractMetacommunity[, input::Bool = false])
@@ -663,7 +684,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns number of types in an <code>AbstractTypes</code> object or the <code>AbstractMetacommunity</code> containing it. <code>input</code> determines whether to count the number of input or output types, which varies, for instance, when the types are determined by a phylogeny.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L23-L31' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L23-L31' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.diversity-Tuple{Any,Any,Diversity.API.AbstractMetacommunity,Any}' href='#Diversity.diversity-Tuple{Any,Any,Diversity.API.AbstractMetacommunity,Any}'>#</a>
 <strong><code>Diversity.diversity</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculates subcommunity and metacommunity diversities</strong></p>
@@ -677,7 +698,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 </ul>
 <p><strong>Returns:</strong></p>
 <p>A vector containing all of the diversity levels of all of the requested diversities.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/GeneralisedDiversities.jl#L46-L61' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/GeneralisedDiversities.jl#L46-L61' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getASCIIName-Tuple{Diversity.DiversityMeasure}' href='#Diversity.getASCIIName-Tuple{Diversity.DiversityMeasure}'>#</a>
 <strong><code>Diversity.getASCIIName</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>getASCIIName(dm::DiversityMeasure)
@@ -693,7 +714,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 <ul>
 <li>String containing simple ASCII name of DiversityMeasure</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L106-L118' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L106-L118' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getFullName' href='#Diversity.getFullName'>#</a>
 <strong><code>Diversity.getFullName</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>getFullName(dm::DiversityMeasure)
@@ -709,7 +730,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 <ul>
 <li>String containing full descriptive name of DiversityMeasure</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L139-L151' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L139-L151' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getName' href='#Diversity.getName'>#</a>
 <strong><code>Diversity.getName</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>getName(dm::DiversityMeasure)
@@ -725,7 +746,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 <ul>
 <li>String containing unicode (greek) name of DiversityMeasure.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L124-L136' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L124-L136' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getabundance' href='#Diversity.getabundance'>#</a>
 <strong><code>Diversity.getabundance</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>getabundance(m::AbstractMetacommunity)
@@ -733,7 +754,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns the abundances array of the metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L95-L99' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L95-L99' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getmetaabundance' href='#Diversity.getmetaabundance'>#</a>
 <strong><code>Diversity.getmetaabundance</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>getmetaabundance(m::AbstractMetacommunity)
@@ -741,7 +762,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns the metacommunity abundances of the metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L104-L108' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L104-L108' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getmetaordinariness!-Tuple{Diversity.API.AbstractMetacommunity}' href='#Diversity.getmetaordinariness!-Tuple{Diversity.API.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getmetaordinariness!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>getmetaordinariness!(m::AbstractMetacommunity)
@@ -749,7 +770,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns (and possibly calculates) the ordinariness of the metacommunity as a whole.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L131-L136' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L131-L136' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getordinariness!-Tuple{Diversity.API.AbstractMetacommunity}' href='#Diversity.getordinariness!-Tuple{Diversity.API.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getordinariness!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>getordinariness!(m::AbstractMetacommunity)
@@ -757,7 +778,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns (and possibly calculates) the ordinariness array of the subcommunities.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L122-L126' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L122-L126' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getpartition-Tuple{Diversity.API.AbstractMetacommunity}' href='#Diversity.getpartition-Tuple{Diversity.API.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getpartition</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>getpartition(m::AbstractMetacommunity)
@@ -765,7 +786,7 @@ counttypes(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns the AbstractPartition component of the metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L13-L18' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L13-L18' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getsubcommunitynames' href='#Diversity.getsubcommunitynames'>#</a>
 <strong><code>Diversity.getsubcommunitynames</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>getsubcommunitynames(m::AbstractMetacommunity)
@@ -774,7 +795,7 @@ getsubcommunitynames(p::AbstractPartition)
 
 
 <p>Returns the names of the subcommunities in an <code>AbstractPartition</code> object or the <code>AbstractMetacommunity</code> containing it.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L78-L84' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L78-L84' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.gettypenames' href='#Diversity.gettypenames'>#</a>
 <strong><code>Diversity.gettypenames</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>gettypenames(m::AbstractMetacommunity[, input::Bool = false])
@@ -783,7 +804,7 @@ gettypenames(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns the names of the types of the <code>AbstractTypes</code> object or the <code>AbstractMetacommunity</code> containing it. <code>input</code> determines whether to count the number of input or output types, which varies, for instance, when the types are determined by a phylogeny.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L59-L67' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L59-L67' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}' href='#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}'>#</a>
 <strong><code>Diversity.gettypenames</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>gettypenames(dm::DiversityMeasure)
@@ -799,7 +820,7 @@ gettypenames(t::AbstractTypes[, input::Bool = false])
 <ul>
 <li>Vector of Strings of names of types.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L89-L101' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L89-L101' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.gettypes-Tuple{Diversity.API.AbstractMetacommunity}' href='#Diversity.gettypes-Tuple{Diversity.API.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.gettypes</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>gettypes(m::AbstractMetacommunity)
@@ -807,7 +828,7 @@ gettypenames(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns the AbstractTypes component of the metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L4-L8' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L4-L8' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.getweight-Tuple{Diversity.API.AbstractMetacommunity}' href='#Diversity.getweight-Tuple{Diversity.API.AbstractMetacommunity}'>#</a>
 <strong><code>Diversity.getweight</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>getweight(m::AbstractMetacommunity)
@@ -815,7 +836,7 @@ gettypenames(t::AbstractTypes[, input::Bool = false])
 
 
 <p>Returns the subcommunity weights of the metacommunity.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/Interface.jl#L113-L117' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Interface.jl#L113-L117' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.inddiv' href='#Diversity.inddiv'>#</a>
 <strong><code>Diversity.inddiv</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>inddiv(measure::DiversityMeasure, q::Real)
@@ -833,7 +854,7 @@ inddiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 <ul>
 <li>Returns individual diversities of <code>dm</code> for a single order <code>q</code> or a vector of order <code>qs</code>.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L177-L193' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L177-L193' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.metadiv' href='#Diversity.metadiv'>#</a>
 <strong><code>Diversity.metadiv</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>metadiv(measure::DiversityMeasure, q::Real)
@@ -851,7 +872,7 @@ metadiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 <ul>
 <li>Returns metacommunity diversities of <code>dm</code> for a single order <code>q</code> or a vector of order <code>qs</code>.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L276-L292' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L276-L292' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.qD' href='#Diversity.qD'>#</a>
 <strong><code>Diversity.qD</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>qD
@@ -868,7 +889,7 @@ metadiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/EffectiveNumbers.jl#L72-L88' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/EffectiveNumbers.jl#L72-L88' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.qDZ' href='#Diversity.qDZ'>#</a>
 <strong><code>Diversity.qDZ</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>qDZ
@@ -886,7 +907,7 @@ metadiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/EffectiveNumbers.jl#L103-L122' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/EffectiveNumbers.jl#L103-L122' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.subdiv' href='#Diversity.subdiv'>#</a>
 <strong><code>Diversity.subdiv</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>subdiv(measure::DiversityMeasure, q::Real)
@@ -904,7 +925,7 @@ subdiv(measure::DiversityMeasure, qs::AbstractVector{Real})
 <ul>
 <li>Returns subcommunity diversities of <code>dm</code> for a single order <code>q</code> or a vector of order <code>qs</code>.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/tree/461367fd1c5a4d6470feca53146420f7c1a0f840/src/DiversityMeasure.jl#L226-L241' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/DiversityMeasure.jl#L226-L241' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href=".#Diversity"><code>Diversity</code></a></li>
 <li><a href="api/#Diversity.API"><code>Diversity.API</code></a></li>
@@ -1031,9 +1052,9 @@ subdiv(measure::DiversityMeasure, qs::AbstractVector{Real})
       <div class="md-footer-copyright">
         
         powered by
-        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        <a href="http://www.mkdocs.org">MkDocs</a>
         and
-        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+        <a href="https://squidfunk.github.io/mkdocs-material/">
           Material for MkDocs</a>
       </div>
       
@@ -1045,10 +1066,9 @@ subdiv(measure::DiversityMeasure, qs::AbstractVector{Real})
       
     </div>
     
-      <script src="./assets/javascripts/application-c35428f87f.js"></script>
+      <script src="./assets/javascripts/application.6cdc17f0.js"></script>
       
-      
-      <script>app.initialize({url:{base:"."}})</script>
+      <script>app.initialize({version:"0.17.2",url:{base:"."}})</script>
       
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       
