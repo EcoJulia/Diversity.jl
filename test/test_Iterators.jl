@@ -13,7 +13,8 @@ using Diversity.Phylogenetics
     m = Metacommunity(abund, PhyloTypes(ru))
     @test length(TypeIterator(m)) == counttypes(PhyloTypes(ru))
     @test length(SubcommunityIterator(m)) == sc
-    @test all(broadcast(≈, reduce(+, SubcommunityIterator(m)), getmetaabundance(m)))
+    @test all(broadcast(≈, reduce(+, SubcommunityIterator(m)),
+                        getmetaabundance(m)))
     @test all(broadcast(≈, reduce(+, TypeIterator(m)), getweight(m)))
 end
 

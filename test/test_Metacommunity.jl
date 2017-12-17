@@ -1,12 +1,5 @@
 module TestMetacommunity
 using Base.Test
-if !isdefined(Base.Test, Symbol("@test_warn"))
-    # Ignore @test_warn unless it's there...
-    macro test_warn(str, test)
-    end
-    macro test_nowarn(test)
-    end
-end
 
 using Diversity
 using Diversity.API
@@ -72,7 +65,8 @@ g2 = GeneralTypes(eye(2))
     @test isnull(meta.ordinariness)
     @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
     @test !isnull(meta.ordinariness)
-    @test_warn "not normalised" Metacommunity(ab3, g2, sc)
+    @test getabundance(Metacommunity(ab3, g2, sc)) ≈
+        getabundance(Metacommunity(abf, g2, sc))
     @test_warn "not normalised" Metacommunity(ab3 * 1.0, eye(2))
     @test_warn "not normalised" Metacommunity([1.0, 2.0], eye(2))
     @test_warn "not normalised" Metacommunity(ab3 * 1.0, meta2)
