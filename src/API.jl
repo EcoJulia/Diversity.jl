@@ -1,4 +1,3 @@
-using Compat
 using Diversity
 
 ### AbstractPartition API
@@ -10,7 +9,7 @@ Abstract supertype for all partitioning types. AbstractPartition
 subtypes allow you to define how to partition your total metacommunity
 (e.g. an ecosystem) into smaller components (e.g. subcommunities).
 """
-@compat abstract type AbstractPartition end
+abstract type AbstractPartition end
 
 """
     _getsubcommunitynames(p::AbstractPartition)
@@ -28,7 +27,7 @@ by each AbstractPartition subtype. Default is to count length of
 subcommunity name vector.
 """
 function _countsubcommunities end
-function _countsubcommunities(p::AbstractPartition)
+function _countsubcommunities(p::P) where P <: AbstractPartition
     return length(_getsubcommunitynames(p))
 end
 
@@ -40,7 +39,7 @@ end
 Abstract supertype for all similarity types. Its subtypes allow you to
 define how similarity is measured between individuals.
 """
-@compat abstract type AbstractTypes end
+abstract type AbstractTypes end
 
 """
     _gettypenames(t::AbstractTypes, raw::Bool)
@@ -71,7 +70,7 @@ count length of corresponding types name vector.
 """
 function _counttypes end
 
-function _counttypes(t::AbstractTypes, raw::Bool)
+function _counttypes(t::T, raw::Bool) where T <: AbstractTypes
     return length(_gettypenames(t, raw))
 end
 
@@ -82,7 +81,8 @@ Calculates the abundance a for AbstractTypes, t (if necessary). May be
 implemented by each AbstractTypes subtype.
 """
 function _calcabundance end
-function _calcabundance(::AbstractTypes, a::AbstractArray)
+function _calcabundance(::T, a::A) where {T <: AbstractTypes,
+                                          A <: AbstractArray}
     return a, one(eltype(a))
 end
 
@@ -93,7 +93,8 @@ Calculates the ordinariness of abundance a from AbstractTypes, t. May be
 implemented by each AbstractTypes subtype.
 """
 function _calcordinariness end
-function _calcordinariness(t::AbstractTypes, a::AbstractArray, ::Real)
+function _calcordinariness(t::T, a::A, ::Real) where {T <: AbstractTypes,
+                                                      A <: AbstractArray}
     abundance, scale = _calcabundance(t, a)
     return _calcsimilarity(t, scale) * abundance
 end
@@ -110,11 +111,11 @@ components (e.g. subcommunities), and how to assess similarity between
 individuals within it.
 
 """
-@compat abstract type AbstractMetacommunity{FP <: AbstractFloat,
-                                            ARaw <: AbstractArray,
-                                            AProcessed <: AbstractMatrix,
-                                            Sim <: AbstractTypes,
-                                            Part <: AbstractPartition} end
+abstract type AbstractMetacommunity{FP <: AbstractFloat,
+                                    ARaw <: AbstractArray,
+                                    AProcessed <: AbstractMatrix,
+                                    Sim <: AbstractTypes,
+                                    Part <: AbstractPartition} end
 
 """
     _gettypes(::AbstractMetacommunity)
@@ -147,8 +148,11 @@ Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-function _getmetaabundance(m::AbstractMetacommunity, raw::Bool)
-    return reduce(+, SubcommunityIterator(m, mc -> _getabundance(mc, raw)))
+function _getmetaabundance(m::MC, raw::Bool) where MC <: AbstractMetacommunity
+    return reduce(+, SubcommunityIterator(m) do mc
+                  return _getabundance(mc, raw)
+                  end
+                  )
 end
 
 """
@@ -167,8 +171,11 @@ Returns the subcommunity weights of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
-function _getweight(m::AbstractMetacommunity)
-    return reduce(+, TypeIterator(m, mc -> _getabundance(mc, false)))
+function _getweight(m::MC) where MC <: AbstractMetacommunity
+    return reduce(+, TypeIterator(m) do mc
+                  return _getabundance(mc, false)
+                  end
+                  )
 end
 
 """
@@ -179,7 +186,7 @@ subcommunities. May be implemented by each AbstractMetacommunity
 subtype.
 """
 function _getordinariness! end
-function _getordinariness!(m::AbstractMetacommunity)
+function _getordinariness!(m::MC) where MC <: AbstractMetacommunity
     return _calcordinariness(_gettypes(m), _getabundance(m, false), _getscale(m))
 end
 
@@ -191,8 +198,8 @@ metacommunity as a whole. May be implemented by each
 AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
-function _getmetaordinariness!(m::AbstractMetacommunity)
-    return reduce(+, SubcommunityIterator(m, _getordinariness!))
+function _getmetaordinariness!(m::MC) where MC <: AbstractMetacommunity
+    return reduce(+, SubcommunityIterator(_getordinariness!, m))
 end
 
 ### Other optional APIs to implement
@@ -206,19 +213,21 @@ are compatible with the Diversity-related object, t.
 """
 function floattypes end
 
-function floattypes{A <: AbstractArray}(::A)
-    return Set([eltype(A)])
+function floattypes(::A) where {FP <: AbstractFloat, A <: AbstractArray{FP}}
+    return Set([FP])
 end
 
-function floattypes(::AbstractTypes)
+function floattypes(::T) where T <: AbstractTypes
     return Set(subtypes(AbstractFloat))
 end
 
-function floattypes(::AbstractPartition)
+function floattypes(::P) where P <: AbstractPartition
     return Set(subtypes(AbstractFloat))
 end
 
-function floattypes{FP, A, Sim, Part}(::AbstractMetacommunity{FP, A, Sim, Part})
+function floattypes(::M) where
+    {FP <: AbstractFloat, A, Sim, Part,
+     M <: AbstractMetacommunity{FP, A, Sim, Part}}
     return Set([FP])
 end
 
@@ -238,7 +247,9 @@ Checks for type and size compatibility for elements contributing to a Metacommun
 """
 function mcmatch end
 
-function mcmatch(procm::AbstractMatrix, sim::AbstractTypes, part::AbstractPartition)
+function mcmatch(procm::M, sim::T, part::P) where {M <: AbstractMatrix,
+                                                   T <: AbstractTypes,
+                                                   P <: AbstractPartition}
     realm = _calcabundance(sim, procm)[1]
     return typematch(realm, sim, part) &&
         _counttypes(sim, true) == size(procm, 1) &&

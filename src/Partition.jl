@@ -1,12 +1,10 @@
-importall Diversity.API
-
 """
     Subcommunities(num)
 
 AbstractPartition subtype with multiple subcommunities.
 
 """
-immutable Subcommunities <: AbstractPartition
+struct Subcommunities <: Diversity.API.AbstractPartition
     num::Int64
     names::Vector{String}
 
@@ -22,10 +20,12 @@ immutable Subcommunities <: AbstractPartition
     end
 end
 
+import Diversity.API._getsubcommunitynames
 function _getsubcommunitynames(sc::Subcommunities)
     return sc.names
 end
 
+import Diversity.API._countsubcommunities
 function _countsubcommunities(sub::Subcommunities)
     return sub.num
 end
@@ -35,7 +35,7 @@ end
 
 AbstractPartition subtype containing only one subcommunity.
 """
-immutable Onecommunity <: AbstractPartition
+struct Onecommunity <: Diversity.API.AbstractPartition
     namev::Vector{String}
 
     function Onecommunity(name::String = "1")

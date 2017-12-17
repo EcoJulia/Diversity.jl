@@ -1,7 +1,4 @@
-using Compat
 using DataFrames
-
-importall Diversity.API
 
 """
     Metacommunity{FP, ARaw, AProcessed, Part, Sim}
@@ -36,8 +33,8 @@ Metacommunity(abundances::AbstractArray,
   it has not yet been calculated.
 
 """
-type Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
-    AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}
+mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
+    Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}
     rawabundances::ARaw
     processedabundances::AProcessed
     scale::FP
@@ -45,26 +42,24 @@ type Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
     partition::Part
     ordinariness::Nullable{AProcessed}
 
-    function
-        (::Type{Metacommunity{FP, ARaw, AProcessed, Sim,
-                              Part}}){FP <: AbstractFloat,
-                                      ARaw <: AbstractArray,
-                                      AProcessed <: AbstractArray,
-                                      Sim <: AbstractTypes,
-                                      Part <: AbstractPartition}(abundances::ARaw,
-                                                                 matrix::AProcessed,
-                                                                 types::Sim,
-                                                                 part::Part)
+    function Metacommunity{FP, ARaw, AProcessed,
+                           Sim, Part}(abundances::ARaw,
+                                      matrix::AProcessed,
+                                      types::Sim,
+                                      part::Part) where
+        {FP <: AbstractFloat, ARaw <: AbstractArray, AProcessed <: AbstractArray{FP},
+         Sim <: AbstractTypes, Part <: AbstractPartition}
         mcmatch(matrix, types, part) ||
-            error("Type or size mismatch between abundance array, partition and type list")
+            error("Type or size mismatch between abundance array, " *
+                  "partition and type list")
         processedabundances, scale = _calcabundance(types, matrix)
         new{FP, ARaw, AProcessed, Sim, Part}(abundances, processedabundances, scale,
                                              types, part, Nullable{AProcessed}())
     end
 end
 
-function Metacommunity{A <: AbstractArray,
-                       Meta <: AbstractMetacommunity}(abundances::A, meta::Meta)
+function Metacommunity(abundances::A, meta::Meta) where
+    {A <: AbstractArray, Meta <: AbstractMetacommunity}
     types = gettypes(meta)
     part = getpartition(meta)
     mat = reshape(abundances, counttypes(types), countsubcommunities(part))
@@ -76,12 +71,20 @@ function Metacommunity{A <: AbstractArray,
                          typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{Sim <: AbstractTypes,
-                       Part <: AbstractPartition}(abundances::Vector,
-                                                  types::Sim =
-                                                  UniqueTypes(size(abundances, 1)),
-                                                  part::Part =
-                                                  Onecommunity())
+function Metacommunity(abundances::V,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Onecommunity()) where
+    {V <: AbstractVector, Sim <: AbstractTypes, Part <: AbstractPartition}
+    mat = reshape(abundances / sum(abundances), length(abundances), 1)
+    return Metacommunity{eltype(mat), V, typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
+end
+
+function Metacommunity(abundances::V,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Onecommunity()) where
+    {FP <: AbstractFloat, V <: AbstractVector{FP},
+     Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = reshape(abundances, length(abundances), 1)
     if sum(mat) ≉ one(eltype(mat))
         warn("Abundances not normalised to 1, correcting...")
@@ -91,12 +94,20 @@ function Metacommunity{Sim <: AbstractTypes,
                          typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{M <: AbstractMatrix, Sim <: AbstractTypes,
-                       Part <: AbstractPartition}(abundances::M,
-                                                  types::Sim =
-                                                  UniqueTypes(size(abundances, 1)),
-                                                  part::Part =
-                                                  Subcommunities(size(abundances, 2)))
+function Metacommunity(abundances::M,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Subcommunities(size(abundances, 2))) where
+    {M <: AbstractMatrix, Sim <: AbstractTypes, Part <: AbstractPartition}
+    mat = abundances / sum(abundances)
+    return Metacommunity{eltype(mat), M, typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
+end
+
+function Metacommunity(abundances::M,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Subcommunities(size(abundances, 2))) where
+    {FP <: AbstractFloat, M <: AbstractMatrix{FP},
+     Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = abundances
     if sum(mat) ≉ one(eltype(mat))
         warn("Abundances not normalised to 1, correcting...")
@@ -106,44 +117,36 @@ function Metacommunity{M <: AbstractMatrix, Sim <: AbstractTypes,
                          typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{M <: AbstractMatrix}(abundances::Vector, zmatrix::M)
-    mat = reshape(abundances, length(abundances), 1)
-    if sum(mat) ≉ one(eltype(mat))
-        warn("Abundances not normalised to 1, correcting...")
-        mat = mat / sum(mat)
-    end
-    return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
-                         GeneralTypes, Onecommunity}(abundances, mat,
-                                                     GeneralTypes(zmatrix),
-                                                     Onecommunity())
+function Metacommunity(abundances::V, zmatrix::M) where
+    {FP <: AbstractFloat, V <: AbstractVector, M <: AbstractMatrix{FP}}
+    return Metacommunity(abundances, GeneralTypes(zmatrix), Onecommunity())
 end
 
-function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
-    mat = abundances
-    if sum(mat) ≉ one(eltype(mat))
-        warn("Abundances not normalised to 1, correcting...")
-        mat = mat / sum(mat)
-    end
-    return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
-                         GeneralTypes,
-                         Subcommunities}(abundances, mat,
-                                         GeneralTypes(zmatrix),
-                                         Subcommunities(size(abundances, 2)))
+function Metacommunity(abundances::MU, zmatrix::M) where
+    {FP <: AbstractFloat, MU <: AbstractMatrix{FP}, M <: AbstractMatrix{FP}}
+    return Metacommunity(abundances, GeneralTypes(zmatrix),
+                         Subcommunities(size(abundances, 2)))
 end
 
-function _gettypes{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+import Diversity.API._gettypes
+function _gettypes(meta::Metacommunity{FP, A, Sim, Part}) where
+    {FP, A, Sim, Part}
     return meta.types
 end
 
-function _getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+import Diversity.API._getpartition
+function _getpartition(meta::Metacommunity{FP, A, Sim, Part}) where
+    {FP, A, Sim, Part}
     return meta.partition
 end
 
-function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part},
-                                         raw::Bool)
+import Diversity.API._getabundance
+function _getabundance(meta::Metacommunity{FP, A, Sim, Part},
+                       raw::Bool) where {FP, A, Sim, Part}
     return raw ? meta.rawabundances : meta.processedabundances
 end
 
+import Diversity.API._getordinariness!
 function _getordinariness!(meta::Metacommunity)
     if isnull(meta.ordinariness)
         meta.ordinariness = _calcordinariness(meta.types, meta.processedabundances, meta.scale)
@@ -151,6 +154,7 @@ function _getordinariness!(meta::Metacommunity)
     get(meta.ordinariness)
 end
 
+import Diversity.API._getscale
 function _getscale(m::Metacommunity)
     return m.scale
 end

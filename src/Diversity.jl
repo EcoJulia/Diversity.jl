@@ -105,6 +105,7 @@ end
 export getName, getASCIIName, getFullName
 
 module Phylogenetics
+using Diversity
 
 include("Phylogenetics.jl")
 export PhyloTypes

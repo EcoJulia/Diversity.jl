@@ -3,17 +3,14 @@ using Diversity.API
 import Base.start, Base.next, Base.done
 import Base.iteratorsize, Base.length, Base.iteratoreltype, Base.eltype
 
-immutable TypeIterator{M <: AbstractMetacommunity}
+abstract type AbstractIterator{M <: AbstractMetacommunity} end
+
+struct TypeIterator{M} <: AbstractIterator{M}
     metacommunity::M
     viewfn::Function
-
-    (::Type{TypeIterator{M}}){M}(metacommunity::M,
-                                 viewfn::Function) =
-                                     new{M}(metacommunity, viewfn)    
 end
 
-function TypeIterator(meta::AbstractMetacommunity,
-                      fn::Function = getabundance)
+function TypeIterator(fn::Function, meta::M) where M <: AbstractMetacommunity
     n = ndims(fn(meta))
     if n == 2
         viewfn = (meta, i) -> view(fn(meta), i, :)
@@ -22,7 +19,11 @@ function TypeIterator(meta::AbstractMetacommunity,
     else
         error("Can't iterate over types for the function of the metacommunity - $fn")
     end
-    return TypeIterator{typeof(meta)}(meta, viewfn)
+    return TypeIterator(meta, viewfn)
+end
+
+function TypeIterator(meta::M) where M <: AbstractMetacommunity
+    return TypeIterator(getabundance, meta)
 end
 
 function start(ti::TypeIterator)
@@ -49,32 +50,31 @@ function iteratoreltype(ti::Type{TypeIterator})
     return HasEltype()
 end
 
-function eltype{T <: AbstractMetacommunity}(ti::TypeIterator{T})
+function eltype(ti::TypeIterator)
     return eltype(ti.viewfn(ti.metacommunity, 1))
 end
 
-
-
-immutable SubcommunityIterator{M <: AbstractMetacommunity}
+struct SubcommunityIterator{M} <: AbstractIterator{M}
     metacommunity::M
     viewfn::Function
-
-    (::Type{SubcommunityIterator{M}}){M}(metacommunity::M,
-                                         viewfn::Function) =
-                                             new{M}(metacommunity, viewfn)
 end
 
-function SubcommunityIterator(meta::AbstractMetacommunity,
-                              fn::Function = getabundance)
+function SubcommunityIterator(fn::Function,
+                              meta::M) where M <: AbstractMetacommunity
     n = ndims(fn(meta))
     if n == 2
         viewfn = (meta, i) -> view(fn(meta), :, i)
     elseif n == 1
         viewfn = (meta, i) -> view(fn(meta), i)
     else
-        error("Can't iterate over subcommunities for the function of the metacommunity - $fn")
+        error("Can't iterate over subcommunities for the " *
+              "function of the metacommunity - $fn")
     end
-    return SubcommunityIterator{typeof(meta)}(meta, viewfn)
+    return SubcommunityIterator(meta, viewfn)
+end
+
+function SubcommunityIterator(meta::M) where M <: AbstractMetacommunity
+    return SubcommunityIterator(getabundance, meta)
 end
 
 function start(si::SubcommunityIterator)
@@ -101,6 +101,6 @@ function iteratoreltype(si::Type{SubcommunityIterator})
     return HasEltype()
 end
 
-function eltype{T <: AbstractMetacommunity}(si::SubcommunityIterator{T})
+function eltype(si::SubcommunityIterator)
     return eltype(si.viewfn(si.metacommunity, 1))
 end

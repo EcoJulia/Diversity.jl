@@ -1,7 +1,6 @@
 using Phylo
-importall Diversity.API
 
-type PhyloTypes{Tree <: AbstractTree} <: AbstractTypes
+struct PhyloTypes{Tree <: AbstractTree} <: Diversity.API.AbstractTypes
     tree::Tree
     nleaf::Int64
     nancestral::Int64
@@ -10,7 +9,7 @@ type PhyloTypes{Tree <: AbstractTree} <: AbstractTypes
     ancestralmatrix::Matrix{Float64}
     Zmatrix::Matrix{Float64}
 
-    function (::Type{PhyloTypes{Tree}}){Tree <: AbstractTree}(tree::Tree)
+    function PhyloTypes(tree::Tree) where Tree <: AbstractTree
         leafnames = getleafnames(tree)
         nleaf = length(leafnames)
         nleaf > 0 || error("Too few species")
@@ -43,8 +42,10 @@ type PhyloTypes{Tree <: AbstractTree} <: AbstractTypes
         for i in 1:nancestral
             for j in 1:nancestral
                 if haskey(speciesinfo,
-                          "$(speciesinfo[ancestralnames[j]][1]) : $(speciesinfo[ancestralnames[i]][2])")
-                    Zmatrix[i, j] = 1.0 / leafinfo[speciesinfo[ancestralnames[j]][1]]
+                          "$(speciesinfo[ancestralnames[j]][1]) : " *
+                          "$(speciesinfo[ancestralnames[i]][2])")
+                    Zmatrix[i, j] = 1.0 /
+                        leafinfo[speciesinfo[ancestralnames[j]][1]]
                 end
             end
         end
@@ -53,27 +54,32 @@ type PhyloTypes{Tree <: AbstractTree} <: AbstractTypes
     end
 end
 
-PhyloTypes{Tree <: AbstractTree}(tree::Tree) = PhyloTypes{Tree}(tree)
-
+import Diversity.API._gettypenames
 function _gettypenames(phy::PhyloTypes, raw::Bool)
     return raw ? phy.leafnames : phy.ancestralnames
 end
 
+import Diversity.API._counttypes
 function _counttypes(phy::PhyloTypes, raw::Bool)
     return raw ? phy.nleaf : phy.nancestral
 end
 
-function _calcabundance(phy::PhyloTypes, raw::AbstractArray)
+import Diversity.API._calcabundance
+function _calcabundance(phy::PhyloTypes, raw::M) where {FP <: AbstractFloat,
+                                                        M <: AbstractMatrix{FP}}
     processed = phy.ancestralmatrix * raw
     scale = sum(processed)
     processed ./= scale
     return processed, scale
 end
 
-function _calcsimilarity(phy::PhyloTypes, scale::Real)
+import Diversity.API._calcsimilarity
+function _calcsimilarity(phy::PhyloTypes, scale::R) where R <: Real
     return phy.Zmatrix .* scale
 end
 
-function _calcordinariness(phy::PhyloTypes, processed::AbstractArray, scale::Real)
+import Diversity.API._calcordinariness
+function _calcordinariness(phy::PhyloTypes, processed::M, scale::R) where
+    {FP <: AbstractFloat, M <: AbstractMatrix{FP}, R <: Real}
     return (phy.Zmatrix * processed) .* scale
 end

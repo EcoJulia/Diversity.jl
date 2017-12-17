@@ -1,7 +1,5 @@
 using DataFrames
 
-importall Diversity.API
-
 """
     UniqueTypes
 
@@ -11,7 +9,7 @@ identifies all individuals as unique and completely distinct from each
 other.
 
 """
-immutable UniqueTypes <: AbstractTypes
+struct UniqueTypes <: Diversity.API.AbstractTypes
     num::Int64
     names::Vector{String}
 
@@ -27,18 +25,22 @@ immutable UniqueTypes <: AbstractTypes
     end
 end
 
+import Diversity.API._counttypes
 function _counttypes(ut::UniqueTypes, ::Bool)
     return ut.num
 end
 
+import Diversity.API._gettypenames
 function _gettypenames(ut::UniqueTypes, ::Bool)
     return ut.names
 end
 
+import Diversity.API._calcsimilarity
 function _calcsimilarity(ut::UniqueTypes, ::Real)
     return eye(ut.num)
 end
 
+import Diversity.API._calcordinariness
 function _calcordinariness(::UniqueTypes, abundances::AbstractArray, ::Real)
     return abundances
 end
@@ -60,14 +62,14 @@ A subtype of AbstractTypes with similarity between related taxa,
 creating taxonomic similarity matrices.
 
 """
-immutable Taxonomy{FP <: AbstractFloat} <: AbstractTypes
+struct Taxonomy{FP <: AbstractFloat} <: Diversity.API.AbstractTypes
     speciesinfo::DataFrame
     taxa::Dict{Symbol, FP}
     typelabel::Symbol
     
-    function (::Type{Taxonomy{FP}}){FP <: AbstractFloat}(speciesinfo::DataFrame,
-                                                         taxa::Dict{Symbol, FP},
-                                                         typelabel::Symbol)
+    function Taxonomy{FP}(speciesinfo::DataFrame,
+                          taxa::Dict{Symbol, FP},
+                          typelabel::Symbol) where FP <: AbstractFloat
         sort(speciesinfo.colindex.names) == sort([keys(taxa)...]) ||
             error("Taxon labels do not match similarity values")
         typelabel ∈ speciesinfo.colindex.names ||
@@ -81,7 +83,8 @@ function Taxonomy(speciesinfo::DataFrame, taxa::Dict,
     Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
 end
 
-function floattypes{FP}(::Taxonomy{FP})
+import Diversity.API.floattypes
+function floattypes(::Taxonomy{FP}) where FP <: AbstractFloat
     return Set([FP])
 end
 
@@ -108,7 +111,8 @@ subtype simply holds a matrix with similarities between individuals.
 - `z` A two-dimensional matrix representing similarity between
 individuals.
 """
-immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractTypes
+struct GeneralTypes{FP <: AbstractFloat,
+                    M <: AbstractMatrix{FP}} <: Diversity.API.AbstractTypes
     """
         z
 
@@ -130,8 +134,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
     Creates an instance of the GeneralTypes class, with an arbitrary
     similarity matrix.
     """
-    function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
-                                           M <: AbstractMatrix}(zmatrix::M)
+    function GeneralTypes(zmatrix::M) where {FP <: AbstractFloat,
+                                             M <: AbstractMatrix{FP}}
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
@@ -141,9 +145,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
         new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
     end
 
-    function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
-                                           M <: AbstractMatrix}(zmatrix::M,
-                                                                names::Vector{String})
+    function GeneralTypes(zmatrix::M, names::Vector{String}) where
+        {FP <: AbstractFloat, M <: AbstractMatrix{FP}}
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
@@ -157,16 +160,8 @@ immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractType
     end
 end
 
-function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP})
-    GeneralTypes{FP, typeof(zmatrix)}(zmatrix)
-end
-
-function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP},
-                                           names::Vector{String})
-    GeneralTypes{FP, typeof(zmatrix)}(zmatrix, names)
-end
-
-function floattypes{FP, M}(::GeneralTypes{FP, M})
+function floattypes(::GeneralTypes{FP, M}) where {FP <: AbstractFloat,
+                                                  M <: AbstractMatrix{FP}}
     return Set([FP])
 end
 
