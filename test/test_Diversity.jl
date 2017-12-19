@@ -1,10 +1,5 @@
 module TestDiversity
 using Base.Test
-if !isdefined(Base.Test, Symbol("@test_warn"))
-    # Ignore @test_warn unless it's there...
-    macro test_warn(str, test)
-    end
-end
 
 using Diversity
 

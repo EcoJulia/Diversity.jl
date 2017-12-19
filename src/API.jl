@@ -1,12 +1,6 @@
-using Compat
+using Diversity
 
-"""
-    AbstractTypes
-
-Abstract supertype for all similarity types. Its subtypes allow you to
-define how similarity is measured between individuals.
-"""
-@compat abstract type AbstractTypes end
+### AbstractPartition API
 
 """
     AbstractPartition
@@ -15,10 +9,100 @@ Abstract supertype for all partitioning types. AbstractPartition
 subtypes allow you to define how to partition your total metacommunity
 (e.g. an ecosystem) into smaller components (e.g. subcommunities).
 """
-@compat abstract type AbstractPartition end
+abstract type AbstractPartition end
 
 """
-    AbstractMetacommunity{FP, A, Sim, Part}
+    _getsubcommunitynames(p::AbstractPartition)
+
+Returns the names of the subcommunities in the partition
+object. Must be implemented by each AbstractPartition subtype.
+"""
+function _getsubcommunitynames end
+
+"""
+    _countsubcommunities(::AbstractPartition)
+
+Returns number of subcommunities in a partition, p. May be implemented
+by each AbstractPartition subtype. Default is to count length of
+subcommunity name vector.
+"""
+function _countsubcommunities end
+function _countsubcommunities(p::P) where P <: AbstractPartition
+    return length(_getsubcommunitynames(p))
+end
+
+### AbstractTypes API
+
+"""
+    AbstractTypes
+
+Abstract supertype for all similarity types. Its subtypes allow you to
+define how similarity is measured between individuals.
+"""
+abstract type AbstractTypes end
+
+"""
+    _gettypenames(t::AbstractTypes, raw::Bool)
+
+Returns the names of the types in an AbstractTypes object. Must be
+implemented by each AbstractTypes subtype. `raw` determines whether
+to count the number of raw or processed types, which varies, for
+instance, when the types are determined by a phylogeny.
+"""
+function _gettypenames end
+
+"""
+    _calcsimilarity(t::AbstractTypes, scale::Real)
+
+Retrieves (and possibly calculates) a similarity matrix from t. Must be
+implemented by each AbstractTypes subtype.
+"""
+function _calcsimilarity end
+
+"""
+    _counttypes(::AbstractTypes, raw::Bool)
+
+Returns number of types in an AbstractTypes object, t. May be
+implemented by each AbstractTypes subtype. `raw` determines whether
+to count the number of raw or processed types, which varies, for
+instance, when the types are determined by a phylogeny. Default is to
+count length of corresponding types name vector.
+"""
+function _counttypes end
+
+function _counttypes(t::T, raw::Bool) where T <: AbstractTypes
+    return length(_gettypenames(t, raw))
+end
+
+"""
+    _calcabundance(t::AbstractTypes, a::AbstractArray)
+
+Calculates the abundance a for AbstractTypes, t (if necessary). May be
+implemented by each AbstractTypes subtype.
+"""
+function _calcabundance end
+function _calcabundance(::T, a::A) where {T <: AbstractTypes,
+                                          A <: AbstractArray}
+    return a, one(eltype(a))
+end
+
+"""
+    _calcordinariness(t::AbstractTypes, a::AbstractArray, scale::Real)
+
+Calculates the ordinariness of abundance a from AbstractTypes, t. May be
+implemented by each AbstractTypes subtype.
+"""
+function _calcordinariness end
+function _calcordinariness(t::T, a::A, ::Real) where {T <: AbstractTypes,
+                                                      A <: AbstractArray}
+    abundance, scale = _calcabundance(t, a)
+    return _calcsimilarity(t, scale) * abundance
+end
+
+### AbstractMetacommunity API
+
+"""
+    AbstractMetacommunity{FP, ARaw, APro, Sim, Part}
 
 AbstractMetacommunity is the abstract supertype of all metacommunity
 types. AbstractMetacommunity subtypes allow you to define how to
@@ -27,22 +111,11 @@ components (e.g. subcommunities), and how to assess similarity between
 individuals within it.
 
 """
-@compat abstract type AbstractMetacommunity{FP <: AbstractFloat,
-    A <: AbstractArray,
-    Sim <: AbstractTypes,
-    Part <: AbstractPartition} end
-
-import Base.length
-
-# length of an AbstractTypes is the number of types
-function length(t::AbstractTypes)
-    return _counttypes(t)
-end
-
-# length of an AbstractPartition is the number of subcommunities
-function length(p::AbstractPartition)
-    return _countsubcommunities(p)
-end
+abstract type AbstractMetacommunity{FP <: AbstractFloat,
+                                    ARaw <: AbstractArray,
+                                    AProcessed <: AbstractMatrix,
+                                    Sim <: AbstractTypes,
+                                    Part <: AbstractPartition} end
 
 """
     _gettypes(::AbstractMetacommunity)
@@ -61,50 +134,7 @@ implemented by each AbstractMetacommunity subtype.
 function _getpartition end
 
 """
-    _counttypes(::AbstractTypes, input::Bool)
-
-Returns number of types in an AbstractTypes object, t. May be
-implemented by each AbstractTypes subtype. `input` determines whether
-to count the number of input or output types, which varies, for
-instance, when the types are determined by a phylogeny.
-"""
-function _counttypes end
-
-function _counttypes(t::AbstractTypes, input::Bool)
-    return length(_gettypenames(t, input))
-end
-
-"""
-    _countsubcommunities(::AbstractPartition)
-
-Returns number of subcommunities in a partition, p. May be implemented
-by each AbstractPartition subtype.
-"""
-function _countsubcommunities end
-function _countsubcommunities(p::AbstractPartition)
-    return length(_gettypenames(p))
-end
-
-"""
-    _gettypenames(t::AbstractTypes, input::Bool)
-
-Returns the names of the types in an AbstractTypes object. Must be
-implemented by each AbstractTypes subtype. `input` determines whether
-to count the number of input or output types, which varies, for
-instance, when the types are determined by a phylogeny.
-"""
-function _gettypenames end
-
-"""
-    _getsubcommunitynames(p::AbstractPartition)
-
-Returns the names of the subcommunities in the AbstractPartition
-object. Must be implemented by each AbstractPartition subtype.
-"""
-function _getsubcommunitynames end
-
-"""
-    _getabundance(m::AbstractMetacommunity)
+    _getabundance(m::AbstractMetacommunity, raw::Bool)
 
 Returns the abundances array of the metacommunity. Must be implemented
 by each AbstractMetacommunity subtype.
@@ -112,15 +142,27 @@ by each AbstractMetacommunity subtype.
 function _getabundance end
 
 """
-    _getmetaabundance(m::AbstractMetacommunity)
+    _getmetaabundance(m::AbstractMetacommunity, raw::Bool)
 
 Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-function _getmetaabundance(m::AbstractMetacommunity, input::Bool = false)
-    return sumoversubcommunities(m, _getabundance(m, input))
+function _getmetaabundance(m::MC, raw::Bool) where MC <: AbstractMetacommunity
+    return reduce(+, SubcommunityIterator(m) do mc
+                  return _getabundance(mc, raw)
+                  end
+                  )
 end
+
+"""
+    _getscale(m::AbstractMetacommunity)
+
+Returns a scaling factor for the metacommunity (needed for
+phylogenetics). Normally ignored. Must be implemented by each
+AbstractMetacommunity subtype.
+"""
+function _getscale end
 
 """
     _getweight(m::AbstractMetacommunity)
@@ -129,8 +171,11 @@ Returns the subcommunity weights of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
-function _getweight(m::AbstractMetacommunity)
-    return sumovertypes(m, _getabundance(m, false))
+function _getweight(m::MC) where MC <: AbstractMetacommunity
+    return reduce(+, TypeIterator(m) do mc
+                  return _getabundance(mc, false)
+                  end
+                  )
 end
 
 """
@@ -141,8 +186,8 @@ subcommunities. May be implemented by each AbstractMetacommunity
 subtype.
 """
 function _getordinariness! end
-function _getordinariness!(m::AbstractMetacommunity)
-    return _calcordinariness(_gettypes(m), a)
+function _getordinariness!(m::MC) where MC <: AbstractMetacommunity
+    return _calcordinariness(_gettypes(m), _getabundance(m, false), _getscale(m))
 end
 
 """
@@ -153,39 +198,11 @@ metacommunity as a whole. May be implemented by each
 AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
-function _getmetaordinariness!(m::AbstractMetacommunity)
-    return sumoversubcommunities(m, _getordinariness!(m))
+function _getmetaordinariness!(m::MC) where MC <: AbstractMetacommunity
+    return reduce(+, SubcommunityIterator(_getordinariness!, m))
 end
 
-"""
-    _calcabundance(t::AbstractTypes, a::AbstractArray)
-
-Calculates the abundance a for AbstractTypes, t (if necessary). May be
-implemented by each AbstractTypes subtype.
-"""
-function _calcabundance end
-function _calcabundance(::AbstractTypes, a::AbstractArray)
-    return a
-end
-
-"""
-    _calcsimilarity(t::AbstractTypes, a::AbstractArray)
-
-Retrieves (and possibly calculates) a similarity matrix from t. Must be
-implemented by each AbstractTypes subtype.
-"""
-function _calcsimilarity end
-
-"""
-    _calcordinariness(t::AbstractTypes, a::AbstractArray)
-
-Calculates the ordinariness of abundance a from AbstractTypes, t. May be
-implemented by each AbstractTypes subtype.
-"""
-function _calcordinariness end
-function _calcordinariness(t::AbstractTypes, a::AbstractArray)
-    return _calcsimilarity(t, a) * _calcabundance(t, a)
-end
+### Other optional APIs to implement
 
 """
     floattypes(t)
@@ -196,19 +213,21 @@ are compatible with the Diversity-related object, t.
 """
 function floattypes end
 
-function floattypes{A <: AbstractArray}(::A)
-    return Set([eltype(A)])
+function floattypes(::A) where {FP <: AbstractFloat, A <: AbstractArray{FP}}
+    return Set([FP])
 end
 
-function floattypes(::AbstractTypes)
+function floattypes(::T) where T <: AbstractTypes
     return Set(subtypes(AbstractFloat))
 end
 
-function floattypes(::AbstractPartition)
+function floattypes(::P) where P <: AbstractPartition
     return Set(subtypes(AbstractFloat))
 end
 
-function floattypes{FP, A, Sim, Part}(::AbstractMetacommunity{FP, A, Sim, Part})
+function floattypes(::M) where
+    {FP <: AbstractFloat, A, Sim, Part,
+     M <: AbstractMetacommunity{FP, A, Sim, Part}}
     return Set([FP])
 end
 
@@ -222,74 +241,19 @@ have compatible types (using floattypes()).
 typematch(args...) = length(mapreduce(floattypes, ∩, args)) ≥ 1
 
 """
-    mcmatch(a::AbstractArray, part::AbstractPartition, sim::AbstractTypes)
+    mcmatch(procm::AbstractArray, sim::AbstractTypes, part::AbstractPartition)
 
 Checks for type and size compatibility for elements contributing to a Metacommunity
 """
 function mcmatch end
 
-function mcmatch(m::AbstractMatrix, sim::AbstractTypes, part::AbstractPartition)
-    realm = _calcabundance(sim, m)
+function mcmatch(procm::M, sim::T, part::P) where {M <: AbstractMatrix,
+                                                   T <: AbstractTypes,
+                                                   P <: AbstractPartition}
+    realm = _calcabundance(sim, procm)[1]
     return typematch(realm, sim, part) &&
-    _counttypes(sim, false) == size(realm, 1) &&
-    _countsubcommunities(part) == size(realm, 2) &&
-    sum(realm) ≈ 1
-end
-
-function mcmatch(v::AbstractVector, sim::AbstractTypes, part::AbstractPartition)
-    realv = _calcabundance(sim, v)
-    return typematch(realv, sim, part) &&
-    _counttypes(sim, false) == size(realv, 1) &&
-    _countsubcommunities(part) == 1 &&
-    sum(realv) ≈ 1
-end
-
-"""
-    sumovertypes(::AbstractMetacommunity, values)
-
-Sums an array, values, over its types, leaving an array of the same
-dimensionality (but length of 1st dimension is 1).
-"""
-function sumovertypes end
-@inline function sumovertypes{FP, A,
-    Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::A)
-    return mapslices(sum, values, 1)::A
-end
-
-"""
-    sumoversubcommunities(::AbstractMetacommunity, values)
-
-Sums an array, values, over its subcommunities, leaving an array of
-the same dimensionality (but length of 2nd and subsequent dimensions
-are 1).
-"""
-function sumoversubcommunities end
-@inline function sumoversubcommunities{FP, A,
-    Sim, Part}(meta::AbstractMetacommunity{FP, A, Sim, Part}, values::A)
-    return mapslices(sum, values, collect(2:ndims(values)))::A
-end
-@inline function sumoversubcommunities{FP, V <: AbstractVector,
-    Sim, Part}(meta::AbstractMetacommunity{FP, V, Sim, Part}, values::V)
-    return values::V
-end
-
-"""
-    vectorise(arg)
-
-Returns the argument if it is an vector, or reduce an array to a
-vector, or return a vector containing the argument if it's a number
-
-"""
-function vectorise end
-
-@inline function vectorise(arr::AbstractVector)
-  arr
-end
-
-@inline function vectorise(arr::AbstractArray)
-  vec(arr)
-end
-
-@inline function vectorise(num::Real)
-  [num]
+        _counttypes(sim, true) == size(procm, 1) &&
+        _counttypes(sim, false) == size(realm, 1) &&
+        _countsubcommunities(part) == size(realm, 2) &&
+        sum(realm) ≈ 1.0
 end

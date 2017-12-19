@@ -1,19 +1,16 @@
 module TestMetacommunity
 using Base.Test
-if !isdefined(Base.Test, Symbol("@test_warn"))
-    # Ignore @test_warn unless it's there...
-    macro test_warn(str, test)
-    end
-    macro test_nowarn(test)
-    end
-end
 
 using Diversity
+using Diversity.API
 using DataFrames
 
-three = [0.3, 0.3, 0.4]
+three = [0.3
+         0.3
+         0.4]
 oc_count = Onecommunity()
-ab3 = [1 2; 3 0; 0 4]'
+ab3 = [1 3 0
+       2 0 4]
 abnorm = ab3 / sum(ab3)
 sc = Subcommunities(size(ab3, 2))
 @testset "Communities" begin
@@ -25,10 +22,12 @@ sc = Subcommunities(size(ab3, 2))
     @test getsubcommunitynames(Subcommunities(["a", "b"])) == ["a", "b"]
 end
 
-sim = [1.0 0.0 0.0; 1.0 1.0 0.0; 1.0 1.0 1.0]
+sim = [1.0 0.0 0.0
+       1.0 1.0 0.0
+       1.0 1.0 1.0]
 ms = GeneralTypes(sim)
 @testset "GeneralTypes" begin
-    @test calcsimilarity(ms, Matrix{Float64}(3,3)) == sim
+    @test _calcsimilarity(ms, 1.0) == sim
     @test_throws DomainError GeneralTypes(-sim)
     @test_throws MethodError GeneralTypes(ab3)
     @test_throws DimensionMismatch GeneralTypes(convert(Matrix{Float64}, ab3))
@@ -38,8 +37,8 @@ tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
 @testset "Taxonomy" begin
     @test counttypes(tax) == 2
     @test gettypenames(tax) == ["This", "That"]
-    @test_throws ErrorException calcsimilarity(tax, Matrix{Float64}(2,2))
-    @test_throws ErrorException calcordinariness(tax, abnorm)
+    @test_throws ErrorException _calcsimilarity(tax, 1.0)
+    @test_throws ErrorException _calcordinariness(tax, abnorm, 1.0)
     @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
                                          Dict(:Species=>1.0, :Genus=>0.5))
     @test_throws ErrorException Taxonomy(DataFrame(Genus=["This", "That"]),
@@ -66,18 +65,19 @@ g2 = GeneralTypes(eye(2))
     @test isnull(meta.ordinariness)
     @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
     @test !isnull(meta.ordinariness)
-    @test_warn "not normalised" Metacommunity(ab3, g2, sc)
+    @test getabundance(Metacommunity(ab3, g2, sc)) ≈
+        getabundance(Metacommunity(abf, g2, sc))
     @test_warn "not normalised" Metacommunity(ab3 * 1.0, eye(2))
     @test_warn "not normalised" Metacommunity([1.0, 2.0], eye(2))
     @test_warn "not normalised" Metacommunity(ab3 * 1.0, meta2)
     @test_nowarn Metacommunity([0.5, 0.5], eye(2))
     @test_throws ErrorException Metacommunity(abf, ms, sc)
-    @test_throws ErrorException Metacommunity([1, 2, 3]/6, meta2)
-    @test_throws ErrorException getabundance(Metacommunity([0.5 0.5]', meta2))
-    @test getabundance(Metacommunity(abf, eye(2))) ≈ getabundance(Metacommunity(abf, meta2))
+    @test_throws DimensionMismatch Metacommunity([1, 2, 3]/6, meta2)
+    @test_throws DimensionMismatch getabundance(Metacommunity([0.5, 0.5], meta2))
+    @test getabundance(Metacommunity(abf, eye(2))) ≈
+        getabundance(Metacommunity(abf, meta2))
     #@test_throws ErrorException Metacommunity(-abf, g2, sc)
-    @test calcsimilarity(gettypes(meta2), getabundance(meta2)) ≈
-    eye(size(ab3, 1))
+    @test _calcsimilarity(gettypes(meta2), _getscale(meta2)) ≈ eye(size(ab3, 1))
     @test Diversity.floattypes(meta) ⊆ mapreduce(Diversity.floattypes, ∩,
                                                  [getabundance(meta),
                                                   getpartition(meta),

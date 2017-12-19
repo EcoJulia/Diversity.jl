@@ -4,8 +4,8 @@
 
 | **Documentation**                               | **PackageEvaluator**            | **Build Status of master**                                                    |
 |:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
-| [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.5-img]][pkg-0.5-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.6-img]][pkg-0.6-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.6-img]][pkg-0.6-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
+| [![][docs-latest-img]][docs-latest-url]         |  | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 ## Installation
 
@@ -40,19 +40,18 @@ expanded, possibly through interfacing to BioJulia.
 This package is in beta now, but is cross-validated against our R
 package [boydorr/rdiversity][rdiversity-url], which is developed
 independently, so please [raise an issue][issues-url] if you find any
-problems. The phylogenetics submodule in particular is currently under
-heavy development.
+problems. We now use a DataFrame as the common output format for all
+of the diversity calculations to provide consistency with our R
+package [rdiversity][rdiversity-url]. The code is certainly not
+optimised for speed at the moment due to the substantial changes that
+have happened to it under the hood, and the phylogenetics submodule is
+currently under heavy development.
 
-Version 0.3, which has been recently released, has significant
-breaking changes to the standard interface for calculating diversity
-and especially to the output format to provide consistency with our R
-package [rdiversity][rdiversity-url]. In particular, we now use a
-DataFrame as the common output format for all of the diversity
-calculations. The code is certainly not optimised for speed at the
-moment due to the substantial changes that have happened to it under
-the hood.
-
-Older interfaces have been deprecated, and will be removed in v0.4.
+Version 0.4, which has been recently released, has significant
+breaking changes to the underlying code, whuch mean it is no longer
+compatible with Julia v0.5. It is, however, working so far with Julia nightly
+(though other packages need to be updated first). Older interfaces
+from v0.2 have been removed in v0.4.
 
 ## Install
 
@@ -260,8 +259,6 @@ The online documentation for the latest master (unreleased) branch is
 
 [issues-url]: https://github.com/richardreeve/Diversity.jl/issues
 
-[pkg-0.5-img]: http://pkg.julialang.org/badges/Diversity_0.5.svg
-[pkg-0.5-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.5
 [pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
 [pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
 

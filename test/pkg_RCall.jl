@@ -7,8 +7,8 @@ using Diversity.Phylogenetics
 using DataFrames
 using Phylo
 
-# Only run R on unix (macs and linux)
-skipR = !is_unix()
+# Only run R on unix (macs and linux) v0.6 and later
+skipR = !is_unix() || VERSION < v"0.6.0"
 
 # Environment variable to avoid boring R package builds
 skipRinstall = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
@@ -36,9 +36,7 @@ if Rinstalled
             reval("library(rdiversity)");
         else
             rcall(Symbol(".libPaths"), libdir);
-            reval("install.packages(c(\"devtools\", \"ggplot2\", \"ape\", \"plyr\", \"phangorn\", \"tidyr\", \"tibble\", \"phytools\", \"reshape2\", \"ggthemes\"), lib=\"$libdir\", repos=\"http://cran.r-project.org\", type=\"source\")");
-            reval("library(devtools, lib.loc=c(\"$libdir\", .libPaths()))");
-            rcall(:install_git, "https://github.com/boydorr/rdiversity.git", lib=libdir);
+            reval("install.packages(c(\"ape\", \"rdiversity\"), lib=\"$libdir\", repos=\"http://cran.r-project.org\")");
             reval("library(ape, lib.loc=c(\"$libdir\", .libPaths()))");
             reval("library(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))");
         end

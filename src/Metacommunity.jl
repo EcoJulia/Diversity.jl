@@ -1,240 +1,7 @@
-using Compat
 using DataFrames
 
-importall Diversity.API
-
 """
-    Subcommunities(num)
-
-AbstractPartition subtype with multiple subcommunities.
-
-"""
-immutable Subcommunities <: AbstractPartition
-    num::Int64
-    names::Vector{String}
-
-    function Subcommunities(num::Integer)
-        num > 0 || error("Too few subcommunities")
-        new(num, map(x -> "$x", 1:num))
-    end
-
-    function Subcommunities(names::Vector{String})
-        num = length(names)
-        num > 0 || error("Too few subcommunities")
-        new(num, names)
-    end
-end
-
-function _countsubcommunities(sub::Subcommunities)
-    return sub.num
-end
-
-function _getsubcommunitynames(sc::Subcommunities)
-    return sc.names
-end
-
-"""
-    Onecommunity
-
-AbstractPartition subtype containing only one subcommunity.
-"""
-immutable Onecommunity <: AbstractPartition
-    name::Vector{String}
-
-    function Onecommunity(name::String = "1")
-        new([name])
-    end
-end
-
-function _countsubcommunities(::Onecommunity)
-    return 1
-end
-
-function _getsubcommunitynames(oc::Onecommunity)
-    return oc.name
-end
-
-"""
-    UniqueTypes
-
-A subtype of AbstractTypes where all individuals are completely
-distinct. This type is the simplest AbstractTypes subtype, which
-identifies all individuals as unique and completely distinct from each
-other.
-
-"""
-immutable UniqueTypes <: AbstractTypes
-    num::Int64
-    names::Vector{String}
-
-    function UniqueTypes(num::Integer)
-        num > 0 || error("Too few species")
-        new(num, map(x -> "$x", 1:num))
-    end
-
-    function UniqueTypes(names::Vector{String})
-        num = length(names)
-        num > 0 || error("Too few species")
-        new(num, names)
-    end
-end
-
-function _counttypes(ut::UniqueTypes, ::Bool)
-    return ut.num
-end
-
-function _gettypenames(ut::UniqueTypes, ::Bool)
-    return ut.names
-end
-    
-function _calcsimilarity(ut::UniqueTypes, ::AbstractArray)
-    return eye(ut.num)
-end
-
-function _calcordinariness(::UniqueTypes, abundances::AbstractArray)
-    return abundances
-end
-
-"""
-    Species
-
-A subtype of AbstractTypes where all species are completely distinct.
-This type is the simplest AbstractTypes subtype, which identifies all
-species as unique and completely distinct from each other.
-
-"""
-const Species = UniqueTypes
-
-"""
-    Taxonomy
-
-A subtype of AbstractTypes with similarity between related taxa,
-creating taxonomic similarity matrices.
-
-"""
-immutable Taxonomy{FP <: AbstractFloat} <: AbstractTypes
-    speciesinfo::DataFrame
-    taxa::Dict{Symbol, FP}
-    typelabel::Symbol
-    
-    function (::Type{Taxonomy{FP}}){FP <: AbstractFloat}(speciesinfo::DataFrame,
-                                                         taxa::Dict{Symbol, FP},
-                                                         typelabel::Symbol)
-        sort(speciesinfo.colindex.names) == sort([keys(taxa)...]) ||
-        error("Taxon labels do not match similarity values")
-        typelabel ∈ speciesinfo.colindex.names ||
-        error("$typelabel not found in DataFrame column names")
-        new{FP}(speciesinfo, taxa, typelabel)
-    end
-end
-
-function Taxonomy(speciesinfo::DataFrame, taxa::Dict,
-                  typelabel::Symbol = :Species)
-    Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
-end
-
-function floattypes{FP}(::Taxonomy{FP})
-    return Set([FP])
-end
-
-function _counttypes(tax::Taxonomy, ::Bool)
-    return nrow(tax.speciesinfo)
-end
-
-function _gettypenames(tax::Taxonomy, ::Bool)
-    return tax.speciesinfo[tax.typelabel]
-end
-
-function _calcsimilarity(::Taxonomy, ::AbstractArray)
-    error("Can't generate a taxonomic similarity matrix yet")
-end
-
-"""
-    GeneralTypes{FP, M}
-
-An AbstractTypes subtype with a general similarity matrix. This
-subtype simply holds a matrix with similarities between individuals.
-
-# Members:
-
-- `z` A two-dimensional matrix representing similarity between
-individuals.
-"""
-immutable GeneralTypes{FP <: AbstractFloat, M <: AbstractMatrix} <: AbstractTypes
-    """
-        z
-
-    A two-dimensional matrix representing similarity between
-    individuals.
-    """
-    z::M
-
-    """
-        names
-
-    Optional vector of type names.
-    """
-    names::Vector{String}
-
-    """
-    # Constructor for GeneralTypes
-
-    Creates an instance of the GeneralTypes class, with an arbitrary
-    similarity matrix.
-    """
-    function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
-        M <: AbstractMatrix}(zmatrix::M)
-        size(zmatrix, 1) == size(zmatrix, 2) ||
-        throw(DimensionMismatch("Similarity matrix is not square"))
-
-        minimum(zmatrix) ≥ 0 || throw(DomainError())
-        maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
-
-        new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
-    end
-
-    function (::Type{GeneralTypes{FP, M}}){FP <: AbstractFloat,
-        M <: AbstractMatrix}(zmatrix::M, names::Vector{String})
-        size(zmatrix, 1) == size(zmatrix, 2) ||
-        throw(DimensionMismatch("Similarity matrix is not square"))
-
-        minimum(zmatrix) ≥ 0 || throw(DomainError())
-        maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
-
-        length(names) == size(zmatrix, 1) ||
-        error("Species name vector does not match similarity matrix")
-
-        new{FP, M}(zmatrix, names)
-    end
-end
-
-function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP})
-    GeneralTypes{FP, typeof(zmatrix)}(zmatrix)
-end
-
-function GeneralTypes{FP <: AbstractFloat}(zmatrix::AbstractMatrix{FP},
-                                           names::Vector{String})
-    GeneralTypes{FP, typeof(zmatrix)}(zmatrix, names)
-end
-
-function floattypes{FP, M}(::GeneralTypes{FP, M})
-    return Set([FP])
-end
-
-function _counttypes(gt::GeneralTypes, ::Bool)
-    return size(gt.z, 1)
-end
-
-function _gettypenames(gt::GeneralTypes, ::Bool)
-    return gt.names
-end
-
-function _calcsimilarity(gt::GeneralTypes, ::AbstractArray)
-    return gt.z
-end
-
-"""
-    Metacommunity{FP, A, Part, Sim}
+    Metacommunity{FP, ARaw, AProcessed, Part, Sim}
 
 Metacommunity type, representing a whole metacommunity containing a
 single community or a collection of subcommunities. The metacommunity
@@ -246,7 +13,9 @@ for similarity between individuals.
 
 # Constructor:
 
-Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::AbstractTypes)
+Metacommunity(abundances::AbstractArray,
+              part::AbstractPartition,
+              types::AbstractTypes)
 
 # Members:
 
@@ -264,128 +33,128 @@ Metacommunity(abundances::AbstractArray, part::AbstractPartition, types::Abstrac
   it has not yet been calculated.
 
 """
-type Metacommunity{FP, A, Sim, Part} <: AbstractMetacommunity{FP, A, Sim, Part}
-    sourceabundances::A
-    internalabundances::A
+mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
+    Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}
+    rawabundances::ARaw
+    processedabundances::AProcessed
+    scale::FP
     types::Sim
     partition::Part
-    ordinariness::Nullable{A}
+    ordinariness::Nullable{AProcessed}
 
-    function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
-        A <: AbstractArray,
-        Sim <: AbstractTypes,
-        Part <: AbstractPartition}(abundances::A, types::Sim, part::Part)
-        mcmatch(abundances, types, part) ||
-            throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        internalabundances = calcabundance(types, abundances)
-        new{FP, A, Sim, Part}(abundances, internalabundances, types, part, Nullable{A}())
-    end
-
-    function (::Type{Metacommunity{FP, A, Sim, Part}}){FP <: AbstractFloat,
-        A <: AbstractArray,
-        Sim <: AbstractTypes,
-        Part <: AbstractPartition}(abundances::A,
-                                   meta::Metacommunity{FP, A, Sim, Part})
-        mcmatch(abundances, meta.types, meta.part) ||
-            throw(ErrorException("Type or size mismatch between abundance array, partition and type list"))
-        internalabundances = calcabundance(types, abundances)
-        new{FP, A, Sim, Part}(abundances, internalabundances, meta.types,
-                              meta.part, meta.ordinariness)
+    function Metacommunity{FP, ARaw, AProcessed,
+                           Sim, Part}(abundances::ARaw,
+                                      matrix::AProcessed,
+                                      types::Sim,
+                                      part::Part) where
+        {FP <: AbstractFloat, ARaw <: AbstractArray, AProcessed <: AbstractArray{FP},
+         Sim <: AbstractTypes, Part <: AbstractPartition}
+        mcmatch(matrix, types, part) ||
+            error("Type or size mismatch between abundance array, " *
+                  "partition and type list")
+        processedabundances, scale = _calcabundance(types, matrix)
+        new{FP, ARaw, AProcessed, Sim, Part}(abundances, processedabundances, scale,
+                                             types, part, Nullable{AProcessed}())
     end
 end
 
-function Metacommunity{A <: AbstractArray,
-    Meta <: AbstractMetacommunity}(abundances::A, meta::Meta)
+function Metacommunity(abundances::A, meta::Meta) where
+    {A <: AbstractArray, Meta <: AbstractMetacommunity}
     types = gettypes(meta)
     part = getpartition(meta)
-    if sum(abundances) ≈ one(eltype(abundances))
-        return Metacommunity{eltype(A), A,
-        typeof(types), typeof(part)}(abundances, types, part)
-    else
+    mat = reshape(abundances, counttypes(types), countsubcommunities(part))
+    if sum(mat) ≉ one(eltype(mat))
         warn("Abundances not normalised to 1, correcting...")
-        ab = abundances / sum(abundances)
-        return Metacommunity{eltype(ab), typeof(ab),
-        typeof(types), typeof(part)}(ab, types, part)
+        mat = mat / sum(mat)
     end
+    return Metacommunity{eltype(mat), A, typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{M <: AbstractMatrix, Sim <: AbstractTypes,
-    Part <: AbstractPartition}(abundances::M,
-                               types::Sim = UniqueTypes(size(abundances, 1)),
-                               part::Part = Subcommunities(size(abundances, 2)))
-    if sum(abundances) ≈ one(eltype(abundances))
-        return Metacommunity{eltype(M), M,
-        typeof(types), typeof(part)}(abundances, types, part)
-    else
-        warn("Abundances not normalised to 1, correcting...")
-        ab = abundances / sum(abundances)
-        return Metacommunity{eltype(ab), typeof(ab),
-        typeof(types), typeof(part)}(ab, types, part)
-    end
+function Metacommunity(abundances::V,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Onecommunity()) where
+    {V <: AbstractVector, Sim <: AbstractTypes, Part <: AbstractPartition}
+    mat = reshape(abundances / sum(abundances), length(abundances), 1)
+    return Metacommunity{eltype(mat), V, typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{V <: AbstractVector, Sim <: AbstractTypes,
-    Part <: AbstractPartition}(abundances::V,
-                               types::Sim = UniqueTypes(size(abundances, 1)),
-                               part::Part = Onecommunity())
-    if sum(abundances) ≈ one(eltype(abundances))
-        return Metacommunity{eltype(V), V,
-        typeof(types), typeof(part)}(abundances, types, part)
-    else
+function Metacommunity(abundances::V,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Onecommunity()) where
+    {FP <: AbstractFloat, V <: AbstractVector{FP},
+     Sim <: AbstractTypes, Part <: AbstractPartition}
+    mat = reshape(abundances, length(abundances), 1)
+    if sum(mat) ≉ one(eltype(mat))
         warn("Abundances not normalised to 1, correcting...")
-        ab = abundances / sum(abundances)
-        return Metacommunity{eltype(ab), typeof(ab),
-        typeof(types), typeof(part)}(ab, types, part)
+        mat = mat / sum(mat)
     end
+    return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{V <: AbstractVector,
-    M <: AbstractMatrix}(abundances::V, zmatrix::M)
-    if sum(abundances) ≈ one(eltype(abundances))
-        return Metacommunity{eltype(V), V,
-        GeneralTypes, Onecommunity}(abundances,
-                                    GeneralTypes(zmatrix),
-                                    Onecommunity())
-    else
-        warn("Abundances not normalised to 1, correcting...")
-        ab = abundances / sum(abundances)
-        return Metacommunity{eltype(ab), typeof(ab),
-        GeneralTypes, Onecommunity}(ab, GeneralTypes(zmatrix), Onecommunity())
-    end
-    
+function Metacommunity(abundances::M,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Subcommunities(size(abundances, 2))) where
+    {M <: AbstractMatrix, Sim <: AbstractTypes, Part <: AbstractPartition}
+    mat = abundances / sum(abundances)
+    return Metacommunity{eltype(mat), M, typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function Metacommunity{M <: AbstractMatrix}(abundances::M, zmatrix::M)
-    if sum(abundances) ≈ one(eltype(abundances))
-        return Metacommunity{eltype(M), M,
-        GeneralTypes, Subcommunities}(abundances,
-                                      GeneralTypes(zmatrix),
-                                      Subcommunities(size(abundances, 2)))
-    else
+function Metacommunity(abundances::M,
+                       types::Sim = UniqueTypes(size(abundances, 1)),
+                       part::Part = Subcommunities(size(abundances, 2))) where
+    {FP <: AbstractFloat, M <: AbstractMatrix{FP},
+     Sim <: AbstractTypes, Part <: AbstractPartition}
+    mat = abundances
+    if sum(mat) ≉ one(eltype(mat))
         warn("Abundances not normalised to 1, correcting...")
-        ab = abundances / sum(abundances)
-        return Metacommunity{eltype(ab), typeof(ab),
-        GeneralTypes, Subcommunities}(ab, GeneralTypes(zmatrix),
-                                      Subcommunities(size(ab, 2)))
+        mat = mat / sum(mat)
     end
+    return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
+                         typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
-function _gettypes{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+function Metacommunity(abundances::V, zmatrix::M) where
+    {FP <: AbstractFloat, V <: AbstractVector, M <: AbstractMatrix{FP}}
+    return Metacommunity(abundances, GeneralTypes(zmatrix), Onecommunity())
+end
+
+function Metacommunity(abundances::MU, zmatrix::M) where
+    {FP <: AbstractFloat, MU <: AbstractMatrix{FP}, M <: AbstractMatrix{FP}}
+    return Metacommunity(abundances, GeneralTypes(zmatrix),
+                         Subcommunities(size(abundances, 2)))
+end
+
+import Diversity.API._gettypes
+function _gettypes(meta::Metacommunity{FP, A, Sim, Part}) where
+    {FP, A, Sim, Part}
     return meta.types
 end
 
-function _getpartition{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part})
+import Diversity.API._getpartition
+function _getpartition(meta::Metacommunity{FP, A, Sim, Part}) where
+    {FP, A, Sim, Part}
     return meta.partition
 end
 
-function _getabundance{FP, A, Sim, Part}(meta::Metacommunity{FP, A, Sim, Part},
-                                         input::Bool)
-    return input ? meta.sourceabundances : meta.internalabundances
+import Diversity.API._getabundance
+function _getabundance(meta::Metacommunity{FP, A, Sim, Part},
+                       raw::Bool) where {FP, A, Sim, Part}
+    return raw ? meta.rawabundances : meta.processedabundances
 end
 
+import Diversity.API._getordinariness!
 function _getordinariness!(meta::Metacommunity)
     if isnull(meta.ordinariness)
-        meta.ordinariness = _calcordinariness(meta.types, meta.sourceabundances)
+        meta.ordinariness = _calcordinariness(meta.types, meta.processedabundances, meta.scale)
     end
     get(meta.ordinariness)
+end
+
+import Diversity.API._getscale
+function _getscale(m::Metacommunity)
+    return m.scale
 end
