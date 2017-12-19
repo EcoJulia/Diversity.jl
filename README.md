@@ -17,8 +17,10 @@ julia> Pkg.add("Diversity")
 
 ## Project Status
 
-The package is tested against the current Julia `0.6` release, the
-last Julia `0.5` release and nightly on Linux, OS X, and Windows.
+The package is tested against the current Julia `0.6` release, and
+nightly on Linux, OS X, and Windows. It is currently broken on
+`nightly`, but this is mostly due to problems with other packages and
+will be fixed as soon as possible...
 
 ## Contributing and Questions
 
