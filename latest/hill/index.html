@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.2.2">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.2.5">
     
     
       
@@ -40,7 +40,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.7a4cdee3.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.bcabdff3.css">
       
     
     
@@ -433,7 +433,7 @@ julia&gt; diversities = hillnumber(community, [0, 1, 2])
 <p><a id='Diversity.Hill' href='#Diversity.Hill'>#</a>
 <strong><code>Diversity.Hill</code></strong> &mdash; <em>Module</em>.</p>
 <p><a href="http://www.jstor.org/stable/1934352">Hill numbers</a> are found in the <strong>Diversity.Hill</strong> package.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Diversity.jl#L328-L331' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/6177bcb4645dc7861a054584240ca907ccbdc0f1/src/Diversity.jl#L348-L351' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Hill.hillnumber-Tuple{Any,Any}' href='#Diversity.Hill.hillnumber-Tuple{Any,Any}'>#</a>
 <strong><code>Diversity.Hill.hillnumber</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>hillnumber(proportions, qs)
@@ -450,7 +450,7 @@ julia&gt; diversities = hillnumber(community, [0, 1, 2])
 <ul>
 <li>Diversity of order qs (single number or vector of diversities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/d4de824b2fa0214665f761bb12b482ec15d68cc5/src/Hill.jl#L3-L20' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/6177bcb4645dc7861a054584240ca907ccbdc0f1/src/Hill.jl#L3-L20' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="../api/#Diversity.API"><code>Diversity.API</code></a></li>
@@ -491,14 +491,13 @@ julia&gt; diversities = hillnumber(community, [0, 1, 2])
 <li><a href="../api/#Diversity.API._getmetaordinariness!"><code>Diversity.API._getmetaordinariness!</code></a></li>
 <li><a href="../api/#Diversity.API._getordinariness!"><code>Diversity.API._getordinariness!</code></a></li>
 <li><a href="../api/#Diversity.API._getpartition"><code>Diversity.API._getpartition</code></a></li>
+<li><a href="../api/#Diversity.API._getscale"><code>Diversity.API._getscale</code></a></li>
 <li><a href="../api/#Diversity.API._getsubcommunitynames"><code>Diversity.API._getsubcommunitynames</code></a></li>
 <li><a href="../api/#Diversity.API._gettypenames"><code>Diversity.API._gettypenames</code></a></li>
 <li><a href="../api/#Diversity.API._gettypes"><code>Diversity.API._gettypes</code></a></li>
 <li><a href="../api/#Diversity.API._getweight"><code>Diversity.API._getweight</code></a></li>
 <li><a href="../api/#Diversity.API.floattypes"><code>Diversity.API.floattypes</code></a></li>
 <li><a href="../api/#Diversity.API.mcmatch"><code>Diversity.API.mcmatch</code></a></li>
-<li><a href="../api/#Diversity.API.sumoversubcommunities"><code>Diversity.API.sumoversubcommunities</code></a></li>
-<li><a href="../api/#Diversity.API.sumovertypes"><code>Diversity.API.sumovertypes</code></a></li>
 <li><a href="../api/#Diversity.API.typematch-Tuple"><code>Diversity.API.typematch</code></a></li>
 <li><a href="../ecology/#Diversity.Ecology.generalisedjaccard"><code>Diversity.Ecology.generalisedjaccard</code></a></li>
 <li><a href="../ecology/#Diversity.Ecology.generalisedrichness"><code>Diversity.Ecology.generalisedrichness</code></a></li>
@@ -511,9 +510,7 @@ julia&gt; diversities = hillnumber(community, [0, 1, 2])
 <li><a href="./#Diversity.Hill.hillnumber-Tuple{Any,Any}"><code>Diversity.Hill.hillnumber</code></a></li>
 <li><a href="../jost/#Diversity.Jost.jostalpha-Tuple{AbstractArray{T,2} where T,Any}"><code>Diversity.Jost.jostalpha</code></a></li>
 <li><a href="../jost/#Diversity.Jost.jostbeta-Tuple{AbstractArray{T,2} where T,Any}"><code>Diversity.Jost.jostbeta</code></a></li>
-<li><a href="..#Diversity.calcabundance-Tuple{Diversity.API.AbstractTypes,AbstractArray}"><code>Diversity.calcabundance</code></a></li>
-<li><a href="..#Diversity.calcordinariness-Tuple{Diversity.API.AbstractTypes,AbstractArray}"><code>Diversity.calcordinariness</code></a></li>
-<li><a href="..#Diversity.calcsimilarity-Tuple{Diversity.API.AbstractTypes,AbstractArray}"><code>Diversity.calcsimilarity</code></a></li>
+<li><a href="..#Diversity.calcsimilarity-Tuple{Diversity.API.AbstractTypes,Real}"><code>Diversity.calcsimilarity</code></a></li>
 <li><a href="..#Diversity.countsubcommunities"><code>Diversity.countsubcommunities</code></a></li>
 <li><a href="..#Diversity.counttypes"><code>Diversity.counttypes</code></a></li>
 <li><a href="..#Diversity.diversity-Tuple{Any,Any,Diversity.API.AbstractMetacommunity,Any}"><code>Diversity.diversity</code></a></li>
