@@ -46,14 +46,14 @@ problems. We now use a DataFrame as the common output format for all
 of the diversity calculations to provide consistency with our R
 package [rdiversity][rdiversity-url]. The code is certainly not
 optimised for speed at the moment due to the substantial changes that
-have happened to it under the hood, and the phylogenetics submodule is
-currently under heavy development.
+have happened to it under the hood, and the Phylogenetics submodule is
+also new, and may need further improvements.
 
 Version 0.4, which has been recently released, has significant
 breaking changes to the underlying code, whuch mean it is no longer
-compatible with Julia v0.5. It is, however, working so far with Julia nightly
-(though other packages need to be updated first). Older interfaces
-from v0.2 have been removed in v0.4.
+compatible with Julia v0.5. It is periodically working with Julia
+nightly and I aim to keep it that way (though other packages need to
+be updated too). Older interfaces from v0.2 have been removed in v0.4.
 
 ## Install
 
