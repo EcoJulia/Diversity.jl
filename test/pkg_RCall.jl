@@ -36,7 +36,7 @@ if Rinstalled
             reval("library(rdiversity)");
         else
             rcall(Symbol(".libPaths"), libdir);
-            reval("install.packages(c(\"ape\", \"rdiversity\"), lib=\"$libdir\", repos=\"http://cran.r-project.org\")");
+            reval("install.packages(c(\"ape\", \"rdiversity\"), lib=\"$libdir\", repos=\"http://cran.r-project.org\", type=\"source\")");
             reval("library(ape, lib.loc=c(\"$libdir\", .libPaths()))");
             reval("library(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))");
         end
