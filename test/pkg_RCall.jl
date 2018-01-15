@@ -7,11 +7,11 @@ using Diversity.Phylogenetics
 using DataFrames
 using Phylo
 
-# Only run R on unix (macs and linux) v0.6 and later
-skipR = !is_unix() || VERSION < v"0.6.0"
-
 # Environment variable to avoid boring R package builds
 skipRinstall = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
+
+# Only run R on linux with >= v0.6 or when R is installed because SKIP_R_INSTALL is set
+skipR = !(skipRinstall || is_linux()) || VERSION < v"0.6.0"
 
 Rinstalled = false
 try
