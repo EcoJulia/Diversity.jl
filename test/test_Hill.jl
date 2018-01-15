@@ -1,5 +1,5 @@
 module TestHill
-using Base.Test
+using Compat.Test
 
 # Checking Hill numbers
 using Diversity

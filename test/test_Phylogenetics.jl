@@ -1,5 +1,5 @@
 module TestPhylogenetics
-using Base.Test
+using Compat.Test
 
 using Phylo
 using Diversity

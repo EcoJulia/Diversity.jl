@@ -1,5 +1,6 @@
 module TestIterators
-using Base.Test
+using Compat.Test
+
 using Phylo
 using Diversity
 using Diversity.Phylogenetics

@@ -1,5 +1,5 @@
 module TestEcology
-using Base.Test
+using Compat.Test
 
 # Looking at relations to historical measures, updated with similarity
 # and partitioning

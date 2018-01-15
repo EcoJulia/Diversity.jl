@@ -1,5 +1,5 @@
 module TestJost
-using Base.Test
+using Compat.Test
 
 # Checking Jost's diversities
 using Diversity

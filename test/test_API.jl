@@ -1,5 +1,5 @@
 module TestInterface
-using Base.Test
+using Compat.Test
 
 using Diversity.API
 

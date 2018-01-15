@@ -1,5 +1,5 @@
 module ValidateRCall_rdiversity
-using Base.Test
+using Compat.Test
 
 using Diversity
 using Diversity.ShortNames

@@ -1,8 +1,8 @@
 module TestGeneralised
+using Compat.Test
 
 using Diversity
 using Diversity.ShortNames
-using Base.Test
 
 metacom = Metacommunity([1 2; 1 2]/6)
 
