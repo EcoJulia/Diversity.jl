@@ -5,7 +5,7 @@
 | **Documentation**                               | **PackageEvaluator**            | **Build Status of master**                                                    |
 |:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
 | [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.6-img]][pkg-0.6-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.7-img]][pkg-0.7-url]  [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.7-img]][pkg-0.7-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 ## Installation
 
