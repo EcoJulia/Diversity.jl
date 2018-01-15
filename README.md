@@ -5,7 +5,7 @@
 | **Documentation**                               | **PackageEvaluator**            | **Build Status of master**                                                    |
 |:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
 | [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.6-img]][pkg-0.6-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url]         |  | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.7-img]][pkg-0.7-url]  [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 ## Installation
 
@@ -263,6 +263,9 @@ The online documentation for the latest master (unreleased) branch is
 
 [pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
 [pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
+
+[pkg-0.7-img]: http://pkg.julialang.org/badges/Diversity_0.7.svg
+[pkg-0.7-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.7
 
 [paper-url]: http://arxiv.org/abs/1404.6520
 
