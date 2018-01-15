@@ -1,5 +1,5 @@
 module ValidateDistances
-using Base.Test
+using Compat.Test
 
 using Diversity
 using Diversity.ShortNames
