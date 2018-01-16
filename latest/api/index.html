@@ -424,7 +424,7 @@
 <p><a id='Diversity.API' href='#Diversity.API'>#</a>
 <strong><code>Diversity.API</code></strong> &mdash; <em>Module</em>.</p>
 <p>The Diversity.API submodule should be <code>import</code>ed if you want to create a new type, partition or metacommunity subtype. Otherwise it can be ignored.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/Diversity.jl#L24-L28' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/Diversity.jl#L24-L28' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API.AbstractMetacommunity' href='#Diversity.API.AbstractMetacommunity'>#</a>
 <strong><code>Diversity.API.AbstractMetacommunity</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>AbstractMetacommunity{FP, ARaw, APro, Sim, Part}
@@ -432,7 +432,7 @@
 
 
 <p>AbstractMetacommunity is the abstract supertype of all metacommunity types. AbstractMetacommunity subtypes allow you to define how to partition your total metacommunity (e.g. an ecosystem) into smaller components (e.g. subcommunities), and how to assess similarity between individuals within it.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L104-L113' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L104-L113' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API.AbstractPartition' href='#Diversity.API.AbstractPartition'>#</a>
 <strong><code>Diversity.API.AbstractPartition</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>AbstractPartition
@@ -440,7 +440,7 @@
 
 
 <p>Abstract supertype for all partitioning types. AbstractPartition subtypes allow you to define how to partition your total metacommunity (e.g. an ecosystem) into smaller components (e.g. subcommunities).</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L5-L11' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L5-L11' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API.AbstractTypes' href='#Diversity.API.AbstractTypes'>#</a>
 <strong><code>Diversity.API.AbstractTypes</code></strong> &mdash; <em>Type</em>.</p>
 <div class="codehilite"><pre><span></span>AbstractTypes
@@ -448,7 +448,7 @@
 
 
 <p>Abstract supertype for all similarity types. Its subtypes allow you to define how similarity is measured between individuals.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L36-L41' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L36-L41' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._calcabundance' href='#Diversity.API._calcabundance'>#</a>
 <strong><code>Diversity.API._calcabundance</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_calcabundance(t::AbstractTypes, a::AbstractArray)
@@ -456,7 +456,7 @@
 
 
 <p>Calculates the abundance a for AbstractTypes, t (if necessary). May be implemented by each AbstractTypes subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L77-L82' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L77-L82' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._calcordinariness' href='#Diversity.API._calcordinariness'>#</a>
 <strong><code>Diversity.API._calcordinariness</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_calcordinariness(t::AbstractTypes, a::AbstractArray, scale::Real)
@@ -464,7 +464,7 @@
 
 
 <p>Calculates the ordinariness of abundance a from AbstractTypes, t. May be implemented by each AbstractTypes subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L89-L94' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L89-L94' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._calcsimilarity' href='#Diversity.API._calcsimilarity'>#</a>
 <strong><code>Diversity.API._calcsimilarity</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_calcsimilarity(t::AbstractTypes, scale::Real)
@@ -472,7 +472,7 @@
 
 
 <p>Retrieves (and possibly calculates) a similarity matrix from t. Must be implemented by each AbstractTypes subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L54-L59' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L54-L59' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._countsubcommunities' href='#Diversity.API._countsubcommunities'>#</a>
 <strong><code>Diversity.API._countsubcommunities</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_countsubcommunities(::AbstractPartition)
@@ -480,7 +480,7 @@
 
 
 <p>Returns number of subcommunities in a partition, p. May be implemented by each AbstractPartition subtype. Default is to count length of subcommunity name vector.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L22-L28' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L22-L28' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._counttypes' href='#Diversity.API._counttypes'>#</a>
 <strong><code>Diversity.API._counttypes</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_counttypes(::AbstractTypes, raw::Bool)
@@ -488,7 +488,7 @@
 
 
 <p>Returns number of types in an AbstractTypes object, t. May be implemented by each AbstractTypes subtype. <code>raw</code> determines whether to count the number of raw or processed types, which varies, for instance, when the types are determined by a phylogeny. Default is to count length of corresponding types name vector.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L62-L70' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L62-L70' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getabundance' href='#Diversity.API._getabundance'>#</a>
 <strong><code>Diversity.API._getabundance</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getabundance(m::AbstractMetacommunity, raw::Bool)
@@ -496,7 +496,7 @@
 
 
 <p>Returns the abundances array of the metacommunity. Must be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L136-L141' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L136-L141' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getmetaabundance' href='#Diversity.API._getmetaabundance'>#</a>
 <strong><code>Diversity.API._getmetaabundance</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getmetaabundance(m::AbstractMetacommunity, raw::Bool)
@@ -504,7 +504,7 @@
 
 
 <p>Returns the metacommunity abundances of the metacommunity. May be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L144-L149' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L144-L149' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getmetaordinariness!' href='#Diversity.API._getmetaordinariness!'>#</a>
 <strong><code>Diversity.API._getmetaordinariness!</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getmetaordinariness!(m::AbstractMetacommunity)
@@ -512,7 +512,7 @@
 
 
 <p>Returns (and possibly calculates) the ordinariness of the metacommunity as a whole. May be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L193-L199' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L193-L199' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getordinariness!' href='#Diversity.API._getordinariness!'>#</a>
 <strong><code>Diversity.API._getordinariness!</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getordinariness!(m::AbstractMetacommunity)
@@ -520,7 +520,7 @@
 
 
 <p>Returns (and possibly calculates) the ordinariness array of the subcommunities. May be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L181-L187' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L181-L187' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getpartition' href='#Diversity.API._getpartition'>#</a>
 <strong><code>Diversity.API._getpartition</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getpartition(::AbstractMetacommunity)
@@ -528,7 +528,7 @@
 
 
 <p>Returns the AbstractPartition component of the metacommunity. Must be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L128-L133' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L128-L133' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getscale' href='#Diversity.API._getscale'>#</a>
 <strong><code>Diversity.API._getscale</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getscale(m::AbstractMetacommunity)
@@ -536,7 +536,7 @@
 
 
 <p>Returns a scaling factor for the metacommunity (needed for phylogenetics). Normally ignored. Must be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L158-L164' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L158-L164' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getsubcommunitynames' href='#Diversity.API._getsubcommunitynames'>#</a>
 <strong><code>Diversity.API._getsubcommunitynames</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getsubcommunitynames(p::AbstractPartition)
@@ -544,7 +544,7 @@
 
 
 <p>Returns the names of the subcommunities in the partition object. Must be implemented by each AbstractPartition subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L14-L19' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L14-L19' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._gettypenames' href='#Diversity.API._gettypenames'>#</a>
 <strong><code>Diversity.API._gettypenames</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_gettypenames(t::AbstractTypes, raw::Bool)
@@ -552,7 +552,7 @@
 
 
 <p>Returns the names of the types in an AbstractTypes object. Must be implemented by each AbstractTypes subtype. <code>raw</code> determines whether to count the number of raw or processed types, which varies, for instance, when the types are determined by a phylogeny.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L44-L51' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L44-L51' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._gettypes' href='#Diversity.API._gettypes'>#</a>
 <strong><code>Diversity.API._gettypes</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_gettypes(::AbstractMetacommunity)
@@ -560,7 +560,7 @@
 
 
 <p>Returns the AbstractTypes component of the metacommunity. Must be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L120-L125' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L120-L125' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API._getweight' href='#Diversity.API._getweight'>#</a>
 <strong><code>Diversity.API._getweight</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_getweight(m::AbstractMetacommunity)
@@ -568,7 +568,7 @@
 
 
 <p>Returns the subcommunity weights of the metacommunity. May be implemented by each AbstractMetacommunity subtype.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L167-L172' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L167-L172' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API.floattypes' href='#Diversity.API.floattypes'>#</a>
 <strong><code>Diversity.API.floattypes</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>floattypes(t)
@@ -576,7 +576,7 @@
 
 
 <p>This function returns a set containing the floating point types that are compatible with the Diversity-related object, t.</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L207-L213' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L207-L213' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API.mcmatch' href='#Diversity.API.mcmatch'>#</a>
 <strong><code>Diversity.API.mcmatch</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>mcmatch(procm::AbstractArray, sim::AbstractTypes, part::AbstractPartition)
@@ -584,7 +584,7 @@
 
 
 <p>Checks for type and size compatibility for elements contributing to a Metacommunity</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L243-L247' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L243-L247' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.API.typematch-Tuple' href='#Diversity.API.typematch-Tuple'>#</a>
 <strong><code>Diversity.API.typematch</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>typematch(args...)
@@ -592,7 +592,7 @@
 
 
 <p>Checks whether the types of a variety of Diversity-related objects have compatible types (using floattypes()).</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/568a538939c4cab1590d3a2b15cfe794dfd94ee3/src/API.jl#L234-L240' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/cba95b59a35c4096fd74ffa2268bac0453873e7d/src/API.jl#L234-L240' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="./#Diversity.API"><code>Diversity.API</code></a></li>
@@ -665,8 +665,8 @@
 <li><a href="..#Diversity.getordinariness!-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.getordinariness!</code></a></li>
 <li><a href="..#Diversity.getpartition-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.getpartition</code></a></li>
 <li><a href="..#Diversity.getsubcommunitynames"><code>Diversity.getsubcommunitynames</code></a></li>
-<li><a href="..#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.gettypenames</code></a></li>
 <li><a href="..#Diversity.gettypenames"><code>Diversity.gettypenames</code></a></li>
+<li><a href="..#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.gettypenames</code></a></li>
 <li><a href="..#Diversity.gettypes-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.gettypes</code></a></li>
 <li><a href="..#Diversity.getweight-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.getweight</code></a></li>
 <li><a href="..#Diversity.inddiv"><code>Diversity.inddiv</code></a></li>
