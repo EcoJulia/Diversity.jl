@@ -1,4 +1,5 @@
 using DataFrames
+using Missings
 
 """
     Metacommunity{FP, ARaw, AProcessed, Part, Sim}
@@ -40,7 +41,7 @@ mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
     scale::FP
     types::Sim
     partition::Part
-    ordinariness::Nullable{AProcessed}
+    ordinariness::Union{AProcessed, Missing}
 
     function Metacommunity{FP, ARaw, AProcessed,
                            Sim, Part}(abundances::ARaw,
@@ -54,7 +55,7 @@ mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
                   "partition and type list")
         processedabundances, scale = _calcabundance(types, matrix)
         new{FP, ARaw, AProcessed, Sim, Part}(abundances, processedabundances, scale,
-                                             types, part, Nullable{AProcessed}())
+                                             types, part, missing)
     end
 end
 
@@ -148,10 +149,10 @@ end
 
 import Diversity.API._getordinariness!
 function _getordinariness!(meta::Metacommunity)
-    if isnull(meta.ordinariness)
+    if ismissing(meta.ordinariness)
         meta.ordinariness = _calcordinariness(meta.types, meta.processedabundances, meta.scale)
     end
-    get(meta.ordinariness)
+    meta.ordinariness
 end
 
 import Diversity.API._getscale

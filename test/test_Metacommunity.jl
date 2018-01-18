@@ -4,6 +4,7 @@ using Compat.Test
 using Diversity
 using Diversity.API
 using DataFrames
+using Missings
 
 three = [0.3
          0.3
@@ -62,9 +63,9 @@ g2 = GeneralTypes(eye(2))
 @testset "Metacommunity" begin
     @test gettypes(meta) == ms
     @test getpartition(meta) == oc_count
-    @test isnull(meta.ordinariness)
+    @test ismissing(meta.ordinariness)
     @test getordinariness!(meta) ≈ [0.3, 0.6, 1.0]
-    @test !isnull(meta.ordinariness)
+    @test !ismissing(meta.ordinariness)
     @test getabundance(Metacommunity(ab3, g2, sc)) ≈
         getabundance(Metacommunity(abf, g2, sc))
     @test_warn "not normalised" Metacommunity(ab3 * 1.0, eye(2))

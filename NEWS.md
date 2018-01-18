@@ -1,3 +1,6 @@
+- v0.4.1
+  - Fix Nullable{T} to Union{T, Missing}
+  - Other minor updates for Julia 0.7
 - v0.4.0
   - Add in phylogenetic diversity
   - Create a formal API (in `API.jl`) for extending to new types of diversity
