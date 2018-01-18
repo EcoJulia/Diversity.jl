@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.2.5">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.5.0">
     
     
       
@@ -40,7 +40,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.bcabdff3.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.2a88008a.css">
       
     
     
@@ -59,7 +59,8 @@
     
   </head>
   
-    <body>
+  
+    <body dir="ltr">
   
     <svg class="md-svg">
       <defs>
@@ -107,11 +108,13 @@
             
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="search"></label>
-  <div class="md-search__inner">
+  <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -471,7 +474,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <p><a id='Diversity.Ecology' href='#Diversity.Ecology'>#</a>
 <strong><code>Diversity.Ecology</code></strong> &mdash; <em>Module</em>.</p>
 <p>The <strong>Diversity.Ecology</strong> module replicates old ecological diversity measures and generalised versions of them that relate to our general measures of alpha, beta and gamma diversity at subcommunity and metacommunity levels. The generalisations of the richness, Shannon and Simpson are the only standard measures we are aware of whose subcommunity components sum directly to the corresponding ecosystem measure (although note that Simpson's index decreases for increased diversity, so small components are more diverse).</p>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Diversity.jl#L217-L226' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Diversity.jl#L217-L226' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedjaccard' href='#Diversity.Ecology.generalisedjaccard'>#</a>
 <strong><code>Diversity.Ecology.generalisedjaccard</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>generalisedjaccard(proportions::AbstractArray, qs, Z::AbstractMatrix)
@@ -489,7 +492,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>Jaccard-related distinctivess measures</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L154-L176' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L154-L176' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedrichness' href='#Diversity.Ecology.generalisedrichness'>#</a>
 <strong><code>Diversity.Ecology.generalisedrichness</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>generalisedrichness(level::DiversityLevel, proportions::AbstractArray, Z::AbstractMatrix)
@@ -507,7 +510,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>diversity (at ecosystem level) or diversities (of subcommunities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L4-L22' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L4-L22' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedshannon' href='#Diversity.Ecology.generalisedshannon'>#</a>
 <strong><code>Diversity.Ecology.generalisedshannon</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>generalisedshannon(level::DiversityLevel, proportions::AbstractArray, Z::AbstractMatrix)
@@ -525,7 +528,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>entropy (at metacommunity level) or entropies (of subcommunities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L54-L70' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L54-L70' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.generalisedsimpson' href='#Diversity.Ecology.generalisedsimpson'>#</a>
 <strong><code>Diversity.Ecology.generalisedsimpson</code></strong> &mdash; <em>Function</em>.</p>
 <p><strong>Calculate a generalised version of Simpson's index</strong></p>
@@ -540,7 +543,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>concentration (at ecosystem level) or concentrations (of subcommunities)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L103-L119' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L103-L119' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.jaccard-Tuple{AbstractArray{T,2} where T}' href='#Diversity.Ecology.jaccard-Tuple{AbstractArray{T,2} where T}'>#</a>
 <strong><code>Diversity.Ecology.jaccard</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>jaccard(proportions::AbstractMatrix)
@@ -556,7 +559,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>the Jaccard index</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L191-L205' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L191-L205' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.richness-Tuple{Union{AbstractArray{T,1}, AbstractArray{T,2}} where T}' href='#Diversity.Ecology.richness-Tuple{Union{AbstractArray{T,1}, AbstractArray{T,2}} where T}'>#</a>
 <strong><code>Diversity.Ecology.richness</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>richness(proportions::AbstractMatrix)
@@ -572,7 +575,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>diversities of subcommunities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L38-L49' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L38-L49' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.shannon-Tuple{Union{AbstractArray{T,1}, AbstractArray{T,2}} where T}' href='#Diversity.Ecology.shannon-Tuple{Union{AbstractArray{T,1}, AbstractArray{T,2}} where T}'>#</a>
 <strong><code>Diversity.Ecology.shannon</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>Calculate Shannon entropy of populations</strong></p>
@@ -585,7 +588,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>entropies of subcommunities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L87-L98' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L87-L98' class='documenter-source'>source</a><br></p>
 <p><a id='Diversity.Ecology.simpson-Tuple{Union{AbstractArray{T,1}, AbstractArray{T,2}} where T}' href='#Diversity.Ecology.simpson-Tuple{Union{AbstractArray{T,1}, AbstractArray{T,2}} where T}'>#</a>
 <strong><code>Diversity.Ecology.simpson</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>simpson(proportions::AbstractMatrix)
@@ -601,7 +604,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <ul>
 <li>concentrations of subcommunities</li>
 </ul>
-<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/8ccd5c140ec4c782fb916731d7764836e4958a80/src/Ecology.jl#L136-L149' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/richardreeve/Diversity.jl/blob/79cecfc9992c2ef65e4f40bd230fa7fa99b464e0/src/Ecology.jl#L136-L149' class='documenter-source'>source</a><br></p>
 <ul>
 <li><a href="..#Diversity"><code>Diversity</code></a></li>
 <li><a href="../api/#Diversity.API"><code>Diversity.API</code></a></li>
@@ -674,8 +677,8 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
 <li><a href="..#Diversity.getordinariness!-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.getordinariness!</code></a></li>
 <li><a href="..#Diversity.getpartition-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.getpartition</code></a></li>
 <li><a href="..#Diversity.getsubcommunitynames"><code>Diversity.getsubcommunitynames</code></a></li>
-<li><a href="..#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.gettypenames</code></a></li>
 <li><a href="..#Diversity.gettypenames"><code>Diversity.gettypenames</code></a></li>
+<li><a href="..#Diversity.gettypenames-Tuple{Diversity.DiversityMeasure}"><code>Diversity.gettypenames</code></a></li>
 <li><a href="..#Diversity.gettypes-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.gettypes</code></a></li>
 <li><a href="..#Diversity.getweight-Tuple{Diversity.API.AbstractMetacommunity}"><code>Diversity.getweight</code></a></li>
 <li><a href="..#Diversity.inddiv"><code>Diversity.inddiv</code></a></li>
@@ -753,7 +756,7 @@ julia&gt; generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
       
     </div>
     
-      <script src="../assets/javascripts/application.6cdc17f0.js"></script>
+      <script src="../assets/javascripts/application.ce2ab4bf.js"></script>
       
       <script>app.initialize({version:"0.17.2",url:{base:".."}})</script>
       
