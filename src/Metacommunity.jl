@@ -1,5 +1,6 @@
 using DataFrames
 using Missings
+using Compat: @warn
 
 """
     Metacommunity{FP, ARaw, AProcessed, Part, Sim}
@@ -65,7 +66,7 @@ function Metacommunity(abundances::A, meta::Meta) where
     part = getpartition(meta)
     mat = reshape(abundances, counttypes(types), countsubcommunities(part))
     if sum(mat) ≉ one(eltype(mat))
-        warn("Abundances not normalised to 1, correcting...")
+        @warn "Abundances not normalised to 1, correcting..."
         mat = mat / sum(mat)
     end
     return Metacommunity{eltype(mat), A, typeof(mat),
@@ -88,7 +89,7 @@ function Metacommunity(abundances::V,
      Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = reshape(abundances, length(abundances), 1)
     if sum(mat) ≉ one(eltype(mat))
-        warn("Abundances not normalised to 1, correcting...")
+        @warn "Abundances not normalised to 1, correcting..."
         mat = mat / sum(mat)
     end
     return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
@@ -111,7 +112,7 @@ function Metacommunity(abundances::M,
      Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = abundances
     if sum(mat) ≉ one(eltype(mat))
-        warn("Abundances not normalised to 1, correcting...")
+        @warn "Abundances not normalised to 1, correcting..."
         mat = mat / sum(mat)
     end
     return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),

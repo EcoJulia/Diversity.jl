@@ -1,4 +1,5 @@
 using DataFrames
+using Compat: @warn
 
 """
     UniqueTypes
@@ -140,7 +141,7 @@ struct GeneralTypes{FP <: AbstractFloat,
             throw(DimensionMismatch("Similarity matrix is not square"))
 
         minimum(zmatrix) ≥ 0 || throw(DomainError())
-        maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
+        maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
     end
@@ -151,7 +152,7 @@ struct GeneralTypes{FP <: AbstractFloat,
             throw(DimensionMismatch("Similarity matrix is not square"))
 
         minimum(zmatrix) ≥ 0 || throw(DomainError())
-        maximum(zmatrix) ≤ 1 || warn("Similarity matrix has values above 1")
+        maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         length(names) == size(zmatrix, 1) ||
             error("Species name vector does not match similarity matrix")

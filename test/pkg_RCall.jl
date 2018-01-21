@@ -1,5 +1,6 @@
 module ValidateRCall_rdiversity
 using Compat.Test
+using Compat: @warn
 
 using Diversity
 using Diversity.ShortNames
@@ -22,7 +23,7 @@ try
     include(joinpath(Pkg.dir("Phylo"), "src", "rcall.jl"))
     Rinstalled = true
 catch
-    warn("R or appropriate Phylo package not installed, skipping R cross-validation.")
+    @warn "R or appropriate Phylo package not installed, skipping R cross-validation."
 end
 
 if Rinstalled

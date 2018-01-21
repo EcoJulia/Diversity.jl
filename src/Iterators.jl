@@ -1,7 +1,8 @@
+using Compat
 using Diversity.API
 
 import Base.start, Base.next, Base.done
-import Base.iteratorsize, Base.length, Base.iteratoreltype, Base.eltype
+import Compat.IteratorSize, Base.length, Compat.IteratorEltype, Base.eltype
 
 abstract type AbstractIterator{M <: AbstractMetacommunity} end
 
@@ -38,7 +39,7 @@ function done(ti::TypeIterator, state)
     return state > counttypes(ti.metacommunity)
 end
 
-function iteratorsize(ti::Type{TypeIterator})
+function IteratorSize(ti::Type{TypeIterator})
     return HasLength()
 end
 
@@ -46,7 +47,7 @@ function length(ti::TypeIterator)
     return counttypes(ti.metacommunity)
 end
 
-function iteratoreltype(ti::Type{TypeIterator})
+function IteratorEltype(ti::Type{TypeIterator})
     return HasEltype()
 end
 
@@ -89,7 +90,7 @@ function done(si::SubcommunityIterator, state)
     return state > countsubcommunities(si.metacommunity)
 end
 
-function iteratorsize(si::Type{SubcommunityIterator})
+function IteratorSize(si::Type{SubcommunityIterator})
     return HasLength()
 end
 
@@ -97,7 +98,7 @@ function length(si::SubcommunityIterator)
     return countsubcommunities(si.metacommunity)
 end
 
-function iteratoreltype(si::Type{SubcommunityIterator})
+function IteratorEltype(si::Type{SubcommunityIterator})
     return HasEltype()
 end
 
