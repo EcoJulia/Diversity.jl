@@ -36,7 +36,8 @@ before_install:
 
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.build("Diversity"); Pkg.test("Diversity", coverage=true)'
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then DIVERSITY_MUST_CROSSVALIDATE=1 julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.build("Diversity"); Pkg.test("Diversity", coverage=true)'
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.build("Diversity"); Pkg.test("Diversity", coverage=true)'
 
 after_success:
   - julia -e 'cd(Pkg.dir("Diversity", "test")); include("coverage.jl")'

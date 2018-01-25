@@ -9,10 +9,10 @@ using DataFrames
 using Phylo
 
 # Environment variable to avoid boring R package builds
-skipRinstall = haskey(ENV, "SKIP_R_INSTALL") && ENV["SKIP_R_INSTALL"] == "1"
+diversityMustCrossvalidate = haskey(ENV, "DIVERSITY_MUST_CROSSVALIDATE") && ENV["DIVERSITY_MUST_CROSSVALIDATE"] == "1"
 
 # Only run R on linux with >= v0.6 or when R is installed because SKIP_R_INSTALL is set
-skipR = !(skipRinstall || is_linux()) || VERSION < v"0.6.0"
+skipR = !diversityMustCrossvalidate && !is_unix()
 
 Rinstalled = false
 try
@@ -23,25 +23,38 @@ try
     include(joinpath(Pkg.dir("Phylo"), "src", "rcall.jl"))
     Rinstalled = true
 catch
-    @warn "R or appropriate Phylo package not installed, skipping R cross-validation."
+    if diversityMustCrossvalidate
+        error("R not installed, but DIVERSITY_MUST_CROSSVALIDATE is set")
+    else
+        @warn "R or appropriate Phylo package not installed, skipping R cross-validation."
+    end
 end
 
 if Rinstalled
     # Create a temporary directory to work in
     libdir = mktempdir();
 
-    if !skipR
-        # Skip the (slow!) R package installation step
-        if skipRinstall
-            reval("library(ape)");
-            reval("library(rdiversity)");
-        else
-            rcall(Symbol(".libPaths"), libdir);
-            reval("install.packages(c(\"ape\", \"rdiversity\"), lib=\"$libdir\", repos=\"http://cran.r-project.org\")");
-            reval("library(ape, lib.loc=c(\"$libdir\", .libPaths()))");
-            reval("library(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))");
-        end
+    if !skipR && !rcopy(R"require(ape)")
+        rcall(Symbol(".libPaths"), libdir);
+        reval("install.packages(\"ape\", lib=\"$libdir\", " *
+              "repos=\"http://cran.r-project.org\")");
+        skipR = !rcopy(R"require(ape, lib.loc=c(\"$libdir\", .libPaths()))") &&
+            !diversityMustCrossvalidate;
+        skipR && @warn "ape R package not installed and would not install, " *
+            "skipping R crossvalidation"
+    end
 
+    if !skipR && !rcopy(R"require(rdiversity)")
+        rcall(Symbol(".libPaths"), libdir);
+        reval("install.packages(\"rdiversity\", lib=\"$libdir\", " *
+              "repos=\"http://cran.r-project.org\")");
+        skipR = !rcopy(R"require(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))") &&
+            !diversityMustCrossvalidate;
+        skipR && @warn "rdiversity R package not installed and would not install, " *
+            "skipping R crossvalidation"
+    end
+
+    if !skipR
         # Run diversity comparisons on increasing numbers of types and subcommunities
         @testset "RCall - testing boydorr/rdiversity" begin
             @testset "Random rdiversity $i" for i in 1:20
