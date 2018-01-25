@@ -8,7 +8,7 @@ end
 macro rget(script)
     script
 end
-export R_str, rput, rget
+export @R_str, @rput, @rget
 end
 
 module ValidateRCall_rdiversity
