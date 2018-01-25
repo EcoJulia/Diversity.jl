@@ -1,3 +1,16 @@
+module ValidateRCall_rcall
+macro R_str(script)
+    script
+end
+macro rput(script)
+    script
+end
+macro rget(script)
+    script
+end
+export R_str, rput, rget
+end
+
 module ValidateRCall_rdiversity
 using Compat.Test
 using Compat: @warn
@@ -28,6 +41,7 @@ catch
     else
         @warn "R or appropriate Phylo package not installed, skipping R cross-validation."
     end
+    using ValidateRCall_rcall
 end
 
 if Rinstalled
