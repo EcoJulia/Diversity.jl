@@ -126,7 +126,7 @@ these diversity measures can be found
 The phylogenetics code relies on the [Phylo][phylo-url] package to
 generate trees to incorporate into the diversity code:
 
-```julia
+```julia-repl
 julia> using Diversity, Phylo, Diversity.Phylogenetics
 
 julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;

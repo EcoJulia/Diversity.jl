@@ -10,7 +10,7 @@ Using the functionality in the package is simple:
  - Create a Metacommunity from that
  - Calculate diversity!
 
-```julia
+```julia-repl
 julia> using Phylo, Diversity, Diversity.Phylogenetics
 
 julia> species = ["Dog", "Cat", "Human", "Potato"];
