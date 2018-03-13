@@ -22,22 +22,21 @@ using DataFrames
 using Phylo
 
 # Environment variable to avoid boring R package builds
-diversityMustCrossvalidate = haskey(ENV, "DIVERSITY_MUST_CROSSVALIDATE") && ENV["DIVERSITY_MUST_CROSSVALIDATE"] == "1"
+mustCrossvalidate = haskey(ENV, "JULIA_MUST_CROSSVALIDATE") && ENV["JULIA_MUST_CROSSVALIDATE"] == "1"
 
-# Only run R on linux with >= v0.6 or when R is installed because SKIP_R_INSTALL is set
-skipR = !diversityMustCrossvalidate && !is_unix()
-
+# Only run R on unix or when R is installed because JULIA_MUST_CROSSVALIDATE is set to 1
+skipR = !mustCrossvalidate && !is_unix()
 Rinstalled = false
 try
     skipR && error("Skipping R testing...")
     using RCall
     # Pkg.dir("Phylo") doesn't guarantee to give the correct directory for the package,
     # but nor does anything else insanely! Skips cross-validation on failure.
-    include(joinpath(Pkg.dir("Phylo"), "src", "rcall.jl"))
+    include(joinpath(dirname(dirname(dirname(@__FILE__))), "Phylo", "src", "rcall.jl"))
     Rinstalled = true
 catch
-    if diversityMustCrossvalidate
-        error("R not installed, but DIVERSITY_MUST_CROSSVALIDATE is set")
+    if mustCrossvalidate
+        error("R not installed, but JULIA_MUST_CROSSVALIDATE is set")
     else
         @warn "R or appropriate Phylo package not installed, skipping R cross-validation."
     end
@@ -53,7 +52,7 @@ if Rinstalled
         reval("install.packages(\"ape\", lib=\"$libdir\", " *
               "repos=\"http://cran.r-project.org\")");
         skipR = !rcopy(R"require(ape, lib.loc=c(\"$libdir\", .libPaths()))") &&
-            !diversityMustCrossvalidate;
+            !mustCrossvalidate;
         skipR && @warn "ape R package not installed and would not install, " *
             "skipping R crossvalidation"
     end
@@ -63,7 +62,7 @@ if Rinstalled
         reval("install.packages(\"rdiversity\", lib=\"$libdir\", " *
               "repos=\"http://cran.r-project.org\")");
         skipR = !rcopy(R"require(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))") &&
-            !diversityMustCrossvalidate;
+            !mustCrossvalidate;
         skipR && @warn "rdiversity R package not installed and would not install, " *
             "skipping R crossvalidation"
     end
