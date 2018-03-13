@@ -51,7 +51,8 @@ Jost's alpha diversity
 function jostbeta(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(Gamma(Metacommunity(proportions)), qs)
     ja = jostalpha(proportions, qs)
-    j = join(md, ja, on=[:q, :type_level, :type_name, :partition_level, :partition_name])
+    j = join(md, ja, on=[:q, :type_level, :type_name, :partition_level, :partition_name],
+             makeunique=true)
     j[:diversity] = j[:diversity] ./ j[:diversity_1]
     j[:measure] = "JostBeta"
     delete!(j, [:diversity_1, :measure_1])

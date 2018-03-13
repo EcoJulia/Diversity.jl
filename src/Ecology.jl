@@ -181,7 +181,8 @@ function generalisedjaccard(proportions::AbstractArray, qs,
     error("Can only calculate Jaccard index for 2 subcommunities")
     ab = metadiv(α(meta), qs)
     g = metadiv(Γ(meta), qs)
-    j = join(ab, g, on=[:q, :type_level, :type_name, :partition_level, :partition_name])
+    j = join(ab, g, on=[:q, :type_level, :type_name, :partition_level, :partition_name],
+             makeunique=true)
     j[:diversity] = j[:diversity] ./ j[:diversity_1] - 1
     j[:measure] = "Jaccard"
     delete!(j, [:diversity_1, :measure_1])
