@@ -1,6 +1,9 @@
+- v0.4.3
+  - Minor fixes to validate with updates to Julia and rdiversity R package
+  - Fix some more Julia 0.7 problems
 - v0.4.2
   - Work around problems with PackageEvaluator.jl
-  -  Julia 0.7 iterator fixes
+  - Julia 0.7 iterator fixes
 - v0.4.1
   - Fix Nullable{T} to Union{T, Missing}
   - Other minor updates for Julia 0.7
