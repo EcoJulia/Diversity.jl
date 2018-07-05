@@ -112,7 +112,7 @@ if Rinstalled
                     end
                 end
             end
-            
+
             @testset "Trying out empty types and subcommunities" begin
                 types = 10
                 sc = 10
@@ -128,7 +128,7 @@ if Rinstalled
                     pops[pops[:, j] .< median(pops[:, j])/2, j] = 0.0
                 end
                 qs = sort([rand(7)*10..., 0, 1, Inf])
-                
+
                 # Check they match when there's an empty type
                 pops[rand(1:types), :] = 0
                 pops /= sum(pops)
@@ -142,7 +142,7 @@ if Rinstalled
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
                 r_meta = rcall(:metacommunity, pops, Z)
-                
+
                 for (r_func, juliadiv) in diversities
                     r_div = rcall(r_func, r_meta);
                     # Check the metacommunity diversity
@@ -155,7 +155,7 @@ if Rinstalled
                     @test subdiv(juliadiv, qs)[:diversity] ≈
                         rcopy(rcall(:subdiv, r_div, qs)[:diversity])
                 end
-                
+
                 # Check they match when there's an empty subcommunity too
                 pops[:, rand(1:sc)] = 0
                 pops /= sum(pops)
@@ -169,7 +169,7 @@ if Rinstalled
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
                 r_meta = rcall(:metacommunity, pops, Z)
-                
+
                 for (r_func, juliadiv) in diversities
                     r_div = rcall(r_func, r_meta);
                     # Check out metacommunity diversity
@@ -207,7 +207,14 @@ if Rinstalled
                                    :norm_rho   => ρ̄(meta),
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
-                r_meta = rcall(:metacommunity, pops, tree)
+                @rput pops
+                @rput tree
+                tipnames = getleafnames(tree)
+                @rput tipnames
+                r_meta = R"""
+                rownames(pops) <- tipnames
+                metacommunity(pops, tree)
+                """
 
                 for (r_func, juliadiv) in diversities
                     r_div = rcall(r_func, r_meta);
@@ -219,7 +226,7 @@ if Rinstalled
                         rcopy(rcall(:subdiv, r_div, qs)[:diversity])
                 end
             end
-            
+
             @testset "Trying out empty types and subcommunities" begin
                 types = 10
                 nu = Nonultrametric(types)
@@ -227,7 +234,7 @@ if Rinstalled
                 sc = 10
                 pops = rand(types, sc)
                 qs = sort([rand(7)*10..., 0, 1, Inf])
-                
+
                 # Check they match when there's an empty type
                 pops[rand(1:types), :] = 0
                 pops /= sum(pops)
@@ -240,8 +247,15 @@ if Rinstalled
                                    :norm_rho   => ρ̄(meta),
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
-                r_meta = rcall(:metacommunity, pops, tree)
-                
+                @rput pops
+                @rput tree
+                tipnames = getleafnames(tree)
+                @rput tipnames
+                r_meta = R"""
+                rownames(pops) <- tipnames
+                r_meta <- metacommunity(pops, tree)
+                """
+
                 for (r_func, juliadiv) in diversities
                     r_div = rcall(r_func, r_meta);
                     # Check the metacommunity diversity
@@ -254,7 +268,7 @@ if Rinstalled
                     @test subdiv(juliadiv, qs)[:diversity] ≈
                         rcopy(rcall(:subdiv, r_div, qs)[:diversity])
                 end
-                
+
                 # Check they match when there's an empty subcommunity too
                 pops[:, rand(1:sc)] = 0
                 pops /= sum(pops)
@@ -267,8 +281,14 @@ if Rinstalled
                                    :norm_rho   => ρ̄(meta),
                                    :raw_gamma  => Γ(meta));
                 # Create the metacommunity in R
-                r_meta = rcall(:metacommunity, pops, tree)
-                
+                @rput pops
+                @rput tree
+                tipnames = getleafnames(tree)
+                @rput tipnames
+                r_meta = R"""
+                rownames(pops) <- tipnames
+                metacommunity(pops, tree)
+                """
                 for (r_func, juliadiv) in diversities
                     r_div = rcall(r_func, r_meta);
                     # Check out metacommunity diversity
