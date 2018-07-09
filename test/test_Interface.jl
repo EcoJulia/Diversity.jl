@@ -1,7 +1,7 @@
 module TestInterface
 using Compat.Test
 
-# Checking Hill numbers
+# Checking EcoBase interface
 using Diversity
 using Diversity.EcoBase
 
