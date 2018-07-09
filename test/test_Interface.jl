@@ -31,6 +31,8 @@ manyweights /= sum(manyweights);
     @test noccurring(fmc) == numspecies
     @test noccupied(fmc, 1) == numcommunities - 1
     @test noccurring(fmc, 1) == numspecies - 1
+    @test nthings(fmc) == species
+    @test nplaces(fmc) == numcommunities
 end
 
 end
