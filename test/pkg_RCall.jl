@@ -30,6 +30,9 @@ Rinstalled = false
 try
     skipR && error("Skipping R testing...")
     using RCall
+    # Pkg.dir("Phylo") doesn't guarantee to give the correct directory for the package,
+    # but nor does anything else insanely! Skips cross-validation on failure.
+    include(joinpath(dirname(dirname(dirname(@__FILE__))), "Phylo", "src", "rcall.jl"))
     Rinstalled = true
 catch
     if mustCrossvalidate
