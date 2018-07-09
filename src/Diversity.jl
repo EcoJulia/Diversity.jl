@@ -21,6 +21,7 @@ extract any diversity measure at a series of scales.
 """
 module Diversity
 
+include("../ext/EcoBase/src/EcoBase.jl")
 """
 The Diversity.API submodule should be `import`ed if you want to create a
 new type, partition or metacommunity subtype. Otherwise it can be
@@ -50,6 +51,7 @@ export floattypes
 export typematch, mcmatch
 end
 
+# Add in our user interface and the EcoBase higher level interface
 include("Interface.jl")
 export gettypes, getpartition
 export counttypes, countsubcommunities

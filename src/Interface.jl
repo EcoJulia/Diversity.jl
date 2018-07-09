@@ -145,3 +145,17 @@ Retrieves (and possibly calculates) a similarity matrix from t.
 function calcsimilarity(t::AbstractTypes, scale::Real)
     return _calcsimilarity(t, scale)
 end
+
+# Now satisfy the EcoBase interface
+import Diversity.EcoBase: occurrences, places, things
+occurrences(mc::AbstractMetacommunity) = getabundance(mc)
+places(mc::AbstractMetacommunity) = getpartition(mc)
+things(mc::AbstractMetacommunity) = gettypes(mc)
+
+import Diversity.EcoBase: nplaces, placenames
+nplaces(part::AbstractPartition) = countsubcommunities(part)
+placenames(part::AbstractPartition) = getsubcommunitynames(part)
+
+import Diversity.EcoBase: nthings, thingnames
+nthings(types::AbstractTypes) = counttypes(types)
+thingnames(types::AbstractTypes) = gettypenames(types)

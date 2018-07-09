@@ -60,8 +60,8 @@ mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
     end
 end
 
-function Metacommunity(abundances::A, meta::Meta) where
-    {A <: AbstractArray, Meta <: AbstractMetacommunity}
+function Metacommunity(abundances::ARaw, meta::Meta) where
+    {ARaw <: AbstractArray, Meta <: AbstractMetacommunity}
     types = gettypes(meta)
     part = getpartition(meta)
     mat = reshape(abundances, counttypes(types), countsubcommunities(part))
@@ -69,7 +69,7 @@ function Metacommunity(abundances::A, meta::Meta) where
         @warn "Abundances not normalised to 1, correcting..."
         mat = mat / sum(mat)
     end
-    return Metacommunity{eltype(mat), A, typeof(mat),
+    return Metacommunity{eltype(mat), ARaw, typeof(mat),
                          typeof(types), typeof(part)}(abundances, mat, types, part)
 end
 
@@ -131,20 +131,20 @@ function Metacommunity(abundances::MU, zmatrix::M) where
 end
 
 import Diversity.API._gettypes
-function _gettypes(meta::Metacommunity{FP, A, Sim, Part}) where
-    {FP, A, Sim, Part}
+function _gettypes(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part}) where
+    {FP, ARaw, AProcessed, Sim, Part}
     return meta.types
 end
 
 import Diversity.API._getpartition
-function _getpartition(meta::Metacommunity{FP, A, Sim, Part}) where
-    {FP, A, Sim, Part}
+function _getpartition(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part}) where
+    {FP, ARaw, AProcessed, Sim, Part}
     return meta.partition
 end
 
 import Diversity.API._getabundance
-function _getabundance(meta::Metacommunity{FP, A, Sim, Part},
-                       raw::Bool) where {FP, A, Sim, Part}
+function _getabundance(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part},
+                       raw::Bool) where {FP, ARaw, AProcessed, Sim, Part}
     return raw ? meta.rawabundances : meta.processedabundances
 end
 
