@@ -10,7 +10,7 @@ population(s) with given relative proportions
 
 - `proportions`: relative proportions of different individuals / species
                  in population (vector, or matrix where columns are
-                 individual populations) 
+                 individual populations)
 
 - `qs`: single number or vector of orders of diversity measurement
 
@@ -21,5 +21,6 @@ population(s) with given relative proportions
 function hillnumber(proportions, qs)
     hill = subdiv(NormalisedAlpha(Metacommunity(proportions)), qs)
     hill[:measure] = "HillNumber"
+    delete!(hill, :div_type)
     return hill
 end

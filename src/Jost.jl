@@ -22,8 +22,9 @@ divided by the naive-community beta diversity.
 """
 function jostalpha(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(RawAlpha(Metacommunity(proportions)), qs)
-    md[:diversity] = md[:diversity] ./ qD(reshape(mapslices(sum, proportions, (1,)),
-                                                  size(proportions)[2]), qs)
+    md[:diversity] = md[:diversity] ./
+        qD(reshape(mapslices(sum, proportions, (1,)),
+                   size(proportions)[2]), qs)
     md[:measure] = "JostAlpha"
     return md
 end
@@ -51,7 +52,8 @@ Jost's alpha diversity
 function jostbeta(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(Gamma(Metacommunity(proportions)), qs)
     ja = jostalpha(proportions, qs)
-    j = join(md, ja, on=[:q, :type_level, :type_name, :partition_level, :partition_name],
+    j = join(md, ja, on=[:q, :type_level, :type_name,
+                         :partition_level, :partition_name, :div_type],
              makeunique=true)
     j[:diversity] = j[:diversity] ./ j[:diversity_1]
     j[:measure] = "JostBeta"
