@@ -46,6 +46,9 @@ function _calcordinariness(::UniqueTypes, abundances::AbstractArray, ::Real)
     return abundances
 end
 
+import Diversity.API._getdiversityname
+_getdiversityname(::UniqueTypes) = "Unique"
+
 """
     Species
 
@@ -67,7 +70,7 @@ struct Taxonomy{FP <: AbstractFloat} <: Diversity.API.AbstractTypes
     speciesinfo::DataFrame
     taxa::Dict{Symbol, FP}
     typelabel::Symbol
-    
+
     function Taxonomy{FP}(speciesinfo::DataFrame,
                           taxa::Dict{Symbol, FP},
                           typelabel::Symbol) where FP <: AbstractFloat
@@ -100,6 +103,8 @@ end
 function _calcsimilarity(::Taxonomy, ::Real)
     error("Can't generate a taxonomic similarity matrix yet")
 end
+
+_getdiversityname(::Taxonomy) = "Taxonomy"
 
 """
     GeneralTypes{FP, M}
@@ -177,3 +182,5 @@ end
 function _calcsimilarity(gt::GeneralTypes, ::Real)
     return gt.z
 end
+
+_getdiversityname(::GeneralTypes) = "Arbitrary Z"

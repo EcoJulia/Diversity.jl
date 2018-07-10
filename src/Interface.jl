@@ -75,6 +75,17 @@ function gettypenames(t::AbstractTypes, raw::Bool = false)
 end
 
 """
+    getdiversityname(m::AbstractMetacommunity)
+    getdiversityname(t::AbstractTypes)
+
+Returns the name of the diversity type used.
+"""
+function getdiversityname end
+
+getdiversityname(m::AbstractMetacommunity) = _getdiversityname(_gettypes(m))
+getdiversityname(t::AbstractTypes) = _getdiversityname(t)
+
+"""
     getsubcommunitynames(m::AbstractMetacommunity)
     getsubcommunitynames(p::AbstractPartition)
 

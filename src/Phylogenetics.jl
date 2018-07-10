@@ -85,3 +85,6 @@ function _calcordinariness(phy::PhyloTypes, processed::M, scale::R) where
     {FP <: AbstractFloat, M <: AbstractMatrix{FP}, R <: Real}
     return (phy.Zmatrix * processed) .* scale
 end
+
+import Diversity.API._getdiversityname
+_getdiversityname(::PhyloTypes) = "Phylogenetic"
