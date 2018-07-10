@@ -171,16 +171,11 @@ String["tip 1", "tip 2", "tip 3", "tip 4"]
 julia> metaphylo = Metacommunity(communities, PhyloTypes(nt));
 
 julia> raw_meta_rho(metaphylo, [1, 2])
-2×7 DataFrames.DataFrame
-│ Row │ measure  │ q │ type_level │ type_name │ partition_level │
-├─────┼──────────┼───┼────────────┼───────────┼─────────────────┤
-│ 1   │ "RawRho" │ 1 │ "types"    │ ""        │ "metacommunity" │
-│ 2   │ "RawRho" │ 2 │ "types"    │ ""        │ "metacommunity" │
-
-│ Row │ partition_name │ diversity │
-├─────┼────────────────┼───────────┤
-│ 1   │ ""             │ 1.66187   │
-│ 2   │ ""             │ 1.51391   │
+2×8 DataFrames.DataFrame
+│ Row │ div_type     │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+├─────┼──────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Phylogenetic │ RawRho  │ 1 │ types      │           │ metacommunity   │                │ 1.75622   │
+│ 2   │ Phylogenetic │ RawRho  │ 2 │ types      │           │ metacommunity   │                │ 1.61371   │
 ```
 
 The package also provides some other sub-modules for related measures:

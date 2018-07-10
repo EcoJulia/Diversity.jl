@@ -15,18 +15,12 @@ julia> ecosystem = [2 2 0; 0 2 2]';
 julia> ecosystem /= sum(ecosystem);
 
 julia> diversities = jostbeta(ecosystem, [0, 1, 2])
-3×7 DataFrames.DataFrame
-│ Row │ measure    │ q │ type_level │ type_name │ partition_level │
-├─────┼────────────┼───┼────────────┼───────────┼─────────────────┤
-│ 1   │ "JostBeta" │ 0 │ "types"    │ ""        │ "metacommunity" │
-│ 2   │ "JostBeta" │ 1 │ "types"    │ ""        │ "metacommunity" │
-│ 3   │ "JostBeta" │ 2 │ "types"    │ ""        │ "metacommunity" │
-
-│ Row │ partition_name │ diversity │
-├─────┼────────────────┼───────────┤
-│ 1   │ ""             │ 1.5       │
-│ 2   │ ""             │ 1.41421   │
-│ 3   │ ""             │ 1.33333   │
+3×8 DataFrames.DataFrame
+│ Row │ div_type │ measure  │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+├─────┼──────────┼──────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Unique   │ JostBeta │ 0 │ types      │           │ metacommunity   │                │ 1.5       │
+│ 2   │ Unique   │ JostBeta │ 1 │ types      │           │ metacommunity   │                │ 1.41421   │
+│ 3   │ Unique   │ JostBeta │ 2 │ types      │           │ metacommunity   │                │ 1.33333   │
 ```
 
 ```@contents

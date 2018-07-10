@@ -33,20 +33,13 @@ julia> # Create Metacommunity object
        meta = Metacommunity(pop);
 
 julia> diversities = norm_meta_alpha(meta, [0, 1, 2, Inf])
-4×7 DataFrames.DataFrame
-│ Row │ measure           │ q   │ type_level │ type_name │ partition_level │
-├─────┼───────────────────┼─────┼────────────┼───────────┼─────────────────┤
-│ 1   │ "NormalisedAlpha" │ 0.0 │ "types"    │ ""        │ "metacommunity" │
-│ 2   │ "NormalisedAlpha" │ 1.0 │ "types"    │ ""        │ "metacommunity" │
-│ 3   │ "NormalisedAlpha" │ 2.0 │ "types"    │ ""        │ "metacommunity" │
-│ 4   │ "NormalisedAlpha" │ Inf │ "types"    │ ""        │ "metacommunity" │
-
-│ Row │ partition_name │ diversity │
-├─────┼────────────────┼───────────┤
-│ 1   │ ""             │ 2.16667   │
-│ 2   │ ""             │ 1.86121   │
-│ 3   │ ""             │ 1.63636   │
-│ 4   │ ""             │ 1.0       │
+4×8 DataFrames.DataFrame
+│ Row │ div_type │ measure         │ q   │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+├─────┼──────────┼─────────────────┼─────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Unique   │ NormalisedAlpha │ 0.0 │ types      │           │ metacommunity   │                │ 2.16667   │
+│ 2   │ Unique   │ NormalisedAlpha │ 1.0 │ types      │           │ metacommunity   │                │ 1.86121   │
+│ 3   │ Unique   │ NormalisedAlpha │ 2.0 │ types      │           │ metacommunity   │                │ 1.63636   │
+│ 4   │ Unique   │ NormalisedAlpha │ Inf │ types      │           │ metacommunity   │                │ 1.0       │
 
 julia> Z = [1.0 0 0; 0 1 1; 1 1 1];
 
@@ -55,18 +48,12 @@ julia> meta_z = Metacommunity(pop, Z);
 julia> rho = RawRho(meta_z);
 
 julia> redundancies = subdiv(rho, 2)
-3×7 DataFrames.DataFrame
-│ Row │ measure  │ q │ type_level │ type_name │ partition_level │
-├─────┼──────────┼───┼────────────┼───────────┼─────────────────┤
-│ 1   │ "RawRho" │ 2 │ "types"    │ ""        │ "subcommunity"  │
-│ 2   │ "RawRho" │ 2 │ "types"    │ ""        │ "subcommunity"  │
-│ 3   │ "RawRho" │ 2 │ "types"    │ ""        │ "subcommunity"  │
-
-│ Row │ partition_name │ diversity │
-├─────┼────────────────┼───────────┤
-│ 1   │ "1"            │ 2.0       │
-│ 2   │ "2"            │ 3.0       │
-│ 3   │ "3"            │ 3.0       │
+3×8 DataFrames.DataFrame
+│ Row │ div_type    │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+├─────┼─────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Arbitrary Z │ RawRho  │ 2 │ types      │           │ subcommunity    │ 1              │ 2.0       │
+│ 2   │ Arbitrary Z │ RawRho  │ 2 │ types      │           │ subcommunity    │ 2              │ 3.0       │
+│ 3   │ Arbitrary Z │ RawRho  │ 2 │ types      │           │ subcommunity    │ 3              │ 3.0       │
 ```
 
 ```@contents
