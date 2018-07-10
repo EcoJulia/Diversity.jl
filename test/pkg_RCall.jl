@@ -148,8 +148,9 @@ if Rinstalled
                     # Check the metacommunity diversity
                     jmd = metadiv(juliadiv, qs);
                     rmd = rcall(:metadiv, r_div, qs);
-                    @test Set(map(string, names(jmd))) ==
-                        Set(rcopy(rcall(:colnames, rmd)))
+                    @test Set(rcopy(rcall(:colnames, rmd))) ⊆
+                        Set(map(string, names(jmd)))
+
                     @test jmd[:diversity] ≈ rcopy(rmd[:diversity])
                     # and subcommunity diversity
                     @test subdiv(juliadiv, qs)[:diversity] ≈
@@ -261,8 +262,9 @@ if Rinstalled
                     # Check the metacommunity diversity
                     jmd = metadiv(juliadiv, qs);
                     rmd = rcall(:metadiv, r_div, qs);
-                    @test Set(map(string, names(jmd))) ==
-                        Set(rcopy(rcall(:colnames, rmd)))
+                    @test Set(rcopy(rcall(:colnames, rmd))) ⊆
+                        Set(map(string, names(jmd)))
+
                     @test jmd[:diversity] ≈ rcopy(rmd[:diversity])
                     # and subcommunity diversity
                     @test subdiv(juliadiv, qs)[:diversity] ≈

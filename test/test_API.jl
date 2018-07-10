@@ -1,4 +1,4 @@
-module TestInterface
+module TestAPI
 using Compat.Test
 
 using Diversity.API
