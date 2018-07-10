@@ -95,7 +95,7 @@ meta = Metacommunity(pop)
 ```
 
 #### Calculating diversity
-First we need to calculate the low-level diversity component seperately, by passing a `metacommunity` object to the appropriate function; `RawAlpha()`, `NormalisedAlpha()`, `RawBeta()`, `NormalisedBeta()`, `RawRho()`, `NormalisedRho()`, or `Gamma()`. 
+First we need to calculate the low-level diversity component seperately, by passing a `metacommunity` object to the appropriate function; `RawAlpha()`, `NormalisedAlpha()`, `RawBeta()`, `NormalisedBeta()`, `RawRho()`, `NormalisedRho()`, or `Gamma()`.
 
 ```julia
 # First, calculate the normalised alpha component
@@ -153,10 +153,13 @@ included in the Diversity.Phylogenetics submodule. Documentation for
 these diversity measures can be found
 [here](http://richardreeve.github.io/Diversity.jl/latest/phylogenetics/).
 The phylogenetics code relies on the [Phylo][phylo-url] package to
-generate trees to incorporate into the diversity code:
+generate trees to incorporate into the diversity code, and the
+`Diversity.Phylogenetics` sub-package will be created when both
+main packages are loaded:
 
 ```julia-repl
 julia> using Diversity, Phylo, Diversity.Phylogenetics
+Creating Diversity to Phylo interface...
 
 julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
 

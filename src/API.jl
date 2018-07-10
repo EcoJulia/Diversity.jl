@@ -9,7 +9,7 @@ Abstract supertype for all partitioning types. AbstractPartition
 subtypes allow you to define how to partition your total metacommunity
 (e.g. an ecosystem) into smaller components (e.g. subcommunities).
 """
-abstract type AbstractPartition end
+abstract type AbstractPartition <: Diversity.EcoBase.AbstractPlaces end
 
 """
     _getsubcommunitynames(p::AbstractPartition)
@@ -39,7 +39,7 @@ end
 Abstract supertype for all similarity types. Its subtypes allow you to
 define how similarity is measured between individuals.
 """
-abstract type AbstractTypes end
+abstract type AbstractTypes <: Diversity.EcoBase.AbstractThings end
 
 """
     _gettypenames(t::AbstractTypes, raw::Bool)
@@ -102,7 +102,11 @@ end
 ### AbstractMetacommunity API
 
 """
-    AbstractMetacommunity{FP, ARaw, APro, Sim, Part}
+    AbstractMetacommunity{FP <: AbstractFloat,
+                          ARaw <: AbstractArray,
+                          AProcessed <: AbstractMatrix{FP},
+                          Sim <: AbstractTypes,
+                          Part <: AbstractPartition}
 
 AbstractMetacommunity is the abstract supertype of all metacommunity
 types. AbstractMetacommunity subtypes allow you to define how to
@@ -113,9 +117,11 @@ individuals within it.
 """
 abstract type AbstractMetacommunity{FP <: AbstractFloat,
                                     ARaw <: AbstractArray,
-                                    AProcessed <: AbstractMatrix,
+                                    AProcessed <: AbstractMatrix{FP},
                                     Sim <: AbstractTypes,
-                                    Part <: AbstractPartition} end
+                                    Part <: AbstractPartition} <:
+    Diversity.EcoBase.AbstractAssemblage{FP, Sim, Part}
+end
 
 """
     _gettypes(::AbstractMetacommunity)
@@ -148,7 +154,7 @@ Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-function _getmetaabundance(m::MC, raw::Bool) where MC <: AbstractMetacommunity
+function _getmetaabundance(m::AbstractMetacommunity, raw::Bool)
     return reduce(+, SubcommunityIterator(m) do mc
                   return _getabundance(mc, raw)
                   end
@@ -171,7 +177,7 @@ Returns the subcommunity weights of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
-function _getweight(m::MC) where MC <: AbstractMetacommunity
+function _getweight(m::AbstractMetacommunity)
     return reduce(+, TypeIterator(m) do mc
                   return _getabundance(mc, false)
                   end
@@ -186,7 +192,7 @@ subcommunities. May be implemented by each AbstractMetacommunity
 subtype.
 """
 function _getordinariness! end
-function _getordinariness!(m::MC) where MC <: AbstractMetacommunity
+function _getordinariness!(m::AbstractMetacommunity)
     return _calcordinariness(_gettypes(m), _getabundance(m, false), _getscale(m))
 end
 
@@ -198,7 +204,7 @@ metacommunity as a whole. May be implemented by each
 AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
-function _getmetaordinariness!(m::MC) where MC <: AbstractMetacommunity
+function _getmetaordinariness!(m::AbstractMetacommunity)
     return reduce(+, SubcommunityIterator(_getordinariness!, m))
 end
 
@@ -226,8 +232,8 @@ function floattypes(::P) where P <: AbstractPartition
 end
 
 function floattypes(::M) where
-    {FP <: AbstractFloat, A, Sim, Part,
-     M <: AbstractMetacommunity{FP, A, Sim, Part}}
+    {FP, ARaw, AProcessed, Sim, Part,
+     M <: AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}}
     return Set([FP])
 end
 

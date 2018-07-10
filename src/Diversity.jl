@@ -21,6 +21,7 @@ extract any diversity measure at a series of scales.
 """
 module Diversity
 
+include("../ext/EcoBase/src/EcoBase.jl")
 """
 The Diversity.API submodule should be `import`ed if you want to create a
 new type, partition or metacommunity subtype. Otherwise it can be
@@ -50,6 +51,7 @@ export floattypes
 export typematch, mcmatch
 end
 
+# Add in our user interface and the EcoBase higher level interface
 include("Interface.jl")
 export gettypes, getpartition
 export counttypes, countsubcommunities
@@ -105,11 +107,12 @@ end
 export getName, getASCIIName, getFullName
 
 module Phylogenetics
-using Diversity
-
-include("Phylogenetics.jl")
 export PhyloTypes
-
+using Requires
+@require Phylo begin
+    println("Creating Diversity to Phylo interface...")
+    include("Phylogenetics.jl")
+end
 end
 
 include("GeneralisedDiversities.jl")
@@ -118,101 +121,6 @@ export norm_sub_alpha, raw_sub_alpha, norm_sub_beta, raw_sub_beta
 export norm_sub_rho, raw_sub_rho, sub_gamma
 export norm_meta_alpha, raw_meta_alpha, norm_meta_beta, raw_meta_beta
 export norm_meta_rho, raw_meta_rho, meta_gamma
-
-## Deprecate subcommunity-related names
-@deprecate(subcommunityalphabar(pop::AbstractArray, qs, Z::AbstractMatrix),
-           norm_meta_alpha(Metacommunity(pop, Z), qs))
-@deprecate(subcommunityalpha(pop::AbstractArray, qs, Z::AbstractMatrix),
-           raw_meta_alpha(Metacommunity(pop, Z), qs))
-@deprecate(subcommunitybetabar(pop::AbstractArray, qs, Z::AbstractMatrix),
-           norm_meta_beta(Metacommunity(pop, Z), qs))
-@deprecate(subcommunitybeta(pop::AbstractArray, qs, Z::AbstractMatrix),
-           raw_meta_beta(Metacommunity(pop, Z), qs))
-@deprecate(subcommunityrhobar(pop::AbstractArray, qs, Z::AbstractMatrix),
-           norm_meta_rho(Metacommunity(pop, Z), qs))
-@deprecate(subcommunityrho(pop::AbstractArray, qs, Z::AbstractMatrix),
-           raw_meta_rho(Metacommunity(pop, Z), qs))
-@deprecate(subcommunitygammabar(pop::AbstractArray, qs, Z::AbstractMatrix),
-           meta_gamma(Metacommunity(pop, Z), qs))
-@deprecate(subcommunitygamma(pop::AbstractArray, qs, Z::AbstractMatrix),
-           meta_gamma(Metacommunity(pop, Z), qs))
-
-@deprecate(subcommunityalphabar(pop::AbstractArray, qs),
-           norm_meta_alpha(Metacommunity(pop), qs))
-@deprecate(subcommunityalpha(pop::AbstractArray, qs),
-           raw_meta_alpha(Metacommunity(pop), qs))
-@deprecate(subcommunitybetabar(pop::AbstractArray, qs),
-           norm_meta_beta(Metacommunity(pop), qs))
-@deprecate(subcommunitybeta(pop::AbstractArray, qs),
-           raw_meta_beta(Metacommunity(pop), qs))
-@deprecate(subcommunityrhobar(pop::AbstractArray, qs),
-           norm_meta_rho(Metacommunity(pop), qs))
-@deprecate(subcommunityrho(pop::AbstractArray, qs),
-           raw_meta_rho(Metacommunity(pop), qs))
-@deprecate(subcommunitygammabar(pop::AbstractArray, qs),
-           meta_gamma(Metacommunity(pop), qs))
-@deprecate(subcommunitygamma(pop::AbstractArray, qs),
-           meta_gamma(Metacommunity(pop), qs))
-
-## Deprecate all-in-one names, as we divide calculation into type of
-## diversity and scale
-@deprecate(normsubalpha(pop::AbstractArray, Z, qs),
-           norm_sub_alpha(Metacommunity(pop, Z), qs))
-@deprecate(rawsubalpha(pop::AbstractArray, Z, qs),
-           raw_sub_alpha(Metacommunity(pop, Z), qs))
-@deprecate(normsubbeta(pop::AbstractArray, Z, qs),
-           norm_sub_beta(Metacommunity(pop, Z), qs))
-@deprecate(rawsubbeta(pop::AbstractArray, Z, qs),
-           raw_sub_beta(Metacommunity(pop, Z), qs))
-@deprecate(normsubrho(pop::AbstractArray, Z, qs),
-           norm_sub_rho(Metacommunity(pop, Z), qs))
-@deprecate(rawsubrho(pop::AbstractArray, Z, qs),
-           raw_sub_rho(Metacommunity(pop, Z), qs))
-@deprecate(subgamma(pop::AbstractArray, Z, qs),
-           sub_gamma(Metacommunity(pop, Z), qs))
-@deprecate(normmetaalpha(pop::AbstractArray, Z, qs),
-           norm_meta_alpha(Metacommunity(pop, Z), qs))
-@deprecate(rawmetaalpha(pop::AbstractArray, Z, qs),
-           raw_meta_alpha(Metacommunity(pop, Z), qs))
-@deprecate(normmetabeta(pop::AbstractArray, Z, qs),
-           norm_meta_beta(Metacommunity(pop, Z), qs))
-@deprecate(rawmetabeta(pop::AbstractArray, Z, qs),
-           raw_meta_beta(Metacommunity(pop, Z), qs))
-@deprecate(normmetarho(pop::AbstractArray, Z, qs),
-           norm_meta_rho(Metacommunity(pop, Z), qs))
-@deprecate(rawmetarho(pop::AbstractArray, Z, qs),
-           raw_meta_rho(Metacommunity(pop, Z), qs))
-@deprecate(metagamma(pop::AbstractArray, Z, qs),
-           meta_gamma(Metacommunity(pop, Z), qs))
-
-@deprecate(normsubalpha(pop::AbstractArray, qs),
-           norm_sub_alpha(Metacommunity(pop), qs))
-@deprecate(rawsubalpha(pop::AbstractArray, qs),
-           raw_sub_alpha(Metacommunity(pop), qs))
-@deprecate(normsubbeta(pop::AbstractArray, qs),
-           norm_sub_beta(Metacommunity(pop), qs))
-@deprecate(rawsubbeta(pop::AbstractArray, qs),
-           raw_sub_beta(Metacommunity(pop), qs))
-@deprecate(normsubrho(pop::AbstractArray, qs),
-           norm_sub_rho(Metacommunity(pop), qs))
-@deprecate(rawsubrho(pop::AbstractArray, qs),
-           raw_sub_rho(Metacommunity(pop), qs))
-@deprecate(subgamma(pop::AbstractArray, qs),
-           sub_gamma(Metacommunity(pop), qs))
-@deprecate(normmetaalpha(pop::AbstractArray, qs),
-           norm_meta_alpha(Metacommunity(pop), qs))
-@deprecate(rawmetaalpha(pop::AbstractArray, qs),
-           raw_meta_alpha(Metacommunity(pop), qs))
-@deprecate(normmetabeta(pop::AbstractArray, qs),
-           norm_meta_beta(Metacommunity(pop), qs))
-@deprecate(rawmetabeta(pop::AbstractArray, qs),
-           raw_meta_beta(Metacommunity(pop), qs))
-@deprecate(normmetarho(pop::AbstractArray, qs),
-           norm_meta_rho(Metacommunity(pop), qs))
-@deprecate(rawmetarho(pop::AbstractArray, qs),
-           raw_meta_rho(Metacommunity(pop), qs))
-@deprecate(metagamma(pop::AbstractArray, qs),
-           meta_gamma(Metacommunity(pop), qs))
 
 """
 The **Diversity.Ecology** module replicates old ecological
