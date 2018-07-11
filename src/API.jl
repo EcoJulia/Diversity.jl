@@ -75,13 +75,31 @@ function _counttypes(t::T, raw::Bool) where T <: AbstractTypes
 end
 
 """
-    _getdiversityname()
+    _getdiversityname(::AbstractTypes)
 
 Returns the name of the diversity type used to calculate.
 """
 function _getdiversityname end
 
 _getdiversityname(::AbstractTypes) = "Unknown diversity"
+
+"""
+    _addedoutputcols(::AbstractTypes)
+
+Returns the name of any additional columns needed to be added to outputs.
+"""
+function _addedoutputcols end
+
+_addedoutputcols(::AbstractTypes) = Dict{Symbol, Type}()
+
+"""
+    _getaddedoutput(::AbstractTypes)
+
+Returns the name of any additional columns needed to be added to outputs.
+"""
+function _getaddedoutput end
+
+_getaddedoutput(::AbstractTypes) = nothing
 
 """
     _calcabundance(t::AbstractTypes, a::AbstractArray)

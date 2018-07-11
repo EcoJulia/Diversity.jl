@@ -38,7 +38,7 @@ export _countsubcommunities  # optional
 export AbstractTypes
 export _gettypenames, _calcsimilarity, _getscale      # required
 export _counttypes, _calcabundance, _calcordinariness # optional
-export _getdiversityname                              # optional
+export _getdiversityname, _addedoutputcols, _getaddedoutput # optional
 
 # Base class and functions required for each metacommunity
 export AbstractMetacommunity
@@ -60,7 +60,7 @@ export gettypenames, getsubcommunitynames
 export getabundance, getmetaabundance, getweight
 export getordinariness!, getmetaordinariness!
 export calcsimilarity # Needed because it sometimes doesn't exist unless requested
-export getdiversityname
+export getdiversityname, addedoutputcols, getaddedoutput
 
 include("Iterators.jl")
 export TypeIterator, SubcommunityIterator
