@@ -123,7 +123,7 @@ function getFullName end
 
 Return the metacommunity belonging to the DiversityMeasure.
 """
-function getmeta end
+function _getmeta end
 
 getsubcommunitynames(dm::DiversityMeasure) = getsubcommunitynames(_getmeta(dm))
 gettypenames(dm::DiversityMeasure) = gettypenames(_getmeta(dm))
@@ -186,8 +186,17 @@ function inddiv end
                               partition_level="subcommunity",
                               partition_name=pn,
                               diversity=div),
-                              raw, types, scs)
-    return reduce(append!, dfs)
+                    raw, types, scs)
+    df = reduce(append!, dfs)
+    cols = addedoutputcols(_getmeta(measure))
+    if length(cols) > 0
+        len = length(df)
+        data = getaddedoutput(_getmeta(measure))
+        for col in keys(cols)
+            insert!(df, length(df) + 1, data[col], col)
+        end
+    end
+    return df
 end
 
 @inline function inddiv(measure::DiversityMeasure, qs::AbstractVector)
@@ -234,7 +243,16 @@ function subdiv end
                                            partition_name=pn,
                                            diversity=div),
                     raw, scs)
-    return reduce(append!, dfs)
+    df = reduce(append!, dfs)
+    cols = addedoutputcols(_getmeta(measure))
+    if length(cols) > 0
+        len = length(df)
+        data = getaddedoutput(_getmeta(measure))
+        for col in keys(cols)
+            insert!(df, length(df) + 1, data[col], col)
+        end
+    end
+    return df
 end
 
 @inline function subdiv(measure::DiversityMeasure, qs::AbstractVector)
@@ -278,12 +296,21 @@ function metadiv end
 
 @inline function metadiv(measure::DiversityMeasure, q::Real)
     raw = metadiv_raw(measure, q)
-    return DataFrame(div_type=getdiversityname(measure),
-                     measure=getASCIIName(measure), q=q,
-                     type_level="types", type_name="",
-                     partition_level="metacommunity",
-                     partition_name="",
-                     diversity=raw)
+    df = DataFrame(div_type=getdiversityname(measure),
+                   measure=getASCIIName(measure), q=q,
+                   type_level="types", type_name="",
+                   partition_level="metacommunity",
+                   partition_name="",
+                   diversity=raw)
+   cols = addedoutputcols(_getmeta(measure))
+   if length(cols) > 0
+       len = length(df)
+       data = getaddedoutput(_getmeta(measure))
+       for col in keys(cols)
+           insert!(df, length(df) + 1, data[col], col)
+       end
+   end
+   return df
 end
 
 @inline function metadiv(measure::DiversityMeasure, qs::AbstractVector)
