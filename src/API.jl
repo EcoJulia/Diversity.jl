@@ -181,11 +181,18 @@ Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-function _getmetaabundance(m::AbstractMetacommunity, raw::Bool)
-    return reduce(+, SubcommunityIterator(m) do mc
-                  return _getabundance(mc, raw)
-                  end
-                  )
+_getmetaabundance(mc::Meta, raw::Bool) where
+{FP, AProcessed, Sim, Part,
+ Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
+                                             AProcessed, Sim, Part}} =
+    _getabundance(mc, raw)
+
+function _getmetaabundance(mc::Meta, raw::Bool) where
+    {FP, AProcessed, Sim, Part,
+     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
+                                                 AProcessed, Sim, Part}}
+    ab = _getabundance(mc, raw)
+    return ab * ones(FP, (countsubcommunities(mc),))
 end
 
 """
@@ -204,11 +211,22 @@ Returns the subcommunity weights of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
-function _getweight(m::AbstractMetacommunity)
-    return reduce(+, TypeIterator(m) do mc
-                  return _getabundance(mc, false)
-                  end
-                  )
+_getweight(::Meta) where
+{FP, AProcessed, Sim, Part,
+ Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
+                                             AProcessed, Sim, Part}} = [one(FP)]
+
+function _getweight(mc::Meta) where
+    {FP, AProcessed, Sim, Part,
+     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
+                                                 AProcessed, Sim, Part}}
+    ab = _getabundance(mc, false)
+    sc = countsubcommunities(mc)
+    w = Vector{FP}(sc)
+    for i in 1:sc
+        w[i] = sum(@view ab[:,i])
+    end
+    return w
 end
 
 """
@@ -231,8 +249,18 @@ metacommunity as a whole. May be implemented by each
 AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
-function _getmetaordinariness!(m::AbstractMetacommunity)
-    return reduce(+, SubcommunityIterator(_getordinariness!, m))
+_getmetaordinariness!(mc::Meta) where
+{FP, AProcessed, Sim, Part,
+ Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
+                                             AProcessed, Sim, Part}} =
+    _getordinariness!(mc)
+
+function _getmetaordinariness!(mc::Meta) where
+    {FP, AProcessed, Sim, Part,
+     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
+                                                 AProcessed, Sim, Part}}
+    ord = _getordinariness!(mc)
+    return ord * ones(FP, (countsubcommunities(mc),))
 end
 
 ### Other optional APIs to implement
