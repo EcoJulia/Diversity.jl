@@ -268,11 +268,11 @@ end
 end
 
 @inline function subdiv_raw(measure::PowerMeanMeasure, q::Real)
-    powermean(inddiv_raw(measure, q), 1.0 - q, measure.abundances)
+    powermean(inddiv_raw(measure, q), one(q) - q, measure.abundances)
 end
 
 @inline function subdiv_raw(measure::RelativeEntropyMeasure, q::Real)
-    powermean(inddiv_raw(measure, q), q - 1.0, measure.abundances)
+    powermean(inddiv_raw(measure, q), q - one(q), measure.abundances)
 end
 
 """
@@ -326,7 +326,7 @@ end
 end
 
 @inline function metadiv_raw(measure::DiversityMeasure, q::Real)
-    powermean(subdiv_raw(measure, q), 1.0 - q, measure.weights)
+    powermean(subdiv_raw(measure, q), one(q) - q, measure.weights)
 end
 
 function getPartitionFunction(measure::DiversityMeasure, level::DiversityLevel)
