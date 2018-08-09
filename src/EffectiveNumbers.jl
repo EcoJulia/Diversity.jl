@@ -18,30 +18,47 @@ function powermean(values::V, order::R = 1, weights::V = ones(values)) where
     length(values) == length(weights) ||
     throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
 
-    # Normalise weights to sum to 1 (as per Rényi)
-    proportions = weights / sum(weights)
-
-    # Check whether all proportions are NaN - happens in normalisation when all
-    # weights are zero in group. In that case we want to propagate the NaN
-    if all(isnan.(proportions))
-        return(convert(FP, NaN))
+    # Check whether all weights are zero in group.
+    # In that case we want to return a NaN
+    if iszero(weights)
+        return convert(FP, NaN)
     end
 
-    # Extract values with non-zero weights
-    present = [(proportions[i], values[i])
-               for i=1:length(proportions) if !(proportions[i] ≈ zero(eltype(proportions)))]
     if isinf(order)
         if order > 0 # +Inf -> Maximum
-            reduce((a, b) -> a[2] > b[2] ? a : b, present)[2]
+            s = zero(FP)
+            for i = 1:length(weights)
+                @inbounds if (weights[i] > eps(FP)) & (values[i] > s)
+                    s = values[i]
+                end
+            end
+            return s
         else # -Inf -> Minimum
-            reduce((a, b) -> a[2] < b[2] ? a : b, present)[2]
+            s = convert(FP, Inf)
+            for i = 1:length(weights)
+                @inbounds if (weights[i] > eps(FP)) & (values[i] < s)
+                    s = values[i]
+                end
+            end
+            return s
         end
     else
         if order ≈ zero(order)
-            mapreduce(pair -> pair[2] ^ pair[1], *, present)
+            s = zero(FP)
+            for i = 1:length(weights)
+                @inbounds if weights[i] > eps(FP)
+                    s += weights[i] * log(values[i])
+                end
+            end
+            return exp(s / sum(weights))
         else
-            mapreduce(pair -> pair[1] * pair[2] ^ order, +, present) ^
-                (one(order) / order)
+            s = zero(FP)
+            for i = 1:length(weights)
+                @inbounds if weights[i] > eps(FP)
+                    s += weights[i] * values[i] ^ order
+                end
+            end
+            return (s / sum(weights)) ^ (one(FP) / order)
         end
     end
 end
@@ -52,7 +69,7 @@ function powermean(values::V,
                    weights::V = ones(values)) where
     {R <: Real, VR <: AbstractVector{R},
      FP <: AbstractFloat, V <: AbstractVector{FP}}
-    map(order -> powermean(values, order, weights), orders)
+    return map(order -> powermean(values, order, weights), orders)
 end
 
 # This is the next most simple case - matrices with subcommunities, and an order or orders
@@ -61,9 +78,8 @@ function powermean(values::M, orders, weights::M = ones(values)) where
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
                                 "must be the same size"))
-    
-    map(col -> powermean(view(values, :, col), orders,
-                         view(weights, :, col)), 1:size(values, 2))
+    @views map(col -> powermean(values[:, col], orders,
+                                weights[:, col]), 1:size(values, 2))
 end
 
 """
