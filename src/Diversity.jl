@@ -170,4 +170,7 @@ export hillnumber
 
 end # sub-module Hill
 
+# Path into package
+path(path...; dir::String = "test") = joinpath(@__DIR__, "..", dir, path...)
+
 end # module
