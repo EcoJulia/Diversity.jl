@@ -27,7 +27,7 @@ function powermean(values::V, order::R = 1, weights::V = ones(values)) where
     if isinf(order)
         if order > 0 # +Inf -> Maximum
             s = zero(FP)
-            for i = 1:length(weights)
+            for i in eachindex(values, weights)
                 @inbounds if (weights[i] > eps(FP)) & (values[i] > s)
                     s = values[i]
                 end
@@ -35,7 +35,7 @@ function powermean(values::V, order::R = 1, weights::V = ones(values)) where
             return s
         else # -Inf -> Minimum
             s = convert(FP, Inf)
-            for i = 1:length(weights)
+            for i in eachindex(values, weights)
                 @inbounds if (weights[i] > eps(FP)) & (values[i] < s)
                     s = values[i]
                 end
@@ -45,7 +45,7 @@ function powermean(values::V, order::R = 1, weights::V = ones(values)) where
     else
         if order ≈ zero(order)
             s = zero(FP)
-            for i = 1:length(weights)
+            for i in eachindex(values, weights)
                 @inbounds if weights[i] > eps(FP)
                     s += weights[i] * log(values[i])
                 end
@@ -53,7 +53,7 @@ function powermean(values::V, order::R = 1, weights::V = ones(values)) where
             return exp(s / sum(weights))
         else
             s = zero(FP)
-            for i = 1:length(weights)
+            for i in eachindex(values, weights)
                 @inbounds if weights[i] > eps(FP)
                     s += weights[i] * values[i] ^ order
                 end
