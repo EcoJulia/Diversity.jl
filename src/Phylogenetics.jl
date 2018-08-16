@@ -1,7 +1,6 @@
 using Phylo
 using Diversity
 
-import Diversity.Phylogenetics: PhyloTypes
 struct PhyloTypes{Tree <: AbstractTree} <: Diversity.API.AbstractTypes
     tree::Tree
     nleaf::Int64

@@ -108,13 +108,22 @@ end
 
 export getName, getASCIIName, getFullName
 
-module Phylogenetics
-export PhyloTypes
+# Does PhyloTypes need to exist already?
 using Requires
-@require Phylo begin
-    println("Creating Diversity to Phylo interface...")
-    include("Phylogenetics.jl")
-end
+@static if VERSION < v"0.7.0-"
+    @require Phylo begin
+        println("Creating Diversity to Phylo interface...")
+        include("Phylogenetics.jl")
+        export PhyloTypes
+    end
+else
+    function __init__()
+        @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
+            println("Creating Diversity to Phylo interface...")
+            include("Phylogenetics.jl")
+            export PhyloTypes
+        end
+    end
 end
 
 include("GeneralisedDiversities.jl")
