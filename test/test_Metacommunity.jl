@@ -1,5 +1,7 @@
 module TestMetacommunity
 using Compat.Test
+using Compat.LinearAlgebra
+using Compat
 
 using Diversity
 using Diversity.API
@@ -51,7 +53,7 @@ end
 @testset "Type names" begin
     @test gettypenames(Species(3)) == map(x -> "$x", 1:3)
     @test gettypenames(Species(["My species"])) == ["My species"]
-    @test gettypenames(GeneralTypes(eye(1), ["My species"])) == ["My species"]
+    @test gettypenames(GeneralTypes(Diagonal([1.0]), ["My species"])) == ["My species"]
     @test gettypenames(UniqueTypes(["One", "Two"])) == ["One", "Two"]
 end
 
@@ -59,7 +61,7 @@ meta = Metacommunity(three, ms, oc_count)
 sp = Species(size(ab3, 1))
 abf = ab3 ./ sum(ab3)
 meta2 = Metacommunity(abf, sp, sc)
-g2 = GeneralTypes(eye(2))
+g2 = GeneralTypes(Matrix(1.0I, 2, 2))
 @testset "Metacommunity" begin
     @test gettypes(meta) == ms
     @test getpartition(meta) == oc_count
@@ -68,17 +70,19 @@ g2 = GeneralTypes(eye(2))
     @test !ismissing(meta.ordinariness)
     @test getabundance(Metacommunity(ab3, g2, sc)) ≈
         getabundance(Metacommunity(abf, g2, sc))
-    @test_warn "not normalised" Metacommunity(ab3 * 1.0, eye(2))
-    @test_warn "not normalised" Metacommunity([1.0, 2.0], eye(2))
-    @test_warn "not normalised" Metacommunity(ab3 * 1.0, meta2)
-    @test_nowarn Metacommunity([0.5, 0.5], eye(2))
+    if VERSION < v"0.7.0-"
+        @test_warn "not normalised" Metacommunity(ab3 * 1.0, Matrix(1.0I, 2, 2))
+        @test_warn "not normalised" Metacommunity([1.0, 2.0], Matrix(1.0I, 2, 2))
+        @test_warn "not normalised" Metacommunity(ab3 * 1.0, meta2)
+    end
+    @test_nowarn Metacommunity([0.5, 0.5], Matrix(1.0I, 2, 2))
     @test_throws ErrorException Metacommunity(abf, ms, sc)
     @test_throws DimensionMismatch Metacommunity([1, 2, 3]/6, meta2)
     @test_throws DimensionMismatch getabundance(Metacommunity([0.5, 0.5], meta2))
-    @test getabundance(Metacommunity(abf, eye(2))) ≈
+    @test getabundance(Metacommunity(abf, Matrix(1.0I, 2, 2))) ≈
         getabundance(Metacommunity(abf, meta2))
     #@test_throws ErrorException Metacommunity(-abf, g2, sc)
-    @test calcsimilarity(gettypes(meta2), _getscale(meta2)) ≈ eye(size(ab3, 1))
+    @test calcsimilarity(gettypes(meta2), _getscale(meta2)) ≈ Matrix(1.0I, size(ab3, 1), size(ab3, 1))
     @test Diversity.floattypes(meta) ⊆ mapreduce(Diversity.floattypes, ∩,
                                                  [getabundance(meta),
                                                   getpartition(meta),

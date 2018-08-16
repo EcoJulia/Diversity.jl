@@ -1,4 +1,4 @@
-module ValidateRCall_rdiversity
+module ValidateRCall
 using Compat: @warn
 
 # Environment variable to avoid boring R package builds

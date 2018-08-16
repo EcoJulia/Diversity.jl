@@ -3,7 +3,6 @@ using Compat.Test
 
 using Phylo
 using Diversity
-using Diversity.Phylogenetics
 
 @testset "Iterators" begin
     species = 10
@@ -14,9 +13,8 @@ using Diversity.Phylogenetics
     m = Metacommunity(abund, PhyloTypes(ru))
     @test length(TypeIterator(m)) == counttypes(PhyloTypes(ru))
     @test length(SubcommunityIterator(m)) == sc
-    @test all(broadcast(≈, reduce(+, SubcommunityIterator(m)),
-                        getmetaabundance(m)))
-    @test all(broadcast(≈, reduce(+, TypeIterator(m)), getweight(m)))
+    @test all(reduce(+, SubcommunityIterator(m)) .≈ getmetaabundance(m))
+    @test all(reduce(+, TypeIterator(m)) .≈ getweight(m))
 end
 
 end

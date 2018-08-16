@@ -1,5 +1,7 @@
 module TestDiversityMeasure
 using Compat.Test
+using Compat.LinearAlgebra
+using Compat
 
 using Diversity
 using Diversity.ShortNames
@@ -47,8 +49,8 @@ weights /= sum(weights);
 Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
 numcommunities = 8;
 manyweights = rand(numspecies, numcommunities);
-manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
-                             (numcommunities)));
+manyweights *= Diagonal(reshape(mapslices(v -> 1. / sum(v), manyweights;
+                                          dims=1), numcommunities));
 
 @testset "inddiv / subdiv / metadiv" begin
     @test individualDiversity(nab, 0)[:diversity] ≈ inddiv(nab, 0)[:diversity]
@@ -78,8 +80,8 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     @test nrow(sna) == length(qs) * size(communities, 2)
     for q in qs
         @test sna[isapprox.(sna[:q], q), :diversity] ≈ ones(size(communities, 2))
-    end 
-    @test subdiv(RawAlpha(Metacommunity(communities)), 0)[:diversity] ≈ numspecies * vec(mapslices(v -> 1. / sum(v), communities, 1))
+    end
+    @test subdiv(RawAlpha(Metacommunity(communities)), 0)[:diversity] ≈ numspecies * vec(mapslices(v -> 1. / sum(v), communities; dims=1))
 
     even = ones((numspecies, numcommunities)) / (numspecies * numcommunities);
     qs = [0, 1, 2, 3, 4, 5, 6, Inf];
@@ -88,7 +90,8 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     md2 = metadiv(meta2, Inf)
     @test md2[md2[:measure] .== "Gamma", :diversity] ≈ metadiv(Gamma(meta2), Inf)[:diversity]
 
-    probs = reshape(mapslices(sum, communities, 2), (size(communities, 1)));
+    probs = reshape(mapslices(sum, communities; dims=2),
+                    size(communities, 1));
     @test metadiv(Gamma(Metacommunity(communities)), qs)[:diversity] ≈ qD(probs, qs)
     @test metadiv(Gamma(Metacommunity(communities, Z1)), qs)[:diversity] ≈ qDZ(probs, qs, Z1)
 
@@ -98,7 +101,7 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     colweights = rand(numcommunities)
     colweights /= sum(colweights)
     allthesame = probs * colweights'
-    @test metadiv(RawBeta(Metacommunity(allthesame, Z)), qs)[:diversity] ≈ 1.0 ./ qD(colweights, 2 - qs)
+    @test metadiv(RawBeta(Metacommunity(allthesame, Z)), qs)[:diversity] ≈ 1.0 ./ qD(colweights, 2 .- qs)
     @test metadiv(NormalisedBeta(Metacommunity(allthesame, Z)), qs)[:diversity] ≈ ones(length(qs))
     @test metadiv(NormalisedRho(Metacommunity(allthesame, Z)), qs)[:diversity] ≈ ones(length(qs))
     @test metadiv(RawRho(Metacommunity(allthesame, Z)), qs)[:diversity] ≈ qD(colweights, qs)
@@ -112,10 +115,11 @@ manyweights *= diagm(reshape(mapslices(v -> 1. / sum(v), manyweights, 1),
     @test metadiv(RawRho(Metacommunity(distinct)), qs)[:diversity] ≈ ones(length(qs))
     subnr = subdiv(NormalisedRho(Metacommunity(distinct)), qs)
     for q in qs
-        @test subnr[isapprox.(subnr[:q], q), :diversity] ≈ vec(sum(distinct, 1))
+        @test subnr[isapprox.(subnr[:q], q), :diversity] ≈
+              vec(Compat.sum(distinct; dims=1))
     end
     @test metadiv(NormalisedBeta(Metacommunity(distinct)), qs)[:diversity] ≈
-        qD(reshape(sum(distinct, 1), numcommunities), qs)
+        qD(reshape(Compat.sum(distinct; dims=1), numcommunities), qs)
     @test metadiv(RawBeta(Metacommunity(distinct)), qs)[:diversity] ≈ ones(length(qs))
 
     # many (unexported!) diversity levels not yet implemented
