@@ -7,34 +7,6 @@
 | [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.6-img]][pkg-0.6-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
 | [![][docs-latest-img]][docs-latest-url] | [![Works with 1.0!][pkg-1.0-img]][pkg-1.0-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
-## Installation
-
-The package is registered in the `General` registry on v1.0 and v0.7 as well as `METADATA` on Julia v0.6 and so can be installed with `add`. For example
-on Julia v1.0:
-
-```julia
-(v1.0) pkg> add Diversity
- Resolving package versions...
-  Updating `~/.julia/environments/v1.0/Project.toml`
-  [xxxxxxxx] + Diversity v0.4.4
-  Updating `~/.julia/environments/v1.0/Manifest.toml`
-  [xxxxxxxx] + Diversity v0.4.4
-...
-
-(v1.0) pkg>
-```
-
-## Project Status
-
-The package is tested against the current Julia v1.0 release, and also
-the previous v0.6 and v0.7 versions, on Linux, macOS, and Windows.
-
-## Contributing and Questions
-
-Contributions are very welcome, as are feature requests and suggestions.
-Please open an [issue][issues-url] if you encounter any problems or would
-just like to ask a question.
-
 ## Summary
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
@@ -62,6 +34,34 @@ breaking changes to the underlying code, but everything works with Julia
 v0.6, v0.7 and v1.0 as far as we're aware. It is periodically working
 with Julia nightly but that is not a high priority now that Julia 1.0 has
 been released. Older interfaces from Diversity v0.2 have been removed in v0.4.
+
+## Installation
+
+The package is registered in the `General` registry on v1.0 and v0.7 as well as `METADATA` on Julia v0.6 and so can be installed with `add`. For example
+on Julia v1.0:
+
+```julia
+(v1.0) pkg> add Diversity
+ Resolving package versions...
+  Updating `~/.julia/environments/v1.0/Project.toml`
+  [xxxxxxxx] + Diversity v0.4.4
+  Updating `~/.julia/environments/v1.0/Manifest.toml`
+  [xxxxxxxx] + Diversity v0.4.4
+...
+
+(v1.0) pkg>
+```
+
+## Project Status
+
+The package is tested against the current Julia v1.0 release, and also
+the previous v0.6 and v0.7 versions, on Linux, macOS, and Windows.
+
+## Contributing and Questions
+
+Contributions are very welcome, as are feature requests and suggestions.
+Please open an [issue][issues-url] if you encounter any problems or would
+just like to ask a question.
 
 ## Usage
 
