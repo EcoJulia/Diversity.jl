@@ -1,4 +1,6 @@
 using Diversity
+using Compat.InteractiveUtils
+using Compat
 
 ### AbstractPartition API
 
@@ -73,6 +75,33 @@ function _counttypes end
 function _counttypes(t::T, raw::Bool) where T <: AbstractTypes
     return length(_gettypenames(t, raw))
 end
+
+"""
+    _getdiversityname(::AbstractTypes)
+
+Returns the name of the diversity type used to calculate.
+"""
+function _getdiversityname end
+
+_getdiversityname(::AbstractTypes) = "Unknown diversity"
+
+"""
+    _addedoutputcols(::AbstractTypes)
+
+Returns the name of any additional columns needed to be added to outputs.
+"""
+function _addedoutputcols end
+
+_addedoutputcols(::AbstractTypes) = Dict{Symbol, Type}()
+
+"""
+    _getaddedoutput(::AbstractTypes)
+
+Returns the name of any additional columns needed to be added to outputs.
+"""
+function _getaddedoutput end
+
+_getaddedoutput(::AbstractTypes) = nothing
 
 """
     _calcabundance(t::AbstractTypes, a::AbstractArray)
@@ -154,11 +183,18 @@ Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-function _getmetaabundance(m::AbstractMetacommunity, raw::Bool)
-    return reduce(+, SubcommunityIterator(m) do mc
-                  return _getabundance(mc, raw)
-                  end
-                  )
+_getmetaabundance(mc::Meta, raw::Bool) where
+{FP, AProcessed, Sim, Part,
+ Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
+                                             AProcessed, Sim, Part}} =
+    _getabundance(mc, raw)
+
+function _getmetaabundance(mc::Meta, raw::Bool) where
+    {FP, AProcessed, Sim, Part,
+     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
+                                                 AProcessed, Sim, Part}}
+    ab = Compat.sum(_getabundance(mc, raw), dims=2)
+    return reshape(ab, length(ab))
 end
 
 """
@@ -177,11 +213,18 @@ Returns the subcommunity weights of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
-function _getweight(m::AbstractMetacommunity)
-    return reduce(+, TypeIterator(m) do mc
-                  return _getabundance(mc, false)
-                  end
-                  )
+_getweight(::Meta) where
+{FP, AProcessed, Sim, Part,
+ Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
+                                             AProcessed, Sim, Part}} = [one(FP)]
+
+function _getweight(mc::Meta) where
+    {FP, AProcessed, Sim, Part,
+     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
+                                                 AProcessed, Sim, Part}}
+    ab = _getabundance(mc, false)
+    w = Compat.sum(ab, dims=1)
+    return reshape(w, length(w))
 end
 
 """
@@ -204,8 +247,18 @@ metacommunity as a whole. May be implemented by each
 AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
-function _getmetaordinariness!(m::AbstractMetacommunity)
-    return reduce(+, SubcommunityIterator(_getordinariness!, m))
+_getmetaordinariness!(mc::Meta) where
+{FP, AProcessed, Sim, Part,
+ Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
+                                             AProcessed, Sim, Part}} =
+    _getordinariness!(mc)
+
+function _getmetaordinariness!(mc::Meta) where
+    {FP, AProcessed, Sim, Part,
+     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
+                                                 AProcessed, Sim, Part}}
+    ord = Compat.sum(_getordinariness!(mc), dims=2)
+    return reshape(ord, length(ord))
 end
 
 ### Other optional APIs to implement

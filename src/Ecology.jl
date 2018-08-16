@@ -1,8 +1,13 @@
 using Diversity
 using Diversity.ShortNames
+using Diversity.API
+using Compat.LinearAlgebra
 
 """
-    generalisedrichness(level::DiversityLevel, proportions::AbstractArray, Z::AbstractMatrix)
+    generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
+                        Z::AbstractMatrix)
+    generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
+                        sim::AbstractTypes)
 
 Calculates species richness (diversity at q = 0) of a series of
 columns representing subcommunity counts, allowing a similarity matrix
@@ -14,15 +19,20 @@ for the types / species.
 
 - `proportions`: population proportions
 
-- `Z`: similarity matrix
+- `Z`: similarity matrix or
+- `sim`: instance of AbstractTypes
 
 # Returns:
 
 - diversity (at ecosystem level) or diversities (of subcommunities)
 """
+generalisedrichness(level::DiversityLevel,
+                    proportions::AbstractArray,
+                    Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
+    generalisedrichness(level, proportions, GeneralTypes(Z))
 function generalisedrichness(level::DiversityLevel,
                              proportions::AbstractArray,
-                             Z::AbstractMatrix = eye(size(proportions, 1)))
+                             sim::AbstractTypes)
     if (level == subcommunityDiversity)
         dm = ᾱ
     elseif (level == metacommunityDiversity)
@@ -30,7 +40,7 @@ function generalisedrichness(level::DiversityLevel,
     else
         error("Can't calculate richness for $level")
     end
-    gr=level(dm(Metacommunity(proportions, Z)), 0)
+    gr=level(dm(Metacommunity(proportions, sim)), 0)
     gr[:measure] = "Richness"
     return gr
 end
@@ -47,12 +57,15 @@ columns representing independent subcommunity counts.
 #### Returns:
 - diversities of subcommunities
 """
-function richness(proportions::AbstractVecOrMat)
-    generalisedrichness(subcommunityDiversity, proportions)
-end
+richness(proportions::AbstractVecOrMat) =
+    generalisedrichness(subcommunityDiversity, proportions,
+                        UniqueTypes(size(proportions, 1)))
 
 """
-    generalisedshannon(level::DiversityLevel, proportions::AbstractArray, Z::AbstractMatrix)
+    generalisedshannon(level::DiversityLevel, proportions::AbstractArray,
+                       Z::AbstractMatrix)
+    generalisedshannon(level::DiversityLevel, proportions::AbstractArray,
+                       sim::AbstractTypes)
 
 Calculates Shannon entropy (log of diversity at q = 1) of a series of
 columns representing independent subcommunity counts, allowing a
@@ -63,14 +76,21 @@ similarity matrix for the types / species.
 
 - `proportions`: population proportions
 
-- `Z`: similarity matrix
+- `Z`: similarity matrix or
+- `sim`: instance of AbstractTypes
 
 #### Returns:
 - entropy (at metacommunity level) or entropies (of subcommunities)
 """
+function generalisedshannon end
+generalisedshannon(level::DiversityLevel,
+                   proportions::AbstractArray,
+                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
+    generalisedshannon(level, proportions, GeneralTypes(Z))
+
 function generalisedshannon(level::DiversityLevel,
                             proportions::AbstractArray,
-                            Z::AbstractMatrix = eye(size(proportions, 1)))
+                            sim::AbstractTypes)
     if (level == subcommunityDiversity)
         dm = ᾱ
     elseif (level == metacommunityDiversity)
@@ -78,14 +98,15 @@ function generalisedshannon(level::DiversityLevel,
     else
         error("Can't calculate richness for $level")
     end
-    gs = level(dm(Metacommunity(proportions, Z)), 1)
+    gs = level(dm(Metacommunity(proportions, sim)), 1)
     gs[:diversity] = log.(gs[:diversity])
     gs[:measure] = "Shannon"
+    delete!(gs, :q)
     return gs
 end
 
 """
-### Calculate Shannon entropy of populations
+    shannon(proportions::AbstractVecOrMat)
 
 Calculates shannon entropy (log of diversity at q = 1) of a series of
 columns representing independent subcommunity counts.
@@ -96,12 +117,15 @@ columns representing independent subcommunity counts.
 #### Returns:
 - entropies of subcommunities
 """
-function shannon(proportions::AbstractVecOrMat)
-    generalisedshannon(subcommunityDiversity, proportions)
-end
+shannon(proportions::AbstractVecOrMat) =
+    generalisedshannon(subcommunityDiversity, proportions,
+                       UniqueTypes(size(proportions, 1)))
 
 """
-### Calculate a generalised version of Simpson's index
+    generalisedsimpson(level::DiversityLevel, proportions::AbstractArray,
+                       Z::AbstractMatrix)
+    generalisedsimpson(level::DiversityLevel, proportions::AbstractArray,
+                       sim::AbstractTypes)
 
 Calculates Simpson's index (1 / diversity at q = 2) of a series of
 columns representing independent subcommunity counts, allowing a
@@ -112,14 +136,21 @@ similarity matrix for the types / species.
 
 - `proportions`: population proportions
 
-- `Z`: similarity matrix
+- `Z`: similarity matrix or
+- `sim`: instance of AbstractTypes
 
 #### Returns:
 - concentration (at ecosystem level) or concentrations (of subcommunities)
 """
+function generalisedsimpson end
+generalisedsimpson(level::DiversityLevel,
+                   proportions::AbstractArray,
+                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
+    generalisedsimpson(level, proportions, GeneralTypes(Z))
+
 function generalisedsimpson(level::DiversityLevel,
                             proportions::AbstractArray,
-                            Z::AbstractMatrix = eye(size(proportions, 1)))
+                            sim::AbstractTypes)
     if (level == subcommunityDiversity)
         dm = ᾱ
     elseif (level == metacommunityDiversity)
@@ -127,9 +158,10 @@ function generalisedsimpson(level::DiversityLevel,
     else
         error("Can't calculate richness for $level")
     end
-    gs = level(dm(Metacommunity(proportions, Z)), 2)
+    gs = level(dm(Metacommunity(proportions, sim)), 2)
     gs[:diversity] = gs[:diversity] .^ -1
     gs[:measure] = "Simpson"
+    delete!(gs, :q)
     return gs
 end
 
@@ -147,12 +179,13 @@ columns representing independent subcommunity counts.
 
 - concentrations of subcommunities
 """
-function simpson(proportions::AbstractVecOrMat)
-    generalisedsimpson(subcommunityDiversity, proportions)
-end
+simpson(proportions::AbstractVecOrMat) =
+    generalisedsimpson(subcommunityDiversity, proportions,
+                       UniqueTypes(size(proportions, 1)))
 
 """
     generalisedjaccard(proportions::AbstractArray, qs, Z::AbstractMatrix)
+    generalisedjaccard(proportions::AbstractArray, qs, sim::AbstractTypes)
 
 Calculates a generalisation of the Jaccard index of two columns
 representing the counts of two subcommunities. This evaluates to raw
@@ -168,22 +201,32 @@ better properties.
 
 - `qs`: single number or vector of values of parameter q
 
-- `Z`: similarity matrix
+- `Z`: similarity matrix or
+- `sim`: instance of AbstractTypes
 
 # Returns:
 
 - Jaccard-related distinctivess measures
 """
-function generalisedjaccard(proportions::AbstractArray, qs,
-                            Z::AbstractMatrix = eye(size(proportions, 1)))
-    meta = Metacommunity(proportions, Z)
+function generalisedjaccard end
+
+generalisedjaccard(proportions::AbstractMatrix, qs,
+                   Z::AbstractMatrix =
+                   Matrix(1.0I, size(proportions, 1),
+                                size(proportions, 1))) =
+    generalisedjaccard(proportions, qs, GeneralTypes(Z))
+
+function generalisedjaccard(proportions::AbstractMatrix, qs,
+                            sim::AbstractTypes)
+    meta = Metacommunity(proportions, sim)
     countsubcommunities(meta) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
     ab = metadiv(α(meta), qs)
     g = metadiv(Γ(meta), qs)
-    j = join(ab, g, on=[:q, :type_level, :type_name, :partition_level, :partition_name],
+    j = join(ab, g, on=[:q, :type_level, :type_name,
+                        :partition_level, :partition_name, :div_type],
              makeunique=true)
-    j[:diversity] = j[:diversity] ./ j[:diversity_1] - 1
+    j[:diversity] = j[:diversity] ./ j[:diversity_1] .- 1
     j[:measure] = "Jaccard"
     delete!(j, [:diversity_1, :measure_1])
     return j
@@ -204,6 +247,6 @@ normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
 
 - the Jaccard index
 """
-function jaccard(proportions::AbstractMatrix)
-    generalisedjaccard(proportions, 0)
-end
+jaccard(proportions::AbstractMatrix) =
+    generalisedjaccard(proportions, 0,
+                       UniqueTypes(size(proportions, 1)))

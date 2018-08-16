@@ -27,8 +27,8 @@ docs_dir: 'build'
 
 pages:
 - Introduction:      index.md
+- Phylogenetics:     phylogenetics.md
 - Submodules:
-    - Phylogenetics: phylogenetics.md
     - API:           api.md
 - Other related measures:
     - Ecology:       ecology.md

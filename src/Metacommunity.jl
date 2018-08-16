@@ -153,7 +153,7 @@ function _getordinariness!(meta::Metacommunity)
     if ismissing(meta.ordinariness)
         meta.ordinariness = _calcordinariness(meta.types, meta.processedabundances, meta.scale)
     end
-    meta.ordinariness
+    return meta.ordinariness
 end
 
 import Diversity.API._getscale

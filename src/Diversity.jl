@@ -38,6 +38,7 @@ export _countsubcommunities  # optional
 export AbstractTypes
 export _gettypenames, _calcsimilarity, _getscale      # required
 export _counttypes, _calcabundance, _calcordinariness # optional
+export _getdiversityname, _addedoutputcols, _getaddedoutput # optional
 
 # Base class and functions required for each metacommunity
 export AbstractMetacommunity
@@ -59,6 +60,7 @@ export gettypenames, getsubcommunitynames
 export getabundance, getmetaabundance, getweight
 export getordinariness!, getmetaordinariness!
 export calcsimilarity # Needed because it sometimes doesn't exist unless requested
+export getdiversityname, addedoutputcols, getaddedoutput
 
 include("Iterators.jl")
 export TypeIterator, SubcommunityIterator
@@ -106,13 +108,22 @@ end
 
 export getName, getASCIIName, getFullName
 
-module Phylogenetics
-export PhyloTypes
+# Does PhyloTypes need to exist already?
 using Requires
-@require Phylo begin
-    println("Creating Diversity to Phylo interface...")
-    include("Phylogenetics.jl")
-end
+@static if VERSION < v"0.7.0-"
+    @require Phylo begin
+        println("Creating Diversity to Phylo interface...")
+        include("Phylogenetics.jl")
+        export PhyloTypes
+    end
+else
+    function __init__()
+        @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
+            println("Creating Diversity to Phylo interface...")
+            include("Phylogenetics.jl")
+            export PhyloTypes
+        end
+    end
 end
 
 include("GeneralisedDiversities.jl")
@@ -167,5 +178,8 @@ include("Hill.jl")
 export hillnumber
 
 end # sub-module Hill
+
+# Path into package
+path(path...; dir::String = "test") = joinpath(@__DIR__, "..", dir, path...)
 
 end # module

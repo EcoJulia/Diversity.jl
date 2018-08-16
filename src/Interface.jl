@@ -75,6 +75,39 @@ function gettypenames(t::AbstractTypes, raw::Bool = false)
 end
 
 """
+    getdiversityname(m::AbstractMetacommunity)
+    getdiversityname(t::AbstractTypes)
+
+Returns the name of the diversity type used.
+"""
+function getdiversityname end
+
+getdiversityname(t::AbstractTypes) = getdiversityname(t)
+getdiversityname(m::AbstractMetacommunity) = _getdiversityname(_gettypes(m))
+
+"""
+    addedoutputcols(m::AbstractMetacommunity)
+    addedoutputcols(t::AbstractTypes)
+
+Returns the name of any additional columns needed to disambiguate the
+diversity type used.
+"""
+function addedoutputcols end
+
+addedoutputcols(t::AbstractTypes) = _addedoutputcols(t)
+addedoutputcols(m::AbstractMetacommunity) = addedoutputcols(_gettypes(m))
+
+"""
+    getaddedoutput(::AbstractTypes)
+
+Returns the contents of any additional columns to be added to outputs.
+"""
+function getaddedoutput end
+
+getaddedoutput(t::AbstractTypes) = _getaddedoutput(t)
+getaddedoutput(m::AbstractMetacommunity) = _getaddedoutput(_gettypes(m))
+
+"""
     getsubcommunitynames(m::AbstractMetacommunity)
     getsubcommunitynames(p::AbstractPartition)
 

@@ -1,5 +1,6 @@
 using DataFrames
-using Compat: @warn
+using Compat: @warn, DomainError
+using Compat.LinearAlgebra
 
 """
     UniqueTypes
@@ -38,13 +39,16 @@ end
 
 import Diversity.API._calcsimilarity
 function _calcsimilarity(ut::UniqueTypes, ::Real)
-    return eye(ut.num)
+    return Matrix(1.0I, ut.num, ut.num)
 end
 
 import Diversity.API._calcordinariness
 function _calcordinariness(::UniqueTypes, abundances::AbstractArray, ::Real)
     return abundances
 end
+
+import Diversity.API._getdiversityname
+_getdiversityname(::UniqueTypes) = "Unique"
 
 """
     Species
@@ -67,13 +71,13 @@ struct Taxonomy{FP <: AbstractFloat} <: Diversity.API.AbstractTypes
     speciesinfo::DataFrame
     taxa::Dict{Symbol, FP}
     typelabel::Symbol
-    
+
     function Taxonomy{FP}(speciesinfo::DataFrame,
                           taxa::Dict{Symbol, FP},
                           typelabel::Symbol) where FP <: AbstractFloat
-        sort(speciesinfo.colindex.names) == sort([keys(taxa)...]) ||
+        sort(describe(speciesinfo)[:variable]) == sort([keys(taxa)...]) ||
             error("Taxon labels do not match similarity values")
-        typelabel ∈ speciesinfo.colindex.names ||
+        typelabel ∈ describe(speciesinfo)[:variable] ||
             error("$typelabel not found in DataFrame column names")
         new{FP}(speciesinfo, taxa, typelabel)
     end
@@ -100,6 +104,8 @@ end
 function _calcsimilarity(::Taxonomy, ::Real)
     error("Can't generate a taxonomic similarity matrix yet")
 end
+
+_getdiversityname(::Taxonomy) = "Taxonomy"
 
 """
     GeneralTypes{FP, M}
@@ -140,7 +146,8 @@ struct GeneralTypes{FP <: AbstractFloat,
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
-        minimum(zmatrix) ≥ 0 || throw(DomainError())
+        minimum(zmatrix) ≥ 0 || throw(DomainError(minimum(zmatrix),
+                                      "Similarities must be ≥ 0"))
         maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
@@ -151,7 +158,8 @@ struct GeneralTypes{FP <: AbstractFloat,
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
-        minimum(zmatrix) ≥ 0 || throw(DomainError())
+        minimum(zmatrix) ≥ 0 || throw(DomainError(minimum(zmatrix),
+                                      "Similarities must be ≥ 0"))
         maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         length(names) == size(zmatrix, 1) ||
@@ -177,3 +185,5 @@ end
 function _calcsimilarity(gt::GeneralTypes, ::Real)
     return gt.z
 end
+
+_getdiversityname(::GeneralTypes) = "Arbitrary Z"

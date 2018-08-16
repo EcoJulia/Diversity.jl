@@ -1,5 +1,7 @@
 module ValidateDistances
 using Compat.Test
+using Compat
+using Compat.Statistics
 
 using Diversity
 using Diversity.ShortNames
@@ -12,7 +14,12 @@ using Distances
         pops = rand(types, sc)
         # Make sure not to remove all of the non-zeros from any column
         for j in 1:sc
-            pops[pops[:, j] .< median(pops[:, j])/2, j] = 0.0
+            vals = pops[:, j] .< Compat.Statistics.median(pops[:, j])/2
+            for k in 1:types
+                if vals[k]
+                    pops[k, j] = 0.0
+                end
+            end
         end
         pops /= sum(pops)
         meta = Metacommunity(pops)

@@ -1,5 +1,7 @@
 module ValidateEntropies
 using Compat.Test
+using Compat
+using Compat.Statistics
 
 using Diversity
 using Diversity.ShortNames
@@ -9,8 +11,8 @@ using StatsBase
     @testset "Random renyientropy $i" for i in 1:20
         types = rand(1:(i*10))
         pop = rand(types)
-        pop[pop .< median(pop)/2] = 0.0
-        pop /= sum(pop)
+        pop[pop .< Compat.Statistics.median(pop)/2] .= 0.0
+        pop ./= sum(pop)
         meta = Metacommunity(pop)
         g = Γ(meta)
         na = ᾱ(meta)

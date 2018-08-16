@@ -66,7 +66,7 @@ meta = Metacommunity(pop)
 ```
 
 #### Calculating diversity
-First we need to calculate the low-level diversity component seperately, by passing a `metacommunity` object to the appropriate function; `RawAlpha()`, `NormalisedAlpha()`, `RawBeta()`, `NormalisedBeta()`, `RawRho()`, `NormalisedRho()`, or `Gamma()`. 
+First we need to calculate the low-level diversity component seperately, by passing a `metacommunity` object to the appropriate function; `RawAlpha()`, `NormalisedAlpha()`, `RawBeta()`, `NormalisedBeta()`, `RawRho()`, `NormalisedRho()`, or `Gamma()`.
 
 ```julia
 # First, calculate the normalised alpha component
@@ -128,6 +128,7 @@ generate trees to incorporate into the diversity code:
 
 ```julia-repl
 julia> using Diversity, Phylo, Diversity.Phylogenetics
+Creating Diversity to Phylo interface...
 
 julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
 
@@ -139,16 +140,11 @@ String["tip 1", "tip 2", "tip 3", "tip 4"]
 julia> metaphylo = Metacommunity(communities, PhyloTypes(nt));
 
 julia> raw_meta_rho(metaphylo, [1, 2])
-2×7 DataFrames.DataFrame
-│ Row │ measure  │ q │ type_level │ type_name │ partition_level │
-├─────┼──────────┼───┼────────────┼───────────┼─────────────────┤
-│ 1   │ "RawRho" │ 1 │ "types"    │ ""        │ "metacommunity" │
-│ 2   │ "RawRho" │ 2 │ "types"    │ ""        │ "metacommunity" │
-
-│ Row │ partition_name │ diversity │
-├─────┼────────────────┼───────────┤
-│ 1   │ ""             │ 1.66187   │
-│ 2   │ ""             │ 1.51391   │
+2×8 DataFrames.DataFrame
+│ Row │ div_type     │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+├─────┼──────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Phylogenetic │ RawRho  │ 1 │ types      │           │ metacommunity   │       │ 1.80666   │
+│ 2   │ Phylogenetic │ RawRho  │ 2 │ types      │           │ metacommunity   │       │ 1.7056    │
 ```
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg

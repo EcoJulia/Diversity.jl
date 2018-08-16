@@ -1,7 +1,7 @@
 using Documenter
 using Diversity
 
-makedocs(modules = [Diversity, Diversity.Phylogenetics,
+makedocs(modules = [Diversity,
                     Diversity.Ecology, Diversity.Jost, Diversity.Hill],
          clean   = false)
 

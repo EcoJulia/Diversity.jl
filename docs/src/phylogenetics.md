@@ -1,4 +1,4 @@
-In the **Diversity.Phylogenetics** submodule, we generate Phylogenetic
+In the **Phylogenetics** code, we generate Phylogenetic
 diversity measures, based on Faith PD and extended by Chao.
 
 #### Usage
@@ -11,7 +11,7 @@ Using the functionality in the package is simple:
  - Calculate diversity!
 
 ```julia-repl
-julia> using Phylo, Diversity, Diversity.Phylogenetics
+julia> using Phylo, Diversity
 
 julia> species = ["Dog", "Cat", "Human", "Potato"];
 
@@ -57,7 +57,7 @@ julia> meta_gamma(metaphylo, 0)
 ```
 
 ```@autodocs
-Modules = [Diversity.Phylogenetics]
+Modules = [Diversity]
 Private = false
 ```
 

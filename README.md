@@ -146,11 +146,11 @@ A complete list of these functions is shown below:
 * `norm_meta_beta()` : effective number of distinct subcommunities
 * `meta_gamma()` : metacommunity similarity-sensitive diversity
 
-#### Diversity.Phylogenetics
+#### Phylogenetics
 
 Phylogenetic diversity (described [here][leinster-cobbold-url]) is
-included in the Diversity.Phylogenetics submodule. Documentation for
-these diversity measures can be found
+automatically included in the Diversity module when the `Phylo` package
+is loaded. Documentation for these diversity measures can be found
 [here](http://richardreeve.github.io/Diversity.jl/latest/phylogenetics/).
 The phylogenetics code relies on the [Phylo][phylo-url] package to
 generate trees to incorporate into the diversity code, and the
@@ -158,7 +158,7 @@ generate trees to incorporate into the diversity code, and the
 main packages are loaded:
 
 ```julia-repl
-julia> using Diversity, Phylo, Diversity.Phylogenetics
+julia> using Diversity, Phylo
 Creating Diversity to Phylo interface...
 
 julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
@@ -171,16 +171,11 @@ String["tip 1", "tip 2", "tip 3", "tip 4"]
 julia> metaphylo = Metacommunity(communities, PhyloTypes(nt));
 
 julia> raw_meta_rho(metaphylo, [1, 2])
-2×7 DataFrames.DataFrame
-│ Row │ measure  │ q │ type_level │ type_name │ partition_level │
-├─────┼──────────┼───┼────────────┼───────────┼─────────────────┤
-│ 1   │ "RawRho" │ 1 │ "types"    │ ""        │ "metacommunity" │
-│ 2   │ "RawRho" │ 2 │ "types"    │ ""        │ "metacommunity" │
-
-│ Row │ partition_name │ diversity │
-├─────┼────────────────┼───────────┤
-│ 1   │ ""             │ 1.66187   │
-│ 2   │ ""             │ 1.51391   │
+2×8 DataFrames.DataFrame
+│ Row │ div_type     │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+├─────┼──────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Phylogenetic │ RawRho  │ 1 │ types      │           │ metacommunity   │                │ 1.75622   │
+│ 2   │ Phylogenetic │ RawRho  │ 2 │ types      │           │ metacommunity   │                │ 1.61371   │
 ```
 
 The package also provides some other sub-modules for related measures:
