@@ -1,4 +1,4 @@
-using Phylo
+using .Phylo
 using Diversity
 using Diversity.API
 using Compat.Statistics
