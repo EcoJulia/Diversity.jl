@@ -12,7 +12,7 @@ diversity, so small components are more diverse).
 Accessing the functionality in the package is simple:
 
 ```jldoctest
-julia> using Diversity.Ecology
+julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];
 
@@ -23,6 +23,7 @@ julia> diversity = simpson(community)
 │ Row │ div_type │ measure │ type_level │ type_name │ partition_level │ partition_name │ diversity │
 ├─────┼──────────┼─────────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
 │ 1   │ Unique   │ Simpson │ types      │           │ subcommunity    │ 1              │ 0.36      │
+
 julia> ecosystem = [2 2 0.; 0 2 2]';
 
 julia> ecosystem /= sum(ecosystem);
@@ -41,7 +42,7 @@ julia> generalisedjaccard(ecosystem, [0, 1, 2])
 │ 2   │ Arbitrary Z │ Jaccard │ 1 │ types      │           │ metacommunity   │                │ 0.414214  │
 │ 3   │ Arbitrary Z │ Jaccard │ 2 │ types      │           │ metacommunity   │                │ 0.5       │
 
-julia> generalisedjaccard(ecosystem, [0, 1, 2], eye(3))
+julia> generalisedjaccard(ecosystem, [0, 1, 2], Matrix(1.0I, 3, 3))
 3×8 DataFrames.DataFrame
 │ Row │ div_type    │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
 ├─────┼─────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤

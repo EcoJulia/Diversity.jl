@@ -2,30 +2,38 @@
 
 *Package for measuring and partitioning diversity*
 
-| **Documentation**                               | **PackageEvaluator**            | **Build Status of master**                                                    |
-|:-----------------------------------------------:|:-------------------------------:|:-------------------------------------------------------------------:|
+| **Documentation** | **PackageEvaluator** | **Build Status of master** |
+|:-----------------:|:--------------------:|:--------------------------:|
 | [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.6-img]][pkg-0.6-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url]         | [![][pkg-0.7-img]][pkg-0.7-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| [![][docs-latest-img]][docs-latest-url] | [![Works with 1.0!][pkg-1.0-img]][pkg-1.0-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 ## Installation
 
-The package is registered in `METADATA.jl` and so can be installed with `Pkg.add`.
+The package is registered in the `General` registry on v1.0 and v0.7 as well as `METADATA` on Julia v0.6 and so can be installed with `add`. For example
+on Julia v1.0:
 
-```julia-repl
-julia> Pkg.add("Diversity")
+```julia
+(v1.0) pkg> add Diversity
+ Resolving package versions...
+  Updating `~/.julia/environments/v1.0/Project.toml`
+  [xxxxxxxx] + Diversity v0.4.4
+  Updating `~/.julia/environments/v1.0/Manifest.toml`
+  [xxxxxxxx] + Diversity v0.4.4
+...
+
+(v1.0) pkg>
 ```
 
 ## Project Status
 
-The package is tested against the current Julia `0.6` release, and
-nightly on Linux, OS X, and Windows. It is currently broken on
-`nightly`, but this is mostly due to problems with other packages and
-will be fixed as soon as possible...
+The package is tested against the current Julia v1.0 release, and also
+the previous v0.6 and v0.7 versions, on Linux, macOS, and Windows.
 
 ## Contributing and Questions
 
-Contributions are very welcome, as are feature requests and suggestions. Please open an
-[issue][issues-url] if you encounter any problems or would just like to ask a question.
+Contributions are very welcome, as are feature requests and suggestions.
+Please open an [issue][issues-url] if you encounter any problems or would
+just like to ask a question.
 
 ## Summary
 
@@ -35,29 +43,25 @@ of metacommunities (e.g. ecosystems) and their constituent
 subcommunities. It uses the diversity measures described in the arXiv
 paper [arXiv:1404.6520 (q-bio.QM)][paper-url],
 *How to partition diversity*. It also provides a series of other
-related and older diversity measures through sub-modules. Currently
+older diversity measures through sub-modules. Currently
 these are all ecological diversity measures, but this will be
-expanded, possibly through interfacing to BioJulia.
+expanded through interfacing to EcoJulia and BioJulia.
 
 This package is in beta now, but is cross-validated against our R
 package [boydorr/rdiversity][rdiversity-url], which is developed
 independently, so please [raise an issue][issues-url] if you find any
 problems. We now use a DataFrame as the common output format for all
 of the diversity calculations to provide consistency with our R
-package [rdiversity][rdiversity-url]. The code is certainly not
+package [rdiversity][rdiversity-url]. The code is not
 optimised for speed at the moment due to the substantial changes that
 have happened to it under the hood, and the Phylogenetics submodule is
 also new, and may need further improvements.
 
-Version 0.4, which has been recently released, has significant
-breaking changes to the underlying code, whuch mean it is no longer
-compatible with Julia v0.5. It is periodically working with Julia
-nightly and I aim to keep it that way (though other packages need to
-be updated too). Older interfaces from v0.2 have been removed in v0.4.
-
-## Install
-
-*Diversity* is in `METADATA` and can be installed via `Pkg.add("Diversity")`.
+Version 0.4, which is the current release, has significant
+breaking changes to the underlying code, but everything works with Julia
+v0.6, v0.7 and v1.0 as far as we're aware. It is periodically working
+with Julia nightly but that is not a high priority now that Julia 1.0 has
+been released. Older interfaces from Diversity v0.2 have been removed in v0.4.
 
 ## Usage
 
@@ -262,8 +266,8 @@ The online documentation for the latest master (unreleased) branch is
 [pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
 [pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
 
-[pkg-0.7-img]: http://pkg.julialang.org/badges/Diversity_0.7.svg
-[pkg-0.7-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.7
+[pkg-1.0-img]: http://pkg.julialang.org/badges/Diversity_1.0.svg
+[pkg-1.0-url]: http://pkg.julialang.org/?pkg=Diversity&ver=1.0
 
 [paper-url]: http://arxiv.org/abs/1404.6520
 

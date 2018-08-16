@@ -1,3 +1,6 @@
+- v0.4.4
+  - Major reworking, especially of iterators to speed up code and run with Julia v1.0
+  - Some intermediate work to allow interface to EcoJulia and new PhyloSets
 - v0.4.3
   - Minor fixes to validate with updates to Julia and rdiversity R package
   - Fix some more Julia 0.7 problems
