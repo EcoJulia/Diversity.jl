@@ -42,14 +42,14 @@ if !skipR
             sc = rand(2:(i*10))
             pops = rand(types, sc)
             Zasym = rand(types, types)
-            Zsym = Zasym/2 + Zasym'/2
+            Zsym = Zasym/2 .+ Zasym'/2
             for j in 1:types
                 Zsym[j, j] = 1.0
             end
-            Zsym[Zsym .< Compat.Statistics.median(Zsym)] = 0.0
+            Zsym[Zsym .< Compat.Statistics.median(Zsym)] .= 0.0
             # Make sure not to remove all of the non-zeros from any column
             for j in 1:sc
-                pops[pops[:, j] .< Compat.Statistics.median(pops[:, j])/2, j] = 0.0
+                pops[pops[:, j] .< Compat.Statistics.median(pops[:, j])/2, j] .= 0.0
             end
             pops /= sum(pops)
             qs = sort([rand(7)*10..., 0, 1, Inf])
@@ -130,7 +130,7 @@ if !skipR
             end
 
             # Check they match when there's an empty subcommunity too
-            pops[:, rand(1:sc)] = 0
+            pops[:, rand(1:sc)] .= 0
             pops /= sum(pops)
             meta = Metacommunity(pops, Z)
             diversities = Dict(:raw_alpha  => α(meta),
@@ -167,9 +167,9 @@ if !skipR
             sc = rand(2:(i*10))
             pops = rand(types, sc)
             for j in 1:sc
-                pops[pops[:, j] .< Compat.Statistics.median(pops[:, j])/2, j] = 0.0
+                pops[pops[:, j] .< Compat.Statistics.median(pops[:, j])/2, j] .= 0.0
             end
-            pops /= sum(pops)
+            pops ./= sum(pops)
             qs = sort([rand(7)*10..., 0, 1, Inf])
             meta = Metacommunity(pops, PhyloTypes(tree))
             diversities = Dict(:raw_alpha  => α(meta),
@@ -209,7 +209,7 @@ if !skipR
             qs = sort([rand(7)*10..., 0, 1, Inf])
 
             # Check they match when there's an empty type
-            pops[rand(1:types), :] = 0
+            pops[rand(1:types), :] .= 0
             pops /= sum(pops)
             meta = Metacommunity(pops, PhyloTypes(tree))
             diversities = Dict(:raw_alpha  => α(meta),
@@ -244,8 +244,8 @@ if !skipR
             end
 
             # Check they match when there's an empty subcommunity too
-            pops[:, rand(1:sc)] = 0
-            pops /= sum(pops)
+            pops[:, rand(1:sc)] .= 0
+            pops ./= sum(pops)
             meta = Metacommunity(pops, PhyloTypes(tree))
             diversities = Dict(:raw_alpha  => α(meta),
                                :norm_alpha => ᾱ(meta),
