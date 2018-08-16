@@ -12,9 +12,9 @@ placenames(plc::AbstractPlaces) = error("function not defined for this type")
 nthings(thg::AbstractThings) = error("function not defined for this type")
 thingnames(thg::AbstractThings) = error("function not defined for this type")
 
-nzrows(a::AbstractMatrix) = LinearIndices(Compat.sum(a .> 0; dims=2))[findall(Compat.sum(a .> 0; dims=2) .> 0)]
-nzcols(a::AbstractMatrix) = LinearIndices(Compat.sum(a .> 0; dims=1))[findall(Compat.sum(a .> 0; dims=1) .> 0)]
-nnz(a::AbstractArray) = sum(a .> 0)
+nzrows(a::AbstractMatrix) = LinearIndices(Compat.sum(a .> 0, dims=2))[findall(Compat.sum(a .> 0, dims=2) .> 0)]
+nzcols(a::AbstractMatrix) = LinearIndices(Compat.sum(a .> 0, dims=1))[findall(Compat.sum(a .> 0, dims=1) .> 0)]
+nnz(a::AbstractArray) = Compat.sum(a .> 0)
 
 occurring(asm::AbstractAssemblage) = nzrows(occurrences(asm))
 occupied(asm::AbstractAssemblage) = nzcols(occurrences(asm))
@@ -33,10 +33,10 @@ noccupied(x, idx) = length(occupied(x, idx))
 thingoccurrences(asm::AbstractAssemblage, idx) = view(occurrences(asm), idx, :)
 placeoccurrences(asm::AbstractAssemblage, idx) = view(occurrences(asm), :, idx) # make certain that the view implementation also takes thing or place names
 
-richness(asm::AbstractAssemblage{Bool, T, P}) where {T, P} = vec(sum(occurrences(asm), dims=1))
+richness(asm::AbstractAssemblage{Bool, T, P}) where {T, P} = vec(Compat.sum(occurrences(asm), dims=1))
 richness(asm::AbstractAssemblage) = vec(mapslices(nnz, occurrences(asm), dims=1))
 
-occupancy(asm::AbstractAssemblage{Bool, T, P}) where {T, P} = vec(sum(occurrences(asm), dims=2))
+occupancy(asm::AbstractAssemblage{Bool, T, P}) where {T, P} = vec(Compat.sum(occurrences(asm), dims=2))
 occupancy(asm::AbstractAssemblage) = vec(mapslices(nnz, occurrences(asm), dims=2))
 
 records(asm::AbstractAssemblage) = nnz(occurrences(asm))
