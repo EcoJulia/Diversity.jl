@@ -1,4 +1,6 @@
 using Diversity
+using Compat.InteractiveUtils
+using Compat
 
 ### AbstractPartition API
 
@@ -191,8 +193,8 @@ function _getmetaabundance(mc::Meta, raw::Bool) where
     {FP, AProcessed, Sim, Part,
      Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
                                                  AProcessed, Sim, Part}}
-    ab = _getabundance(mc, raw)
-    return ab * ones(FP, (countsubcommunities(mc),))
+    ab = Compat.sum(_getabundance(mc, raw), dims=2)
+    return reshape(ab, length(ab))
 end
 
 """
@@ -221,12 +223,8 @@ function _getweight(mc::Meta) where
      Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
                                                  AProcessed, Sim, Part}}
     ab = _getabundance(mc, false)
-    sc = countsubcommunities(mc)
-    w = Vector{FP}(sc)
-    for i in 1:sc
-        w[i] = sum(@view ab[:,i])
-    end
-    return w
+    w = Compat.sum(ab, dims=1)
+    return reshape(w, length(w))
 end
 
 """
@@ -259,8 +257,8 @@ function _getmetaordinariness!(mc::Meta) where
     {FP, AProcessed, Sim, Part,
      Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
                                                  AProcessed, Sim, Part}}
-    ord = _getordinariness!(mc)
-    return ord * ones(FP, (countsubcommunities(mc),))
+    ord = Compat.sum(_getordinariness!(mc), dims=2)
+    return reshape(ord, length(ord))
 end
 
 ### Other optional APIs to implement

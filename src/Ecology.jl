@@ -1,6 +1,7 @@
 using Diversity
 using Diversity.ShortNames
 using Diversity.API
+using Compat.LinearAlgebra
 
 """
     generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
@@ -27,7 +28,7 @@ for the types / species.
 """
 generalisedrichness(level::DiversityLevel,
                     proportions::AbstractArray,
-                    Z::AbstractMatrix = eye(size(proportions, 1))) =
+                    Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
     generalisedrichness(level, proportions, GeneralTypes(Z))
 function generalisedrichness(level::DiversityLevel,
                              proportions::AbstractArray,
@@ -84,7 +85,7 @@ similarity matrix for the types / species.
 function generalisedshannon end
 generalisedshannon(level::DiversityLevel,
                    proportions::AbstractArray,
-                   Z::AbstractMatrix = eye(size(proportions, 1))) =
+                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
     generalisedshannon(level, proportions, GeneralTypes(Z))
 
 function generalisedshannon(level::DiversityLevel,
@@ -144,7 +145,7 @@ similarity matrix for the types / species.
 function generalisedsimpson end
 generalisedsimpson(level::DiversityLevel,
                    proportions::AbstractArray,
-                   Z::AbstractMatrix = eye(size(proportions, 1))) =
+                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
     generalisedsimpson(level, proportions, GeneralTypes(Z))
 
 function generalisedsimpson(level::DiversityLevel,
@@ -210,7 +211,9 @@ better properties.
 function generalisedjaccard end
 
 generalisedjaccard(proportions::AbstractMatrix, qs,
-                   Z::AbstractMatrix = eye(size(proportions, 1))) =
+                   Z::AbstractMatrix =
+                   Matrix(1.0I, size(proportions, 1),
+                                size(proportions, 1))) =
     generalisedjaccard(proportions, qs, GeneralTypes(Z))
 
 function generalisedjaccard(proportions::AbstractMatrix, qs,
@@ -223,7 +226,7 @@ function generalisedjaccard(proportions::AbstractMatrix, qs,
     j = join(ab, g, on=[:q, :type_level, :type_name,
                         :partition_level, :partition_name, :div_type],
              makeunique=true)
-    j[:diversity] = j[:diversity] ./ j[:diversity_1] - 1
+    j[:diversity] = j[:diversity] ./ j[:diversity_1] .- 1
     j[:measure] = "Jaccard"
     delete!(j, [:diversity_1, :measure_1])
     return j

@@ -23,7 +23,7 @@ divided by the naive-community beta diversity.
 function jostalpha(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(RawAlpha(Metacommunity(proportions)), qs)
     md[:diversity] = md[:diversity] ./
-        qD(reshape(mapslices(sum, proportions, (1,)),
+        qD(reshape(mapslices(sum, proportions, dims=(1,)),
                    size(proportions)[2]), qs)
     md[:measure] = "JostAlpha"
     return md

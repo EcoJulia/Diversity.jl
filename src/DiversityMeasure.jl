@@ -84,8 +84,8 @@ Return the ASCII name of the DiversityMeasure
 - String containing simple ASCII name of DiversityMeasure
 """
 function getASCIIName(dm::DiversityMeasure)
-    s = replace(string(typeof(dm)), "Diversity.", "")
-    replace(s, r"{.*}$", "")
+    s = replace(string(typeof(dm)), "Diversity." => "")
+    replace(s, r"{.*}$" => "")
 end
 
 """
@@ -572,7 +572,7 @@ end
 function Gamma(meta::M) where M <: AbstractMetacommunity
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = ones(ws)' ./ getmetaordinariness!(meta)
+    value = fill!(similar(ws), 1)' ./ getmetaordinariness!(meta)
     return Gamma{eltype(ab), typeof(ab), typeof(value), M}(ab, ws, value, meta)
 end
 

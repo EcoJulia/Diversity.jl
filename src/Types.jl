@@ -1,5 +1,6 @@
 using DataFrames
-using Compat: @warn
+using Compat: @warn, DomainError
+using Compat.LinearAlgebra
 
 """
     UniqueTypes
@@ -38,7 +39,7 @@ end
 
 import Diversity.API._calcsimilarity
 function _calcsimilarity(ut::UniqueTypes, ::Real)
-    return eye(ut.num)
+    return Matrix(1.0I, ut.num, ut.num)
 end
 
 import Diversity.API._calcordinariness
@@ -74,9 +75,9 @@ struct Taxonomy{FP <: AbstractFloat} <: Diversity.API.AbstractTypes
     function Taxonomy{FP}(speciesinfo::DataFrame,
                           taxa::Dict{Symbol, FP},
                           typelabel::Symbol) where FP <: AbstractFloat
-        sort(speciesinfo.colindex.names) == sort([keys(taxa)...]) ||
+        sort(describe(speciesinfo)[:variable]) == sort([keys(taxa)...]) ||
             error("Taxon labels do not match similarity values")
-        typelabel ∈ speciesinfo.colindex.names ||
+        typelabel ∈ describe(speciesinfo)[:variable] ||
             error("$typelabel not found in DataFrame column names")
         new{FP}(speciesinfo, taxa, typelabel)
     end
@@ -145,7 +146,8 @@ struct GeneralTypes{FP <: AbstractFloat,
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
-        minimum(zmatrix) ≥ 0 || throw(DomainError())
+        minimum(zmatrix) ≥ 0 || throw(DomainError(minimum(zmatrix),
+                                      "Similarities must be ≥ 0"))
         maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
@@ -156,7 +158,8 @@ struct GeneralTypes{FP <: AbstractFloat,
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
-        minimum(zmatrix) ≥ 0 || throw(DomainError())
+        minimum(zmatrix) ≥ 0 || throw(DomainError(minimum(zmatrix),
+                                      "Similarities must be ≥ 0"))
         maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         length(names) == size(zmatrix, 1) ||

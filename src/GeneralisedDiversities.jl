@@ -1,4 +1,4 @@
-using Diversity.API.AbstractMetacommunity
+using Diversity.API: AbstractMetacommunity
 using Diversity.ShortNames
 
 function norm_sub_alpha(meta::AbstractMetacommunity, qs)

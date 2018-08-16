@@ -1,5 +1,7 @@
 using Phylo
 using Diversity
+using Diversity.API
+using Compat.Statistics
 
 struct PhyloTypes{Tree <: AbstractTree} <: Diversity.API.AbstractTypes
     tree::Tree
@@ -28,9 +30,8 @@ function PhyloTypes(tree::Tree) where Tree <: AbstractTree
     end
     ancestralnames = collect(keys(speciesinfo))
     nancestral = length(ancestralnames)
-    Lbar = mean(values(leafinfo))
-    ancestralmatrix = Matrix{Float64}(nancestral, nleaf)
-    fill!(ancestralmatrix, 0)
+    Lbar = Compat.Statistics.mean(collect(values(leafinfo)))
+    ancestralmatrix = fill(zero(Float64), (nancestral, nleaf))
     for i in 1:nancestral
         for j in 1:nleaf
             if speciesinfo[ancestralnames[i]][1] == leafnames[j]
@@ -39,7 +40,7 @@ function PhyloTypes(tree::Tree) where Tree <: AbstractTree
             end
         end
     end
-    Zmatrix = Matrix{Float64}(nancestral, nancestral)
+    Zmatrix = fill(zero(Float64), (nancestral, nancestral))
     fill!(Zmatrix, 0)
     for i in 1:nancestral
         for j in 1:nancestral
@@ -66,17 +67,17 @@ function PhyloTypes(treeset::TS) where TS <: TreeSet
 end
 
 import Diversity.API: _gettypenames
-function _gettypenames(phy::PhyloTypes, raw::Bool)
+function _gettypenames(phy::Diversity.PhyloTypes, raw::Bool)
     return raw ? phy.leafnames : phy.ancestralnames
 end
 
 import Diversity.API: _counttypes
-function _counttypes(phy::PhyloTypes, raw::Bool)
+function _counttypes(phy::Diversity.PhyloTypes, raw::Bool)
     return raw ? phy.nleaf : phy.nancestral
 end
 
 import Diversity.API: _calcabundance
-function _calcabundance(phy::PhyloTypes, raw::M) where
+function _calcabundance(phy::Diversity.PhyloTypes, raw::M) where
     {M <: AbstractMatrix{<:AbstractFloat}}
     processed = phy.ancestralmatrix * raw
     scale = sum(processed)
@@ -85,25 +86,25 @@ function _calcabundance(phy::PhyloTypes, raw::M) where
 end
 
 import Diversity.API: _calcsimilarity
-function _calcsimilarity(phy::PhyloTypes, scale::R) where R <: Real
+function _calcsimilarity(phy::Diversity.PhyloTypes, scale::R) where R <: Real
     return phy.Zmatrix .* scale
 end
 
 import Diversity.API: _calcordinariness
-function _calcordinariness(phy::PhyloTypes, processed::M, scale::R) where
+function _calcordinariness(phy::Diversity.PhyloTypes, processed::M, scale::R) where
     {FP <: AbstractFloat, M <: AbstractMatrix{FP}, R <: Real}
     return (phy.Zmatrix * processed) .* scale
 end
 
 import Diversity.API: _getdiversityname
-_getdiversityname(::PhyloTypes) = "Phylogenetic"
+_getdiversityname(::Diversity.PhyloTypes) = "Phylogenetic"
 
 import Diversity.API: _addedoutputcols
-_addedoutputcols(::PhyloTypes{TS}) where
+_addedoutputcols(::Diversity.PhyloTypes{TS}) where
     {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
     Dict{Symbol, Type}(:treename => LABEL)
 
 import Diversity.API: _getaddedoutput
-_getaddedoutput(pt::PhyloTypes{TS}) where
+_getaddedoutput(pt::Diversity.PhyloTypes{TS}) where
     {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
     Dict{Symbol, LABEL}(:treename => first(treenameiter(pt.tree)))

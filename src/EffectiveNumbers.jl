@@ -13,7 +13,7 @@ is 1, so this is just the arithmetic mean.
 #### Returns:
 - weighted power mean(s)
 """
-function powermean(values::V, order::R = 1, weights::V = ones(values)) where
+function powermean(values::V, order::R = 1, weights::V = fill!(similar(values), 1)) where
     {R <: Real, FP <: AbstractFloat, V <: AbstractVector{FP}}
     length(values) == length(weights) ||
     throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
@@ -66,14 +66,14 @@ end
 # This is the next most common case - a vector of orders
 function powermean(values::V,
                    orders::VR,
-                   weights::V = ones(values)) where
+                   weights::V = fill!(similar(values), 1.0)) where
     {R <: Real, VR <: AbstractVector{R},
      FP <: AbstractFloat, V <: AbstractVector{FP}}
     return map(order -> powermean(values, order, weights), orders)
 end
 
 # This is the next most simple case - matrices with subcommunities, and an order or orders
-function powermean(values::M, orders, weights::M = ones(values)) where
+function powermean(values::M, orders, weights::M = fill!(similar(values), 1)) where
     {FP <: AbstractFloat, M <: AbstractMatrix{FP}}
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
@@ -105,7 +105,7 @@ function qD(meta::M, qs) where M <: AbstractMetacommunity
     countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getabundance(meta), qs - 1, getabundance(meta))[1] .^ -1
+    powermean(getabundance(meta), qs .- 1, getabundance(meta))[1] .^ -1
 end
 
 function qD(proportions::V, qs) where {FP <: AbstractFloat,
@@ -139,7 +139,7 @@ function qDZ(meta::M, qs) where M <: AbstractMetacommunity
     countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getordinariness!(meta), qs - 1, getabundance(meta))[1] .^ -1
+    powermean(getordinariness!(meta), qs .- 1, getabundance(meta))[1] .^ -1
 end
 
 function qDZ(proportions::V, qs,
