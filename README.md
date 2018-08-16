@@ -146,11 +146,11 @@ A complete list of these functions is shown below:
 * `norm_meta_beta()` : effective number of distinct subcommunities
 * `meta_gamma()` : metacommunity similarity-sensitive diversity
 
-#### Diversity.Phylogenetics
+#### Phylogenetics
 
 Phylogenetic diversity (described [here][leinster-cobbold-url]) is
-included in the Diversity.Phylogenetics submodule. Documentation for
-these diversity measures can be found
+automatically included in the Diversity module when the `Phylo` package
+is loaded. Documentation for these diversity measures can be found
 [here](http://richardreeve.github.io/Diversity.jl/latest/phylogenetics/).
 The phylogenetics code relies on the [Phylo][phylo-url] package to
 generate trees to incorporate into the diversity code, and the
@@ -158,7 +158,7 @@ generate trees to incorporate into the diversity code, and the
 main packages are loaded:
 
 ```julia-repl
-julia> using Diversity, Phylo, Diversity.Phylogenetics
+julia> using Diversity, Phylo
 Creating Diversity to Phylo interface...
 
 julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
