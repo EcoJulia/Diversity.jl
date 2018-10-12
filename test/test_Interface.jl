@@ -3,7 +3,7 @@ using Compat.Test
 
 # Checking EcoBase interface
 using Diversity
-using Diversity.EcoBase
+using EcoBase
 
 numspecies = 10;
 numcommunities = 8;

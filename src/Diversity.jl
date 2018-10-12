@@ -21,7 +21,6 @@ extract any diversity measure at a series of scales.
 """
 module Diversity
 
-include("../ext/EcoBase/src/EcoBase.jl")
 """
 The Diversity.API submodule should be `import`ed if you want to create a
 new type, partition or metacommunity subtype. Otherwise it can be

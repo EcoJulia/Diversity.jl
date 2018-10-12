@@ -1,6 +1,7 @@
 using Diversity
 using Compat.InteractiveUtils
 using Compat
+using EcoBase
 
 ### AbstractPartition API
 
@@ -11,7 +12,7 @@ Abstract supertype for all partitioning types. AbstractPartition
 subtypes allow you to define how to partition your total metacommunity
 (e.g. an ecosystem) into smaller components (e.g. subcommunities).
 """
-abstract type AbstractPartition <: Diversity.EcoBase.AbstractPlaces end
+abstract type AbstractPartition <: EcoBase.AbstractPlaces end
 
 """
     _getsubcommunitynames(p::AbstractPartition)
@@ -41,7 +42,7 @@ end
 Abstract supertype for all similarity types. Its subtypes allow you to
 define how similarity is measured between individuals.
 """
-abstract type AbstractTypes <: Diversity.EcoBase.AbstractThings end
+abstract type AbstractTypes <: EcoBase.AbstractThings end
 
 """
     _gettypenames(t::AbstractTypes, raw::Bool)
@@ -149,7 +150,7 @@ abstract type AbstractMetacommunity{FP <: AbstractFloat,
                                     AProcessed <: AbstractMatrix{FP},
                                     Sim <: AbstractTypes,
                                     Part <: AbstractPartition} <:
-    Diversity.EcoBase.AbstractAssemblage{FP, Sim, Part}
+    EcoBase.AbstractAssemblage{FP, Sim, Part}
 end
 
 """
