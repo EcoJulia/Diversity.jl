@@ -102,16 +102,15 @@ population with given relative proportions.
 
 """
 function qD end
-
-function qD(meta::M, qs) where M <: AbstractMetacommunity
+function qD(meta::AbstractAssemblage, qs)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
     powermean(getabundance(meta), qs .- 1, getabundance(meta))[1] .^ -1
 end
 
-function qD(proportions::V, qs) where {FP <: AbstractFloat,
-                                       V <: AbstractVector{FP}}
+function qD(proportions::AbstractVector{<: Real}, qs)
     qD(Metacommunity(proportions), qs)
 end
 
@@ -137,20 +136,18 @@ similarity matrix *Z*.
     """
 function qDZ end
 
-function qDZ(meta::M, qs) where M <: AbstractMetacommunity
+function qDZ(meta::AbstractAssemblage, qs)
     countsubcommunities(meta) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
     powermean(getordinariness!(meta), qs .- 1, getabundance(meta))[1] .^ -1
 end
 
-function qDZ(proportions::V, qs,
-             sim::Sim = UniqueTypes(size(proportions, 1))) where
-    {FP <: AbstractFloat, V <: AbstractVector{FP}, Sim <: AbstractTypes}
+function qDZ(proportions::AbstractVector{<: Real}, qs,
+             sim::AbstractTypes = UniqueTypes(size(proportions, 1)))
     qDZ(Metacommunity(proportions, sim), qs)
 end
 
-function qDZ(proportions::V, qs, Z::M) where
-    {FP <: AbstractFloat, V <: AbstractVector{FP}, M <: AbstractMatrix{FP}}
+function qDZ(proportions::AbstractVector{<: Real}, qs, Z::AbstractMatrix{<: AbstractFloat})
     qDZ(Metacommunity(proportions, GeneralTypes(Z)), qs)
 end

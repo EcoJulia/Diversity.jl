@@ -46,13 +46,14 @@ _getabundance(a::AbstractAssemblage, raw::Bool) =
 import Diversity.API: _getsubcommunitynames
 _getsubcommunitynames(p::AbstractPlaces) = placenames(p)
 
+import Diversity.API: _countsubcommunities
+_countsubcommunities(p::AbstractPlaces) = length(_getsubcommunitynames(p))
+
 import Diversity.API: _gettypenames
 _gettypenames(p::AbstractThings, ::Bool) = thingnames(p)
 
 import Diversity.API: _counttypes
-function _counttypes(t::AbstractThings, raw::Bool)
-    return length(_gettypenames(t, raw))
-end
+_counttypes(t::AbstractThings, raw::Bool) = length(_gettypenames(t, raw))
 
 import Diversity.API: _calcsimilarity
 _calcsimilarity(t::AbstractThings, ::Real) =
@@ -92,4 +93,4 @@ import Diversity.API: _getdiversityname
 _getdiversityname(::AbstractThings) = "species"
 
 import Diversity.API: _hassimilarity
-_hassimilarity(::AbstractAssemblage) = false
+_hassimilarity(::AbstractThings) = false

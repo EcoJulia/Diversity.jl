@@ -172,6 +172,16 @@ function getmetaordinariness!(m::AbstractAssemblage)
 end
 
 """
+    hassimilarity(t::AbstractAssemblage)
+    hassimilarity(t::AbstractThings)
+
+Is there similarity of some non-trivial type in the object?
+"""
+function hassimilarity end
+hassimilarity(t::AbstractThings) = _hassimilarity(t)
+hassimilarity(asm::AbstractAssemblage) = hassimilarity(gettypes(asm))
+
+"""
     calcsimilarity(t::AbstractTypes, scale::Real)
 
 Retrieves (and possibly calculates) a similarity matrix from t.

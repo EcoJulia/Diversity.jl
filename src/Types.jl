@@ -27,6 +27,9 @@ struct UniqueTypes <: Diversity.API.AbstractTypes
     end
 end
 
+import Diversity.API._hassimilarity
+_hassimilarity(::UniqueTypes) = false
+
 import Diversity.API._counttypes
 function _counttypes(ut::UniqueTypes, ::Bool)
     return ut.num

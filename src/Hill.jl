@@ -1,5 +1,7 @@
 using Diversity
 using DataFrames
+using EcoBase
+
 @static if VERSION < v"0.7.0-"
 const deletecols! = delete!
 end
@@ -27,4 +29,9 @@ function hillnumber(proportions, qs)
     hill[:measure] = "HillNumber"
     deletecols!(hill, :div_type)
     return hill
+end
+
+function hillnumber(asm::EcoBase.AbstractAssemblage, qs)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return hillnumber(occurrences(asm), qs)
 end

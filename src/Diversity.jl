@@ -59,7 +59,7 @@ export counttypes, countsubcommunities
 export gettypenames, getsubcommunitynames
 export getabundance, getmetaabundance, getweight
 export getordinariness!, getmetaordinariness!
-export calcsimilarity # Needed because it sometimes doesn't exist unless requested
+export hassimilarity, calcsimilarity # Needed because it sometimes doesn't exist unless requested
 export getdiversityname, addedoutputcols, getaddedoutput
 
 # Inheritance from EcoBase

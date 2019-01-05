@@ -1,3 +1,5 @@
+- v0.4.5
+  - Full EcoJulia default implementation to allow cross-compatibility with other AbstractAssemblage-derived types
 - v0.4.4
   - Major reworking, especially of iterators to speed up code and run with Julia v1.0
   - Some intermediate work to allow interface to EcoJulia and new PhyloSets

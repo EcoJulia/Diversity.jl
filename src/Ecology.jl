@@ -3,6 +3,7 @@ using Diversity.ShortNames
 using Diversity.API
 using Compat.LinearAlgebra
 using DataFrames
+using EcoBase
 
 @static if VERSION < v"0.7.0-"
 const deletecols! = delete!
@@ -65,6 +66,10 @@ columns representing independent subcommunity counts.
 richness(proportions::AbstractVecOrMat) =
     generalisedrichness(subcommunityDiversity, proportions,
                         UniqueTypes(size(proportions, 1)))
+function richness(asm::EcoBase.AbstractAssemblage)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return richness(occurrences(asm))
+end
 
 """
     generalisedshannon(level::DiversityLevel, proportions::AbstractArray,
@@ -125,6 +130,10 @@ columns representing independent subcommunity counts.
 shannon(proportions::AbstractVecOrMat) =
     generalisedshannon(subcommunityDiversity, proportions,
                        UniqueTypes(size(proportions, 1)))
+function shannon(asm::EcoBase.AbstractAssemblage)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return shannon(occurrences(asm))
+end
 
 """
     generalisedsimpson(level::DiversityLevel, proportions::AbstractArray,
@@ -187,6 +196,10 @@ columns representing independent subcommunity counts.
 simpson(proportions::AbstractVecOrMat) =
     generalisedsimpson(subcommunityDiversity, proportions,
                        UniqueTypes(size(proportions, 1)))
+function simpson(asm::EcoBase.AbstractAssemblage)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return simpson(occurrences(asm))
+end
 
 """
     generalisedjaccard(proportions::AbstractArray, qs, Z::AbstractMatrix)
@@ -255,3 +268,7 @@ normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
 jaccard(proportions::AbstractMatrix) =
     generalisedjaccard(proportions, 0,
                        UniqueTypes(size(proportions, 1)))
+function jaccard(asm::EcoBase.AbstractAssemblage)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return jaccard(occurrences(asm))
+end

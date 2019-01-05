@@ -60,9 +60,6 @@ by each AbstractPartition subtype. Default is to count length of
 subcommunity name vector.
 """
 function _countsubcommunities end
-function _countsubcommunities(p::P) where P <: AbstractPartition
-    return length(_getsubcommunitynames(p))
-end
 
 ### AbstractTypes API
 """
@@ -250,7 +247,7 @@ end
 
 ### Other optional APIs to implement
 
-_hassimilarity(::Diversity.API.AbstractMetacommunity) = true
+_hassimilarity(::Diversity.API.AbstractTypes) = true
 
 """
     floattypes(t)

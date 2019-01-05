@@ -1,4 +1,5 @@
 using Diversity
+using EcoBase
 using DataFrames
 @static if VERSION < v"0.7.0-"
 const deletecols! = delete!
@@ -33,6 +34,11 @@ function jostalpha(proportions::AbstractMatrix, qs)
     return md
 end
 
+function jostalpha(asm::EcoBase.AbstractAssemblage, qs)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return jostalpha(occurrences(asm), qs)
+end
+
 """
     jostbeta(proportions::AbstractMatrix, qs)
 
@@ -63,4 +69,9 @@ function jostbeta(proportions::AbstractMatrix, qs)
     j[:measure] = "JostBeta"
     deletecols!(j, [:diversity_1, :measure_1])
     return j
+end
+
+function jostbeta(asm::EcoBase.AbstractAssemblage, qs)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return jostbeta(occurrences(asm), qs)
 end
