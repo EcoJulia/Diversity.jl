@@ -2,6 +2,7 @@ using Diversity
 using Diversity.ShortNames
 using Diversity.API
 using Compat.LinearAlgebra
+using DataFrames
 
 """
     generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
@@ -101,7 +102,7 @@ function generalisedshannon(level::DiversityLevel,
     gs = level(dm(Metacommunity(proportions, sim)), 1)
     gs[:diversity] = log.(gs[:diversity])
     gs[:measure] = "Shannon"
-    delete!(gs, :q)
+    deletecols!(gs, :q)
     return gs
 end
 
@@ -161,7 +162,7 @@ function generalisedsimpson(level::DiversityLevel,
     gs = level(dm(Metacommunity(proportions, sim)), 2)
     gs[:diversity] = gs[:diversity] .^ -1
     gs[:measure] = "Simpson"
-    delete!(gs, :q)
+    deletecols!(gs, :q)
     return gs
 end
 
@@ -228,7 +229,7 @@ function generalisedjaccard(proportions::AbstractMatrix, qs,
              makeunique=true)
     j[:diversity] = j[:diversity] ./ j[:diversity_1] .- 1
     j[:measure] = "Jaccard"
-    delete!(j, [:diversity_1, :measure_1])
+    deletecols!(j, [:diversity_1, :measure_1])
     return j
 end
 

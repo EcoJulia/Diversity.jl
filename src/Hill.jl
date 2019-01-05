@@ -1,4 +1,5 @@
 using Diversity
+using DataFrames
 
 """
     hillnumber(proportions, qs)
@@ -21,6 +22,6 @@ population(s) with given relative proportions
 function hillnumber(proportions, qs)
     hill = subdiv(NormalisedAlpha(Metacommunity(proportions)), qs)
     hill[:measure] = "HillNumber"
-    delete!(hill, :div_type)
+    deletecols!(hill, :div_type)
     return hill
 end

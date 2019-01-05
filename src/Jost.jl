@@ -1,4 +1,5 @@
 using Diversity
+using DataFrames
 
 """
     jostalpha(proportions::AbstractMatrix, qs)
@@ -57,6 +58,6 @@ function jostbeta(proportions::AbstractMatrix, qs)
              makeunique=true)
     j[:diversity] = j[:diversity] ./ j[:diversity_1]
     j[:measure] = "JostBeta"
-    delete!(j, [:diversity_1, :measure_1])
+    deletecols!(j, [:diversity_1, :measure_1])
     return j
 end
