@@ -3,8 +3,7 @@ using Compat.InteractiveUtils
 using Compat
 using EcoBase
 
-### AbstractPartition API
-
+### Abstract supertype definitions
 """
     AbstractPartition
 
@@ -14,6 +13,37 @@ subtypes allow you to define how to partition your total metacommunity
 """
 abstract type AbstractPartition <: EcoBase.AbstractPlaces end
 
+"""
+    AbstractTypes
+
+Abstract supertype for all similarity types. Its subtypes allow you to
+define how similarity is measured between individuals.
+"""
+abstract type AbstractTypes <: EcoBase.AbstractThings end
+
+"""
+    AbstractMetacommunity{FP <: AbstractFloat,
+                          ARaw <: AbstractArray,
+                          AProcessed <: AbstractMatrix{FP},
+                          Sim <: AbstractTypes,
+                          Part <: AbstractPartition}
+
+AbstractMetacommunity is the abstract supertype of all metacommunity
+types. AbstractMetacommunity subtypes allow you to define how to
+partition your total metacommunity (e.g. an ecosystem) into smaller
+components (e.g. subcommunities), and how to assess similarity between
+individuals within it.
+
+"""
+abstract type AbstractMetacommunity{FP <: AbstractFloat,
+                                    ARaw <: AbstractArray,
+                                    AProcessed <: AbstractMatrix{FP},
+                                    Sim <: AbstractTypes,
+                                    Part <: AbstractPartition} <:
+    EcoBase.AbstractAssemblage{FP, Sim, Part}
+end
+
+### AbstractPartition API
 """
     _getsubcommunitynames(p::AbstractPartition)
 
@@ -35,15 +65,6 @@ function _countsubcommunities(p::P) where P <: AbstractPartition
 end
 
 ### AbstractTypes API
-
-"""
-    AbstractTypes
-
-Abstract supertype for all similarity types. Its subtypes allow you to
-define how similarity is measured between individuals.
-"""
-abstract type AbstractTypes <: EcoBase.AbstractThings end
-
 """
     _gettypenames(t::AbstractTypes, raw::Bool)
 
@@ -130,29 +151,6 @@ function _calcordinariness(t::T, a::A, ::Real) where {T <: AbstractTypes,
 end
 
 ### AbstractMetacommunity API
-
-"""
-    AbstractMetacommunity{FP <: AbstractFloat,
-                          ARaw <: AbstractArray,
-                          AProcessed <: AbstractMatrix{FP},
-                          Sim <: AbstractTypes,
-                          Part <: AbstractPartition}
-
-AbstractMetacommunity is the abstract supertype of all metacommunity
-types. AbstractMetacommunity subtypes allow you to define how to
-partition your total metacommunity (e.g. an ecosystem) into smaller
-components (e.g. subcommunities), and how to assess similarity between
-individuals within it.
-
-"""
-abstract type AbstractMetacommunity{FP <: AbstractFloat,
-                                    ARaw <: AbstractArray,
-                                    AProcessed <: AbstractMatrix{FP},
-                                    Sim <: AbstractTypes,
-                                    Part <: AbstractPartition} <:
-    EcoBase.AbstractAssemblage{FP, Sim, Part}
-end
-
 """
     _gettypes(::AbstractMetacommunity)
 

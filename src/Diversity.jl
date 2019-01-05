@@ -28,19 +28,19 @@ ignored.
 """
 module API
 include("API.jl")
+# Base types
+export AbstractPartition, AbstractTypes, AbstractMetacommunity
+
 # Base class and functions required for each partition
-export AbstractPartition
 export _getsubcommunitynames # required
 export _countsubcommunities  # optional
 
 # Base class and functions required for each type
-export AbstractTypes
 export _gettypenames, _calcsimilarity, _getscale      # required
 export _counttypes, _calcabundance, _calcordinariness # optional
 export _getdiversityname, _addedoutputcols, _getaddedoutput # optional
 
 # Base class and functions required for each metacommunity
-export AbstractMetacommunity
 export _gettypes, _getpartition, _getabundance  # required
 export _getmetaabundance, _getweight            # optional
 export _getordinariness!, _getmetaordinariness! # optional
@@ -60,6 +60,9 @@ export getabundance, getmetaabundance, getweight
 export getordinariness!, getmetaordinariness!
 export calcsimilarity # Needed because it sometimes doesn't exist unless requested
 export getdiversityname, addedoutputcols, getaddedoutput
+
+# Inheritance from EcoBase
+include("EcoBase.jl")
 
 include("Iterators.jl")
 export TypeIterator, SubcommunityIterator
