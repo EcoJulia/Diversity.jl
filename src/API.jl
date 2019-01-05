@@ -250,6 +250,8 @@ end
 
 ### Other optional APIs to implement
 
+_hassimilarity(::Diversity.API.AbstractMetacommunity) = true
+
 """
     floattypes(t)
 

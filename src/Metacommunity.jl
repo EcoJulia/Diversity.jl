@@ -1,6 +1,7 @@
 using DataFrames
 using Missings
 using Compat: @warn
+using EcoBase
 
 """
     Metacommunity{FP, ARaw, AProcessed, Part, Sim}
@@ -129,6 +130,11 @@ function Metacommunity(abundances::MU, zmatrix::M) where
     return Metacommunity(abundances, GeneralTypes(zmatrix),
                          Subcommunities(size(abundances, 2)))
 end
+
+Metacommunity(asm::EcoBase.AbstractAssemblage) =
+    _hassimilarity(asm) ?
+        Metacommunity(occurrences(asm), _calcsimilarity(asm)) :
+        Metacommunity(occurrences(asm))
 
 import Diversity.API._gettypes
 function _gettypes(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part}) where

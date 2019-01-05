@@ -90,3 +90,6 @@ end
 
 import Diversity.API: _getdiversityname
 _getdiversityname(::AbstractThings) = "species"
+
+import Diversity.API: _hassimilarity
+_hassimilarity(::AbstractAssemblage) = false

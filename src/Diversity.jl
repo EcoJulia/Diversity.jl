@@ -44,6 +44,7 @@ export _getdiversityname, _addedoutputcols, _getaddedoutput # optional
 export _gettypes, _getpartition, _getabundance  # required
 export _getmetaabundance, _getweight            # optional
 export _getordinariness!, _getmetaordinariness! # optional
+export _hassimilarity
 
 # Function with minimal default implementation for types and partitions
 export floattypes
