@@ -94,18 +94,13 @@ count length of corresponding types name vector.
 """
 function _counttypes end
 
-function _counttypes(t::T, raw::Bool) where T <: AbstractTypes
-    return length(_gettypenames(t, raw))
-end
-
 """
     _getdiversityname(::AbstractTypes)
 
 Returns the name of the diversity type used to calculate.
 """
 function _getdiversityname end
-
-_getdiversityname(::AbstractTypes) = "Unknown diversity"
+_getdiversityname(::AbstractTypes) = "unknown"
 
 """
     _addedoutputcols(::AbstractTypes)
@@ -114,16 +109,12 @@ Returns the name of any additional columns needed to be added to outputs.
 """
 function _addedoutputcols end
 
-_addedoutputcols(::AbstractTypes) = Dict{Symbol, Type}()
-
 """
     _getaddedoutput(::AbstractTypes)
 
 Returns the name of any additional columns needed to be added to outputs.
 """
 function _getaddedoutput end
-
-_getaddedoutput(::AbstractTypes) = nothing
 
 """
     _calcabundance(t::AbstractTypes, a::AbstractArray)
@@ -234,9 +225,6 @@ subcommunities. May be implemented by each AbstractMetacommunity
 subtype.
 """
 function _getordinariness! end
-function _getordinariness!(m::AbstractMetacommunity)
-    return _calcordinariness(_gettypes(m), _getabundance(m, false), _getscale(m))
-end
 
 """
     _getmetaordinariness!(m::AbstractMetacommunity)

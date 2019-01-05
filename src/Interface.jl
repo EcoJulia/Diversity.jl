@@ -1,5 +1,5 @@
 using Diversity.API
-using EcoBase: AbstractAssemblage
+using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
 
 """
     gettypes(m::AbstractAssemblage)
@@ -35,7 +35,7 @@ function counttypes(m::AbstractAssemblage, raw::Bool = false)
     return _counttypes(_gettypes(m), raw)
 end
 
-function counttypes(t::AbstractTypes, raw::Bool = false)
+function counttypes(t::AbstractThings, raw::Bool = false)
     return _counttypes(t, raw)
 end
 
@@ -83,7 +83,7 @@ Returns the name of the diversity type used.
 """
 function getdiversityname end
 
-getdiversityname(t::AbstractTypes) = getdiversityname(t)
+getdiversityname(t::AbstractThings) = _getdiversityname(t)
 getdiversityname(m::AbstractAssemblage) = _getdiversityname(_gettypes(m))
 
 """
@@ -95,7 +95,7 @@ diversity type used.
 """
 function addedoutputcols end
 
-addedoutputcols(t::AbstractTypes) = _addedoutputcols(t)
+addedoutputcols(t::AbstractThings) = _addedoutputcols(t)
 addedoutputcols(m::AbstractAssemblage) = addedoutputcols(_gettypes(m))
 
 """
