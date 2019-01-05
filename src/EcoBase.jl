@@ -2,17 +2,31 @@ using Diversity.API
 using EcoBase
 using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
 using Compat
+using RecipesBase
+using DataFrames
 
 # Now satisfy the EcoBase interface
-import EcoBase: nplaces, placenames, getcoords
+import EcoBase: nplaces, placenames, getcoords, coordinates
 nplaces(part::AbstractPartition) = countsubcommunities(part)
 placenames(part::AbstractPartition) = getsubcommunitynames(part)
-function getcoords(part::AbstractPartition)
-    coords = Matrix{Float64}(undef, countsubcommunities(part), 2)
-    coords[:, 1] = Base.OneTo(countsubcommunities(part))
-    coords[:, 2] .= 1.0
-    return coords
+
+struct MetaCoords <: EcoBase.AbstractLocations
+    coordinates::Matrix{Float64}
 end
+
+import EcoBase: getcoords
+function getcoords(part::AbstractPartition)
+    dimx = round(Int, sqrt(countsubcommunities(part)), RoundUp)
+    coords = Matrix{Float64}(undef, countsubcommunities(part), 2)
+    for i in Base.OneTo(countsubcommunities(part))
+        coords[i, 1] = (i - 1) % dimx + 1
+        coords[i, 2] = (i - 1) ÷ dimx + 1
+    end
+    return MetaCoords(coords)
+end
+
+import EcoBase: coordinates
+coordinates(mc::MetaCoords) = mc.coordinates
 
 import EcoBase: nthings, thingnames
 nthings(types::AbstractTypes) = counttypes(types)
@@ -94,3 +108,7 @@ _getdiversityname(::AbstractThings) = "species"
 
 import Diversity.API: _hassimilarity
 _hassimilarity(::AbstractThings) = false
+
+RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)
+    var[:diversity], getcoords(places(asm))
+end

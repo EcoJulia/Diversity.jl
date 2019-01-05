@@ -132,7 +132,7 @@ function Metacommunity(abundances::MU, zmatrix::M) where
 end
 
 Metacommunity(asm::EcoBase.AbstractAssemblage) =
-    _hassimilarity(asm) ?
+    hassimilarity(asm) ?
         Metacommunity(occurrences(asm), _calcsimilarity(asm)) :
         Metacommunity(occurrences(asm))
 
