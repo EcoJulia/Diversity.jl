@@ -13,8 +13,10 @@ is 1, so this is just the arithmetic mean.
 #### Returns:
 - weighted power mean(s)
 """
-function powermean(values::V, order::R = 1, weights::V = fill!(similar(values), 1)) where
-    {R <: Real, FP <: AbstractFloat, V <: AbstractVector{FP}}
+function powermean(values::V1, order::R = 1,
+                   weights::V2 = fill!(similar(values), 1)) where
+    {R <: Real, FP <: AbstractFloat,
+     V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
     length(values) == length(weights) ||
     throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
 
@@ -64,17 +66,17 @@ function powermean(values::V, order::R = 1, weights::V = fill!(similar(values), 
 end
 
 # This is the next most common case - a vector of orders
-function powermean(values::V,
+function powermean(values::V1,
                    orders::VR,
-                   weights::V = fill!(similar(values), 1.0)) where
+                   weights::V2 = fill!(similar(values), 1.0)) where
     {R <: Real, VR <: AbstractVector{R},
-     FP <: AbstractFloat, V <: AbstractVector{FP}}
+     FP <: AbstractFloat, V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
     return map(order -> powermean(values, order, weights), orders)
 end
 
 # This is the next most simple case - matrices with subcommunities, and an order or orders
-function powermean(values::M, orders, weights::M = fill!(similar(values), 1)) where
-    {FP <: AbstractFloat, M <: AbstractMatrix{FP}}
+function powermean(values::M1, orders, weights::M2 = fill!(similar(values), 1)) where
+    {FP <: AbstractFloat, M1 <: AbstractMatrix{FP}, M2 <: AbstractMatrix{FP}}
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
                                 "must be the same size"))
