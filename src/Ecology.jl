@@ -63,9 +63,12 @@ columns representing independent subcommunity counts.
 #### Returns:
 - diversities of subcommunities
 """
-richness(proportions::AbstractVecOrMat) =
-    generalisedrichness(subcommunityDiversity, proportions,
-                        UniqueTypes(size(proportions, 1)))
+function richness(proportions::AbstractVecOrMat)
+    gr = generalisedrichness(subcommunityDiversity, proportions,
+                             UniqueTypes(size(proportions, 1)))
+    gr[:diversity] = Int.(round.(gr[:diversity]))
+    return gr
+end
 function richness(asm::EcoBase.AbstractAssemblage)
     hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return richness(occurrences(asm))

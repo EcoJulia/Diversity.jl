@@ -13,12 +13,16 @@ using RCall
 # Create a temporary directory to work in
 libdir = mktempdir();
 
+# Environment variable to avoid boring R package builds
+global mustCrossvalidate = haskey(ENV, "JULIA_MUST_CROSSVALIDATE") && ENV["JULIA_MUST_CROSSVALIDATE"] == "1"
+
 global skipR = false
 if !skipR && !rcopy(R"require(ape)")
     rcall(Symbol(".libPaths"), libdir);
     reval("install.packages(\"ape\", lib=\"$libdir\", " *
           "repos=\"http://cran.r-project.org\")");
-    global skipR = !rcopy(R"require(ape, lib.loc=c(\"$libdir\", .libPaths()))") &&
+    global skipR =
+        !rcopy(R"require(ape, lib.loc=c(\"$libdir\", .libPaths()))") &&
         !mustCrossvalidate;
     skipR && @warn "ape R package not installed and would not install, " *
         "skipping R crossvalidation"
@@ -28,7 +32,8 @@ if !skipR && !rcopy(R"require(rdiversity)")
     rcall(Symbol(".libPaths"), libdir);
     reval("install.packages(\"rdiversity\", lib=\"$libdir\", " *
           "repos=\"http://cran.r-project.org\")");
-    global skipR = !rcopy(R"require(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))") &&
+    global skipR =
+        !rcopy(R"require(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))") &&
         !mustCrossvalidate;
     skipR && @warn "rdiversity R package not installed and would not install, " *
         "skipping R crossvalidation"
