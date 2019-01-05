@@ -4,6 +4,10 @@ using Diversity.API
 using Compat.LinearAlgebra
 using DataFrames
 
+@static if VERSION < v"0.7.0-"
+const deletecols! = delete!
+end
+
 """
     generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
                         Z::AbstractMatrix)
