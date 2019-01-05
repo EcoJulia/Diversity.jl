@@ -179,3 +179,17 @@ Retrieves (and possibly calculates) a similarity matrix from t.
 function calcsimilarity(t::AbstractTypes, scale::Real)
     return _calcsimilarity(t, scale)
 end
+
+function createsummaryline(vec::AbstractVector{<:AbstractString})
+    linefunc(vec) = mapreduce(x->x*", ", *, vec[1:(end-1)])*vec[end]
+    length(vec) == 1 && return vec[1]
+    length(vec) < 6 && return linefunc(vec)
+    linefunc(vec[1:3])*"..."*linefunc(vec[(end-1):end])
+end
+
+import Base.show
+function show(io::IO, mc::AbstractMetacommunity)
+    sp = createsummaryline(gettypenames(mc))
+    si = createsummaryline(getsubcommunitynames(mc))
+    println(io, "$(typeof(mc)) with $(counttypes(mc)) species in $(countsubcommunities(mc)) sites measuring $(getdiversityname(gettypes(mc))) diversity.\n\nSpecies names:\n$(sp)\n\nSite names:\n$(si)")
+end
