@@ -10,7 +10,7 @@ import EcoBase: nplaces, placenames, getcoords, coordinates
 nplaces(part::AbstractPartition) = countsubcommunities(part)
 placenames(part::AbstractPartition) = getsubcommunitynames(part)
 
-struct MetaCoords <: EcoBase.AbstractLocations
+struct MetaCoords <: EcoBase.AbstractPlaces
     coordinates::Matrix{Float64}
 end
 
