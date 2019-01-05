@@ -13,7 +13,7 @@ using RCall
 # Create a temporary directory to work in
 libdir = mktempdir();
 
-global skipR = false
+global skipR = true
 if !skipR && !rcopy(R"require(ape)")
     rcall(Symbol(".libPaths"), libdir);
     reval("install.packages(\"ape\", lib=\"$libdir\", " *
@@ -26,8 +26,10 @@ end
 
 if !skipR && !rcopy(R"require(rdiversity)")
     rcall(Symbol(".libPaths"), libdir);
-    reval("install.packages(\"rdiversity\", lib=\"$libdir\", " *
+    reval("install.packages(\"remotes\", lib=\"$libdir\", " *
           "repos=\"http://cran.r-project.org\")");
+    reval("require(remotes, lib.loc=c(\"$libdir\", .libPaths()))")
+    reval("install_github(\"boydorr/rdiversity\")")
     global skipR = !rcopy(R"require(rdiversity, lib.loc=c(\"$libdir\", .libPaths()))") &&
         !mustCrossvalidate;
     skipR && @warn "rdiversity R package not installed and would not install, " *
@@ -186,7 +188,7 @@ if !skipR
             @rput tipnames
             r_meta = R"""
             rownames(pops) <- tipnames
-            metacommunity(pops, tree)
+            metacommunity(pops, phy2branch(tree, pops))
             """
 
             for (r_func, juliadiv) in diversities
@@ -226,7 +228,7 @@ if !skipR
             @rput tipnames
             r_meta = R"""
             rownames(pops) <- tipnames
-            r_meta <- metacommunity(pops, tree)
+            r_meta <- metacommunity(pops, phy2branch(tree))
             """
 
             for (r_func, juliadiv) in diversities
@@ -261,7 +263,7 @@ if !skipR
             @rput tipnames
             r_meta = R"""
             rownames(pops) <- tipnames
-            metacommunity(pops, tree)
+            metacommunity(pops, phy2branch(tree, pops))
             """
             for (r_func, juliadiv) in diversities
                 r_div = rcall(r_func, r_meta);
