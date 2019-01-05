@@ -19,14 +19,20 @@ colweights /= sum(colweights);
 allthesame = probs * colweights';
 
 @testset "Jost" begin
-    @test jostbeta(communities, 1)[:diversity] ≈ (1.0 ./
-                                                  metadiv(ρ̄(Metacommunity(communities)),
-                                                          1)[:diversity])
+    @test jostbeta(communities, 1)[:diversity] ≈
+        (1.0 ./ metadiv(ρ̄(Metacommunity(communities)), 1)[:diversity])
     @test jostbeta(allthesame, qs)[:diversity] ≈ fill!(similar(qs), 1)
-
+    @test jostbeta(Metacommunity(allthesame), 1)[:diversity] ==
+        jostbeta(allthesame, 1)[:diversity]
+    @test_throws ErrorException jostbeta(Metacommunity(allthesame,
+        GeneralTypes(rand(numspecies, numspecies))), 1)
     ## Check Jost's alpha diversity works for all the same subcommunity
     @test jostalpha(allthesame, qs)[:diversity] ≈
           metadiv(ᾱ(Metacommunity(allthesame)), qs)[:diversity]
+    @test jostalpha(Metacommunity(allthesame), 1)[:diversity] ==
+        jostalpha(allthesame, 1)[:diversity]
+    @test_throws ErrorException jostalpha(Metacommunity(allthesame,
+        GeneralTypes(rand(numspecies, numspecies))), 1)
 
     ## And for all different subcommunities and any subcommunities with the same sizes
     weights = rand(numspecies);

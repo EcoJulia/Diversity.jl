@@ -102,12 +102,12 @@ population with given relative proportions.
 
 """
 function qD end
-function qD(meta::AbstractAssemblage, qs)
+function qD(asm::AbstractAssemblage, qs)
     hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
-    countsubcommunities(meta) == 1 ||
+    countsubcommunities(asm) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getabundance(meta), qs .- 1, getabundance(meta))[1] .^ -1
+    powermean(getabundance(asm), qs .- 1, getabundance(asm))[1] .^ -1
 end
 
 function qD(proportions::AbstractVector{<: Real}, qs)
@@ -136,11 +136,11 @@ similarity matrix *Z*.
     """
 function qDZ end
 
-function qDZ(meta::AbstractAssemblage, qs)
-    countsubcommunities(meta) == 1 ||
+function qDZ(asm::AbstractAssemblage, qs)
+    countsubcommunities(asm) == 1 ||
     throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getordinariness!(meta), qs .- 1, getabundance(meta))[1] .^ -1
+    powermean(getordinariness!(asm), qs .- 1, getabundance(asm))[1] .^ -1
 end
 
 function qDZ(proportions::AbstractVector{<: Real}, qs,
