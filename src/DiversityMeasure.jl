@@ -1,4 +1,5 @@
 using DataFrames
+using EcoBase: AbstractAssemblage
 
 """
 ### Enumeration of levels that can exist / be calculated for a metacommunity.
@@ -68,7 +69,7 @@ diversity of a metacommunity.
 abstract type DiversityMeasure{FP <: AbstractFloat,
                                AbMatrix <: AbstractMatrix,
                                DivArray <: AbstractArray,
-                               MC <: AbstractMetacommunity} end
+                               MC <: AbstractAssemblage} end
 
 """
     getASCIIName(dm::DiversityMeasure)
@@ -203,7 +204,7 @@ end
     mapreduce(q -> inddiv(measure, q), append!, qs)
 end
 
-@inline function inddiv(meta::AbstractMetacommunity, qs)
+@inline function inddiv(meta::AbstractAssemblage, qs)
     mapreduce(dm -> inddiv(dm(meta), qs),
               append!,
               [RawAlpha, NormalisedAlpha,
@@ -259,7 +260,7 @@ end
     mapreduce(q -> subdiv(measure, q), append!, qs)
 end
 
-@inline function subdiv(meta::AbstractMetacommunity, qs)
+@inline function subdiv(meta::AbstractAssemblage, qs)
     mapreduce(dm -> subdiv(dm(meta), qs),
               append!,
               [RawAlpha, NormalisedAlpha,
@@ -317,7 +318,7 @@ end
     mapreduce(q -> metadiv(measure, q), append!, qs)
 end
 
-@inline function metadiv(meta::AbstractMetacommunity, qs)
+@inline function metadiv(meta::AbstractAssemblage, qs)
     mapreduce(dm -> metadiv(dm(meta), qs),
               append!,
               [RawAlpha, NormalisedAlpha,
@@ -367,7 +368,7 @@ struct RawAlpha{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function RawAlpha(meta::M) where M <: AbstractMetacommunity
+function RawAlpha(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = getordinariness!(meta) .^ -1
@@ -399,7 +400,7 @@ struct NormalisedAlpha{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function NormalisedAlpha(meta::M) where M <: AbstractMetacommunity
+function NormalisedAlpha(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = ws' ./ getordinariness!(meta)
@@ -432,7 +433,7 @@ struct RawBeta{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function RawBeta(meta::M) where M <: AbstractMetacommunity
+function RawBeta(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = getordinariness!(meta) ./ getmetaordinariness!(meta)
@@ -467,7 +468,7 @@ struct NormalisedBeta{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function NormalisedBeta(meta::M) where M <: AbstractMetacommunity
+function NormalisedBeta(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = getordinariness!(meta) ./ (getmetaordinariness!(meta) .* ws')
@@ -500,7 +501,7 @@ struct RawRho{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function RawRho(meta::M) where M <: AbstractMetacommunity
+function RawRho(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = getmetaordinariness!(meta) ./ getordinariness!(meta)
@@ -535,7 +536,7 @@ struct NormalisedRho{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function NormalisedRho(meta::M) where M <: AbstractMetacommunity
+function NormalisedRho(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = (getmetaordinariness!(meta) .* ws') ./ getordinariness!(meta)
@@ -569,7 +570,7 @@ struct Gamma{FP, AbMatrix, DivArray, MC} <:
     meta::MC
 end
 
-function Gamma(meta::M) where M <: AbstractMetacommunity
+function Gamma(meta::M) where M <: AbstractAssemblage
     ab = getabundance(meta)
     ws = getweight(meta)
     value = fill!(similar(ws), 1)' ./ getmetaordinariness!(meta)
