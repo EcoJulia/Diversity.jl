@@ -582,9 +582,9 @@ getFullName(::Gamma) = "gamma diversity"
 _getmeta(m::Gamma) = m.meta
 
 RecipesBase.@recipe function f(var::Tuple{<: DiversityMeasure,
-                                          <: Real}, asm::AbstractAssemblage)
+                                          <: Real})
     title := getFullName(var[1]) * " (q = $(var[2])) - " * getdiversityname(var[1]) *
         " diversity"
     colorbar_title := getASCIIName(var[1])
-    subdiv(var...)[:diversity], getcoords(places(asm))
+    subdiv(var...)[:diversity], getcoords(places(_getmeta(var[1])))
 end
