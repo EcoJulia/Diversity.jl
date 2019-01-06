@@ -6,27 +6,20 @@ using RecipesBase
 using DataFrames
 
 # Now satisfy the EcoBase interface
-import EcoBase: nplaces, placenames, getcoords, coordinates
+import EcoBase: nplaces, placenames
 nplaces(part::AbstractPartition) = countsubcommunities(part)
 placenames(part::AbstractPartition) = getsubcommunitynames(part)
 
-struct MetaCoords <: EcoBase.AbstractPlaces
-    coordinates::Matrix{Float64}
-end
-
-import EcoBase: getcoords
-function getcoords(part::AbstractPartition)
+import EcoBase: coordinates
+function coordinates(part::AbstractPartition)
     dimx = round(Int, sqrt(countsubcommunities(part)), RoundUp)
     coords = Matrix{Float64}(undef, countsubcommunities(part), 2)
     for i in Base.OneTo(countsubcommunities(part))
         coords[i, 1] = (i - 1) % dimx + 1
         coords[i, 2] = (i - 1) ÷ dimx + 1
     end
-    return MetaCoords(coords)
+    return coords
 end
-
-import EcoBase: coordinates
-coordinates(mc::MetaCoords) = mc.coordinates
 
 import EcoBase: nthings, thingnames
 nthings(types::AbstractTypes) = counttypes(types)
