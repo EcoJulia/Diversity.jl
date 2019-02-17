@@ -11,7 +11,8 @@ nplaces(part::AbstractPartition) = countsubcommunities(part)
 placenames(part::AbstractPartition) = getsubcommunitynames(part)
 
 import EcoBase: coordinates
-function coordinates(part::AbstractPartition)
+# Where there's no spatial information, make it up!
+function coordinates(part::AbstractPartition{Nothing})
     dimx = round(Int, sqrt(countsubcommunities(part)), RoundUp)
     coords = Matrix{Float64}(undef, countsubcommunities(part), 2)
     for i in Base.OneTo(countsubcommunities(part))

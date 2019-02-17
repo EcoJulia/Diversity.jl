@@ -4,7 +4,7 @@
 AbstractPartition subtype with multiple subcommunities.
 
 """
-struct Subcommunities <: Diversity.API.AbstractPartition
+struct Subcommunities <: Diversity.API.AbstractPartition{Nothing}
     num::Int64
     names::Vector{String}
 
@@ -35,7 +35,7 @@ end
 
 AbstractPartition subtype containing only one subcommunity.
 """
-struct Onecommunity <: Diversity.API.AbstractPartition
+struct Onecommunity <: Diversity.API.AbstractPartition{Nothing}
     namev::Vector{String}
 
     function Onecommunity(name::String = "1")
