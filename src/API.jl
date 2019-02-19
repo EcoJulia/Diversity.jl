@@ -11,7 +11,10 @@ Abstract supertype for all partitioning types. AbstractPartition
 subtypes allow you to define how to partition your total metacommunity
 (e.g. an ecosystem) into smaller components (e.g. subcommunities).
 """
-abstract type AbstractPartition <: EcoBase.AbstractPlaces end
+abstract type AbstractPartition{LT <: Union{Nothing,
+                                            EcoBase.AbstractLocationData}} <:
+    EcoBase.AbstractPlaces{LT}
+end
 
 """
     AbstractTypes
