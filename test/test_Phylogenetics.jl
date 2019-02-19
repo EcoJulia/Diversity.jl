@@ -8,12 +8,12 @@ using Diversity
     species = ["Dog", "Human", "Cat"]
     abund = [0.4, 0.3, 0.3]
     nt = NamedTree(species)
-    n = createnode!(nt)
-    createbranch!(nt, n, "Dog", 1.0)
-    createbranch!(nt, n, "Cat", 1.0)
-    r = createnode!(nt)
-    createbranch!(nt, r, "Human", 2.0)
-    createbranch!(nt, r, n, 1.0)
+    n = addnode!(nt)
+    addbranch!(nt, n, "Dog", 1.0)
+    addbranch!(nt, n, "Cat", 1.0)
+    r = addnode!(nt)
+    addbranch!(nt, r, "Human", 2.0)
+    addbranch!(nt, r, n, 1.0)
     ph = PhyloTypes(nt)
     leafnames = gettypenames(ph, true)
     @test species == gettypenames(ph, true)
