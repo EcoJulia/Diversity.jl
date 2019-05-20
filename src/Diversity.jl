@@ -117,14 +117,16 @@ using Requires
     @require Phylo begin
         println("Creating Diversity to Phylo interface...")
         include("Phylogenetics.jl")
-        export PhyloTypes
+        export AbstractPhyloTypes, PhyloBranches
+        @deprecate(PhyloTypes, PhyloBranches)
     end
 else
     function __init__()
         @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
             println("Creating Diversity to Phylo interface...")
             include("Phylogenetics.jl")
-            export PhyloTypes
+            export AbstractPhyloTypes, PhyloBranches
+            @deprecate(PhyloTypes, PhyloBranches)
         end
     end
 end
