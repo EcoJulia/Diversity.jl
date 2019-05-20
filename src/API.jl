@@ -235,15 +235,11 @@ AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
 _getmetaordinariness!(mc::Meta) where
-{FP, AProcessed, Sim, Part,
- Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
-                                             AProcessed, Sim, Part}} =
+{FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector}} =
     _getordinariness!(mc)
 
 function _getmetaordinariness!(mc::Meta) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
-                                                 AProcessed, Sim, Part}}
+    {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix}}
     ord = Compat.sum(_getordinariness!(mc), dims=2)
     return reshape(ord, length(ord))
 end

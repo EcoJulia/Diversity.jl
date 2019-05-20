@@ -42,7 +42,7 @@ end
 
 import Diversity.API._calcsimilarity
 function _calcsimilarity(ut::UniqueTypes, ::Real)
-    return Matrix(1.0I, ut.num, ut.num)
+    return I
 end
 
 import Diversity.API._calcordinariness
