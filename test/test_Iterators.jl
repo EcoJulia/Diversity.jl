@@ -1,5 +1,5 @@
 module TestIterators
-using Compat.Test
+using Test
 
 using Phylo
 using Diversity

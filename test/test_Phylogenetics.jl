@@ -1,5 +1,5 @@
 module TestPhylogenetics
-using Compat.Test
+using Test
 
 using Phylo
 using Diversity
@@ -22,8 +22,8 @@ using Diversity
     @test getabundance(metaphylo, true) ≈ abund
     @test getabundance(metaphylo) ≈ [0.2, 0.2, 0.15, 0.15, 0.3]
     @test getordinariness!(metaphylo) ≈ [0.4, 0.7, 0.3, 0.7, 0.3]
-    @test meta_gamma(metaphylo, 0)[:diversity] == [2.5]
-    @test sub_gamma(metaphylo, 0)[:diversity] == [2.5]
+    @test meta_gamma(metaphylo, 0)[!,:diversity] == [2.5]
+    @test sub_gamma(metaphylo, 0)[!,:diversity] == [2.5]
 end
 
 end

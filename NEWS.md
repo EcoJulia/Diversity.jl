@@ -1,3 +1,6 @@
+- v0.5.0
+  - Drop Julia pre-v1.0 compatibility
+  - Move to Phylo v0.4.0 API
 - v0.4.5
   - Full EcoJulia default implementation to allow cross-compatibility with other AbstractAssemblage-derived types
 - v0.4.4

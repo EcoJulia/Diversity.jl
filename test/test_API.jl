@@ -1,5 +1,5 @@
 module TestAPI
-using Compat.Test
+using Test
 
 using Diversity.API
 

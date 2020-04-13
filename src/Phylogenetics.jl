@@ -1,7 +1,7 @@
 using .Phylo
 using Diversity
 using Diversity.API
-using Compat.Statistics
+using Statistics
 using AxisArrays
 
 abstract type AbstractPhyloTypes{Tree <: AbstractTree} <:
@@ -51,7 +51,7 @@ function PhyloBranches(tree::Tree) where Tree <: AbstractTree
     end
 
     nancestral = length(ancestralnames)
-    Lbar = Compat.Statistics.mean(collect(values(leafinfo)))
+    Lbar = Statistics.mean(collect(values(leafinfo)))
     ancestralmatrix = Matrix{Float64}(undef, nancestral, nleaf)
     fill!(ancestralmatrix, 0.0)    
     for i in 1:nancestral

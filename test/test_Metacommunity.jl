@@ -1,7 +1,6 @@
 module TestMetacommunity
-using Compat.Test
-using Compat.LinearAlgebra
-using Compat
+using Test
+using LinearAlgebra
 
 using Diversity
 using Diversity.API

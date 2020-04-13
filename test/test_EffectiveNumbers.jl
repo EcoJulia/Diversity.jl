@@ -1,7 +1,7 @@
 module TestEffectiveNumbers
-using Compat.Test
-using Compat.LinearAlgebra
-using Compat
+using Test
+using LinearAlgebra
+using Statistics
 
 using Diversity
 using Diversity: powermean
@@ -34,7 +34,7 @@ manyweights *= Diagonal(reshape(mapslices(v -> 1. / sum(v), manyweights, dims=1)
 
     # Power mean with some random numbers
     @test powermean(fragments, 0) ≈ prod(fragments .^ (1. / numspecies))
-    @test powermean(fragments, 1) ≈ Compat.Statistics.mean(fragments)
+    @test powermean(fragments, 1) ≈ mean(fragments)
     @test powermean(fragments, Inf) ≈ maximum(fragments)
     @test powermean(fragments, 0, weights) ≈ prod(fragments .^ weights)
     @test powermean(fragments, 1, weights) ≈ sum(fragments .* weights)

@@ -1,6 +1,5 @@
 using DataFrames
 using Missings
-using Compat: @warn
 using EcoBase
 
 """

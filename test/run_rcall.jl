@@ -1,8 +1,6 @@
 module ValidateRCall_rdiversity
-using Compat.Test
-using Compat: @warn
-using Compat
-using Compat.Statistics
+using Test
+using Statistics
 
 using Diversity
 using Diversity.ShortNames
@@ -51,10 +49,10 @@ if !skipR
             for j in 1:types
                 Zsym[j, j] = 1.0
             end
-            Zsym[Zsym .< Compat.Statistics.median(Zsym)] .= 0.0
+            Zsym[Zsym .< median(Zsym)] .= 0.0
             # Make sure not to remove all of the non-zeros from any column
             for j in 1:sc
-                pops[pops[:, j] .< Compat.Statistics.median(pops[:, j])/2, j] .= 0.0
+                pops[pops[:, j] .< median(pops[:, j])/2, j] .= 0.0
             end
             pops /= sum(pops)
             qs = sort([rand(7)*10..., 0, 1, Inf])
@@ -94,10 +92,10 @@ if !skipR
             for j in 1:types
                 Z[j, j] = 1.0
             end
-            Z[Z .< Compat.Statistics.median(Z)] .= 0.0
+            Z[Z .< median(Z)] .= 0.0
             # Make sure not to remove all of the non-zeros from any column
             for j in 1:sc
-                vals = pops[:, j] .< Compat.Statistics.median(pops[:, j])/2
+                vals = pops[:, j] .< median(pops[:, j])/2
                 for k in 1:types
                     if vals[k]
                         pops[k, j] = 0.0
@@ -172,7 +170,7 @@ if !skipR
             sc = rand(2:(i*10))
             pops = rand(types, sc)
             for j in 1:sc
-                pops[pops[:, j] .< Compat.Statistics.median(pops[:, j])/2, j] .= 0.0
+                pops[pops[:, j] .< median(pops[:, j])/2, j] .= 0.0
             end
             pops ./= sum(pops)
             qs = sort([rand(7)*10..., 0, 1, Inf])

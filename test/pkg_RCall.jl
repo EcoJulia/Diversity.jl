@@ -1,5 +1,4 @@
 module ValidateRCall
-using Compat: @warn
 
 # Environment variable to avoid boring R package builds
 mustCrossvalidate = haskey(ENV, "JULIA_MUST_CROSSVALIDATE") && ENV["JULIA_MUST_CROSSVALIDATE"] == "1"

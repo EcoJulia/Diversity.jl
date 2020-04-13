@@ -2,10 +2,6 @@ using Diversity
 using DataFrames
 using EcoBase
 
-@static if VERSION < v"0.7.0-"
-const deletecols! = delete!
-end
-
 """
     hillnumber(proportions, qs)
 
@@ -26,8 +22,8 @@ population(s) with given relative proportions
 """
 function hillnumber(proportions, qs)
     hill = subdiv(NormalisedAlpha(Metacommunity(proportions)), qs)
-    hill[:measure] = "HillNumber"
-    deletecols!(hill, :div_type)
+    hill[!,:measure] .= "HillNumber"
+    select!(hill, Not(:div_type))
     return hill
 end
 

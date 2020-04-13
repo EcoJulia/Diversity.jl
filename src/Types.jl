@@ -1,6 +1,5 @@
 using DataFrames
-using Compat: @warn, DomainError
-using Compat.LinearAlgebra
+using LinearAlgebra
 
 """
     UniqueTypes
@@ -78,9 +77,9 @@ struct Taxonomy{FP <: AbstractFloat} <: Diversity.API.AbstractTypes
     function Taxonomy{FP}(speciesinfo::DataFrame,
                           taxa::Dict{Symbol, FP},
                           typelabel::Symbol) where FP <: AbstractFloat
-        sort(describe(speciesinfo)[:variable]) == sort([keys(taxa)...]) ||
+        sort(describe(speciesinfo)[!,:variable]) == sort([keys(taxa)...]) ||
             error("Taxon labels do not match similarity values")
-        typelabel ∈ describe(speciesinfo)[:variable] ||
+        typelabel ∈ describe(speciesinfo)[!,:variable] ||
             error("$typelabel not found in DataFrame column names")
         new{FP}(speciesinfo, taxa, typelabel)
     end
@@ -101,7 +100,7 @@ function _counttypes(tax::Taxonomy, ::Bool)
 end
 
 function _gettypenames(tax::Taxonomy, ::Bool)
-    return tax.speciesinfo[tax.typelabel]
+    return tax.speciesinfo[!,tax.typelabel]
 end
 
 function _calcsimilarity(::Taxonomy, ::Real)

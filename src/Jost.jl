@@ -1,9 +1,6 @@
 using Diversity
 using EcoBase
 using DataFrames
-@static if VERSION < v"0.7.0-"
-const deletecols! = delete!
-end
 
 """
     jostalpha(proportions::AbstractMatrix, qs)
@@ -27,10 +24,9 @@ divided by the naive-community beta diversity.
 """
 function jostalpha(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(RawAlpha(Metacommunity(proportions)), qs)
-    md[:diversity] = md[:diversity] ./
-        qD(reshape(mapslices(sum, proportions, dims=(1,)),
-                   size(proportions)[2]), qs)
-    md[:measure] = "JostAlpha"
+    md[!,:diversity] ./= qD(reshape(mapslices(sum, proportions, dims=(1,)),
+                            size(proportions)[2]), qs)
+    md[!,:measure] .= "JostAlpha"
     return md
 end
 
@@ -65,9 +61,9 @@ function jostbeta(proportions::AbstractMatrix, qs)
     j = join(md, ja, on=[:q, :type_level, :type_name,
                          :partition_level, :partition_name, :div_type],
              makeunique=true)
-    j[:diversity] = j[:diversity] ./ j[:diversity_1]
-    j[:measure] = "JostBeta"
-    deletecols!(j, [:diversity_1, :measure_1])
+    j[!,:diversity] ./= j[!,:diversity_1]
+    j[!,:measure] .= "JostBeta"
+    select!(j, Not([:diversity_1, :measure_1]))
     return j
 end
 

@@ -1,7 +1,6 @@
 module ValidateEntropies
-using Compat.Test
-using Compat
-using Compat.Statistics
+using Test
+using Statistics
 
 using Diversity
 using Diversity.ShortNames

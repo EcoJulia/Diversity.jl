@@ -1,7 +1,6 @@
 using Diversity.API
 using EcoBase
 using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
-using Compat
 using RecipesBase
 using DataFrames
 
