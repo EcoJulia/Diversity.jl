@@ -1,13 +1,9 @@
 using Diversity
 using Diversity.ShortNames
 using Diversity.API
-using Compat.LinearAlgebra
+using LinearAlgebra
 using DataFrames
 using EcoBase
-
-@static if VERSION < v"0.7.0-"
-const deletecols! = delete!
-end
 
 """
     generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
@@ -47,7 +43,7 @@ function generalisedrichness(level::DiversityLevel,
         error("Can't calculate richness for $level")
     end
     gr=level(dm(Metacommunity(proportions, sim)), 0)
-    gr[:measure] = "Richness"
+    gr[!,:measure] .= "Richness"
     return gr
 end
 
@@ -66,7 +62,7 @@ columns representing independent subcommunity counts.
 function richness(proportions::AbstractVecOrMat)
     gr = generalisedrichness(subcommunityDiversity, proportions,
                              UniqueTypes(size(proportions, 1)))
-    gr[:diversity] = Int.(round.(gr[:diversity]))
+    gr[!,:diversity] .= Int.(round.(gr[!,:diversity]))
     return gr
 end
 function richness(asm::EcoBase.AbstractAssemblage)
@@ -112,9 +108,9 @@ function generalisedshannon(level::DiversityLevel,
         error("Can't calculate richness for $level")
     end
     gs = level(dm(Metacommunity(proportions, sim)), 1)
-    gs[:diversity] = log.(gs[:diversity])
-    gs[:measure] = "Shannon"
-    deletecols!(gs, :q)
+    gs[!,:diversity] .= log.(gs[!,:diversity])
+    gs[!,:measure] .= "Shannon"
+    select!(gs, Not(:q))
     return gs
 end
 
@@ -176,9 +172,9 @@ function generalisedsimpson(level::DiversityLevel,
         error("Can't calculate richness for $level")
     end
     gs = level(dm(Metacommunity(proportions, sim)), 2)
-    gs[:diversity] = gs[:diversity] .^ -1
-    gs[:measure] = "Simpson"
-    deletecols!(gs, :q)
+    gs[!,:diversity] .= gs[!,:diversity] .^ -1
+    gs[!,:measure] .= "Simpson"
+    select!(gs, Not(:q))
     return gs
 end
 
@@ -247,9 +243,9 @@ function generalisedjaccard(proportions::AbstractMatrix, qs,
     j = join(ab, g, on=[:q, :type_level, :type_name,
                         :partition_level, :partition_name, :div_type],
              makeunique=true)
-    j[:diversity] = j[:diversity] ./ j[:diversity_1] .- 1
-    j[:measure] = "Jaccard"
-    deletecols!(j, [:diversity_1, :measure_1])
+    j[!,:diversity] .= j[!,:diversity] ./ j[!,:diversity_1] .- 1
+    j[!,:measure] .= "Jaccard"
+    select!(j, Not([:diversity_1, :measure_1]))
     return j
 end
 

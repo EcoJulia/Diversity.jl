@@ -1,7 +1,6 @@
 using Diversity.API
 using EcoBase
 using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
-using Compat
 using RecipesBase
 using DataFrames
 
@@ -70,7 +69,7 @@ _calcsimilarity(t::AbstractThings, ::Real) =
 import Diversity.API: _getweight
 function _getweight(a::AbstractAssemblage)
     ab = _getabundance(a, false)
-    w = Compat.sum(ab, dims=1)
+    w = sum(ab, dims=1)
     return reshape(w, length(w))
 end
 
@@ -93,7 +92,7 @@ end
 
 import Diversity.API: _getmetaordinariness!
 function _getmetaordinariness!(a::AbstractAssemblage)
-    ord = Compat.sum(_getordinariness!(a), dims=2)
+    ord = sum(_getordinariness!(a), dims=2)
     return reshape(ord, length(ord))
 end
 

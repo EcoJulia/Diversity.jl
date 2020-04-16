@@ -1,6 +1,5 @@
 using Diversity
-using Compat.InteractiveUtils
-using Compat
+using InteractiveUtils
 using EcoBase
 
 ### Abstract supertype definitions
@@ -183,7 +182,7 @@ function _getmetaabundance(mc::Meta, raw::Bool) where
     {FP, AProcessed, Sim, Part,
      Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
                                                  AProcessed, Sim, Part}}
-    ab = Compat.sum(_getabundance(mc, raw), dims=2)
+    ab = sum(_getabundance(mc, raw), dims=2)
     return reshape(ab, length(ab))
 end
 
@@ -213,7 +212,7 @@ function _getweight(mc::Meta) where
      Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
                                                  AProcessed, Sim, Part}}
     ab = _getabundance(mc, false)
-    w = Compat.sum(ab, dims=1)
+    w = sum(ab, dims=1)
     return reshape(w, length(w))
 end
 
@@ -235,16 +234,12 @@ AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
 _getmetaordinariness!(mc::Meta) where
-{FP, AProcessed, Sim, Part,
- Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
-                                             AProcessed, Sim, Part}} =
+{FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector}} =
     _getordinariness!(mc)
 
 function _getmetaordinariness!(mc::Meta) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
-                                                 AProcessed, Sim, Part}}
-    ord = Compat.sum(_getordinariness!(mc), dims=2)
+    {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix}}
+    ord = sum(_getordinariness!(mc), dims=2)
     return reshape(ord, length(ord))
 end
 

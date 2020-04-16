@@ -1,7 +1,6 @@
 module ValidateDistances
-using Compat.Test
-using Compat
-using Compat.Statistics
+using Test
+using Statistics
 
 using Diversity
 using Diversity.ShortNames
@@ -14,7 +13,7 @@ using Distances
         pops = rand(types, sc)
         # Make sure not to remove all of the non-zeros from any column
         for j in 1:sc
-            vals = pops[:, j] .< Compat.Statistics.median(pops[:, j])/2
+            vals = pops[:, j] .< median(pops[:, j])/2
             for k in 1:types
                 if vals[k]
                     pops[k, j] = 0.0
@@ -32,13 +31,13 @@ using Distances
         r = ρ(meta)
         for q in [rand(7)*10..., 0, 1, Inf]
             @test exp.(colwise(RenyiDivergence(q),
-                               pops_norm, metapop)) ≈ subdiv(nb, q)[:diversity]
+                               pops_norm, metapop)) ≈ subdiv(nb, q)[!,:diversity]
             @test exp.(-colwise(RenyiDivergence(q),
-                                pops_norm, metapop)) ≈ subdiv(nr, q)[:diversity]
+                                pops_norm, metapop)) ≈ subdiv(nr, q)[!,:diversity]
             @test exp.(colwise(RenyiDivergence(q),
-                               pops_norm, metapop)) ≈ subdiv(b, q)[:diversity] ./ weights
+                               pops_norm, metapop)) ≈ subdiv(b, q)[!,:diversity] ./ weights
             @test exp.(-colwise(RenyiDivergence(q),
-                                pops_norm, metapop)) ≈ subdiv(r, q)[:diversity] .* weights
+                                pops_norm, metapop)) ≈ subdiv(r, q)[!,:diversity] .* weights
         end
     end
 end

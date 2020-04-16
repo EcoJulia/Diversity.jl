@@ -1,6 +1,6 @@
 module TestHill
-using Compat.Test
-using Compat.LinearAlgebra
+using Test
+using LinearAlgebra
 
 # Checking Hill numbers
 using Diversity
@@ -14,7 +14,7 @@ manyweights *= Diagonal(reshape(mapslices(v -> 1. / sum(v), manyweights, dims=1)
 
 @testset "Hill numbers" begin
     for i in 1:size(manyweights, 2)
-        @test hillnumber(manyweights[:,i], [0])[:diversity] ≈ [numspecies]
+        @test hillnumber(manyweights[:,i], [0])[!,:diversity] ≈ [numspecies]
     end
 end
 

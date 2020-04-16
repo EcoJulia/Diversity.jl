@@ -1,5 +1,5 @@
 module TestDiversity
-using Compat.Test
+using Test
 
 using Diversity
 

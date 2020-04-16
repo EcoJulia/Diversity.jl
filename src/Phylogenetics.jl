@@ -1,9 +1,24 @@
 using .Phylo
 using Diversity
 using Diversity.API
-using Compat.Statistics
+using Statistics
+using AxisArrays
 
-struct PhyloTypes{Tree <: AbstractTree} <: Diversity.API.AbstractTypes
+abstract type AbstractPhyloTypes{Tree <: AbstractTree} <:
+    Diversity.API.AbstractTypes
+end
+
+import Diversity.API: _addedoutputcols
+_addedoutputcols(::Diversity.AbstractPhyloTypes{TS}) where
+    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
+    Dict{Symbol, Type}(:treename => LABEL)
+
+import Diversity.API: _getaddedoutput
+_getaddedoutput(pt::Diversity.AbstractPhyloTypes{TS}) where
+    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
+    Dict{Symbol, LABEL}(:treename => first(treenameiter(pt.tree)))
+
+struct PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
     tree::Tree
     nleaf::Int64
     nancestral::Int64
@@ -13,25 +28,32 @@ struct PhyloTypes{Tree <: AbstractTree} <: Diversity.API.AbstractTypes
     Zmatrix::Matrix{Float64}
 end
 
-function PhyloTypes(tree::Tree) where Tree <: AbstractTree
-    leafnames = getleafnames(tree)
+function PhyloBranches(tree::Tree) where Tree <: AbstractTree
+    leafnames = [getnodename(tree, node)
+                 for node in traversal(tree, preorder) if isleaf(tree, node)]
     nleaf = length(leafnames)
     nleaf > 0 || error("Too few species")
     leafinfo = Dict{String, Float64}()
     speciesinfo = Dict{String, Tuple{String, String, Float64}}()
+    ancestralnames = String[]
+    
     for leaf in leafnames
         branches = branchhistory(tree, leaf)
         leafinfo["$leaf"] = heighttoroot(tree, leaf)
         for branch in branches
-            name = "$leaf : $branch"
-            speciesinfo[name] = tuple("$leaf", "$branch",
-                                      getlength(tree, branch) / leafinfo["$leaf"])
+            branchname = getbranchname(tree, branch)
+            name = "$leaf : $branchname"
+            push!(ancestralnames, name)
+            speciesinfo[name] =
+                tuple("$leaf", "$branchname",
+                      getlength(tree, branch) / leafinfo["$leaf"])
         end
     end
-    ancestralnames = collect(keys(speciesinfo))
+
     nancestral = length(ancestralnames)
-    Lbar = Compat.Statistics.mean(collect(values(leafinfo)))
-    ancestralmatrix = fill(zero(Float64), (nancestral, nleaf))
+    Lbar = Statistics.mean(collect(values(leafinfo)))
+    ancestralmatrix = Matrix{Float64}(undef, nancestral, nleaf)
+    fill!(ancestralmatrix, 0.0)    
     for i in 1:nancestral
         for j in 1:nleaf
             if speciesinfo[ancestralnames[i]][1] == leafnames[j]
@@ -40,8 +62,9 @@ function PhyloTypes(tree::Tree) where Tree <: AbstractTree
             end
         end
     end
-    Zmatrix = fill(zero(Float64), (nancestral, nancestral))
-    fill!(Zmatrix, 0)
+    
+    Zmatrix = Matrix{Float64}(undef, nancestral, nancestral)
+    fill!(Zmatrix, 0.0)
     for i in 1:nancestral
         for j in 1:nancestral
             if haskey(speciesinfo,
@@ -52,33 +75,33 @@ function PhyloTypes(tree::Tree) where Tree <: AbstractTree
             end
         end
     end
-    return PhyloTypes{Tree}(tree, nleaf, nancestral,
-                            leafnames, ancestralnames,
-                            ancestralmatrix, Zmatrix)
+    
+    return PhyloBranches{Tree}(tree, nleaf, nancestral, leafnames,
+                               ancestralnames, ancestralmatrix, Zmatrix)
 end
 
-function PhyloTypes(treeset::TS) where TS <: TreeSet
+function PhyloBranches(treeset::TS) where TS <: TreeSet
     ntrees(treeset) == 1 ||
         error("Can currently only handle one tree in a PhyloSet")
-    pt = PhyloTypes(first(treeset))
-    return PhyloTypes{TS}(treeset, pt.nleaf, pt.nancestral,
-                          pt.leafnames, pt.ancestralnames,
-                          pt.ancestralmatrix, pt.Zmatrix)
+    pt = PhyloBranches(first(treeset))
+    return PhyloBranches{TS}(treeset, pt.nleaf, pt.nancestral,
+                             pt.leafnames, pt.ancestralnames,
+                             pt.ancestralmatrix, pt.Zmatrix)
 end
 
 import Diversity.API: _gettypenames
-function _gettypenames(phy::Diversity.PhyloTypes, raw::Bool)
+function _gettypenames(phy::Diversity.PhyloBranches, raw::Bool)
     return raw ? phy.leafnames : phy.ancestralnames
 end
 
 import Diversity.API: _counttypes
-function _counttypes(phy::Diversity.PhyloTypes, raw::Bool)
+function _counttypes(phy::Diversity.PhyloBranches, raw::Bool)
     return raw ? phy.nleaf : phy.nancestral
 end
 
 import Diversity.API: _calcabundance
-function _calcabundance(phy::Diversity.PhyloTypes, raw::M) where
-    {M <: AbstractMatrix{<:AbstractFloat}}
+function _calcabundance(phy::Diversity.PhyloBranches,
+                        raw::AbstractMatrix{<: AbstractFloat})
     processed = phy.ancestralmatrix * raw
     scale = sum(processed)
     processed ./= scale
@@ -86,25 +109,18 @@ function _calcabundance(phy::Diversity.PhyloTypes, raw::M) where
 end
 
 import Diversity.API: _calcsimilarity
-function _calcsimilarity(phy::Diversity.PhyloTypes, scale::R) where R <: Real
+function _calcsimilarity(phy::Diversity.PhyloBranches, scale::Real)
     return phy.Zmatrix .* scale
 end
 
 import Diversity.API: _calcordinariness
-function _calcordinariness(phy::Diversity.PhyloTypes, processed::M, scale::R) where
-    {FP <: AbstractFloat, M <: AbstractMatrix{FP}, R <: Real}
+function _calcordinariness(phy::Diversity.PhyloBranches,
+                           processed::AbstractMatrix{<: AbstractFloat},
+                           scale::Real)
     return (phy.Zmatrix * processed) .* scale
 end
 
 import Diversity.API: _getdiversityname
-_getdiversityname(::Diversity.PhyloTypes) = "Phylogenetic"
+_getdiversityname(::Diversity.PhyloBranches) = "Phylogenetic Branch"
 
-import Diversity.API: _addedoutputcols
-_addedoutputcols(::Diversity.PhyloTypes{TS}) where
-    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
-    Dict{Symbol, Type}(:treename => LABEL)
 
-import Diversity.API: _getaddedoutput
-_getaddedoutput(pt::Diversity.PhyloTypes{TS}) where
-    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
-    Dict{Symbol, LABEL}(:treename => first(treenameiter(pt.tree)))

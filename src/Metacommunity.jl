@@ -1,6 +1,5 @@
 using DataFrames
 using Missings
-using Compat: @warn
 using EcoBase
 
 """
@@ -137,32 +136,25 @@ Metacommunity(asm::EcoBase.AbstractAssemblage) =
         Metacommunity(occurrences(asm))
 
 import Diversity.API._gettypes
-function _gettypes(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part}) where
-    {FP, ARaw, AProcessed, Sim, Part}
-    return meta.types
-end
+_gettypes(meta::Metacommunity) = meta.types
 
 import Diversity.API._getpartition
-function _getpartition(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part}) where
-    {FP, ARaw, AProcessed, Sim, Part}
-    return meta.partition
-end
+_getpartition(meta::Metacommunity) = meta.partition
 
 import Diversity.API._getabundance
-function _getabundance(meta::Metacommunity{FP, ARaw, AProcessed, Sim, Part},
-                       raw::Bool) where {FP, ARaw, AProcessed, Sim, Part}
+function _getabundance(meta::Metacommunity, raw::Bool)
     return raw ? meta.rawabundances : meta.processedabundances
 end
 
 import Diversity.API._getordinariness!
 function _getordinariness!(meta::Metacommunity)
     if ismissing(meta.ordinariness)
-        meta.ordinariness = _calcordinariness(meta.types, meta.processedabundances, meta.scale)
+        meta.ordinariness = _calcordinariness(meta.types,
+                                              meta.processedabundances,
+                                              meta.scale)
     end
     return meta.ordinariness
 end
 
 import Diversity.API._getscale
-function _getscale(m::Metacommunity)
-    return m.scale
-end
+_getscale(m::Metacommunity) = m.scale

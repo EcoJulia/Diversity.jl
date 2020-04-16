@@ -1,7 +1,6 @@
-using Compat
 using Diversity.API
 
-import Compat.IteratorSize, Base.length, Compat.IteratorEltype, Base.eltype
+import Base.IteratorSize, Base.length, Base.IteratorEltype, Base.eltype
 
 abstract type AbstractIterator{M <: AbstractMetacommunity} end
 
