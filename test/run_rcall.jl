@@ -38,6 +38,12 @@ if !skipR && !rcopy(R"require(rdiversity)")
 end
 
 if !skipR
+    R"""
+        if (!exists("similarity")) { # Handle changed rdiversity v1.3 interface
+            similarity <- function(z) z
+            phy2branch <- function(tree, pops) tree
+        }
+    """
     # Run diversity comparisons on increasing numbers of types and subcommunities
     @testset "RCall - testing boydorr/rdiversity" begin
         @testset "Random rdiversity $i" for i in 1:20
@@ -125,7 +131,7 @@ if !skipR
                 # Check the metacommunity diversity
                 jmd = metadiv(juliadiv, qs);
                 rmd = rcall(:metadiv, r_div, qs);
-                @test_broken Set(map(string, names(jmd))) ⊆
+                @test_skip Set(map(string, names(jmd))) ⊆
                     Set(rcopy(rcall(:colnames, rmd)))
                     
 
@@ -245,7 +251,7 @@ if !skipR
                 # Check the metacommunity diversity
                 jmd = metadiv(juliadiv, qs);
                 rmd = rcall(:metadiv, r_div, qs);
-                @test_broken Set(rcopy(rcall(:colnames, rmd))) ⊆
+                @test_skip Set(rcopy(rcall(:colnames, rmd))) ⊆
                     Set(map(string, names(jmd)))
 
                 @test jmd[!,:diversity] ≈ rcopy(rmd[:diversity])
