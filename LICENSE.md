@@ -1,6 +1,6 @@
 The Diversity.jl package is licensed under the Simplified "2-clause" BSD License:
 
-> Copyright (c) 2014-2017: Richard Reeve.
+> Copyright (c) 2014-2020: Richard Reeve.
 >
 > Redistribution and use in source and binary forms, with or without
 > modification, are permitted provided that the following conditions are

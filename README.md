@@ -2,10 +2,10 @@
 
 *Package for measuring and partitioning diversity*
 
-| **Documentation** | **PackageEvaluator** | **Build Status of master** |
-|:-----------------:|:--------------------:|:--------------------------:|
-| [![][docs-stable-img]][docs-stable-url] | [![][pkg-0.6-img]][pkg-0.6-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url] | [![Works with 1.0!][pkg-1.0-img]][pkg-1.0-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| **Documentation** | **Build Status of master** |
+|:-----------------:|:--------------------------:|
+| [![][docs-stable-img]][docs-stable-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
+| [![][docs-latest-img]][docs-latest-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
 
 ## Summary
 
@@ -37,25 +37,25 @@ been released. Older interfaces from Diversity v0.2 have been removed in v0.4.
 
 ## Installation
 
-The package is registered in the `General` registry on v1.0 and v0.7 as well as `METADATA` on Julia v0.6 and so can be installed with `add`. For example
-on Julia v1.0:
+The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example
+on Julia v1.4:
 
 ```julia
-(v1.0) pkg> add Diversity
+(@v1.4) pkg> add Diversity
  Resolving package versions...
-  Updating `~/.julia/environments/v1.0/Project.toml`
-  [xxxxxxxx] + Diversity v0.4.4
-  Updating `~/.julia/environments/v1.0/Manifest.toml`
-  [xxxxxxxx] + Diversity v0.4.4
+  Updating `~/.julia/environments/v1.4/Project.toml`
+  [xxxxxxxx] + Diversity v0.5.1
+  Updating `~/.julia/environments/v1.4/Manifest.toml`
+  [xxxxxxxx] + Diversity v0.5.1
 ...
 
-(v1.0) pkg>
+(@v1.4) pkg>
 ```
 
 ## Project Status
 
-The package is tested against the current Julia v1.0 release, and also
-the previous v0.6 and v0.7 versions, on Linux, macOS, and Windows.
+The package is tested against Julia v1.0.x and the latest v1.4 release as
+well as against nightly, on Linux, macOS, and Windows.
 
 ## Contributing and Questions
 
