@@ -1,6 +1,6 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
-version = "0.5.0"
+version = "0.5.1"
 author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>"]
 
 [deps]
@@ -22,7 +22,7 @@ Distances = "^0.8"
 EcoBase = "^0.1"
 Missings = "^0,4"
 Phylo = "^0.4.1"
-RecipesBase = "0.8,1"
+RecipesBase = "0.6,0.7,0.8,1"
 Requires = "^1"
 StatsBase = "0.32,0.33"
 
