@@ -1,3 +1,5 @@
+- v0.5.1
+  - Improve dependencies
 - v0.5.0
   - Drop Julia pre-v1.0 compatibility
   - Move to Phylo v0.4.0 API
