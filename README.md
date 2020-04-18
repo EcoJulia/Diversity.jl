@@ -27,13 +27,7 @@ of the diversity calculations to provide consistency with our R
 package [rdiversity][rdiversity-url]. The code is not
 optimised for speed at the moment due to the substantial changes that
 have happened to it under the hood, and the Phylogenetics submodule is
-also new, and may need further improvements.
-
-Version 0.4, which is the current release, has significant
-breaking changes to the underlying code, but everything works with Julia
-v0.6, v0.7 and v1.0 as far as we're aware. It is periodically working
-with Julia nightly but that is not a high priority now that Julia 1.0 has
-been released. Older interfaces from Diversity v0.2 have been removed in v0.4.
+also recently revised, and may need further improvements.
 
 ## Installation
 
