@@ -1,7 +1,7 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>"]
-version = "0.5.1"
+version = "0.5.2"
 
 [deps]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
@@ -16,7 +16,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 AxisArrays = "^0.4"
-DataFrames = "^0.21"
+DataFrames = "0.20,0.21,0.22"
 Distances = "^0.8"
 EcoBase = "^0.1"
 Missings = "^0,4"
