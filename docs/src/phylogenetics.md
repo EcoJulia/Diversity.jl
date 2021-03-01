@@ -19,23 +19,23 @@ julia> species = ["Dog", "Cat", "Human", "Potato"];
 julia> community = [4, 1, 3, 2] / 10;
 
 julia> nt = rand(Nonultrametric(species))
-BinaryTree{DataFrames.DataFrame,Dict{String,Any}} with 4 tips, 7 nodes and 6 branches.
-Leaf names are Dog, Cat, Human and Potato
+LinkTree{OneRoot,String,LinkNode{OneRoot,String,Dict{String,Any},LinkBranch{OneRoot,String,Dict{String,Any},Float64}},LinkBranch{OneRoot,String,Dict{String,Any},Float64},Dict{String,Any}} with 4 tips, 7 nodes and 6 branches.
+Leaf names are Dog, Cat, Potato and Human
 
 
 julia> collect(getbranches(nt))
-6-element Array{Pair{Int64,Branch{String}},1}:
- [node "Node 2"]-->[0.5097599049872488 length branch 4]-->[node "Dog"]
+6-element Array{LinkBranch{OneRoot,String,Dict{String,Any},Float64},1}:
+ LinkBranch 7, from node Node 5 to node Cat (length 0.9239010134651334).
 
- [node "Node 1"]-->[0.09388407179505037 length branch 2]-->[node "Human"]
+ LinkBranch 8, from node Node 5 to node Potato (length 0.22314202428976326).
 
- [node "Node 2"]-->[0.03694779049915409 length branch 3]-->[node "Potato"]
+ LinkBranch 9, from node Node 6 to node Node 5 (length 0.8631183174331696).
 
- [node "Node 3"]-->[1.1304368761257053 length branch 5]-->[node "Node 1"]
+ LinkBranch 10, from node Node 6 to node Human (length 0.00018168653247226503).
 
- [node "Node 3"]-->[2.690399241213393 length branch 6]-->[node "Node 2"]
+ LinkBranch 11, from node Node 7 to node Dog (length 0.20720995300152265).
 
- [node "Node 1"]-->[1.069077819992828 length branch 1]-->[node "Cat"]
+ LinkBranch 12, from node Node 7 to node Node 6 (length 0.3064428959482562).
 
 
 julia> ph = PhyloTypes(nt);
@@ -50,10 +50,11 @@ julia> leafnames = gettypenames(metaphylo, true)
  "Potato"
 
 julia> meta_gamma(metaphylo, 0)
-1×8 DataFrames.DataFrame
-│ Row │ div_type     │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
-├─────┼──────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
-│ 1   │ Phylogenetic │ Gamma   │ 0 │ types      │           │ metacommunity   │                │ 2.29217   │```
+1×8 DataFrame
+│ Row │ div_type            │ measure │ q     │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+│     │ String              │ String  │ Int64 │ String     │ String    │ String          │ String         │ Float64   │
+├─────┼─────────────────────┼─────────┼───────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Phylogenetic Branch │ Gamma   │ 0     │ types      │           │ metacommunity   │                │ 3.27211   │```
 
 ```@contents
 ```
