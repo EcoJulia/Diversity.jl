@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - claireh93/actions
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  diversity-tests:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        julia-version:
+          - '1.4'
+          - '1'
+          - '~1.6.0-rc1'
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        R-version:
+          - 'release'
+        arch:
+          - x64
+        experimental:
+          - false
+        include:
+          - julia-version: 'nightly'
+            os: ubuntu-latest
+            R-version: 'release'
+            arch: x64
+            experimental: true
+      fail-fast: false
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up julia
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: ${{ matrix.julia-version }}
+        arch: ${{ matrix.arch }}
+    - name: Install R
+      if: matrix.os == 'macOS-latest'
+      uses: r-lib/actions/setup-r@master
+      with:
+        r-version: ${{ matrix.R-version }}
+    - name: Install ape
+      if: matrix.os == 'macOS-latest'
+      run: |
+        R -e 'install.packages("ape", repos="http://cran.r-project.org")'
+    - name: Build package
+      uses: julia-actions/julia-buildpkg@master
+    - name: Running
+      uses: julia-actions/julia-runtest@master
+    - name: Process coverage
+      uses: julia-actions/julia-processcoverage@v1
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./lcov.info
+    - name: Codecov
+      uses: codecov/codecov-action@v1
