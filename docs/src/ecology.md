@@ -1,4 +1,6 @@
-In the **Diversity.Ecology** package, we replicate old ecological
+# Diversity.Ecology
+
+n the **Diversity.Ecology** submodule, we replicate old ecological
 diversity measures and generalised versions of them that relate to our
 general measures of alpha, beta and gamma diversity at subcommunity
 and ecosystem measures. The generalisations of the richness, Shannon

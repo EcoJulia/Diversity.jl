@@ -1,4 +1,6 @@
-In the **Phylogenetics** code, we generate Phylogenetic
+ Diversity.Phylogenetics
+
+In the **Diversity.Phylogenetics** submodule, we generate Phylogenetic
 diversity measures, based on Faith PD and extended by Chao.
 
 #### Usage
@@ -10,7 +12,7 @@ Using the functionality in the package is simple:
  - Create a Metacommunity from that
  - Calculate diversity!
 
-```julia-repl
+```jldoctest
 julia> using Phylo, Diversity
 Creating Diversity to Phylo interface...
 
