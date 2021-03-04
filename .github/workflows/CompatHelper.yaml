@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 4 * * 0'  # Weekly at 4 AM GMT Sunday
+    - cron: '0 4 * * *'  # Daily at 4 AM GMT
 
 jobs:
   CompatHelper:
