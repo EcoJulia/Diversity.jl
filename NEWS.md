@@ -1,3 +1,6 @@
+- v0.5.2
+  - Update docs
+  - Update compats
 - v0.5.1
   - Improve dependencies
 - v0.5.0

@@ -2,10 +2,10 @@
 
 *Package for measuring and partitioning diversity*
 
-| **Documentation** | **Build Status of master** |
-|:-----------------:|:--------------------------:|
-| [![][docs-stable-img]][docs-stable-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url]     |
-| [![][docs-latest-img]][docs-latest-url] | [![][codecov-img]][codecov-url] [![][coveralls-img]][coveralls-url] |
+| **Documentation** | **Build Status** | **DOI** |
+|:-----------------:|:--------------------------:|:--------------------------:|
+| [![stable docs][docs-stable-img]][docs-stable-url] | [![build tests][actions-img]][actions-url] [![JuliaNightly][nightly-img]][nightly-url] | [![Zenodo][zenodo-badge]][zenodo-url] |
+| [![dev docs][docs-dev-img]][docs-dev-url] | [![codecov][codecov-img]][codecov-url] [![coveralls][coveralls-img]][coveralls-url] | |
 
 ## Summary
 
@@ -31,25 +31,24 @@ also recently revised, and may need further improvements.
 
 ## Installation
 
-The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example
-on Julia v1.4:
+The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
 
 ```julia
-(@v1.4) pkg> add Diversity
- Resolving package versions...
-  Updating `~/.julia/environments/v1.4/Project.toml`
-  [xxxxxxxx] + Diversity v0.5.1
-  Updating `~/.julia/environments/v1.4/Manifest.toml`
-  [xxxxxxxx] + Diversity v0.5.1
-...
-
-(@v1.4) pkg>
+(@v1.6) pkg> add Diversity
+    Resolving package versions...
+    Updating `~/.julia/environments/v1.6/Project.toml`
+  [d3d5718d] + Diversity v0.5.2
+    Updating `~/.julia/environments/v1.6/Manifest.toml`
+  [d3d5718d] + Diversity v0.5.2
+  
+(@v1.6) pkg>
 ```
 
 ## Project Status
 
-The package is tested against Julia v1.0.x and the latest v1.4 release as
-well as against nightly, on Linux, macOS, and Windows.
+The package is confirmed to work against the current LTS Julia v1.4 release
+and the latest release on Linux, macOS, and Windows. It is also tested
+against nightly.
 
 ## Contributing and Questions
 
@@ -237,17 +236,17 @@ The online documentation for the current stable branch is
 The online documentation for the latest master (unreleased) branch is
 [here][docs-latest-url].
 
-[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-latest-url]: https://richardreeve.github.io/Diversity.jl/latest
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://richardreeve.github.io/Diversity.jl/dev
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://richardreeve.github.io/Diversity.jl/stable
 
-[travis-img]: https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/richardreeve/Diversity.jl?branch=master
+[actions-img]: https://github.com/richardreeve/Diversity.jl/workflows/build/badge.svg
+[actions-url]: https://github.com/richardreeve/Diversity.jl/actions
 
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master
-[appveyor-url]: https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master
+[nightly-img]: https://github.com/richardreeve/Diversity.jl/actions/workflows/nightly.yaml/badge.svg
+[nightly-url]: https://github.com/richardreeve/Diversity.jl/actions/workflows/nightly.yaml
 
 [coveralls-img]: https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg
 [coveralls-url]: https://coveralls.io/r/richardreeve/Diversity.jl?branch=master
@@ -257,16 +256,13 @@ The online documentation for the latest master (unreleased) branch is
 
 [issues-url]: https://github.com/richardreeve/Diversity.jl/issues
 
-[pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
-[pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
-
-[pkg-1.0-img]: http://pkg.julialang.org/badges/Diversity_1.0.svg
-[pkg-1.0-url]: http://pkg.julialang.org/?pkg=Diversity&ver=1.0
-
 [paper-url]: http://arxiv.org/abs/1404.6520
 
 [rdiversity-url]: https://github.com/boydorr/rdiversity
 
 [leinster-cobbold-url]: http://www.esajournals.org/doi/abs/10.1890/10-2402.1
 
-[phylo-url]: https://github.com/richardreeve/Phylo.jl
+[phylo-url]: https://github.com/EcoJulia/Phylo.jl
+
+[zenodo-badge]: https://zenodo.org/badge/23515345.svg
+[zenodo-url]: https://zenodo.org/badge/latestdoi/23515345
