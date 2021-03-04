@@ -1,4 +1,4 @@
- Diversity.Phylogenetics
+# Diversity (Phylogenetics)
 
 In the **Diversity.Phylogenetics** submodule, we generate Phylogenetic
 diversity measures, based on Faith PD and extended by Chao.

@@ -1,4 +1,4 @@
-# Diversity.API
+# Diversity.API
 
 The **Diversity.API** submodule provides the API that must be extended
 for new `AbstractTypes`, `AbstractPartition` and

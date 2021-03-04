@@ -1,4 +1,4 @@
-# Diversity.Hill
+# Diversity.Hill
 
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 **Diversity.Hill** submodule.

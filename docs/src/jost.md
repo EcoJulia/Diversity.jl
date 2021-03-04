@@ -1,4 +1,4 @@
-# Diversity.Jost
+# Diversity.Jost
 
 Lou Jost's
 [diversity](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)

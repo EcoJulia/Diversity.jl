@@ -1,4 +1,4 @@
-# Diversity.Ecology
+# Diversity.Ecology
 
 n the **Diversity.Ecology** submodule, we replicate old ecological
 diversity measures and generalised versions of them that relate to our
