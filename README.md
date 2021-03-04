@@ -242,8 +242,8 @@ The online documentation for the latest master (unreleased) branch is
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://richardreeve.github.io/Diversity.jl/stable
 
-[actions-img]: https://github.com/richardreeve/Diversity.jl/workflows/build/badge.svg
-[actions-url]: https://github.com/richardreeve/Diversity.jl/actions
+[actions-img]: https://github.com/richardreeve/Diversity.jl/actions/workflows/testing.yaml/badge.svg
+[actions-url]: https://github.com/richardreeve/Diversity.jl/actions/workflows/testing.yaml
 
 [nightly-img]: https://github.com/richardreeve/Diversity.jl/actions/workflows/nightly.yaml/badge.svg
 [nightly-url]: https://github.com/richardreeve/Diversity.jl/actions/workflows/nightly.yaml
