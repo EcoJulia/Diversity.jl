@@ -2,7 +2,7 @@ using Documenter
 using Diversity
 
 makedocs(modules = [Diversity,
-                    Diversity.Ecology, Diversity.Jost, Diversity.Hill, Diversity.Phylogenetics, Diversity.API],
+                    Diversity.Ecology, Diversity.Jost, Diversity.Hill, Diversity.ShortNames, Diversity.API],
          sitename = "Diversity.jl")
 
 deploydocs(deps = Deps.pip("pygments",
