@@ -8,4 +8,5 @@ makedocs(modules = [Diversity,
 deploydocs(deps = Deps.pip("pygments",
                            "mkdocs",
                            "mkdocs-material",
-                           "python-markdown-math"))
+                           "python-markdown-math"),
+           repo = "github.com/richardreeve/Diversity.jl.git")
