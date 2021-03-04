@@ -1,4 +1,4 @@
-# Phylogenetics
+# Phylogenetics
 
 In the **Diversity** module'a **Phylogenetics** code, we generate Phylogenetic
 diversity measures, based on Faith PD and extended by Chao.
