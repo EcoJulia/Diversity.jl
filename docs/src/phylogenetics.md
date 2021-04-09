@@ -3,14 +3,14 @@
 In the **Diversity** module'a **Phylogenetics** code, we generate Phylogenetic
 diversity measures, based on Faith PD and extended by Chao.
 
-#### Usage
+## Usage
 
 Using the functionality in the package is simple:
 
- - Create a tree (using our Phylo package)
- - Create a PhyloTypes (AbstractTypes subtype) object from it
- - Create a Metacommunity from that
- - Calculate diversity!
+- Create a tree (using our Phylo package)
+- Create a PhyloTypes (AbstractTypes subtype) object from it
+- Create a Metacommunity from that
+- Calculate diversity!
 
 ```jldoctest
 julia> using Phylo, Diversity

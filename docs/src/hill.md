@@ -3,7 +3,7 @@
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 **Diversity.Hill** submodule.
 
-#### Usage
+## Usage
 
 Accessing the main functionality in the package is simple:
 

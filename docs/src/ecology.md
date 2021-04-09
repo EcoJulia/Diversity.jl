@@ -9,7 +9,7 @@ subcommunity components sum directly to the corresponding ecosystem
 measure (although note that Simpson's index decreases for increased
 diversity, so small components are more diverse).
 
-#### Usage
+## Usage
 
 Accessing the functionality in the package is simple:
 

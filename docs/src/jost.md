@@ -5,7 +5,7 @@ Lou Jost's
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
 found in the **Diversity.Jost** submodule.
 
-#### Usage
+## Usage
 
 Accessing the main functionality in the package is simple:
 
