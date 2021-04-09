@@ -56,7 +56,8 @@ julia> meta_gamma(metaphylo, 0)
 │ Row │ div_type            │ measure │ q     │ type_level │ type_name │ partition_level │ partition_name │ diversity │
 │     │ String              │ String  │ Int64 │ String     │ String    │ String          │ String         │ Float64   │
 ├─────┼─────────────────────┼─────────┼───────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
-│ 1   │ Phylogenetic Branch │ Gamma   │ 0     │ types      │           │ metacommunity   │                │ 3.27211   │```
+│ 1   │ Phylogenetic Branch │ Gamma   │ 0     │ types      │           │ metacommunity   │                │ 3.27211   │
+```
 
 ```@contents
 ```
