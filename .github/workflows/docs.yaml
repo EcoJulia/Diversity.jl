@@ -25,6 +25,7 @@ jobs:
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
             Pkg.instantiate()
+            Pkg.add("Phylo")
             Pkg.add("Documenter")'
       - name: Build and deploy
         run: |
