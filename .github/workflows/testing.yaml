@@ -3,8 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
-      - claireh93/actions
+      - dev
     tags:
       - 'v*'
   pull_request:
@@ -18,7 +17,6 @@ jobs:
         julia-version:
           - '1.4'
           - '1'
-          - '~1.6.0-rc1'
         os:
           - ubuntu-latest
           - macOS-latest
@@ -29,12 +27,6 @@ jobs:
           - x64
         experimental:
           - false
-        include:
-          - julia-version: 'nightly'
-            os: ubuntu-latest
-            R-version: 'release'
-            arch: x64
-            experimental: true
       fail-fast: false
     steps:
     - name: Checkout code
