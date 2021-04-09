@@ -124,7 +124,9 @@ function getFullName end
 
 Return the metacommunity belonging to the DiversityMeasure.
 """
-function _getmeta end
+function _getmeta(dm::DiversityMeasure)
+    return dm.meta
+end
 
 getsubcommunitynames(dm::DiversityMeasure) = getsubcommunitynames(_getmeta(dm))
 gettypenames(dm::DiversityMeasure) = gettypenames(_getmeta(dm))
@@ -378,7 +380,6 @@ end
 
 getName(::RawAlpha) = "α"
 getFullName(::RawAlpha) = "raw alpha diversity"
-_getmeta(m::RawAlpha) = m.meta
 
 """
     NormalisedAlpha
@@ -410,7 +411,6 @@ end
 
 getName(::NormalisedAlpha) = "ᾱ"
 getFullName(::NormalisedAlpha) = "normalised alpha diversity"
-_getmeta(m::NormalisedAlpha) = m.meta
 
 """
     RawBeta
@@ -445,7 +445,6 @@ const Distinctiveness = RawBeta
 
 getName(::RawBeta) = "β"
 getFullName(::RawBeta) = "distinctiveness"
-_getmeta(m::RawBeta) = m.meta
 
 """
     NormalisedBeta
@@ -478,7 +477,6 @@ end
 
 getName(::NormalisedBeta) = "β̄"
 getFullName(::NormalisedBeta) = "effective number of subcommunities"
-_getmeta(m::NormalisedBeta) = m.meta
 
 """
     RawRho
@@ -513,7 +511,6 @@ const Redundancy = RawRho
 
 getName(::RawRho) = "ρ"
 getFullName(::RawRho) = "redundancy"
-_getmeta(m::RawRho) = m.meta
 
 """
     NormalisedRho
@@ -548,7 +545,6 @@ const Representativeness = NormalisedRho
 
 getName(::NormalisedRho) = "ρ̄"
 getFullName(::NormalisedRho) = "representativeness"
-_getmeta(m::NormalisedRho) = m.meta
 
 """
     Gamma
@@ -579,7 +575,6 @@ end
 
 getName(::Gamma) = "γ"
 getFullName(::Gamma) = "gamma diversity"
-_getmeta(m::Gamma) = m.meta
 
 RecipesBase.@recipe function f(var::Tuple{<: DiversityMeasure,
                                           <: Real})

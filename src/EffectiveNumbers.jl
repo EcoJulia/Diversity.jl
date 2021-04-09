@@ -1,18 +1,23 @@
 """
-### Calculates the weighted powermean of a series of numbers
+    powermean
+
+# Calculates the weighted powermean of a series of numbers
 
 Calculates *order*th power mean of *values*, weighted by
 *weights*. By default, *weights* are equal and *order*
 is 1, so this is just the arithmetic mean.
 
-#### Arguments:
+# Arguments:
+
 - `values`: values for which to calculate mean
-- `order`: order of power mean
+- `order[s]`: order[s] of power mean
 - `weights`: weights of elements, normalised to 1 inside function
 
-#### Returns:
+# Returns:
+
 - weighted power mean(s)
 """
+function powermean end
 function powermean(values::V1, order::R = 1,
                    weights::V2 = fill!(similar(values), 1)) where
     {R <: Real, FP <: AbstractFloat,
