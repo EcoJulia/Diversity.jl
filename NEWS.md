@@ -1,3 +1,7 @@
+# NEWS
+
+- v0.5.3
+  - Update docs and automation
 - v0.5.2
   - Update docs
   - Update compats

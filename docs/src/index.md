@@ -1,5 +1,7 @@
 # Diversity.jl
 
+## A package for measuring and partitioning diversity
+
 The main **Diversity** package provides basic numbers-equivalent
 diversity measures (described in
 [Hill, 1973](http://www.jstor.org/stable/1934352)),
