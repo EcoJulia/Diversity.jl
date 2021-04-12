@@ -4,8 +4,11 @@ on:
   push:
     branches:
       - dev
+    tags:
+      - 'v*'
   schedule:
     - cron: '0 2 * * 0'  # Weekly at 2 AM UTC Sunday
+
 jobs:
   test:
     name: Julia Nightly - Ubuntu - x64
