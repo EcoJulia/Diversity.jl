@@ -151,7 +151,7 @@ A complete list of these functions is shown below:
 Phylogenetic diversity (described [here][leinster-cobbold-url]) is
 automatically included in the Diversity module when the `Phylo` package
 is loaded. Documentation for these diversity measures can be found
-[here](http://richardreeve.github.io/Diversity.jl/latest/phylogenetics/).
+[here](http://docs.ecojulia.org/Diversity.jl/latest/phylogenetics/).
 The phylogenetics code relies on the [Phylo][phylo-url] package to
 generate trees to incorporate into the diversity code, and the
 `Diversity.Phylogenetics` sub-package will be created when both
@@ -192,14 +192,14 @@ are aware of whose subcommunity components sum directly to the
 corresponding metacommunity measure (although note that Simpson's
 index decreases for increased diversity, so small components are more
 diverse). Documentation for these diversity measures can be found
-[here](http://richardreeve.github.io/Diversity.jl/stable/ecology/).
+[here](http://docs.ecojulia.org/Diversity.jl/stable/ecology/).
 
 #### Diversity.Hill
 
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 Diversity.Hill sub-module.
 Documentation for these diversity measures can be found
-[here](http://richardreeve.github.io/Diversity.jl/stable/hill/).
+[here](http://docs.ecojulia.org/Diversity.jl/stable/hill/).
 
 #### Diversity.Jost
 
@@ -208,7 +208,7 @@ Lou Jost's
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
 found in the Diversity.Jost sub-module.
 Documentation for these diversity measures is
-[here](http://richardreeve.github.io/Diversity.jl/stable/jost/).
+[here](http://docs.ecojulia.org/Diversity.jl/stable/jost/).
 
 ## Documentation
 
@@ -240,24 +240,24 @@ The online documentation for the latest dev (unreleased) branch is
 [here][docs-dev-url].
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://richardreeve.github.io/Diversity.jl/dev
+[docs-dev-url]: https://docs.ecojulia.org/Diversity.jl/dev
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://richardreeve.github.io/Diversity.jl/stable
+[docs-stable-url]: https://docs.ecojulia.org/Diversity.jl/stable
 
-[actions-img]: https://github.com/richardreeve/Diversity.jl/actions/workflows/testing.yaml/badge.svg
-[actions-url]: https://github.com/richardreeve/Diversity.jl/actions/workflows/testing.yaml
+[actions-img]: https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml/badge.svg
+[actions-url]: https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml
 
-[nightly-img]: https://github.com/richardreeve/Diversity.jl/actions/workflows/nightly.yaml/badge.svg
-[nightly-url]: https://github.com/richardreeve/Diversity.jl/actions/workflows/nightly.yaml
+[nightly-img]: https://github.com/EcoJulia/Diversity.jl/actions/workflows/nightly.yaml/badge.svg
+[nightly-url]: https://github.com/EcoJulia/Diversity.jl/actions/workflows/nightly.yaml
 
-[coveralls-img]: https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg
-[coveralls-url]: https://coveralls.io/r/richardreeve/Diversity.jl?branch=dev
+[coveralls-img]: https://img.shields.io/coveralls/EcoJulia/Diversity.jl.svg
+[coveralls-url]: https://coveralls.io/r/EcoJulia/Diversity.jl?branch=dev
 
-[codecov-img]: https://codecov.io/gh/richardreeve/Diversity.jl/branch/dev/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/richardreeve/Diversity.jl
+[codecov-img]: https://codecov.io/gh/EcoJulia/Diversity.jl/branch/dev/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/EcoJulia/Diversity.jl
 
-[issues-url]: https://github.com/richardreeve/Diversity.jl/issues
+[issues-url]: https://github.com/EcoJulia/Diversity.jl/issues
 
 [paper-url]: http://arxiv.org/abs/1404.6520
 
