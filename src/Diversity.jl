@@ -117,21 +117,9 @@ export getName, getASCIIName, getFullName
 
 # Does PhyloTypes need to exist already?
 using Requires
-@static if VERSION < v"0.7.0-"
-    @require Phylo begin
-        println("Creating Diversity to Phylo interface...")
+function __init__()
+    @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
         include("Phylogenetics.jl")
-        export AbstractPhyloTypes, PhyloBranches, PhyloDistances
-        @deprecate(PhyloTypes, PhyloBranches)
-    end
-else
-    function __init__()
-        @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
-            println("Creating Diversity to Phylo interface...")
-            include("Phylogenetics.jl")
-            export AbstractPhyloTypes, PhyloBranches, PhyloDistances
-            @deprecate(PhyloTypes, PhyloBranches)
-        end
     end
 end
 

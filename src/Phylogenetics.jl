@@ -1,4 +1,12 @@
-using .Phylo
+"""
+    Diversity.Phylogenetics submodule
+
+The `Diversity.Phylogenetics` module provides phylogenetic diversity measures,
+by allowing you to convert a phylogenetic tree from the `Phylo` package into
+the types in a metacommunity.
+"""
+module Phylogenetics
+using ..Phylo
 using Diversity
 using Diversity.API
 using Statistics
@@ -9,12 +17,12 @@ abstract type AbstractPhyloTypes{Tree <: AbstractTree} <:
 end
 
 import Diversity.API: _addedoutputcols
-_addedoutputcols(::Diversity.AbstractPhyloTypes{TS}) where
+_addedoutputcols(::AbstractPhyloTypes{TS}) where
     {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
     Dict{Symbol, Type}(:treename => LABEL)
 
 import Diversity.API: _getaddedoutput
-_getaddedoutput(pt::Diversity.AbstractPhyloTypes{TS}) where
+_getaddedoutput(pt::AbstractPhyloTypes{TS}) where
     {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
     Dict{Symbol, LABEL}(:treename => first(treenameiter(pt.tree)))
 
@@ -90,17 +98,17 @@ function PhyloBranches(treeset::TS) where TS <: TreeSet
 end
 
 import Diversity.API: _gettypenames
-function _gettypenames(phy::Diversity.PhyloBranches, raw::Bool)
+function _gettypenames(phy::PhyloBranches, raw::Bool)
     return raw ? phy.leafnames : phy.ancestralnames
 end
 
 import Diversity.API: _counttypes
-function _counttypes(phy::Diversity.PhyloBranches, raw::Bool)
+function _counttypes(phy::PhyloBranches, raw::Bool)
     return raw ? phy.nleaf : phy.nancestral
 end
 
 import Diversity.API: _calcabundance
-function _calcabundance(phy::Diversity.PhyloBranches,
+function _calcabundance(phy::PhyloBranches,
                         raw::AbstractMatrix{<: AbstractFloat})
     processed = phy.ancestralmatrix * raw
     scale = sum(processed)
@@ -109,18 +117,23 @@ function _calcabundance(phy::Diversity.PhyloBranches,
 end
 
 import Diversity.API: _calcsimilarity
-function _calcsimilarity(phy::Diversity.PhyloBranches, scale::Real)
+function _calcsimilarity(phy::PhyloBranches, scale::Real)
     return phy.Zmatrix .* scale
 end
 
 import Diversity.API: _calcordinariness
-function _calcordinariness(phy::Diversity.PhyloBranches,
+function _calcordinariness(phy::PhyloBranches,
                            processed::AbstractMatrix{<: AbstractFloat},
                            scale::Real)
     return (phy.Zmatrix * processed) .* scale
 end
 
 import Diversity.API: _getdiversityname
-_getdiversityname(::Diversity.PhyloBranches) = "Phylogenetic Branch"
+_getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
 
+export PhyloBranches#, PhyloDistances
+@deprecate(PhyloTypes, PhyloBranches)
 
+end
+
+using .Phylogenetics
