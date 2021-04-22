@@ -1,5 +1,8 @@
 # NEWS
 
+- v0.5.4
+  - Move to EcoJulia
+  - Update compats
 - v0.5.3
   - Update docs and automation
 - v0.5.2
