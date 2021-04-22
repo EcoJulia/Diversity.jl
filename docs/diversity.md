@@ -28,8 +28,18 @@ be updated too). Older interfaces from v0.2 have been removed in v0.4.
 
 ## Install
 
-*Diversity* is in `METADATA` and can be installed via `Pkg.add("Diversity")`.
+The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
 
+```julia
+(@v1.6) pkg> add Diversity
+    Resolving package versions...
+    Updating `~/.julia/environments/v1.6/Project.toml`
+  [d3d5718d] + Diversity v0.5.5
+    Updating `~/.julia/environments/v1.6/Manifest.toml`
+  [d3d5718d] + Diversity v0.5.5
+  
+(@v1.6) pkg>
+```
 ## Usage
 
 ### Diversity

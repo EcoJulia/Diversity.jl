@@ -2,7 +2,7 @@
 #   http://www.mkdocs.org/user-guide/configuration/
 
 site_name:        Diversity.jl
-repo_url:         https://github.com/richardreeve/Diversity.jl
+repo_url:         https://github.com/EcoJulia/Diversity.jl
 site_description: Package for measuring and partitioning diversity
 site_author:      Richard Reeve
 
