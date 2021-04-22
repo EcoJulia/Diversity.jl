@@ -26,11 +26,10 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-- Introduction:      index.md
-- Phylogenetics:     phylogenetics.md
+- Introduction:          index.md
 - Submodules:
-    - API:           api.md
-- Other related measures:
-    - Ecology:       ecology.md
-    - Hill:          hill.md
-    - Jost:          jost.md
+    - Ecology:           ecology.md
+    - Hill:              hill.md
+    - Jost:              jost.md
+    - Phylogenetics:     phylogenetics.md
+- Programming Interface: api.md
