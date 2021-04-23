@@ -3,6 +3,7 @@ using Test
 
 using Phylo
 using Diversity
+using Diversity.Phylogenetics
 
 @testset "Phylo" begin
     species = ["Dog", "Human", "Cat"]
