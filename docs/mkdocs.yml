@@ -2,7 +2,7 @@
 #   http://www.mkdocs.org/user-guide/configuration/
 
 site_name:        Diversity.jl
-repo_url:         https://github.com/richardreeve/Diversity.jl
+repo_url:         https://github.com/EcoJulia/Diversity.jl
 site_description: Package for measuring and partitioning diversity
 site_author:      Richard Reeve
 
@@ -26,11 +26,10 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-- Introduction:      index.md
-- Phylogenetics:     phylogenetics.md
+- Introduction:          index.md
 - Submodules:
-    - API:           api.md
-- Other related measures:
-    - Ecology:       ecology.md
-    - Hill:          hill.md
-    - Jost:          jost.md
+    - Ecology:           ecology.md
+    - Hill:              hill.md
+    - Jost:              jost.md
+    - Phylogenetics:     phylogenetics.md
+- Programming Interface: api.md

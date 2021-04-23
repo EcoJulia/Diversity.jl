@@ -1,5 +1,7 @@
 # NEWS
 
+- v0.5.5
+  - Update phylogenetics code and docs
 - v0.5.4
   - Move to EcoJulia
   - Update compats

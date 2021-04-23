@@ -28,8 +28,18 @@ be updated too). Older interfaces from v0.2 have been removed in v0.4.
 
 ## Install
 
-*Diversity* is in `METADATA` and can be installed via `Pkg.add("Diversity")`.
+The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
 
+```julia
+(@v1.6) pkg> add Diversity
+    Resolving package versions...
+    Updating `~/.julia/environments/v1.6/Project.toml`
+  [d3d5718d] + Diversity v0.5.5
+    Updating `~/.julia/environments/v1.6/Manifest.toml`
+  [d3d5718d] + Diversity v0.5.5
+  
+(@v1.6) pkg>
+```
 ## Usage
 
 ### Diversity
@@ -128,23 +138,22 @@ generate trees to incorporate into the diversity code:
 
 ```julia-repl
 julia> using Diversity, Phylo, Diversity.Phylogenetics
-Creating Diversity to Phylo interface...
 
 julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
 
 julia> nt = rand(Nonultrametric(4))
-NamedTree phylogenetic tree with 7 nodes and 6 branches
-Leaf names:
-String["tip 1", "tip 2", "tip 3", "tip 4"]
+RootedTree with 4 tips, 7 nodes and 6 branches.
+Leaf names are tip 4, tip 2, tip 1 and tip 3
 
-julia> metaphylo = Metacommunity(communities, PhyloTypes(nt));
+julia> metaphylo = Metacommunity(communities, PhyloBranches(nt));
 
 julia> raw_meta_rho(metaphylo, [1, 2])
-2×8 DataFrames.DataFrame
-│ Row │ div_type     │ measure │ q │ type_level │ type_name │ partition_level │ partition_name │ diversity │
-├─────┼──────────────┼─────────┼───┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
-│ 1   │ Phylogenetic │ RawRho  │ 1 │ types      │           │ metacommunity   │       │ 1.80666   │
-│ 2   │ Phylogenetic │ RawRho  │ 2 │ types      │           │ metacommunity   │       │ 1.7056    │
+2×8 DataFrame
+│ Row │ div_type            │ measure │ q     │ type_level │ type_name │ partition_level │ partition_name │ diversity │
+│     │ String              │ String  │ Int64 │ String     │ String    │ String          │ String         │ Float64   │
+├─────┼─────────────────────┼─────────┼───────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ Phylogenetic Branch │ RawRho  │ 1     │ types      │           │ metacommunity   │                │ 1.66125   │
+│ 2   │ Phylogenetic Branch │ RawRho  │ 2     │ types      │           │ metacommunity   │                │ 1.52575   │
 ```
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg

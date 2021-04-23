@@ -6,6 +6,7 @@ using Diversity
 using Diversity.ShortNames
 using DataFrames
 using Phylo
+using Diversity.Phylogenetics
 using RCall
 
 # Create a temporary directory to work in
@@ -38,12 +39,6 @@ if !skipR && !rcopy(R"require(rdiversity)")
 end
 
 if !skipR
-    R"""
-        if (!exists("similarity")) { # Handle changed rdiversity v1.3 interface
-            similarity <- function(z) z
-            phy2branch <- function(tree, pops) tree
-        }
-    """
     # Run diversity comparisons on increasing numbers of types and subcommunities
     @testset "RCall - testing boydorr/rdiversity" begin
         @testset "Random rdiversity $i" for i in 1:20

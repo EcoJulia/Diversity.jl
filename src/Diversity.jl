@@ -1,7 +1,9 @@
 __precompile__()
 
 """
-The main **Diversity** module provides basic numbers-equivalent
+    Diversity package
+
+The main **Diversity** package provides basic numbers-equivalent
 diversity measures (described in
 [Hill, 1973](http://www.jstor.org/stable/1934352)),
 similarity-sensitive diversity measures (generalised from Hill, and
@@ -22,7 +24,9 @@ extract any diversity measure at a series of scales.
 module Diversity
 
 """
-The Diversity.API submodule should be `import`ed if you want to create a
+    Diversity.API submodule
+
+The `Diversity.API` submodule should be `import`ed if you want to create a
 new type, partition or metacommunity subtype. Otherwise it can be
 ignored.
 """
@@ -113,21 +117,9 @@ export getName, getASCIIName, getFullName
 
 # Does PhyloTypes need to exist already?
 using Requires
-@static if VERSION < v"0.7.0-"
-    @require Phylo begin
-        println("Creating Diversity to Phylo interface...")
+function __init__()
+    @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
         include("Phylogenetics.jl")
-        export AbstractPhyloTypes, PhyloBranches, PhyloDistances
-        @deprecate(PhyloTypes, PhyloBranches)
-    end
-else
-    function __init__()
-        @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
-            println("Creating Diversity to Phylo interface...")
-            include("Phylogenetics.jl")
-            export AbstractPhyloTypes, PhyloBranches, PhyloDistances
-            @deprecate(PhyloTypes, PhyloBranches)
-        end
     end
 end
 
@@ -139,6 +131,8 @@ export norm_meta_alpha, raw_meta_alpha, norm_meta_beta, raw_meta_beta
 export norm_meta_rho, raw_meta_rho, meta_gamma
 
 """
+    Diversity.Ecology submodule
+
 The **Diversity.Ecology** module replicates old ecological
 diversity measures and generalised versions of them that relate to our
 general measures of alpha, beta and gamma diversity at subcommunity
@@ -159,6 +153,8 @@ export generalisedjaccard, jaccard
 end # sub-module Ecology
 
 """
+    Diversity.Jost submodule
+
 Lou Jost's
 [diversity](http://dx.doi.org/10.1111/j.2006.0030-1299.14714.x)
 [measures](http://www.esajournals.org/doi/abs/10.1890/06-1736.1) are
@@ -174,6 +170,8 @@ export jostbeta, jostalpha
 end # sub-module Jost
 
 """
+    Diversity.Hill submodule
+
 [Hill numbers](http://www.jstor.org/stable/1934352) are found in the
 **Diversity.Hill** package.
 """

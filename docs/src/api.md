@@ -8,7 +8,7 @@ for new `AbstractTypes`, `AbstractPartition` and
 
 Providing additional code to extend the functionality of the system is simple:
 
-```
+```julia
 using Diversity.Phylogenetics
 importall Diversity.API
 
