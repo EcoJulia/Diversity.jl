@@ -37,9 +37,9 @@ The package is registered in the `General` registry on v1.x and so can be instal
 (@v1.6) pkg> add Diversity
     Resolving package versions...
     Updating `~/.julia/environments/v1.6/Project.toml`
-  [d3d5718d] + Diversity v0.5.3
+  [d3d5718d] + Diversity v0.5.5
     Updating `~/.julia/environments/v1.6/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.3
+  [d3d5718d] + Diversity v0.5.5
   
 (@v1.6) pkg>
 ```
