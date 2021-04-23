@@ -1,5 +1,7 @@
 using Documenter
 using Diversity
+using Phylo
+using Diversity.Phylogenetics
 
 makedocs(modules = [Diversity,
                     Diversity.Ecology, Diversity.Jost,
