@@ -3,7 +3,6 @@ using Test
 
 using Phylo
 using Diversity
-using Diversity.Phylogenetics
 
 @testset "Iterators" begin
     species = 10

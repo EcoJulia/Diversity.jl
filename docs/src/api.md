@@ -9,8 +9,9 @@ for new `AbstractTypes`, `AbstractPartition` and
 Providing additional code to extend the functionality of the system is simple:
 
 ```julia
-using Diversity.Phylogenetics
-importall Diversity.API
+using Diversity
+using Phylo
+import Diversity.API: _counttypes
 
 function _counttypes(phy::Phylogeny)
     return phy.nancestral

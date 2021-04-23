@@ -1,11 +1,10 @@
 using Documenter
 using Diversity
 using Phylo
-using Diversity.Phylogenetics
 
 makedocs(modules = [Diversity,
                     Diversity.Ecology, Diversity.Jost,
-                    Diversity.Hill, Diversity.Phylogenetics,
+                    Diversity.Hill,
                     Diversity.ShortNames, Diversity.API],
          sitename = "Diversity.jl")
 

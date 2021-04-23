@@ -6,7 +6,6 @@ using Diversity
 using Diversity.ShortNames
 using DataFrames
 using Phylo
-using Diversity.Phylogenetics
 using RCall
 
 # Create a temporary directory to work in

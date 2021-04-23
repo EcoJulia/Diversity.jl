@@ -1,11 +1,3 @@
-"""
-    Diversity.Phylogenetics submodule
-
-The `Diversity.Phylogenetics` module provides phylogenetic diversity measures,
-by allowing you to convert a phylogenetic tree from the `Phylo` package into
-the types in a metacommunity.
-"""
-module Phylogenetics
 using ..Phylo
 using Diversity
 using Diversity.API
@@ -17,14 +9,16 @@ abstract type AbstractPhyloTypes{Tree <: AbstractTree} <:
 end
 
 import Diversity.API: _addedoutputcols
-_addedoutputcols(::AbstractPhyloTypes{TS}) where
-    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
+function _addedoutputcols(::AbstractPhyloTypes{TS}) where
+    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}}
     Dict{Symbol, Type}(:treename => LABEL)
+end
 
 import Diversity.API: _getaddedoutput
-_getaddedoutput(pt::AbstractPhyloTypes{TS}) where
-    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}} =
+function _getaddedoutput(pt::AbstractPhyloTypes{TS}) where
+    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}}
     Dict{Symbol, LABEL}(:treename => first(treenameiter(pt.tree)))
+end
 
 struct PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
     tree::Tree
@@ -130,10 +124,3 @@ end
 
 import Diversity.API: _getdiversityname
 _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
-
-export PhyloBranches#, PhyloDistances
-@deprecate(PhyloTypes, PhyloBranches)
-
-end
-
-using .Phylogenetics

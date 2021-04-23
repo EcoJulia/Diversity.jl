@@ -1,6 +1,6 @@
-# Diversity.Phylogenetics
+# Phylogenetic diversity
 
-In the **Diversity** module's **Diversity.Phylogenetics** code,
+When both `Diversity` and `Phylo` are loaded,
 we generate Phylogenetic diversity measures, based on Faith PD
 and extended by Chao.
 
@@ -9,12 +9,12 @@ and extended by Chao.
 Using the functionality in the package is simple:
 
 - Create a tree (using our Phylo package)
-- Create a PhyloTypes (AbstractTypes subtype) object from it
+- Create a PhyloBranches (AbstractTypes subtype) object from it
 - Create a Metacommunity from that
 - Calculate diversity!
 
 ```julia-repl
-julia> using Diversity, Phylo, Diversity.Phylogenetics
+julia> using Diversity, Phylo
 
 julia> species = ["Dog", "Cat", "Human", "Potato"];
 
@@ -59,11 +59,6 @@ julia> meta_gamma(metaphylo, 0)
 ```
 
 ```@contents
-```
-
-```@autodocs
-Modules = [Diversity.Phylogenetics]
-Private = false
 ```
 
 ```@index

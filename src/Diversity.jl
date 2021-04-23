@@ -93,8 +93,15 @@ export RawAlpha, NormalisedAlpha
 export RawBeta, NormalisedBeta, RawRho, NormalisedRho
 export Gamma
 
-## We do not directly export ᾱ, α, β̄, β, ρ̄, ρ, γ as they're too short
-## only via Diversity.ShortNames
+"""
+    Diversity.ShortNames submodule
+
+We do not directly export `ᾱ`, `α`, `β̄`, `β`, `ρ̄`, `ρ`, `γ` as
+they're too short. `γ` actually can't be exported like this -
+it'll always just be `Shortnames.γ`, so we export `Γ` instead.
+
+All of these can only be accessed via `Diversity.ShortNames`.
+"""
 module ShortNames
 using Diversity
 
@@ -107,7 +114,6 @@ const ρ̄ = NormalisedRho
 const γ = Gamma
 
 export α, ᾱ, β, β̄, ρ, ρ̄
-# γ actually can't be exported like this - it'll always just be Shortnames.γ, so we export Γ instead
 const Γ = Gamma
 export Γ
 
@@ -115,11 +121,13 @@ end
 
 export getName, getASCIIName, getFullName
 
-# Does PhyloTypes need to exist already?
+# Does PhyloBranches need to exist already?
 using Requires
 function __init__()
     @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" begin
         include("Phylogenetics.jl")
+        export AbstractPhyloTypes, PhyloBranches, PhyloDistances
+        @deprecate(PhyloTypes, PhyloBranches)
     end
 end
 
