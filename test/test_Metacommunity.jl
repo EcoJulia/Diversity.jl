@@ -69,11 +69,6 @@ g2 = GeneralTypes(Matrix(1.0I, 2, 2))
     @test !ismissing(meta.ordinariness)
     @test getabundance(Metacommunity(ab3, g2, sc)) ≈
         getabundance(Metacommunity(abf, g2, sc))
-    if VERSION < v"0.7.0-"
-        @test_warn "not normalised" Metacommunity(ab3 * 1.0, Matrix(1.0I, 2, 2))
-        @test_warn "not normalised" Metacommunity([1.0, 2.0], Matrix(1.0I, 2, 2))
-        @test_warn "not normalised" Metacommunity(ab3 * 1.0, meta2)
-    end
     @test_nowarn Metacommunity([0.5, 0.5], Matrix(1.0I, 2, 2))
     @test_throws ErrorException Metacommunity(abf, ms, sc)
     @test_throws DimensionMismatch Metacommunity([1, 2, 3]/6, meta2)

@@ -25,29 +25,12 @@ function TypeIterator(meta::M) where M <: AbstractMetacommunity
     return TypeIterator(getabundance, meta)
 end
 
-if VERSION < v"0.7.0-"
-import Base.start, Base.next, Base.done
-function start(ti::TypeIterator)
-    return 1
-end
-
-function next(ti::TypeIterator, state)
-    return (ti.viewfn(ti.metacommunity, state), state + 1)
-end
-
-function done(ti::TypeIterator, state)
-    return state > counttypes(ti.metacommunity)
-end
-
-else
 import Base.iterate
 function iterate(ti::TypeIterator, state = 1)
     if state > counttypes(ti.metacommunity)
         return nothing
     end
     return ti.viewfn(ti.metacommunity, state), state + 1
-end
-
 end
 
 function IteratorSize(ti::Type{TypeIterator})
@@ -89,30 +72,12 @@ function SubcommunityIterator(meta::M) where M <: AbstractMetacommunity
     return SubcommunityIterator(getabundance, meta)
 end
 
-if VERSION < v"0.7.0-"
-function start(si::SubcommunityIterator)
-    return 1
-end
-
-function next(si::SubcommunityIterator, state)
-    return (si.viewfn(si.metacommunity, state), state + 1)
-end
-
-function done(si::SubcommunityIterator, state)
-    return state > countsubcommunities(si.metacommunity)
-end
-
-else
-
 function iterate(si::SubcommunityIterator, state = 1)
     if state > countsubcommunities(si.metacommunity)
         return nothing
     end
     return si.viewfn(si.metacommunity, state), state + 1
 end
-
-end
-
 
 function IteratorSize(si::Type{SubcommunityIterator})
     return HasLength()
