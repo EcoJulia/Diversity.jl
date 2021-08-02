@@ -62,11 +62,6 @@ end
     for i in 1:size(manyweights, 2)
         @test qD(manyweights[:,i], [0]) ≈ numspecies * ones((1, size(manyweights[:,i], 2)))
     end
-
-    # Diversities are not normalised, so generate an error
-    if VERSION < v"0.7.0-"
-        @test_warn "Abundances not normalised to 1, correcting..." qD([0.1, 0.1], 1)
-    end
 end
 
 @testset "qDZ" begin
@@ -79,11 +74,6 @@ end
         @test qDZ(manyweights[:,i], [0, 1, 2, Inf],
                   ones((size(manyweights[:,i], 1),
                         size(manyweights[:,i], 1)))) ≈ ones((4, size(manyweights[:,i], 2)))
-    end
-
-    if VERSION < v"0.7.0-"
-        # Diversities are not normalised, so generate an warning
-        @test_warn "Abundances not normalised to 1, correcting..." qDZ([0.1, 0.1], 1)
     end
 end
 
