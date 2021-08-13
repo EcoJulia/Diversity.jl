@@ -96,7 +96,7 @@ export RawBeta, NormalisedBeta, RawRho, NormalisedRho
 export Gamma
 
 include("Genetics.jl")
-export genDistance
+export geneDistance
 
 """
     Diversity.ShortNames submodule
