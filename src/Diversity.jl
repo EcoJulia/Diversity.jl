@@ -18,7 +18,7 @@ not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. ```NormalisedAlpha()```), which are.
 We also provide functions to calculate appropriate
 ```subcommunityDiversity()``` and ```metacommunityDiversity()```
-values for each measure, a general ```diversity()``` function for
+values for each measure, and a general ```diversity()``` function to
 extract any diversity measure at a series of scales.
 """
 module Diversity
