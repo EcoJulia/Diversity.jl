@@ -15,7 +15,7 @@ function _hammingDistance(geno1, geno2)
     max(sum(geno1 .∉ Ref(geno2)), sum(geno2 .∉ Ref(geno1)))
 end
 
-function genDistance(dat::PopData) 
+function geneDistance(dat::PopData) 
     # Initialise objects
     matrix_obj = PopGen.loci_matrix(dat)
     N = size(matrix_obj, 1)
