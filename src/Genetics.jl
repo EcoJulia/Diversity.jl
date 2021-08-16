@@ -30,7 +30,7 @@ function geneDistance(dat::PopData)
     return LinearAlgebra.Symmetric(output)
 end
 
-function genDistance(dat::AbstractVector) 
+function geneDistance(dat::AbstractVector) 
     # Initialise objects
     N = length(dat)
     output = zeros(Int64, N, N)
