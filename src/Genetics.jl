@@ -2,16 +2,22 @@ using Diversity
 using Diversity.API
 
 using PopGen
-using StringDistances
-using LinearAlgebra
+import StringDistances
+import LinearAlgebra
+import BioSequences
 
-using FASTX
-
-abstract type AbstractGeneticTypes{PopData} <: 
+abstract type AbstractGenetic <:
     Diversity.API.AbstractTypes
 end
 
-struct GeneticType{PopData} <: AbstractGeneticTypes{PopData}
+struct GeneticFASTA{GeneticData} <: Diversity.API.AbstractTypes where 
+    {GeneticData <: Vector{BioSequences.AminoAcidSequence}} 
+    dat::GeneticData
+    ntypes::Int64
+    Zmatrix::Matrix{Float64}
+end
+
+struct GeneticVCF{PopData} <: Diversity.API.AbstractTypes
     dat::PopData
     ntypes::Int64
     Zmatrix::Matrix{Float64}
@@ -39,16 +45,17 @@ function GeneticType(dat::PopData)
         output[a, b] = sum(_hammingDistance.((@view matrix_obj[a, :]),
                                              (@view matrix_obj[b, :])))
     end
-    dist = Symmetric(output)
+    dist = LinearAlgebra.Symmetric(output)
     dist /= maximum(dist)
 
     # Calculate similarity matrix
     Zmatrix = 1 .- dist
 
-    return GeneticType{PopData}(dat, ntypes, Zmatrix)
+    return GeneticVCF{PopData}(dat, ntypes, Zmatrix)
 end
 
-function GeneticType(dat::Vector) # Vector{BioSequences.AminoAcidSequence}
+function GeneticType(dat::GeneticData) where 
+    {GeneticData <: Vector{BioSequences.AminoAcidSequence}} 
     # Initialise objects
     ntypes = length(dat)
     output = zeros(Int64, ntypes, ntypes)
@@ -56,13 +63,13 @@ function GeneticType(dat::Vector) # Vector{BioSequences.AminoAcidSequence}
 
     # Calculate distance matrix
     for (a, b) in indices
-        output[a, b] = evaluate(Hamming(), dat[a], dat[b])
+        output[a, b] = StringDistances.evaluate(StringDistances.Hamming(), dat[a], dat[b])
     end
-    dist = Symmetric(output)
+    dist = LinearAlgebra.Symmetric(output)
     dist /= maximum(dist)
 
     # Calculate similarity matrix
     Zmatrix = 1 .- dist
 
-    return GeneticType{BioSequences.AminoAcidSequence}(dat, ntypes, Zmatrix)
+    return GeneticFASTA{GeneticData}(dat, ntypes, Zmatrix)
 end
