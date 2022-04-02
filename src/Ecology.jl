@@ -271,3 +271,39 @@ function jaccard(asm::EcoBase.AbstractAssemblage)
     hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return jaccard(occurrences(asm))
 end
+
+"""
+    
+"""
+
+function generalisedpielou end
+generalisedpielou(level::DiversityLevel,
+                   proportions::AbstractArray,
+                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
+    generalisedpielou(level, proportions, GeneralTypes(Z))
+
+function generalisedpielou(level::DiversityLevel,
+                            proportions::AbstractArray,
+                            sim::AbstractTypes)
+    if (level == subcommunityDiversity)
+        dm = ᾱ
+    elseif (level == metacommunityDiversity)
+        dm = Gamma
+    else
+        error("Can't calculate richness for $level")
+    end
+    ns = sum(x->x>0, proportions, dims=2) 
+    gp = level(dm(Metacommunity(proportions, sim)), 1)
+    gp[!,:diversity] .= log.(gp[!,:diversity])./log.(ns)
+    gp[!,:measure] .= "Pielou"
+    select!(gp, Not(:q))
+    return gp
+end
+
+pielou(proportions::AbstractVecOrMat) =
+    generalisedpielou(subcommunityDiversity, proportions,
+                       UniqueTypes(size(proportions, 1)))
+function pielou(asm::EcoBase.AbstractAssemblage)
+    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    return pielou(occurrences(asm))
+end
