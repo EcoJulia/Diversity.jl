@@ -1,6 +1,6 @@
 # Diversity.Ecology
 
-n the **Diversity.Ecology** submodule, we replicate old ecological
+In the **Diversity.Ecology** submodule, we replicate old ecological
 diversity measures and generalised versions of them that relate to our
 general measures of alpha, beta and gamma diversity at subcommunity
 and ecosystem measures. The generalisations of the richness, Shannon
@@ -18,7 +18,7 @@ julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];
 
-julia> community /= sum(community);
+julia> community /= sum(community); #Convert to measurements to proportions
 
 julia> diversity = simpson(community)
 1×7 DataFrame

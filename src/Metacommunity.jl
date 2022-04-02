@@ -34,6 +34,18 @@ Metacommunity(abundances::AbstractArray,
   getordinariness!(::Metacommunity), which will populate the cache if
   it has not yet been calculated.
 
+# Examples:
+
+```
+communitydata = [10, 20, 30, 20, 0; #5 species (columns) and 6 sites (rows)
+                10, 0, 50, 80, 10;
+                60, 10, 90, 0, 0; 
+                10, 10, 10, 10, 10;
+                70, 70, 70, 70, 70;
+                10, 0, 0, 90, 0]
+meta = Metacommunity(communitydata) #No partitioning
+partitions = []
+metapart = Metacommunity(communitydata, partitions) 
 """
 mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
     Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}
