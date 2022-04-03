@@ -273,7 +273,27 @@ function jaccard(asm::EcoBase.AbstractAssemblage)
 end
 
 """
-    
+generalisedpielou(proportions::AbstractArray, qs, Z::AbstractMatrix)
+generalisedpielou(proportions::AbstractArray, qs, sim::AbstractTypes)
+
+Calculates a generalisation of Pielou's evenness for columns
+representing the counts of two subcommunities. Values range from 
+zero to one, with one representing complete evenness within the 
+community. Since this is calculated as H / Hmax, and is just a proportion,
+values remain unchanged regardless of the value(s) of q supplied. 
+
+# Arguments:
+
+- `proportions`: population proportions
+
+- `qs`: single number or vector of values of parameter q
+
+- `Z`: similarity matrix or
+- `sim`: instance of AbstractTypes
+
+# Returns:
+
+- Pielou's evenness metric
 """
 
 function generalisedpielou end
@@ -292,13 +312,48 @@ function generalisedpielou(level::DiversityLevel,
     else
         error("Can't calculate richness for $level")
     end
-    ns = sum(x->x>0, proportions, dims=2) 
+    ns = vec(sum(x->x>0, proportions, dims=1))
     gp = level(dm(Metacommunity(proportions, sim)), 1)
     gp[!,:diversity] .= log.(gp[!,:diversity])./log.(ns)
     gp[!,:measure] .= "Pielou"
     select!(gp, Not(:q))
+    #temp1 = log.(gp[!,:diversity])
+    #print(typeof(temp1))
+    #temp2 = log.(ns)
+    #print(typeof(temp2))
+    #return temp1,temp2
     return gp
 end
+
+"""
+    pielou(proportions::AbstractMatrix)
+
+Calculates Pielou's evenness of a series of
+columns representing independent subcommunity counts.
+
+# Arguments:
+
+- `proportions`: population proportions
+
+# Returns:
+
+- evenness of subcommunities
+
+# Example:
+```
+communitydata = [10 20 30 20 0; #5 subcommunities (columns) and 6 species (rows)
+                10 0 50 80 10;
+                60 10 90 0 0; 
+                10 10 10 10 10;
+                70 70 70 70 70;
+                10 0 0 90 0]
+
+pielou(communitydata)
+```
+
+"""
+
+
 
 pielou(proportions::AbstractVecOrMat) =
     generalisedpielou(subcommunityDiversity, proportions,
