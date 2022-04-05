@@ -336,12 +336,12 @@ columns representing independent subcommunity counts.
 
 #### Example:
 ```
-communitydata = [10 20 30 20 0; #5 subcommunities (columns) and 6 species (rows)
+communitydata = [10 20 30 20 0; #5 subcommunities (cols) and 6 species (rows)
                 10 0 50 80 10;
                 60 10 90 0 0; 
                 10 10 10 10 10;
                 70 70 70 70 70;
-                10 0 0 90 0]'
+                10 0 0 90 0]
 
 pielou(communitydata)
 ```
