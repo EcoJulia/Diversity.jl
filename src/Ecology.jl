@@ -184,11 +184,11 @@ end
 Calculates Simpson's index (1 / diversity at q = 2) of a series of
 columns representing independent subcommunity counts.
 
-# Arguments:
+#### Arguments:
 
 - `proportions`: population proportions
 
-# Returns:
+#### Returns:
 
 - concentrations of subcommunities
 """
@@ -212,7 +212,7 @@ for the species. This gives a measure of the distinctness of the
 subcommunities, though we believe that beta and normalised beta have
 better properties.
 
-# Arguments:
+#### Arguments:
 
 - `proportions`: population proportions
 
@@ -221,7 +221,7 @@ better properties.
 - `Z`: similarity matrix or
 - `sim`: instance of AbstractTypes
 
-# Returns:
+#### Returns:
 
 - Jaccard-related distinctivess measures
 """
@@ -256,11 +256,11 @@ Calculates Jaccard index (Jaccard similarity coefficient) of two
 columns representing independent subcommunity counts, which is
 normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
 
-# Arguments:
+#### Arguments:
 
 - `proportions`: population proportions
 
-# Returns:
+#### Returns:
 
 - the Jaccard index
 """
@@ -273,8 +273,10 @@ function jaccard(asm::EcoBase.AbstractAssemblage)
 end
 
 """
-generalisedpielou(proportions::AbstractArray, qs, Z::AbstractMatrix)
-generalisedpielou(proportions::AbstractArray, qs, sim::AbstractTypes)
+generalisedpielou::DiversityLevel, proportions::AbstractArray,
+                       Z::AbstractMatrix)
+generalisedpielou(level::DiversityLevel, proportions::AbstractArray,
+                       sim::AbstractTypes)
 
 Calculates a generalisation of Pielou's evenness for columns
 representing the counts of two subcommunities. Values range from 
@@ -282,20 +284,17 @@ zero to one, with one representing complete evenness within the
 community. Since this is calculated as H / Hmax, and is just a proportion,
 values remain unchanged regardless of the value(s) of q supplied. 
 
-# Arguments:
+#### Arguments:
+- `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
 
 - `proportions`: population proportions
-
-- `qs`: single number or vector of values of parameter q
 
 - `Z`: similarity matrix or
 - `sim`: instance of AbstractTypes
 
-# Returns:
-
-- Pielou's evenness metric
+#### Returns:
+- Pielou's evenness metric (at metacommunity level) or metrics (of subcommunities)
 """
-
 function generalisedpielou end
 generalisedpielou(level::DiversityLevel,
                    proportions::AbstractArray,
@@ -307,21 +306,17 @@ function generalisedpielou(level::DiversityLevel,
                             sim::AbstractTypes)
     if (level == subcommunityDiversity)
         dm = ᾱ
+        ns = vec(sum(x->x>0, proportions, dims=1))
     elseif (level == metacommunityDiversity)
         dm = Gamma
+        ns = sum(x->x>0, proportions)
     else
         error("Can't calculate richness for $level")
     end
-    ns = vec(sum(x->x>0, proportions, dims=1))
     gp = level(dm(Metacommunity(proportions, sim)), 1)
     gp[!,:diversity] .= log.(gp[!,:diversity])./log.(ns)
     gp[!,:measure] .= "Pielou"
     select!(gp, Not(:q))
-    #temp1 = log.(gp[!,:diversity])
-    #print(typeof(temp1))
-    #temp2 = log.(ns)
-    #print(typeof(temp2))
-    #return temp1,temp2
     return gp
 end
 
@@ -331,30 +326,26 @@ end
 Calculates Pielou's evenness of a series of
 columns representing independent subcommunity counts.
 
-# Arguments:
+#### Arguments:
 
 - `proportions`: population proportions
 
-# Returns:
+#### Returns:
 
 - evenness of subcommunities
 
-# Example:
+#### Example:
 ```
 communitydata = [10 20 30 20 0; #5 subcommunities (columns) and 6 species (rows)
                 10 0 50 80 10;
                 60 10 90 0 0; 
                 10 10 10 10 10;
                 70 70 70 70 70;
-                10 0 0 90 0]
+                10 0 0 90 0]'
 
 pielou(communitydata)
 ```
-
 """
-
-
-
 pielou(proportions::AbstractVecOrMat) =
     generalisedpielou(subcommunityDiversity, proportions,
                        UniqueTypes(size(proportions, 1)))
