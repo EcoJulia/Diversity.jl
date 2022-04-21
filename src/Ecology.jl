@@ -279,7 +279,7 @@ generalisedpielou(level::DiversityLevel, proportions::AbstractArray,
                        sim::AbstractTypes)
 
 Calculates a generalisation of Pielou's evenness for columns
-representing the counts of two subcommunities. Values range from 
+representing the counts or proportions of subcommunities. Values range from 
 zero to one, with one representing complete evenness within the 
 community. Since this is calculated as H / Hmax, and is just a proportion,
 values remain unchanged regardless of the value(s) of q supplied. 
@@ -336,12 +336,12 @@ columns representing independent subcommunity counts.
 
 #### Example:
 ```
-communitymat = [10 20 30 20 0; #5 species (columns) and 6 sites (rows)
+communitymat = [10 20 30 20 0; #5 sites/subcommunities (columns) and 6 species (rows)
                 10 0 50 80 10;
                 60 10 90 0 0; 
                 10 10 10 10 10;
                 70 70 70 70 70;
-                10 0 0 90 0]'
+                10 0 0 90 0]
 
 pielou(communitymat)
 ```

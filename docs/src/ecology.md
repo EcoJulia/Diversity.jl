@@ -18,7 +18,7 @@ julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];
 
-julia> community /= sum(community); #Convert to measurements to proportions
+julia> community /= sum(community); #Convert counts to proportions
 
 julia> diversity = simpson(community)
 1×7 DataFrame
@@ -65,31 +65,30 @@ julia> pielou(community)
 ─────┼──────────────────────────────────────────────────────────────────────────────────────
    1 │ Unique    Pielou   types                  subcommunity     1                0.729847
 
-julia> communitymat = [10 20 30 20 0; #5 species (columns) and 6 sites (rows)
+julia> communitymat = [10 20 30 20 0; #5 sites/subcommunities (columns) and 6 species (rows)
                        10 0 50 80 10;
                        60 10 90 0 0; 
                        10 10 10 10 10;
                        70 70 70 70 70;
-                       10 0 0 90 0]'
+                       10 0 0 90 0]
 
 julia> generalisedpielou(subcommunityDiversity, communitymat)
-6×7 DataFrame
+5×7 DataFrame
  Row │ div_type     measure  type_level  type_name  partition_level  partition_name  diversity 
      │ String       String   String      String     String           String          Float64   
 ─────┼─────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Arbitrary Z  Pielou   types                  subcommunity     1                0.95282
-   2 │ Arbitrary Z  Pielou   types                  subcommunity     2                0.766457
-   3 │ Arbitrary Z  Pielou   types                  subcommunity     3                0.78712
-   4 │ Arbitrary Z  Pielou   types                  subcommunity     4                1.0
-   5 │ Arbitrary Z  Pielou   types                  subcommunity     5                1.0
-   6 │ Arbitrary Z  Pielou   types                  subcommunity     6                0.468996
+   1 │ Arbitrary Z  Pielou   types                  subcommunity     1                0.781115
+   2 │ Arbitrary Z  Pielou   types                  subcommunity     2                0.745557
+   3 │ Arbitrary Z  Pielou   types                  subcommunity     3                0.888073
+   4 │ Arbitrary Z  Pielou   types                  subcommunity     4                0.864562
+   5 │ Arbitrary Z  Pielou   types                  subcommunity     5                0.622366
 
 julia> generalisedpielou(metacommunityDiversity, communitymat)
 1×7 DataFrame
  Row │ div_type     measure  type_level  type_name  partition_level  partition_name  diversity 
      │ String       String   String      String     String           String          Float64   
 ─────┼─────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Arbitrary Z  Pielou   types                  metacommunity                     0.486322
+   1 │ Arbitrary Z  Pielou   types                  metacommunity                     0.510146
 
 ```
 
