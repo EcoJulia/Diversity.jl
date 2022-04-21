@@ -18,7 +18,7 @@ julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];
 
-julia> community /= sum(community); #Convert to measurements to proportions
+julia> community /= sum(community); # Convert counts to proportions
 
 julia> diversity = simpson(community)
 1×7 DataFrame
