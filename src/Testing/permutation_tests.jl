@@ -84,3 +84,24 @@ function permutest(r_1,r_2 ,F,n_perm = 1000)
 end
 
 
+get_tri(x) = [x[i,j] for i in 2:size(x)[1] for j in 1:i]
+function mantel(x_1,x_2, n_perm = 1000)
+    """
+    A permutation based test of the correlation between two matrices. Given two dissimilarity/distance matrices of equal size, calculates the P-value as
+    the probability of obtaining the same or greater correlation coefficient after permuting one of the matrices.
+    """
+    x = get_tri(x_1)
+    y = get_tri(x_2)
+    perm_c = Vector{Float64}(undef,n_perm)
+
+    c = cor(x,y)
+    @inbounds for i in 1:n_perm
+        shuffle!(y)
+        perm_c[i] = cor(x,y)
+    end
+    
+    sum(perm_c .> c)/n_perm
+end
+
+
+
