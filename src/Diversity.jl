@@ -190,6 +190,17 @@ export hillnumber
 
 end # sub-module Hill
 
+"""
+    Diversity.Testing
+
+Hypothesis tests for distance matrices.
+"""
+module Testing
+
+include("Testing.jl")
+export dispersion, permutest, mantel
+end
+
 # Path into package
 path(path...; dir::String = "test") = joinpath(@__DIR__, "..", dir, path...)
 
