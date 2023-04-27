@@ -58,7 +58,7 @@ if !skipR
             qs = sort([rand(7)*10..., 0, 1, Inf])
             names = ["symmetric", "asymmetric"]
             Zs = [Zsym, Zasym]
-            @testset "Z matrix - $(names[k])" for k in 1:length(Zs)
+            @testset "Z matrix - $(names[k])" for k in axes(Zs, 1)
                 Z = Zs[k]
                 meta = Metacommunity(pops, Z)
                 diversities = Dict(:raw_alpha  => α(meta),

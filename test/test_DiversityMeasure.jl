@@ -32,7 +32,7 @@ nab = NormalisedAlpha(meta2)
     fulls = ["raw alpha diversity", "normalised alpha diversity",
              "distinctiveness", "effective number of subcommunities",
              "redundancy", "representativeness", "gamma diversity"]
-    for i in 1:length(diversities)
+    for i in axes(diversities, 1)
         @test diversities[i] == shortds[i]
         @test getName(diversities[i](meta)) == chars[i]
         @test getASCIIName(diversities[i](meta2)) == asciis[i]
