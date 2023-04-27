@@ -46,7 +46,7 @@ The package is registered in the `General` registry on v1.x and so can be instal
 
 ## Project Status
 
-The package is confirmed to work against the current LTS Julia v1.4 release
+The package is confirmed to work against the current LTS Julia v1.6 release
 and the latest release on Linux, macOS, and Windows. It is also tested
 against nightly.
 
