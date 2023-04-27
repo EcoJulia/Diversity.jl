@@ -6,10 +6,13 @@ on:
       - dev
     tags:
       - 'v*'
+  pull_request:
   workflow_dispatch:
 
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,7 +27,7 @@ jobs:
             import Pkg
             Pkg.develop(Pkg.PackageSpec(path=pwd()))
             Pkg.instantiate()
-            Pkg.add("Phylo")
+            Pkg.add("Diversity")
             Pkg.add("Documenter")
         shell: julia --project=docs/ --color=yes {0}
       - name: Build and deploy
