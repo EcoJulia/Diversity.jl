@@ -1,1 +1,4 @@
 *.cov
+/Manifest.toml
+/.vscode
+/.fair
