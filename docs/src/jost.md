@@ -9,7 +9,7 @@ found in the **Diversity.Jost** submodule.
 
 Accessing the main functionality in the package is simple:
 
-```jldoctest
+```julia-repl
 julia> using Diversity.Jost
 
 julia> ecosystem = [2 2 0; 0 2 2]';

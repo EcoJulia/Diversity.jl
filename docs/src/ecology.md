@@ -13,7 +13,7 @@ diversity, so small components are more diverse).
 
 Accessing the functionality in the package is simple:
 
-```jldoctest
+```julia-repl
 julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];

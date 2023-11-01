@@ -7,7 +7,7 @@
 
 Accessing the main functionality in the package is simple:
 
-```jldoctest
+```julia-repl
 julia> using Diversity.Hill
 
 julia> community = [10, 20, 20, 0, 3];

@@ -22,7 +22,7 @@ extract any diversity measure at a series of scales.
 
 Accessing the main functionality in the package is simple:
 
-```jldoctest
+```julia-repl
 julia> # Load the package into R
        using Diversity
 
