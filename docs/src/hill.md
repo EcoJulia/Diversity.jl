@@ -16,12 +16,12 @@ julia> community /= sum(community);
 
 julia> diversities = hillnumber(community, [0, 1, 2])
 3×7 DataFrame
-│ Row │ measure    │ q     │ type_level │ type_name │ partition_level │ partition_name │ diversity │
-│     │ String     │ Int64 │ String     │ String    │ String          │ String         │ Float64   │
-├─────┼────────────┼───────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
-│ 1   │ HillNumber │ 0     │ types      │           │ subcommunity    │ 1              │ 4.0       │
-│ 2   │ HillNumber │ 1     │ types      │           │ subcommunity    │ 1              │ 3.36264   │
-│ 3   │ HillNumber │ 2     │ types      │           │ subcommunity    │ 1              │ 3.09021   │
+ Row │ measure     q      type_level  type_name  partition_level  partition_name  diversity 
+     │ String      Int64  String      String     String           String          Float64   
+─────┼──────────────────────────────────────────────────────────────────────────────────────
+   1 │ HillNumber      0  types                  subcommunity     1                 4.0
+   2 │ HillNumber      1  types                  subcommunity     1                 3.36264
+   3 │ HillNumber      2  types                  subcommunity     1                 3.09021
 ```
 
 ```@contents

@@ -23,6 +23,7 @@ Phylo = "0.4"
 RCall = "0.13"
 RecipesBase = "0.6, 0.7, 0.8, 1"
 Requires = "^1"
+Statistics = "1"
 StatsBase = "0.32, 0.33, 0.34"
 julia = "^1"
 
