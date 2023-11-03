@@ -64,7 +64,7 @@ julia> redundancies = subdiv(rho, 2)
 ```
 
 ```@autodocs
-Modules = [Diversity]
+Modules = [Diversity, Diversity.ShortNames]
 Private = false
 ```
 
