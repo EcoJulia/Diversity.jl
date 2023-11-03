@@ -26,7 +26,7 @@ of `AbstractTypes`.
 ```
 
 ```@autodocs
-Modules = [Diversity.API, Diversity.powermean, Diversity._getmeta]
+Modules = [Diversity.API]
 Private = false
 ```
 

@@ -68,5 +68,12 @@ Modules = [Diversity, Diversity.ShortNames]
 Private = false
 ```
 
+Private functions in module Diversity:
+
+```@autodocs
+Modules = [Diversity]
+Public = false
+```
+
 ```@index
 ```
