@@ -9,8 +9,4 @@ makedocs(modules = [Diversity,
          sitename = "Diversity.jl")
 
 deploydocs(repo = "github.com/EcoJulia/Diversity.jl.git",
-           devbranch = "dev",
-           deps = Deps.pip("pygments",
-                           "mkdocs",
-                           "mkdocs-material",
-                           "python-markdown-math"))
+           devbranch = "dev")
