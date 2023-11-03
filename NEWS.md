@@ -1,5 +1,7 @@
 # NEWS
 
+- v0.5.7
+  - Update compat and some doc fixes
 - v0.5.6
   - Fix phylogenetics
 - v0.5.5
