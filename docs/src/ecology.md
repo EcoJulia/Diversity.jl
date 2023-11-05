@@ -56,7 +56,7 @@ julia> generalisedjaccard(ecosystem, [0, 1, 2], Matrix(1.0I, 3, 3))
    2 │ Arbitrary Z  Jaccard      1  types                  metacommunity                     0.414214
    3 │ Arbitrary Z  Jaccard      2  types                  metacommunity                     0.5
 
-julia> community = [0.7, 0.2, 0.1]
+julia> community = [0.7, 0.2, 0.1];
 
 julia> pielou(community)
 1×7 DataFrame
@@ -70,7 +70,7 @@ julia> communitymat = [10 20 30 20 0; #5 sites/subcommunities (columns) and 6 sp
                        60 10 90 0 0; 
                        10 10 10 10 10;
                        70 70 70 70 70;
-                       10 0 0 90 0]
+                       10 0 0 90 0];
 
 julia> generalisedpielou(subcommunityDiversity, communitymat)
 5×7 DataFrame
