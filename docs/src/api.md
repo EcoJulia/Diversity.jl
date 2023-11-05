@@ -4,7 +4,7 @@ The **Diversity.API** submodule provides the API that must be extended
 for new `AbstractTypes`, `AbstractPartition` and
 `AbstractMetacommunity` subtypes.
 
-#### Usage
+## Usage
 
 Providing additional code to extend the functionality of the system is simple:
 
