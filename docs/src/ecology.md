@@ -18,7 +18,7 @@ julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];
 
-julia> community /= sum(community); #Convert counts to proportions
+julia> community ./= sum(community); #Convert counts to proportions
 
 julia> diversity = simpson(community)
 1×7 DataFrame
@@ -85,7 +85,6 @@ julia> generalisedpielou(metacommunityDiversity, communitymat)
      │ String       String   String      String     String           String          Float64   
 ─────┼─────────────────────────────────────────────────────────────────────────────────────────
    1 │ Arbitrary Z  Pielou   types                  metacommunity                     0.510146
-
 ```
 
 ```@contents

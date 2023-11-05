@@ -1,4 +1,4 @@
-## Diversity
+# Diversity package
 
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
@@ -31,15 +31,16 @@ be updated too). Older interfaces from v0.2 have been removed in v0.4.
 The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
 
 ```julia
-(@v1.6) pkg> add Diversity
+(@v1.8) pkg> add Diversity
     Resolving package versions...
-    Updating `~/.julia/environments/v1.6/Project.toml`
-  [d3d5718d] + Diversity v0.5.5
-    Updating `~/.julia/environments/v1.6/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.5
+    Updating `~/.julia/environments/v1.8/Project.toml`
+  [d3d5718d] + Diversity v0.5.8
+    Updating `~/.julia/environments/v1.8/Manifest.toml`
+  [d3d5718d] + Diversity v0.5.8
   
-(@v1.6) pkg>
+(@v1.8) pkg>
 ```
+
 ## Usage
 
 ### Diversity
@@ -69,13 +70,14 @@ using Diversity
 
 # Example population
 pop = [1 1 0; 2 0 0; 3 1 4]
-pop = pop / sum(pop)
+pop ./= sum(pop)
 
 # Create Metacommunity object
 meta = Metacommunity(pop)
 ```
 
 #### Calculating diversity
+
 First we need to calculate the low-level diversity component seperately, by passing a `metacommunity` object to the appropriate function; `RawAlpha()`, `NormalisedAlpha()`, `RawBeta()`, `NormalisedBeta()`, `RawRho()`, `NormalisedRho()`, or `Gamma()`.
 
 ```julia
@@ -107,9 +109,11 @@ metadiv(meta, 0:2)
 ```
 
 Alternatively, if computational efficiency is not an issue, a single measure of diversity may be calculated directly by calling a wrapper function:
+
 ```julia
 norm_sub_alpha(meta, 0:2)
 ```
+
 A complete list of these functions is shown below:
 
 * `raw_sub_alpha()` : per-subcommunity estimate of naive-community metacommunity diversity
@@ -139,7 +143,7 @@ generate trees to incorporate into the diversity code:
 ```julia-repl
 julia> using Diversity, Phylo
 
-julia> communities = [4 1; 3 2; 1 0; 0 1] / 12;
+julia> communities = [4 1; 3 2; 1 0; 0 1] ./ 12;
 
 julia> nt = rand(Nonultrametric(4))
 RootedTree with 4 tips, 7 nodes and 6 branches.
@@ -156,30 +160,7 @@ julia> raw_meta_rho(metaphylo, [1, 2])
 │ 2   │ Phylogenetic Branch │ RawRho  │ 2     │ types      │           │ metacommunity   │                │ 1.52575   │
 ```
 
-[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-latest-url]: https://richardreeve.github.io/Diversity.jl/latest
-
-[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://richardreeve.github.io/Diversity.jl/stable
-
-[travis-img]: https://travis-ci.org/richardreeve/Diversity.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/richardreeve/Diversity.jl?branch=master
-
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/richardreeve/Diversity.jl?svg=true&branch=master
-[appveyor-url]: https://ci.appveyor.com/project/richardreeve/diversity-jl/branch/master
-
-[coveralls-img]: https://img.shields.io/coveralls/richardreeve/Diversity.jl.svg
-[coveralls-url]: https://coveralls.io/r/richardreeve/Diversity.jl?branch=master
-
-[codecov-img]: https://codecov.io/gh/richardreeve/Diversity.jl/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/richardreeve/Diversity.jl
-
 [issues-url]: https://github.com/richardreeve/Diversity.jl/issues
-
-[pkg-0.5-img]: http://pkg.julialang.org/badges/Diversity_0.5.svg
-[pkg-0.5-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.5
-[pkg-0.6-img]: http://pkg.julialang.org/badges/Diversity_0.6.svg
-[pkg-0.6-url]: http://pkg.julialang.org/?pkg=Diversity&ver=0.6
 
 [paper-url]: http://arxiv.org/abs/1404.6520
 
