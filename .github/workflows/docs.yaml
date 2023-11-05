@@ -27,7 +27,6 @@ jobs:
             import Pkg
             Pkg.develop(Pkg.PackageSpec(path=pwd()))
             Pkg.instantiate()
-            Pkg.add("Diversity")
             Pkg.add("Phylo")
             Pkg.add("Documenter")
         shell: julia --project=docs/ --color=yes {0}

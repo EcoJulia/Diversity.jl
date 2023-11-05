@@ -18,7 +18,7 @@ julia> using Diversity.Ecology, LinearAlgebra
 
 julia> community = [10, 20, 20];
 
-julia> community ./= sum(community); #Convert counts to proportions
+julia> community = community ./ sum(community); # Convert counts to proportions
 
 julia> diversity = simpson(community)
 1×7 DataFrame
@@ -26,6 +26,10 @@ julia> diversity = simpson(community)
      │ String    String   String      String     String           String          Float64   
 ─────┼──────────────────────────────────────────────────────────────────────────────────────
    1 │ Unique    Simpson  types                  subcommunity     1                    0.36
+
+julia> ecosystem = [2 2 0; 0 2 2]';
+
+julia> ecosystem = ecosystem ./ sum(ecosystem);
 
 julia> jaccard(ecosystem)
 1×8 DataFrame

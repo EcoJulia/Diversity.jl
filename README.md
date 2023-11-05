@@ -31,7 +31,8 @@ also recently revised, and may need further improvements.
 
 ## Installation
 
-The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.8:
+The package is registered in the `General` registry on v1.x and so can be
+installed with `add`. For example on Julia v1.8:
 
 ```julia
 (@v1.8) pkg> add Diversity

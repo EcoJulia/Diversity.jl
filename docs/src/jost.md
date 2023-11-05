@@ -14,7 +14,7 @@ julia> using Diversity.Jost
 
 julia> ecosystem = [2 2 0; 0 2 2]';
 
-julia> ecosystem ./= sum(ecosystem);
+julia> ecosystem = ecosystem ./ sum(ecosystem);
 
 julia> diversities = jostbeta(ecosystem, [0, 1, 2])
 3×8 DataFrame

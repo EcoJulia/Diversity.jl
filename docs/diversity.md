@@ -11,7 +11,7 @@ these are all ecological diversity measures, but this will be
 expanded, possibly through interfacing to BioJulia.
 
 This package is in beta now, but is cross-validated against our R
-package [boydorr/rdiversity][rdiversity-url], which is developed
+package [rdiversity][rdiversity-url], which is developed
 independently, so please [raise an issue][issues-url] if you find any
 problems. We now use a DataFrame as the common output format for all
 of the diversity calculations to provide consistency with our R
@@ -20,15 +20,9 @@ optimised for speed at the moment due to the substantial changes that
 have happened to it under the hood, and the Phylogenetics submodule is
 also new, and may need further improvements.
 
-Version 0.4, which has been recently released, has significant
-breaking changes to the underlying code, whuch mean it is no longer
-compatible with Julia v0.5. It is periodically working with Julia
-nightly and I aim to keep it that way (though other packages need to
-be updated too). Older interfaces from v0.2 have been removed in v0.4.
-
 ## Install
 
-The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
+The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.8:
 
 ```julia
 (@v1.8) pkg> add Diversity
