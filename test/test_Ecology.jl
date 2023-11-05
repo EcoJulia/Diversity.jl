@@ -35,14 +35,17 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
     @test_throws ErrorException simpson(Metacommunity(communities,
         GeneralTypes(rand(numspecies,numspecies))))
 
-    @test jaccard([1 0 0; 0 1 1]'/3)[!,:diversity] .+ 1.0 ≈ [1.0]
+    @test jaccard([1 0 0; 0 1 1]'/3)[!,:diversity][1] + 1.0 ≈ 1.0
     @test jaccard(Metacommunity([1 0 1; 0 1 1]'/4))[!,:diversity] ==
         jaccard([1 0 1; 0 1 1]'/4)[!,:diversity]
     @test_throws ErrorException jaccard(Metacommunity([1 0 1; 0 1 1]'/4,
                                                       GeneralTypes(rand(3, 3))))
-    @test jaccard([1 0 1; 0 1 1]'/4)[!,:diversity] ≈ [1.0 / 3.0]
+    @test jaccard([1 0 1; 0 1 1]'/4)[!,:diversity][1] ≈ 1.0 / 3.0
     @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1]/7)
     @test_throws ErrorException jaccard(Metacommunity([1 1 0; 0 1 1; 1 1 1]/7))
+
+    @test pielou([1, 1])[!,:diversity][1] ≈ 1.0
+    @test all(pielou([1 2; 1 2])[!,:diversity] .≈ 1.0)
 end
 
 @testset "Generalised ecological diversities" begin
@@ -73,6 +76,14 @@ end
 
     @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf])[!,:diversity] ≈ [1.0/3.0, 1.0]
     @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1])[!,:diversity] ≈ [1.0, 1.0]
+
+    @test all(generalisedpielou(subcommunityDiversity, [1/6 2/6; 1/6 2/6]).diversity .≈ 1.0)
+
+    mat = reshape(rand(9), 3, 3)
+    mat ./= sum(mat)
+    sim = reshape(ones(9), 3, 3)
+    @test all(generalisedpielou(subcommunityDiversity, mat, sim).diversity .≈ 0.0)
+    @test all(generalisedpielou(metacommunityDiversity, mat, sim).diversity .≈ 0.0)
 end
 
 end
