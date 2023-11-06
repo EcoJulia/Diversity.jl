@@ -18,7 +18,7 @@ julia> using Diversity, Phylo
 
 julia> species = ["Dog", "Cat", "Human", "Potato"];
 
-julia> community = [4, 1, 3, 2] / 10;
+julia> community = [4, 1, 3, 2] ./ 10;
 
 julia> nt = rand(Nonultrametric(species))
 RootedTree with 4 tips, 7 nodes and 6 branches.

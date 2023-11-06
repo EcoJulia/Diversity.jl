@@ -31,15 +31,16 @@ also recently revised, and may need further improvements.
 
 ## Installation
 
-The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
+The package is registered in the `General` registry on v1.x and so can be
+installed with `add`. For example on Julia v1.8:
 
 ```julia
 (@v1.8) pkg> add Diversity
     Resolving package versions...
     Updating `~/.julia/environments/v1.8/Project.toml`
-  [d3d5718d] + Diversity v0.5.7
+  [d3d5718d] + Diversity v0.5.8
     Updating `~/.julia/environments/v1.8/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.7
+  [d3d5718d] + Diversity v0.5.8
   
 (@v1.8) pkg>
 ```

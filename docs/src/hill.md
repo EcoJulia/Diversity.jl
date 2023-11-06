@@ -12,7 +12,7 @@ julia> using Diversity.Hill
 
 julia> community = [10, 20, 20, 0, 3];
 
-julia> community /= sum(community);
+julia> community ./= sum(community);
 
 julia> diversities = hillnumber(community, [0, 1, 2])
 3×7 DataFrame

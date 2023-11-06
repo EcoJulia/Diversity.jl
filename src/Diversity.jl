@@ -157,7 +157,7 @@ export generalisedrichness, richness
 export generalisedshannon, shannon
 export generalisedsimpson, simpson
 export generalisedjaccard, jaccard
-
+export generalisedpielou, pielou
 end # sub-module Ecology
 
 """

@@ -33,7 +33,6 @@ Metacommunity(abundances::AbstractArray,
   Partition. Should only be accessed through
   getordinariness!(::Metacommunity), which will populate the cache if
   it has not yet been calculated.
-
 """
 mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
     Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}

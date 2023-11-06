@@ -193,10 +193,9 @@ function inddiv end
     df = reduce(append!, dfs)
     cols = addedoutputcols(_getmeta(measure))
     if length(cols) > 0
-        len = length(df)
         data = getaddedoutput(_getmeta(measure))
         for col in keys(cols)
-            insert!(df, length(df) + 1, data[col], col)
+            insertcols!(df, ncol(df) + 1, col => data[col])
         end
     end
     return df
@@ -249,10 +248,9 @@ function subdiv end
     df = reduce(append!, dfs)
     cols = addedoutputcols(_getmeta(measure))
     if length(cols) > 0
-        len = length(df)
         data = getaddedoutput(_getmeta(measure))
         for col in keys(cols)
-            insert!(df, length(df) + 1, data[col], col)
+            insertcols!(df, ncol(df) + 1, col => data[col])
         end
     end
     return df
@@ -307,10 +305,9 @@ function metadiv end
                    diversity=raw)
    cols = addedoutputcols(_getmeta(measure))
    if length(cols) > 0
-       len = length(df)
        data = getaddedoutput(_getmeta(measure))
        for col in keys(cols)
-           insert!(df, length(df) + 1, data[col], col)
+           insertcols!(df, ncol(df) + 1, col => data[col])
        end
    end
    return df

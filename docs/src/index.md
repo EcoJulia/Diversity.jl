@@ -29,7 +29,7 @@ julia> # Load the package into R
 julia> # Example population
        pop = [1 1 0; 2 0 0; 3 1 4];
 
-julia> pop = pop / sum(pop);
+julia> pop = pop ./ sum(pop);
 
 julia> # Create Metacommunity object
        meta = Metacommunity(pop);

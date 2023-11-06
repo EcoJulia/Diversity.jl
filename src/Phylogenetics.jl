@@ -10,14 +10,14 @@ end
 
 import Diversity.API: _addedoutputcols
 function _addedoutputcols(::AbstractPhyloTypes{TS}) where
-    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}}
-    Dict{Symbol, Type}(:treename => LABEL)
+    {LABEL, RT, NL, N, B, TS <: TreeSet{LABEL, RT, NL, N, B, <: AbstractTree}}
+    return Dict{Symbol, Type}(:treename => LABEL)
 end
 
 import Diversity.API: _getaddedoutput
 function _getaddedoutput(pt::AbstractPhyloTypes{TS}) where
-    {LABEL, NL, BL, TS <: TreeSet{LABEL, NL, BL, <: AbstractTree}}
-    Dict{Symbol, LABEL}(:treename => first(treenameiter(pt.tree)))
+    {LABEL, RT, NL, N, B, TS <: TreeSet{LABEL, RT, NL, N, B, <: AbstractTree}}
+    return Dict{Symbol, LABEL}(:treename => first(gettreenames(pt.tree)))
 end
 
 struct PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
