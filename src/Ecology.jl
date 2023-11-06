@@ -313,17 +313,19 @@ generalisedpielou(level::DiversityLevel,
 function generalisedpielou(level::DiversityLevel,
                            proportions::AbstractArray,
                            sim::AbstractTypes)
+    mc = Metacommunity(proportions, sim)
     if (level == subcommunityDiversity)
         dm = ᾱ
-        ns = vec(sum(x->x>0, proportions, dims=1))
+        hmax = log.(level(dm(mc), 0).diversity)
     elseif (level == metacommunityDiversity)
         dm = Gamma
-        ns = sum(x->x>0, proportions)
+        mc1 = Metacommunity([x > 0 for x in getmetaabundance(mc)], sim)
+        hmax = first(log.(level(dm(mc1), 0).diversity))
     else
         error("Can't calculate Pielou for $level")
     end
-    gp = level(dm(Metacommunity(proportions, sim)), 1)
-    gp[!,:diversity] .= log.(gp[!,:diversity])./log.(ns)
+    gp = level(dm(mc), 1)
+    gp[!,:diversity] .= log.(gp[!,:diversity]) ./ hmax
     gp[!,:measure] .= "Pielou"
     select!(gp, Not(:q))
     return gp

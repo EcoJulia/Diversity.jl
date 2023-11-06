@@ -82,10 +82,12 @@ end
 
     mat = reshape(rand(9), 3, 3)
     mat ./= sum(mat)
-    sim = reshape(ones(9), 3, 3)
+    mats = Float64[1 0 3; 3 2 0; 4 2 3] ./ 18
+    matm = Float64[1 0 1; 1 2 0; 2 2 1] ./ 10
+    sim = Float64[1 1 0; 1 1 0; 0 0 1]
     @test all(generalisedpielou(subcommunityDiversity, mat, UniqueTypes(3)).diversity .≈ pielou(mat).diversity)
-    @test all(generalisedpielou(subcommunityDiversity, mat, sim).diversity .≈ 0.0)
-    @test all(generalisedpielou(metacommunityDiversity, mat, sim).diversity .≈ 0.0)
+    @test all(generalisedpielou(subcommunityDiversity, mats, sim).diversity .≈ 1.0)
+    @test all(generalisedpielou(metacommunityDiversity, matm, sim).diversity .≈ 1.0)
     @test_throws "Can't calculate Pielou" generalisedpielou(individualDiversity, mat, sim)
     @test_throws "function cannot run with" pielou(Metacommunity(mat, GeneralTypes(sim)))
 end
