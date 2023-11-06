@@ -320,7 +320,7 @@ function generalisedpielou(level::DiversityLevel,
         dm = Gamma
         ns = sum(x->x>0, proportions)
     else
-        error("Can't calculate richness for $level")
+        error("Can't calculate Pielou for $level")
     end
     gp = level(dm(Metacommunity(proportions, sim)), 1)
     gp[!,:diversity] .= log.(gp[!,:diversity])./log.(ns)
