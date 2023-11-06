@@ -4,6 +4,7 @@ using Diversity.API
 using LinearAlgebra
 using DataFrames
 using EcoBase
+using EcoBase: AbstractAssemblage
 
 """
     generalisedrichness(level::DiversityLevel, proportions::AbstractArray,
@@ -67,7 +68,7 @@ function richness(proportions::AbstractVecOrMat)
     return gr
 end
 
-function richness(asm::EcoBase.AbstractAssemblage)
+function richness(asm::AbstractAssemblage)
     hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return richness(occurrences(asm))
 end
@@ -133,7 +134,7 @@ shannon(proportions::AbstractVecOrMat) =
     generalisedshannon(subcommunityDiversity, proportions,
                        UniqueTypes(size(proportions, 1)))
 
-function shannon(asm::EcoBase.AbstractAssemblage)
+function shannon(asm::AbstractAssemblage)
     hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return shannon(occurrences(asm))
 end
@@ -201,7 +202,7 @@ simpson(proportions::AbstractVecOrMat) =
     generalisedsimpson(subcommunityDiversity, proportions,
                        UniqueTypes(size(proportions, 1)))
 
-function simpson(asm::EcoBase.AbstractAssemblage)
+function simpson(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return simpson(occurrences(asm))
@@ -274,23 +275,27 @@ jaccard(proportions::AbstractMatrix) =
     generalisedjaccard(proportions, 0,
                        UniqueTypes(size(proportions, 1)))
 
-function jaccard(asm::EcoBase.AbstractAssemblage)
+function jaccard(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return jaccard(occurrences(asm))
 end
 
 """
-generalisedpielou::DiversityLevel, proportions::AbstractArray,
-                       Z::AbstractMatrix)
-generalisedpielou(level::DiversityLevel, proportions::AbstractArray,
-                       sim::AbstractTypes)
+    generalisedpielou(level::DiversityLevel,
+                      proportions::AbstractArray,
+                      Z::AbstractMatrix)
+    generalisedpielou(level::DiversityLevel,
+                      proportions::AbstractArray[,
+                      sim::AbstractTypes])
+    generalisedpielou(level::DiversityLevel,
+                      asm::AbstractAssemblage)
 
 Calculates a generalisation of Pielou's evenness for columns
 representing the counts or proportions of subcommunities. Values range from 
 zero to one, with one representing complete evenness within the 
-community. Since this is calculated as H / Hmax, and is just a proportion,
-values remain unchanged regardless of the value(s) of q supplied. 
+community. Since this is calculated as H / Hmax, this uses Shannon entropy
+and q is effectively 1. 
 
 #### Arguments:
 - `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
@@ -306,20 +311,27 @@ values remain unchanged regardless of the value(s) of q supplied.
 function generalisedpielou end
 generalisedpielou(level::DiversityLevel,
                   proportions::AbstractArray,
-                  Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1),
-                                             size(proportions, 1))) =
-    generalisedpielou(level, proportions, GeneralTypes(Z))
+                  Z::AbstractMatrix) =
+    generalisedpielou(level, Metacommunity(proportions, Z))
+
+generalisedpielou(level::DiversityLevel,
+                  proportions::AbstractArray,
+                  sim::AbstractTypes = UniqueTypes(size(proportions, 1))) =
+    generalisedpielou(level, Metacommunity(proportions, sim))
 
 function generalisedpielou(level::DiversityLevel,
-                           proportions::AbstractArray,
-                           sim::AbstractTypes)
-    mc = Metacommunity(proportions, sim)
+                           mc::AbstractAssemblage)
+    hassimilarity(mc) &&
+    error("Can't calculate Pielou function for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
+
     if (level == subcommunityDiversity)
         dm = ᾱ
         hmax = log.(level(dm(mc), 0).diversity)
     elseif (level == metacommunityDiversity)
         dm = Gamma
-        mc1 = Metacommunity([x > 0 for x in getmetaabundance(mc)], sim)
+        mcab = Float64[x > 0 for x in getmetaabundance(mc)]
+        mcab ./= sum(mcab)
+        mc1 = Metacommunity(mcab, gettypes(mc))
         hmax = first(log.(level(dm(mc1), 0).diversity))
     else
         error("Can't calculate Pielou for $level")
@@ -333,6 +345,7 @@ end
 
 """
     pielou(proportions::AbstractMatrix)
+    pielou(proportions::AbstractAssemblage)
 
 Calculates Pielou's evenness of a series of
 columns representing independent subcommunity counts.
@@ -358,11 +371,10 @@ pielou(communitymat)
 ```
 """
 pielou(proportions::AbstractVecOrMat) =
-    generalisedpielou(subcommunityDiversity, proportions,
-                      UniqueTypes(size(proportions, 1)))
+    generalisedpielou(subcommunityDiversity, Metacommunity(proportions))
 
-function pielou(asm::EcoBase.AbstractAssemblage)
+function pielou(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
-    return pielou(occurrences(asm))
+    return generalisedpielou(subcommunityDiversity, asm)
 end
