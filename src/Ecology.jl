@@ -245,8 +245,8 @@ function generalisedjaccard(proportions::AbstractMatrix, qs,
     meta = Metacommunity(proportions, sim)
     countsubcommunities(meta) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    ab = metadiv(α(meta), qs)
-    g = metadiv(Γ(meta), qs)
+    ab = metadiv(RawAlpha(meta), qs)
+    g = metadiv(Gamma(meta), qs)
     j = innerjoin(ab, g, on=[:q, :type_level, :type_name,
                              :partition_level, :partition_name, :div_type],
                   makeunique=true)
@@ -345,7 +345,7 @@ end
 
 """
     pielou(proportions::AbstractMatrix)
-    pielou(proportions::AbstractAssemblage)
+    pielou(asm::AbstractAssemblage)
 
 Calculates Pielou's evenness of a series of
 columns representing independent subcommunity counts.
@@ -377,4 +377,43 @@ function pielou(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return generalisedpielou(subcommunityDiversity, asm)
+end
+
+"""
+    gower(proportions::AbstractMatrix; countzeros::Bool = false, logscale::Bool = true)
+    gower(asm::AbstractAssemblage; countzeros::Bool = false, logscale::Bool = true)
+
+Calculates Gower's dissimarity of up to two columns representing independent subcommunity counts.
+    
+#### Arguments:
+    
+- `proportions`: population proportions; or
+- `count`: population counts; or
+- `asm`: Abstract Assemblage
+- ``
+
+#### Returns:
+    
+- Gower dissimilarity of the subcommunities
+"""
+function gower end
+
+gower(proportions::AbstractArray; countzeros::Bool = false, logscale::Bool = false, normalise::Bool = countzeros) =
+    gower(Metacommunity(proportions), countzeros = countzeros, logscale = logscale, normalise = normalise)
+
+function gower(asm::AbstractAssemblage; countzeros::Bool = false, logscale::Bool = false, normalise::Bool = countzeros)
+    countsubcommunities(asm) == 2 ||
+    error("Can only calculate Gower distances for 2 subcommunities")
+
+    g = meta_gamma(asm, 0)
+    nz = countzeros ? nthings(asm) : noccurring(asm)
+    occ = logscale ? [x == 0 ? 0 : log10(x) for x in getabundance(asm, true)] : getabundance(asm, true)
+    diff = normalise ? sum(x > 0 ? 1 : 0 for x in abs.(occ[:, 1] .- occ[:, 2])) : sum(abs.(occ[:, 1] .- occ[:, 2]))
+    g[!, :diversity] .= diff / nz
+    g[!, :measure] .= "Gower"
+    g[!, :countzeros] .= countzeros
+    g[!, :logscale] .= logscale
+    g[!, :normalise] .= normalise
+    select!(g, Not(:q))
+    return g
 end

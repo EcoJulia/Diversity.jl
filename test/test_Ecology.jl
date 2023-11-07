@@ -47,6 +47,12 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
     @test pielou([1, 1])[!,:diversity][1] ≈ 1.0
     @test all(pielou([1 2; 1 2])[!,:diversity] .≈ 1.0)
     @test all(pielou(Metacommunity([1 2; 1 2]))[!,:diversity] .≈ 1.0)
+
+    @test_throws "Can only calculate" gower([1 1 0; 0 1 1; 1 1 1])
+    @test gower([1 0; 0 1]).diversity[1] ≈ 1.0
+    @test gower([1 1; 1 1]).diversity[1] ≈ 0.0
+    @test gower([1 0; 0 0; 0 1; 0 0], countzeros = true).diversity[1] ≈ 0.5
+    @test gower([1 0; 0 0; 0 1; 0 0], countzeros = false).diversity[1] ≈ 1.0
 end
 
 @testset "Generalised ecological diversities" begin

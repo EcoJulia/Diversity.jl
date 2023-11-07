@@ -158,6 +158,7 @@ export generalisedshannon, shannon
 export generalisedsimpson, simpson
 export generalisedjaccard, jaccard
 export generalisedpielou, pielou
+export gower
 end # sub-module Ecology
 
 """
