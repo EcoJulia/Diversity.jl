@@ -295,7 +295,7 @@ Calculates a generalisation of Pielou's evenness for columns
 representing the counts or proportions of subcommunities. Values range from 
 zero to one, with one representing complete evenness within the 
 community. Since this is calculated as H / Hmax, this uses Shannon entropy
-and q is effectively 1. 
+and q is effectively 1.
 
 #### Arguments:
 - `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
@@ -322,7 +322,7 @@ generalisedpielou(level::DiversityLevel,
 function generalisedpielou(level::DiversityLevel,
                            mc::AbstractAssemblage)
     hassimilarity(mc) &&
-    error("Can't calculate Pielou function for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
+    error("Can't calculate Pielou evenness for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
 
     if (level == subcommunityDiversity)
         dm = ᾱ
