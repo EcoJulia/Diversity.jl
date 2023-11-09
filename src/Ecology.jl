@@ -281,6 +281,7 @@ function jaccard(asm::AbstractAssemblage)
     return jaccard(occurrences(asm))
 end
 
+#=
 """
     generalisedpielou(level::DiversityLevel,
                       proportions::AbstractArray,
@@ -308,6 +309,7 @@ and q is effectively 1.
 #### Returns:
 - Pielou's evenness metric (at metacommunity level) or metrics (of subcommunities)
 """
+=#
 function generalisedpielou end
 generalisedpielou(level::DiversityLevel,
                   proportions::AbstractArray,
