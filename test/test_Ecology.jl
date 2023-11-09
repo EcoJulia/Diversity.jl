@@ -6,6 +6,7 @@ using Test
 using Diversity
 using Diversity.Ecology
 using Diversity.ShortNames
+using LinearAlgebra
 
 numspecies = 100;
 numcommunities = 8;
@@ -35,12 +36,12 @@ Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
     @test_throws ErrorException simpson(Metacommunity(communities,
         GeneralTypes(rand(numspecies,numspecies))))
 
-    @test jaccard([1 0 0; 0 1 1]'/3)[!,:diversity][1] + 1.0 ≈ 1.0
+    @test jaccard([1 0 0; 0 1 1]'/3)[!,:diversity][1] ≈ 1.0
     @test jaccard(Metacommunity([1 0 1; 0 1 1]'/4))[!,:diversity] ==
         jaccard([1 0 1; 0 1 1]'/4)[!,:diversity]
     @test_throws ErrorException jaccard(Metacommunity([1 0 1; 0 1 1]'/4,
                                                       GeneralTypes(rand(3, 3))))
-    @test jaccard([1 0 1; 0 1 1]'/4)[!,:diversity][1] ≈ 1.0 / 3.0
+    @test jaccard([1 0 1; 0 1 1]'/4)[!,:diversity][1] ≈ 2.0 / 3.0
     @test_throws ErrorException jaccard([1 1 0; 0 1 1; 1 1 1]/7)
     @test_throws ErrorException jaccard(Metacommunity([1 1 0; 0 1 1; 1 1 1]/7))
 
@@ -81,8 +82,9 @@ end
     @test_throws ErrorException generalisedsimpson(individualDiversity,
                                                    communities, Z1)
 
-    @test generalisedjaccard([1 0 1; 0 1 1]'/4, [0, Inf])[!,:diversity] ≈ [1.0/3.0, 1.0]
-    @test generalisedjaccard([1 1 1; 1 1 1]'/6, [0, 1])[!,:diversity] ≈ [1.0, 1.0]
+    @test generalisedjaccard([1 0 1; 0 1 1]'/4, UniqueTypes(3))[!,:diversity][1] ≈ 2.0/3.0
+    @test generalisedjaccard([1 0 1; 0 1 1]'/4, ones(Float64, 3, 3))[!,:diversity][1] ≈ 0.0
+    @test generalisedjaccard([1 1 1; 1 1 1]'/6, Matrix(1.0I, 3, 3))[!,:diversity][1] ≈ 0.0
 
     @test all(Diversity.Ecology.generalisedpielou(subcommunityDiversity, [1/6 2/6; 1/6 2/6]).diversity .≈ 1.0)
 

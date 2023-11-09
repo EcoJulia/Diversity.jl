@@ -82,8 +82,8 @@ if !skipR
             jag = gower(pops, countzeros = false).diversity[1]
             jag1 = gower([x > 0 ? 1 : 0 for x in pops], countzeros = false).diversity[1]
 
-            @test_broken jj ≈ 1.0 - rj
-            @test jj1 ≈ 1.0 - rj1
+            @test jj ≈ rj
+            @test jj1 ≈ rj1
             @test jg ≈ rg
             @test jg1 ≈ rg1
             @test jag ≈ rag
@@ -123,8 +123,8 @@ if !skipR
             jag = gower(pops, countzeros = false).diversity[1]
             jag1 = gower([x > 0 ? 1 : 0 for x in pops], countzeros = false).diversity[1]
 
-            @test_broken jj ≈ 1.0 - rj
-            @test jj1 ≈ 1.0 - rj1
+            @test jj ≈ rj
+            @test jj1 ≈ rj1
             @test jg ≈ rg
             @test jg1 ≈ rg1
             @test jag ≈ rag

@@ -211,6 +211,7 @@ end
 """
     generalisedjaccard(proportions::AbstractArray, qs, Z::AbstractMatrix)
     generalisedjaccard(proportions::AbstractArray, qs, sim::AbstractTypes)
+    generalisedjaccard(meta::AbstractAssemblage, qs)
 
 Calculates a generalisation of the Jaccard index of two columns
 representing the counts of two subcommunities. This evaluates to raw
@@ -223,8 +224,7 @@ better properties.
 #### Arguments:
 
 - `proportions`: population proportions
-
-- `qs`: single number or vector of values of parameter q
+- `meta`: metacommunity / assemblage
 
 - `Z`: similarity matrix or
 - `sim`: instance of AbstractTypes
@@ -235,33 +235,30 @@ better properties.
 """
 function generalisedjaccard end
 
-generalisedjaccard(proportions::AbstractMatrix, qs,
-                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1),
-                                              size(proportions, 1))) =
-    generalisedjaccard(proportions, qs, GeneralTypes(Z))
+generalisedjaccard(proportions::AbstractMatrix, Z::AbstractMatrix) =
+    generalisedjaccard(proportions, GeneralTypes(Z))
 
-function generalisedjaccard(proportions::AbstractMatrix, qs,
-                            sim::AbstractTypes)
-    meta = Metacommunity(proportions, sim)
+generalisedjaccard(proportions::AbstractMatrix, sim::AbstractTypes) =
+    generalisedjaccard(Metacommunity(proportions, sim))
+
+function generalisedjaccard(meta::AbstractAssemblage)
     countsubcommunities(meta) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    ab = metadiv(RawAlpha(meta), qs)
-    g = metadiv(Gamma(meta), qs)
-    j = innerjoin(ab, g, on=[:q, :type_level, :type_name,
-                             :partition_level, :partition_name, :div_type],
-                  makeunique=true)
-    j[!,:diversity] .= j[!,:diversity] ./ j[!,:diversity_1] .- 1
-    j[!,:measure] .= "Jaccard"
-    select!(j, Not([:diversity_1, :measure_1]))
-    return j
+    num = sum(abs.(diff(getordinariness!(meta), dims = 2)))
+    denom = sum(maximum(getordinariness!(meta), dims = 2))
+    jac = metadiv(Gamma(meta), 0)
+    jac[!,:diversity] .= num / denom
+    jac[!,:measure] .= "Jaccard"
+    select!(jac, Not([:q]))
+    return jac
 end
 
 """
     jaccard(proportions::AbstractMatrix)
+    jaccard(asm::AbstractAssemblage)
 
 Calculates Jaccard index (Jaccard similarity coefficient) of two
-columns representing independent subcommunity counts, which is
-normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
+columns representing independent subcommunity counts
 
 #### Arguments:
 
@@ -271,14 +268,12 @@ normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
 
 - the Jaccard index
 """
-jaccard(proportions::AbstractMatrix) =
-    generalisedjaccard(proportions, 0,
-                       UniqueTypes(size(proportions, 1)))
+jaccard(proportions::AbstractMatrix) = jaccard(Metacommunity(proportions))
 
 function jaccard(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
-    return jaccard(occurrences(asm))
+    return generalisedjaccard(asm)
 end
 
 #=
