@@ -53,6 +53,8 @@ jobs:
     - name: Running
       uses: julia-actions/julia-runtest@v1
     - name: Process coverage
+      if: matrix.os == 'macOS-latest'
       uses: julia-actions/julia-processcoverage@v1
     - name: Codecov
+      if: matrix.os == 'macOS-latest'
       uses: codecov/codecov-action@v3
