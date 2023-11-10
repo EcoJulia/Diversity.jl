@@ -1,6 +1,6 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
-author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>"]
+author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetom Heida"]
 version = "0.5.9"
 
 [deps]
