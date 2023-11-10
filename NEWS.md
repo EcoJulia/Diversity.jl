@@ -3,7 +3,7 @@
 - v0.5.8
   - Add in Pielou diversity measures
   - Add docs for PRs
-  - Fix Jaccard to be differentiation measure
+  - Generalise Jaccard with similarity
 - v0.5.7
   - Update compat and some doc fixes
 - v0.5.6

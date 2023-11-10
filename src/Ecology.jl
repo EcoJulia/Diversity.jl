@@ -213,7 +213,7 @@ end
     generalisedjaccard(proportions::AbstractArray, qs, sim::AbstractTypes)
     generalisedjaccard(meta::AbstractAssemblage, qs)
 
-Calculates a generalisation of the Jaccard index of two columns
+Calculates a generalisation of the Jaccard similarity of two columns
 representing the counts of two subcommunities. This evaluates to raw
 alpha / gamma - 1 for a series of orders, repesented as a vector of qs
 (or a single number). It also includes an optional similarity matrix
@@ -244,7 +244,7 @@ generalisedjaccard(proportions::AbstractMatrix, sim::AbstractTypes) =
 function generalisedjaccard(meta::AbstractAssemblage)
     countsubcommunities(meta) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    num = sum(abs.(diff(getordinariness!(meta), dims = 2)))
+    num = sum(minimum(getordinariness!(meta), dims = 2))
     denom = sum(maximum(getordinariness!(meta), dims = 2))
     jac = metadiv(Gamma(meta), 0)
     jac[!,:diversity] .= num / denom
@@ -257,12 +257,13 @@ end
     jaccard(proportions::AbstractMatrix)
     jaccard(asm::AbstractAssemblage)
 
-Calculates Jaccard index (Jaccard similarity coefficient) of two
+Calculates Jaccard similarity coefficient of two
 columns representing independent subcommunity counts
 
 #### Arguments:
 
 - `proportions`: population proportions
+- `asm`: assemblage / metacommunity
 
 #### Returns:
 
