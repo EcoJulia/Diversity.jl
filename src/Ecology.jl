@@ -211,6 +211,7 @@ end
 """
     generalisedjaccard(proportions::AbstractArray, qs, Z::AbstractMatrix)
     generalisedjaccard(proportions::AbstractArray, qs, sim::AbstractTypes)
+    generalisedjaccard(meta::AbstractAssemblage, qs)
 
 Calculates a generalisation of the Jaccard index of two columns
 representing the counts of two subcommunities. This evaluates to raw
@@ -223,8 +224,7 @@ better properties.
 #### Arguments:
 
 - `proportions`: population proportions
-
-- `qs`: single number or vector of values of parameter q
+- `meta`: metacommunity / assemblage
 
 - `Z`: similarity matrix or
 - `sim`: instance of AbstractTypes
@@ -235,33 +235,30 @@ better properties.
 """
 function generalisedjaccard end
 
-generalisedjaccard(proportions::AbstractMatrix, qs,
-                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1),
-                                              size(proportions, 1))) =
-    generalisedjaccard(proportions, qs, GeneralTypes(Z))
+generalisedjaccard(proportions::AbstractMatrix, Z::AbstractMatrix) =
+    generalisedjaccard(proportions, GeneralTypes(Z))
 
-function generalisedjaccard(proportions::AbstractMatrix, qs,
-                            sim::AbstractTypes)
-    meta = Metacommunity(proportions, sim)
+generalisedjaccard(proportions::AbstractMatrix, sim::AbstractTypes) =
+    generalisedjaccard(Metacommunity(proportions, sim))
+
+function generalisedjaccard(meta::AbstractAssemblage)
     countsubcommunities(meta) == 2 ||
     error("Can only calculate Jaccard index for 2 subcommunities")
-    ab = metadiv(α(meta), qs)
-    g = metadiv(Γ(meta), qs)
-    j = innerjoin(ab, g, on=[:q, :type_level, :type_name,
-                             :partition_level, :partition_name, :div_type],
-                  makeunique=true)
-    j[!,:diversity] .= j[!,:diversity] ./ j[!,:diversity_1] .- 1
-    j[!,:measure] .= "Jaccard"
-    select!(j, Not([:diversity_1, :measure_1]))
-    return j
+    num = sum(abs.(diff(getordinariness!(meta), dims = 2)))
+    denom = sum(maximum(getordinariness!(meta), dims = 2))
+    jac = metadiv(Gamma(meta), 0)
+    jac[!,:diversity] .= num / denom
+    jac[!,:measure] .= "Jaccard"
+    select!(jac, Not([:q]))
+    return jac
 end
 
 """
     jaccard(proportions::AbstractMatrix)
+    jaccard(asm::AbstractAssemblage)
 
 Calculates Jaccard index (Jaccard similarity coefficient) of two
-columns representing independent subcommunity counts, which is
-normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
+columns representing independent subcommunity counts
 
 #### Arguments:
 
@@ -271,16 +268,15 @@ normmetaalpha(proportions, 0) / metagamma(proportions, 0) - 1
 
 - the Jaccard index
 """
-jaccard(proportions::AbstractMatrix) =
-    generalisedjaccard(proportions, 0,
-                       UniqueTypes(size(proportions, 1)))
+jaccard(proportions::AbstractMatrix) = jaccard(Metacommunity(proportions))
 
 function jaccard(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
-    return jaccard(occurrences(asm))
+    return generalisedjaccard(asm)
 end
 
+#=
 """
     generalisedpielou(level::DiversityLevel,
                       proportions::AbstractArray,
@@ -295,7 +291,7 @@ Calculates a generalisation of Pielou's evenness for columns
 representing the counts or proportions of subcommunities. Values range from 
 zero to one, with one representing complete evenness within the 
 community. Since this is calculated as H / Hmax, this uses Shannon entropy
-and q is effectively 1. 
+and q is effectively 1.
 
 #### Arguments:
 - `level`: DiversityLevel to calculate at (e.g. subcommunityDiversity)
@@ -308,6 +304,7 @@ and q is effectively 1.
 #### Returns:
 - Pielou's evenness metric (at metacommunity level) or metrics (of subcommunities)
 """
+=#
 function generalisedpielou end
 generalisedpielou(level::DiversityLevel,
                   proportions::AbstractArray,
@@ -322,7 +319,7 @@ generalisedpielou(level::DiversityLevel,
 function generalisedpielou(level::DiversityLevel,
                            mc::AbstractAssemblage)
     hassimilarity(mc) &&
-    error("Can't calculate Pielou function for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
+    error("Can't calculate Pielou evenness for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
 
     if (level == subcommunityDiversity)
         dm = ᾱ
@@ -345,7 +342,7 @@ end
 
 """
     pielou(proportions::AbstractMatrix)
-    pielou(proportions::AbstractAssemblage)
+    pielou(asm::AbstractAssemblage)
 
 Calculates Pielou's evenness of a series of
 columns representing independent subcommunity counts.
@@ -377,4 +374,43 @@ function pielou(asm::AbstractAssemblage)
     hassimilarity(asm) &&
     error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return generalisedpielou(subcommunityDiversity, asm)
+end
+
+"""
+    gower(proportions::AbstractMatrix; countzeros::Bool = false, logscale::Bool = true)
+    gower(asm::AbstractAssemblage; countzeros::Bool = false, logscale::Bool = true)
+
+Calculates Gower's dissimarity of up to two columns representing independent subcommunity counts.
+    
+#### Arguments:
+    
+- `proportions`: population proportions; or
+- `count`: population counts; or
+- `asm`: Abstract Assemblage
+- ``
+
+#### Returns:
+    
+- Gower dissimilarity of the subcommunities
+"""
+function gower end
+
+gower(proportions::AbstractArray; countzeros::Bool = false, logscale::Bool = false, normalise::Bool = countzeros) =
+    gower(Metacommunity(proportions), countzeros = countzeros, logscale = logscale, normalise = normalise)
+
+function gower(asm::AbstractAssemblage; countzeros::Bool = false, logscale::Bool = false, normalise::Bool = countzeros)
+    countsubcommunities(asm) == 2 ||
+    error("Can only calculate Gower distances for 2 subcommunities")
+
+    g = meta_gamma(asm, 0)
+    nz = countzeros ? nthings(asm) : noccurring(asm)
+    occ = logscale ? [x == 0 ? 0 : log10(x) for x in getabundance(asm, true)] : getabundance(asm, true)
+    diff = normalise ? sum(x > 0 ? 1 : 0 for x in abs.(occ[:, 1] .- occ[:, 2])) : sum(abs.(occ[:, 1] .- occ[:, 2]))
+    g[!, :diversity] .= diff / nz
+    g[!, :measure] .= "Gower"
+    g[!, :countzeros] .= countzeros
+    g[!, :logscale] .= logscale
+    g[!, :normalise] .= normalise
+    select!(g, Not(:q))
+    return g
 end
