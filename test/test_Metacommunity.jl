@@ -24,7 +24,8 @@ sc = Subcommunities(size(ab3, 2))
 meta2 = Metacommunity(abf, sp, sc)
 g2 = GeneralTypes(Matrix(1.0I, 2, 2))
 @testset "Metacommunity" begin
-    @test_warn "Abundances not normalised" Metacommunity(three_1, meta)
+    @test meta_gamma(Metacommunity(three_1, meta), 1).diversity[1] ≈ meta_gamma(Metacommunity(three, meta), 1).diversity[1]
+    @test_warn "Abundances not normalised" meta_gamma(Metacommunity(three_1, meta), 0)
     @test_warn "Abundances not normalised" Metacommunity(ab3, meta2)
 
     @test gettypes(meta) == ms
