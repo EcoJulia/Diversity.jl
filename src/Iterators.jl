@@ -1,6 +1,6 @@
 using Diversity.API
 
-import Base.IteratorSize, Base.length, Base.IteratorEltype, Base.eltype
+import Base.IteratorSize, Base.length, Base.IteratorEltype, Base.HasEltype, Base.HasLength, Base.eltype
 
 abstract type AbstractIterator{M <: AbstractMetacommunity} end
 
@@ -33,7 +33,7 @@ function iterate(ti::TypeIterator, state = 1)
     return ti.viewfn(ti.metacommunity, state), state + 1
 end
 
-function IteratorSize(ti::Type{TypeIterator})
+function IteratorSize(::Type{<:TypeIterator})
     return HasLength()
 end
 
@@ -41,7 +41,7 @@ function length(ti::TypeIterator)
     return counttypes(ti.metacommunity)
 end
 
-function IteratorEltype(ti::Type{TypeIterator})
+function IteratorEltype(::Type{<:TypeIterator})
     return HasEltype()
 end
 
@@ -79,7 +79,7 @@ function iterate(si::SubcommunityIterator, state = 1)
     return si.viewfn(si.metacommunity, state), state + 1
 end
 
-function IteratorSize(si::Type{SubcommunityIterator})
+function IteratorSize(::Type{<:SubcommunityIterator})
     return HasLength()
 end
 
@@ -87,7 +87,7 @@ function length(si::SubcommunityIterator)
     return countsubcommunities(si.metacommunity)
 end
 
-function IteratorEltype(si::Type{SubcommunityIterator})
+function IteratorEltype(::Type{<:SubcommunityIterator})
     return HasEltype()
 end
 
