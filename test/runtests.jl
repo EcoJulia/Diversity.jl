@@ -1,5 +1,6 @@
 using Random
 using Test
+using Diversity
 
 # Identify files in test/ that are testing matching files in src/
 #  - src/Source.jl will be matched by test/test_Source.jl
@@ -73,6 +74,7 @@ end
 Random.seed!(1234)
 
 @testset "Diversity.jl" begin
+    @test isfile(Diversity.path("runtests.jl"))
     println()
     @info "Running tests for files:"
     for t in testbase

@@ -110,7 +110,7 @@ end
 _getdiversityname(::Taxonomy) = "Taxonomy"
 
 """
-    GeneralTypes{FP, M}
+    GeneralTypes{FP, M, LABELS}
 
 An AbstractTypes subtype with a general similarity matrix. This
 subtype simply holds a matrix with similarities between individuals.
@@ -121,7 +121,8 @@ subtype simply holds a matrix with similarities between individuals.
 individuals.
 """
 struct GeneralTypes{FP <: AbstractFloat,
-                    M <: AbstractMatrix{FP}} <: Diversity.API.AbstractTypes
+                    M <: AbstractMatrix{FP},
+                    LABELS <: AbstractVector} <: Diversity.API.AbstractTypes
     """
         z
 
@@ -133,30 +134,13 @@ struct GeneralTypes{FP <: AbstractFloat,
     """
         names
 
-    Optional vector of type names.
+    Vector of type names.
     """
-    names::Vector{String}
+    names::LABELS
 
-    """
-    # Constructor for GeneralTypes
+    function GeneralTypes(zmatrix::M, names::LABELS) where
+        {FP <: AbstractFloat, M <: AbstractMatrix{FP}, LABELS <: AbstractVector}
 
-    Creates an instance of the GeneralTypes class, with an arbitrary
-    similarity matrix.
-    """
-    function GeneralTypes(zmatrix::M) where {FP <: AbstractFloat,
-                                             M <: AbstractMatrix{FP}}
-        size(zmatrix, 1) == size(zmatrix, 2) ||
-            throw(DimensionMismatch("Similarity matrix is not square"))
-
-        minimum(zmatrix) ≥ 0 || throw(DomainError(minimum(zmatrix),
-                                      "Similarities must be ≥ 0"))
-        maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
-
-        new{FP, M}(zmatrix, map(x -> "$x", 1:size(zmatrix, 1)))
-    end
-
-    function GeneralTypes(zmatrix::M, names::Vector{String}) where
-        {FP <: AbstractFloat, M <: AbstractMatrix{FP}}
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
@@ -167,12 +151,23 @@ struct GeneralTypes{FP <: AbstractFloat,
         length(names) == size(zmatrix, 1) ||
             error("Species name vector does not match similarity matrix")
 
-        new{FP, M}(zmatrix, names)
-    end
+        return new{FP, M, LABELS}(zmatrix, names)
+    end    
 end
 
-function floattypes(::GeneralTypes{FP, M}) where {FP <: AbstractFloat,
-                                                  M <: AbstractMatrix{FP}}
+"""
+    Constructor for GeneralTypes
+
+Creates an instance of the GeneralTypes class, with an arbitrary
+similarity matrix.
+"""
+function GeneralTypes(zmatrix::M) where {FP <: AbstractFloat,
+                                         M <: AbstractMatrix{FP}}
+    ax = collect(axes(zmatrix, 1))
+    return GeneralTypes(zmatrix, ax)
+end
+
+function floattypes(::GeneralTypes{FP}) where {FP <: AbstractFloat}
     return Set([FP])
 end
 

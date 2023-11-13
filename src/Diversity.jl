@@ -129,6 +129,7 @@ end
 @static if !isdefined(Base, :get_extension)
 function __init__()
     @require Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149" include("../ext/DiversityPhyloExt.jl")
+    @require AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9" include("../ext/DiversityAxisArraysExt.jl")
 end
 end
 
