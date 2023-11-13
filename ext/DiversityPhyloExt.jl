@@ -1,36 +1,25 @@
-using ..Phylo
+module DiversityPhyloExt
+
+isdefined(Base, :get_extension) ? (using Phylo) : (using ..Phylo)
+import Diversity: AbstractPhyloTypes, PhyloBranches
 using Diversity
 using Diversity.API
 using Statistics
 using AxisArrays
 
-abstract type AbstractPhyloTypes{Tree <: AbstractTree} <:
-    Diversity.API.AbstractTypes
-end
-
 import Diversity.API: _addedoutputcols
-function _addedoutputcols(::AbstractPhyloTypes{TS}) where
+function _addedoutputcols(::Diversity.AbstractPhyloTypes{TS}) where
     {LABEL, RT, NL, N, B, TS <: TreeSet{LABEL, RT, NL, N, B, <: AbstractTree}}
     return Dict{Symbol, Type}(:treename => LABEL)
 end
 
 import Diversity.API: _getaddedoutput
-function _getaddedoutput(pt::AbstractPhyloTypes{TS}) where
+function _getaddedoutput(pt::Diversity.AbstractPhyloTypes{TS}) where
     {LABEL, RT, NL, N, B, TS <: TreeSet{LABEL, RT, NL, N, B, <: AbstractTree}}
     return Dict{Symbol, LABEL}(:treename => first(gettreenames(pt.tree)))
 end
 
-struct PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
-    tree::Tree
-    nleaf::Int64
-    nancestral::Int64
-    leafnames::Vector{String}
-    ancestralnames::Vector{String}
-    ancestralmatrix::Matrix{Float64}
-    Zmatrix::Matrix{Float64}
-end
-
-function PhyloBranches(tree::Tree) where Tree <: AbstractTree
+function Diversity.PhyloBranches(tree::Tree) where Tree <: AbstractTree
     leafnames = [getnodename(tree, node)
                  for node in traversal(tree, preorder) if isleaf(tree, node)]
     nleaf = length(leafnames)
@@ -78,31 +67,31 @@ function PhyloBranches(tree::Tree) where Tree <: AbstractTree
         end
     end
     
-    return PhyloBranches{Tree}(tree, nleaf, nancestral, leafnames,
-                               ancestralnames, ancestralmatrix, Zmatrix)
+    return Diversity.PhyloBranches{Tree}(tree, nleaf, nancestral, leafnames,
+                                         ancestralnames, ancestralmatrix, Zmatrix)
 end
 
-function PhyloBranches(treeset::TS) where TS <: TreeSet
+function Diversity.PhyloBranches(treeset::TS) where TS <: TreeSet
     ntrees(treeset) == 1 ||
         error("Can currently only handle one tree in a PhyloSet")
-    pt = PhyloBranches(first(treeset))
-    return PhyloBranches{TS}(treeset, pt.nleaf, pt.nancestral,
-                             pt.leafnames, pt.ancestralnames,
-                             pt.ancestralmatrix, pt.Zmatrix)
+    pt = Diversity.PhyloBranches(first(treeset))
+    return Diversity.PhyloBranches{TS}(treeset, pt.nleaf, pt.nancestral,
+                                       pt.leafnames, pt.ancestralnames,
+                                       pt.ancestralmatrix, pt.Zmatrix)
 end
 
 import Diversity.API: _gettypenames
-function _gettypenames(phy::PhyloBranches, raw::Bool)
+function _gettypenames(phy::Diversity.PhyloBranches, raw::Bool)
     return raw ? phy.leafnames : phy.ancestralnames
 end
 
 import Diversity.API: _counttypes
-function _counttypes(phy::PhyloBranches, raw::Bool)
+function _counttypes(phy::Diversity.PhyloBranches, raw::Bool)
     return raw ? phy.nleaf : phy.nancestral
 end
 
 import Diversity.API: _calcabundance
-function _calcabundance(phy::PhyloBranches,
+function _calcabundance(phy::Diversity.PhyloBranches,
                         raw::AbstractMatrix{<: AbstractFloat})
     processed = phy.ancestralmatrix * raw
     scale = sum(processed)
@@ -111,16 +100,18 @@ function _calcabundance(phy::PhyloBranches,
 end
 
 import Diversity.API: _calcsimilarity
-function _calcsimilarity(phy::PhyloBranches, scale::Real)
+function _calcsimilarity(phy::Diversity.PhyloBranches, scale::Real)
     return phy.Zmatrix .* scale
 end
 
 import Diversity.API: _calcordinariness
-function _calcordinariness(phy::PhyloBranches,
+function _calcordinariness(phy::Diversity.PhyloBranches,
                            processed::AbstractMatrix{<: AbstractFloat},
                            scale::Real)
     return (phy.Zmatrix * processed) .* scale
 end
 
 import Diversity.API: _getdiversityname
-_getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
+_getdiversityname(::Diversity.PhyloBranches) = "Phylogenetic Branch"
+
+end
