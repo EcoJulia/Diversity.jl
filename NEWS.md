@@ -1,5 +1,8 @@
 # NEWS
 
+- v0.5.9
+  - Use extensions for Julia 1.9+
+  - Allow AxisArrays to name types
 - v0.5.8
   - Add in Pielou diversity measures
   - Add docs for PRs
