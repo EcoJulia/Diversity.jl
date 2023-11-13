@@ -24,6 +24,7 @@ DiversityAxisArraysExt = "AxisArrays"
 
 [compat]
 AxisArrays = "0.4"
+CSV = "0.10"
 DataFrames = "0.21, 0.22, 1.0"
 Distances = "0.10"
 EcoBase = "0.1"
@@ -34,18 +35,21 @@ Phylo = "0.4"
 RCall = "0.13"
 RecipesBase = "0.6, 0.7, 0.8, 1"
 Requires = "^1"
+SpatialEcology = "0.9"
 Statistics = "1.8"
 StatsBase = "0.32, 0.33, 0.34"
 julia = "1.8"
 
 [extras]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149"
 RCall = "6f49c342-dc21-5d91-9882-a32aef131414"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SpatialEcology = "348f2d5d-71a3-5ad4-b565-8af070f99681"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["AxisArrays", "Distances", "Phylo", "Random", "RCall", "StatsBase", "Test"]
+test = ["AxisArrays", "CSV", "Distances", "Phylo", "Random", "RCall", "SpatialEcology", "StatsBase", "Test"]

@@ -1,5 +1,6 @@
 using Diversity.API
 using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
+using EcoBase: thingkind, thingkindplural, placekind, placekindplural
 
 """
     gettypes(m::AbstractAssemblage)
@@ -201,5 +202,7 @@ import Base.show
 function show(io::IO, mc::AbstractMetacommunity)
     sp = createsummaryline(gettypenames(mc))
     si = createsummaryline(getsubcommunitynames(mc))
-    println(io, "$(typeof(mc)) with $(counttypes(mc)) species in $(countsubcommunities(mc)) sites measuring $(getdiversityname(gettypes(mc))) diversity.\n\nSpecies names:\n$(sp)\n\nSite names:\n$(si)")
+    tk = counttypes(mc) > 1 ? thingkind(mc) : thingkindplural(mc)
+    pk = countsubcommunities(mc) > 1 ? placekind(mc) : placekindplural(mc)
+    println(io, "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(tk)) names:\n$(sp)\n\n$(titlecase(pk)) names:\n$(si)")
 end
