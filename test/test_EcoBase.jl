@@ -74,6 +74,7 @@ end
     rich3 = metadiv(Gamma(amp3), 0)
     @test rich2.diversity[1] == rich3.diversity[1] == meta_gamma(Metacommunity(amp3), 0).diversity[1]
     @test getaddedoutput(amph) === nothing
+    @test getaddedoutput(gettypes(amph)) === nothing
 end
 
 end

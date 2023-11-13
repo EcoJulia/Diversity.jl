@@ -106,7 +106,7 @@ Returns the contents of any additional columns to be added to outputs.
 """
 function getaddedoutput end
 
-getaddedoutput(t::AbstractTypes) = _getaddedoutput(t)
+getaddedoutput(t::AbstractThings) = _getaddedoutput(t)
 getaddedoutput(m::AbstractAssemblage) = _getaddedoutput(_gettypes(m))
 
 """
