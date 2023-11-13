@@ -36,6 +36,9 @@ manyweights /= sum(manyweights);
     @test noccurring(fmc, 1) == numspecies - 1
     @test nthings(fmc) == numspecies
     @test nplaces(fmc) == numcommunities
+    coord = coordinates(getpartition(Metacommunity(reshape(1:81, 9, 9))))
+    @test coord[1, 1] ≈ 1.0
+    @test coord[9, 2] ≈ 3.0
 end
 
 @testset "SpatialEcology.Assemblage" begin
@@ -69,7 +72,8 @@ end
     @test richness(amp3) == richness(amp2)
     rich2 = metadiv(Gamma(amp2), 0)
     rich3 = metadiv(Gamma(amp3), 0)
-    @test rich2.diversity[1] == rich3.diversity[1]
+    @test rich2.diversity[1] == rich3.diversity[1] == meta_gamma(Metacommunity(amp3), 0).diversity[1]
+    @test getaddedoutput(amph) === nothing
 end
 
 end
