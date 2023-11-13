@@ -1,7 +1,7 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetom Heida"]
-version = "0.5.9"
+version = "0.5.10"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
