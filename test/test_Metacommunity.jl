@@ -9,6 +9,9 @@ using Missings
 three = [0.3
          0.3
          0.4]
+three_1 = [3
+           3
+           4]
 oc_count = Onecommunity()
 sim = [1.0 0 0; 1.0 1.0 0.0; 1.0 1.0 1.0]
 ms = GeneralTypes(sim)
@@ -21,6 +24,9 @@ sc = Subcommunities(size(ab3, 2))
 meta2 = Metacommunity(abf, sp, sc)
 g2 = GeneralTypes(Matrix(1.0I, 2, 2))
 @testset "Metacommunity" begin
+    @test_warn "Abundances not normalised" Metacommunity(three_1, meta)
+    @test_warn "Abundances not normalised" Metacommunity(ab3, meta2)
+
     @test gettypes(meta) == ms
     @test getpartition(meta) == oc_count
     @test ismissing(meta.ordinariness)
