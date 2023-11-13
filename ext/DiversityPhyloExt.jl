@@ -1,12 +1,11 @@
-using ..Phylo
+module DiversityPhyloExt
+
+isdefined(Base, :get_extension) ? (using Phylo) : (using ..Phylo)
+import Diversity: AbstractPhyloTypes
+import Diversity: PhyloBranches
 using Diversity
 using Diversity.API
 using Statistics
-using AxisArrays
-
-abstract type AbstractPhyloTypes{Tree <: AbstractTree} <:
-    Diversity.API.AbstractTypes
-end
 
 import Diversity.API: _addedoutputcols
 function _addedoutputcols(::AbstractPhyloTypes{TS}) where
@@ -18,16 +17,6 @@ import Diversity.API: _getaddedoutput
 function _getaddedoutput(pt::AbstractPhyloTypes{TS}) where
     {LABEL, RT, NL, N, B, TS <: TreeSet{LABEL, RT, NL, N, B, <: AbstractTree}}
     return Dict{Symbol, LABEL}(:treename => first(gettreenames(pt.tree)))
-end
-
-struct PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
-    tree::Tree
-    nleaf::Int64
-    nancestral::Int64
-    leafnames::Vector{String}
-    ancestralnames::Vector{String}
-    ancestralmatrix::Matrix{Float64}
-    Zmatrix::Matrix{Float64}
 end
 
 function PhyloBranches(tree::Tree) where Tree <: AbstractTree
@@ -124,3 +113,5 @@ end
 
 import Diversity.API: _getdiversityname
 _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
+
+end

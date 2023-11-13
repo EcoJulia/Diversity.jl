@@ -19,7 +19,7 @@
     "related_identifiers": [
         {
             "scheme": "url",
-            "identifier": "https://github.com/richardreeve/Diversity.jl",
+            "identifier": "https://github.com/EcoJulia/Diversity.jl",
             "relation": "isIdenticalTo"
         }
     ],
