@@ -59,7 +59,7 @@ end
     @test typeof(qD(manyweights[:,1], 0)) <: AbstractFloat
     @test typeof(qD(manyweights[:,1], [0])) <: Vector
 
-    for i in 1:size(manyweights, 2)
+    for i in axes(manyweights, 2)
         @test qD(manyweights[:,i], [0]) ≈ numspecies * ones((1, size(manyweights[:,i], 2)))
     end
 end
@@ -70,7 +70,7 @@ end
     @test qDZ(weights, [0, 1, 2, 3, Inf], Z1) ≈ [1, 1, 1, 1, 1]
 
 
-    for i in 1:size(manyweights, 2)
+    for i in axes(manyweights, 2)
         @test qDZ(manyweights[:,i], [0, 1, 2, Inf],
                   ones((size(manyweights[:,i], 1),
                         size(manyweights[:,i], 1)))) ≈ ones((4, size(manyweights[:,i], 2)))

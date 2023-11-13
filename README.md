@@ -5,7 +5,7 @@
 | **Documentation** | **Build Status** | **DOI** |
 |:-----------------:|:--------------------------:|:--------------------------:|
 | [![stable docs][docs-stable-img]][docs-stable-url] | [![build tests][actions-img]][actions-url] [![JuliaNightly][nightly-img]][nightly-url] | [![Zenodo][zenodo-badge]][zenodo-url] |
-| [![dev docs][docs-dev-img]][docs-dev-url] | [![codecov][codecov-img]][codecov-url] [![coveralls][coveralls-img]][coveralls-url] | |
+| [![dev docs][docs-dev-img]][docs-dev-url] | [![codecov][codecov-img]][codecov-url] | |
 
 ## Summary
 
@@ -31,22 +31,23 @@ also recently revised, and may need further improvements.
 
 ## Installation
 
-The package is registered in the `General` registry on v1.x and so can be installed with `add`. For example on Julia v1.6:
+The package is registered in the `General` registry on v1.x and so can be
+installed with `add`. For example on Julia v1.8:
 
 ```julia
-(@v1.6) pkg> add Diversity
+(@v1.8) pkg> add Diversity
     Resolving package versions...
-    Updating `~/.julia/environments/v1.6/Project.toml`
-  [d3d5718d] + Diversity v0.5.5
-    Updating `~/.julia/environments/v1.6/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.5
+    Updating `~/.julia/environments/v1.8/Project.toml`
+  [d3d5718d] + Diversity v0.5.8
+    Updating `~/.julia/environments/v1.8/Manifest.toml`
+  [d3d5718d] + Diversity v0.5.8
   
-(@v1.6) pkg>
+(@v1.8) pkg>
 ```
 
 ## Project Status
 
-The package is confirmed to work against the current LTS Julia v1.4 release
+The package is confirmed to work against Julia v1.8 and the current release
 and the latest release on Linux, macOS, and Windows. It is also tested
 against nightly.
 
@@ -249,9 +250,6 @@ The online documentation for the latest dev (unreleased) branch is
 
 [nightly-img]: https://github.com/EcoJulia/Diversity.jl/actions/workflows/nightly.yaml/badge.svg
 [nightly-url]: https://github.com/EcoJulia/Diversity.jl/actions/workflows/nightly.yaml
-
-[coveralls-img]: https://img.shields.io/coveralls/EcoJulia/Diversity.jl.svg
-[coveralls-url]: https://coveralls.io/r/EcoJulia/Diversity.jl?branch=dev
 
 [codecov-img]: https://codecov.io/gh/EcoJulia/Diversity.jl/branch/dev/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/EcoJulia/Diversity.jl

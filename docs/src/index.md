@@ -22,27 +22,27 @@ extract any diversity measure at a series of scales.
 
 Accessing the main functionality in the package is simple:
 
-```jldoctest
+```julia-repl
 julia> # Load the package into R
        using Diversity
 
 julia> # Example population
        pop = [1 1 0; 2 0 0; 3 1 4];
 
-julia> pop = pop / sum(pop);
+julia> pop = pop ./ sum(pop);
 
 julia> # Create Metacommunity object
        meta = Metacommunity(pop);
 
 julia> diversities = norm_meta_alpha(meta, [0, 1, 2, Inf])
 4×8 DataFrame
-│ Row │ div_type │ measure         │ q       │ type_level │ type_name │ partition_level │ partition_name │ diversity │
-│     │ String   │ String          │ Float64 │ String     │ String    │ String          │ String         │ Float64   │
-├─────┼──────────┼─────────────────┼─────────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
-│ 1   │ Unique   │ NormalisedAlpha │ 0.0     │ types      │           │ metacommunity   │                │ 2.16667   │
-│ 2   │ Unique   │ NormalisedAlpha │ 1.0     │ types      │           │ metacommunity   │                │ 1.86121   │
-│ 3   │ Unique   │ NormalisedAlpha │ 2.0     │ types      │           │ metacommunity   │                │ 1.63636   │
-│ 4   │ Unique   │ NormalisedAlpha │ Inf     │ types      │           │ metacommunity   │                │ 1.0       │
+ Row │ div_type  measure          q        type_level  type_name  partition_level  partition_name  diversity 
+     │ String    String           Float64  String      String     String           String          Float64   
+─────┼───────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ Unique    NormalisedAlpha      0.0  types                  metacommunity                      2.16667
+   2 │ Unique    NormalisedAlpha      1.0  types                  metacommunity                      1.86121
+   3 │ Unique    NormalisedAlpha      2.0  types                  metacommunity                      1.63636
+   4 │ Unique    NormalisedAlpha    Inf    types                  metacommunity                      1.0
 
 julia> Z = [1.0 0 0; 0 1 1; 1 1 1];
 
@@ -52,20 +52,27 @@ julia> rho = RawRho(meta_z);
 
 julia> redundancies = subdiv(rho, 2)
 3×8 DataFrame
-│ Row │ div_type    │ measure │ q     │ type_level │ type_name │ partition_level │ partition_name │ diversity │
-│     │ String      │ String  │ Int64 │ String     │ String    │ String          │ String         │ Float64   │
-├─────┼─────────────┼─────────┼───────┼────────────┼───────────┼─────────────────┼────────────────┼───────────┤
-│ 1   │ Arbitrary Z │ RawRho  │ 2     │ types      │           │ subcommunity    │ 1              │ 2.0       │
-│ 2   │ Arbitrary Z │ RawRho  │ 2     │ types      │           │ subcommunity    │ 2              │ 3.0       │
-│ 3   │ Arbitrary Z │ RawRho  │ 2     │ types      │           │ subcommunity    │ 3              │ 3.0       │
+ Row │ div_type     measure  q      type_level  type_name  partition_level  partition_name  diversity 
+     │ String       String   Int64  String      String     String           String          Float64   
+─────┼────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ Arbitrary Z  RawRho       2  types                  subcommunity     1                     2.0
+   2 │ Arbitrary Z  RawRho       2  types                  subcommunity     2                     3.0
+   3 │ Arbitrary Z  RawRho       2  types                  subcommunity     3                     3.0
 ```
 
 ```@contents
 ```
 
 ```@autodocs
-Modules = [Diversity]
+Modules = [Diversity, Diversity.ShortNames]
 Private = false
+```
+
+Private functions in module Diversity:
+
+```@autodocs
+Modules = [Diversity]
+Public = false
 ```
 
 ```@index

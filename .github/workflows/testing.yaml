@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         julia-version:
-          - '1.4'
+          - '1.8'
           - '1'
         os:
           - ubuntu-latest
@@ -30,7 +30,7 @@ jobs:
       fail-fast: false
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Set up julia
       uses: julia-actions/setup-julia@v1
       with:
@@ -38,25 +38,21 @@ jobs:
         arch: ${{ matrix.arch }}
     - name: Install R
       if: matrix.os == 'macOS-latest'
-      uses: r-lib/actions/setup-r@master
+      uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ matrix.R-version }}
-    - name: Install R packages
+    - name: Install ape, vegan and rdiversity
       if: matrix.os == 'macOS-latest'
       run: |
         install.packages("ape", repos="http://cran.r-project.org")
+        install.packages("vegan", repos="http://cran.r-project.org")
         install.packages("rdiversity", repos="http://cran.r-project.org")
       shell: R --vanilla --file={0}
     - name: Build package
-      uses: julia-actions/julia-buildpkg@master
+      uses: julia-actions/julia-buildpkg@v1
     - name: Running
-      uses: julia-actions/julia-runtest@master
+      uses: julia-actions/julia-runtest@v1
     - name: Process coverage
       uses: julia-actions/julia-processcoverage@v1
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./lcov.info
     - name: Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
