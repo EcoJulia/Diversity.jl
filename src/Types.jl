@@ -119,23 +119,14 @@ subtype simply holds a matrix with similarities between individuals.
 
 - `z` A two-dimensional matrix representing similarity between
 individuals.
+
+- `names` Vector of type names.
+
 """
 struct GeneralTypes{FP <: AbstractFloat,
                     M <: AbstractMatrix{FP},
                     LABELS <: AbstractVector} <: Diversity.API.AbstractTypes
-    """
-        z
-
-    A two-dimensional matrix representing similarity between
-    individuals.
-    """
     z::M
-
-    """
-        names
-
-    Vector of type names.
-    """
     names::LABELS
 
     function GeneralTypes(zmatrix::M, names::LABELS) where
@@ -156,10 +147,11 @@ struct GeneralTypes{FP <: AbstractFloat,
 end
 
 """
-    Constructor for GeneralTypes
+    GeneralTypes(zmatrix::M)
+    GeneralTypes(zmatrix::M, names::LABELS)
 
-Creates an instance of the GeneralTypes class, with an arbitrary
-similarity matrix.
+Constructors for GeneralTypes. Creates an instance of the GeneralTypes class,
+with an arbitrary `zmatrix` similarity matrix and an optional vector of type `names`.
 """
 function GeneralTypes(zmatrix::M) where {FP <: AbstractFloat,
                                          M <: AbstractMatrix{FP}}
