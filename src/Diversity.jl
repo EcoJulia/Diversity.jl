@@ -93,9 +93,6 @@ export RawAlpha, NormalisedAlpha
 export RawBeta, NormalisedBeta, RawRho, NormalisedRho
 export Gamma
 
-include("Genetics.jl")
-export geneDistance
-
 """
     Diversity.ShortNames submodule
 
@@ -133,9 +130,15 @@ end
 function __init__()
     @require Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149" include("../ext/DiversityPhyloExt.jl")
     @require AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9" include("../ext/DiversityAxisArraysExt.jl")
+    @require StringDistances = "88034a9c-02f8-509d-84a9-84ec65e18404"
+        @require BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
+            @require PopGenCore = "45b36091-5ef7-4b08-b448-aaf24c763a14"
+                @require PopGen = "af524d12-c74b-11e9-22a8-3b091653023f"
+                    include("../ext/DiversityGeneticsExt.jl")
 end
 end
 
+# From Phylo
 abstract type AbstractPhyloTypes{Tree} <:
     Diversity.API.AbstractTypes
 end

@@ -1,6 +1,6 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
-author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetom Heida"]
+author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>", "Claire Harris", "Sonia Mitchell", "Isaac Peetom Heida"]
 version = "0.5.10"
 
 [deps]
@@ -15,15 +15,21 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [weakdeps]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
+BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149"
+PopGen = "af524d12-c74b-11e9-22a8-3b091653023f"
+PopGenCore = "45b36091-5ef7-4b08-b448-aaf24c763a14"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+StringDistances = "88034a9c-02f8-509d-84a9-84ec65e18404"
 
 [extensions]
-DiversityPhyloExt = "Phylo"
 DiversityAxisArraysExt = "AxisArrays"
+DiversityGeneticsExt = ["StringDistances", "BioSequences", "PopGen", "PopGenCore"]
+DiversityPhyloExt = "Phylo"
 
 [compat]
 AxisArrays = "0.4"
+BioSequences = "3"
 CSV = "0.10"
 DataFrames = "0.21, 0.22, 1.0"
 Distances = "0.10"
@@ -32,12 +38,15 @@ InteractiveUtils = "1.8"
 LinearAlgebra = "1.8"
 Missings = "0.4, 1.0"
 Phylo = "0.4"
+PopGen = "0.9"
+PopGenCore = "0.7"
 RCall = "0.13"
 RecipesBase = "0.6, 0.7, 0.8, 1"
 Requires = "^1"
 SpatialEcology = "0.9"
 Statistics = "1.8"
 StatsBase = "0.32, 0.33, 0.34"
+StringDistances = "0.11"
 julia = "1.8"
 
 [extras]
