@@ -16,6 +16,5 @@ makedocs(modules = [Diversity,
          sitename = "Diversity.jl")
 
 deploydocs(repo = "github.com/EcoJulia/Diversity.jl.git",
-           push_preview = true,
            devbranch = "dev",
-           devurl = "dev")
+           push_preview = true)

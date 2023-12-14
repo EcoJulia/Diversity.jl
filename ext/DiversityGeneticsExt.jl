@@ -1,8 +1,6 @@
 using Diversity
 using Diversity.API
 
-using PopGen
-import StringDistances
 import LinearAlgebra
 import BioSequences
 
@@ -11,7 +9,7 @@ abstract type AbstractGenetic <:
 end
 
 struct GeneticFASTA{GeneticData} <: Diversity.API.AbstractTypes where 
-    {GeneticData <: Vector{BioSequences.AminoAcidSequence}} 
+    {ACID <: Alphabet, GeneticData <: AbstractVector{<: BioSequence(ACID)}}
     dat::GeneticData
     ntypes::Int64
     Zmatrix::Matrix{Float64}
@@ -49,13 +47,13 @@ function GeneticType(dat::PopData)
     dist /= maximum(dist)
 
     # Calculate similarity matrix
-    Zmatrix = 1 .- dist
+    Zmatrix = 1.0 .- dist
 
     return GeneticVCF{PopData}(dat, ntypes, Zmatrix)
 end
 
 function GeneticType(dat::GeneticData) where 
-    {GeneticData <: Vector{BioSequences.AminoAcidSequence}} 
+    {ACID <: Alphabet, GeneticData <: AbstractVector{<: BioSequence(ACID)}}
     # Initialise objects
     ntypes = length(dat)
     output = zeros(Int64, ntypes, ntypes)
@@ -69,7 +67,7 @@ function GeneticType(dat::GeneticData) where
     dist /= maximum(dist)
 
     # Calculate similarity matrix
-    Zmatrix = 1 .- dist
+    Zmatrix = 1.0 .- dist
 
     return GeneticFASTA{GeneticData}(dat, ntypes, Zmatrix)
 end
