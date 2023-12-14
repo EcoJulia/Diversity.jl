@@ -18,7 +18,7 @@ not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. ```NormalisedAlpha()```), which are.
 We also provide functions to calculate appropriate
 ```subcommunityDiversity()``` and ```metacommunityDiversity()```
-values for each measure, a general ```diversity()``` function for
+values for each measure, and a general ```diversity()``` function to
 extract any diversity measure at a series of scales.
 """
 module Diversity
@@ -130,9 +130,17 @@ end
 function __init__()
     @require Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149" include("../ext/DiversityPhyloExt.jl")
     @require AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9" include("../ext/DiversityAxisArraysExt.jl")
+    @require StringDistances = "88034a9c-02f8-509d-84a9-84ec65e18404" begin
+        @require BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59" begin
+            @require PopGen = "af524d12-c74b-11e9-22a8-3b091653023f" begin
+                include("../ext/DiversityGeneticsExt.jl")
+            end
+        end
+    end
 end
 end
 
+# From Phylo
 abstract type AbstractPhyloTypes{Tree} <:
     Diversity.API.AbstractTypes
 end
