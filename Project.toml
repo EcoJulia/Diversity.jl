@@ -1,7 +1,7 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 author = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetom Heida"]
-version = "0.5.10"
+version = "0.5.11"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -31,7 +31,7 @@ EcoBase = "0.1"
 InteractiveUtils = "1.8"
 LinearAlgebra = "1.8"
 Missings = "0.4, 1.0"
-Phylo = "0.4"
+Phylo = "0.4, 0.5"
 RCall = "0.13"
 RecipesBase = "0.6, 0.7, 0.8, 1"
 Requires = "^1"
