@@ -8,8 +8,12 @@ on:
       - 'v*'
   pull_request:
 
+permissions:
+  actions: write
+  contents: read
+  
 jobs:
-  diversity-tests:
+  Diversity-tests:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -32,7 +36,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Set up julia
-      uses: julia-actions/setup-julia@v1
+      uses: julia-actions/setup-julia@v2
       with:
         version: ${{ matrix.julia-version }}
         arch: ${{ matrix.arch }}
@@ -48,6 +52,8 @@ jobs:
         install.packages("vegan", repos="http://cran.r-project.org")
         install.packages("rdiversity", repos="http://cran.r-project.org")
       shell: R --vanilla --file={0}
+    - name: Cache
+      uses: julia-actions/cache@v1
     - name: Build package
       uses: julia-actions/julia-buildpkg@v1
     - name: Running
@@ -55,4 +61,7 @@ jobs:
     - name: Process coverage
       uses: julia-actions/julia-processcoverage@v1
     - name: Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        verbose: true

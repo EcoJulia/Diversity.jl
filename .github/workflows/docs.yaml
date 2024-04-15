@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up julia
-        uses: julia-actions/setup-julia@v1
+        uses: julia-actions/setup-julia@v2
         with:
           version: '1'
           arch: x64
@@ -29,10 +29,10 @@ jobs:
             Pkg.instantiate()
             Pkg.add("Phylo")
             Pkg.add("Documenter")
-        shell: julia --project=docs/ --color=yes {0}
+        shell: julia --project=docs --color=yes {0}
       - name: Build and deploy
         run: |
-          julia --project=docs/ --color=yes docs/make.jl
+          julia --project=docs --color=yes docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
