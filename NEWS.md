@@ -1,8 +1,12 @@
 # NEWS
 
+- v0.5.12
+  - Move Phylo structs into extension
+- v0.5.11
+  - Update Phylo compat
 - v0.5.10
   - Use extensions for Julia 1.9+
-  - Allow AxisArrays to name types
+  - Allow AxisArrays to name types through extension
   - Improve testing
 - v0.5.9
   - Introduce Gower
