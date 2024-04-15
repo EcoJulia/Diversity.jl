@@ -16,13 +16,13 @@ struct UniqueTypes <: Diversity.API.AbstractTypes
 
     function UniqueTypes(num::Integer)
         num > 0 || error("Too few species")
-        new(num, map(x -> "$x", 1:num))
+        return new(num, map(x -> "$x", 1:num))
     end
 
     function UniqueTypes(names::Vector{String})
         num = length(names)
         num > 0 || error("Too few species")
-        new(num, names)
+        return new(num, names)
     end
 end
 
@@ -76,22 +76,22 @@ struct Taxonomy{FP <: AbstractFloat} <: Diversity.API.AbstractTypes
 
     function Taxonomy{FP}(speciesinfo::DataFrame,
                           taxa::Dict{Symbol, FP},
-                          typelabel::Symbol) where FP <: AbstractFloat
-        sort(describe(speciesinfo)[!,:variable]) == sort([keys(taxa)...]) ||
+                          typelabel::Symbol) where {FP <: AbstractFloat}
+        sort(describe(speciesinfo)[!, :variable]) == sort([keys(taxa)...]) ||
             error("Taxon labels do not match similarity values")
-        typelabel ∈ describe(speciesinfo)[!,:variable] ||
+        typelabel ∈ describe(speciesinfo)[!, :variable] ||
             error("$typelabel not found in DataFrame column names")
-        new{FP}(speciesinfo, taxa, typelabel)
+        return new{FP}(speciesinfo, taxa, typelabel)
     end
 end
 
 function Taxonomy(speciesinfo::DataFrame, taxa::Dict,
                   typelabel::Symbol = :Species)
-    Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
+    return Taxonomy{valtype(taxa)}(speciesinfo, taxa, typelabel)
 end
 
 import Diversity.API.floattypes
-function floattypes(::Taxonomy{FP}) where FP <: AbstractFloat
+function floattypes(::Taxonomy{FP}) where {FP <: AbstractFloat}
     return Set([FP])
 end
 
@@ -100,11 +100,11 @@ function _counttypes(tax::Taxonomy, ::Bool)
 end
 
 function _gettypenames(tax::Taxonomy, ::Bool)
-    return tax.speciesinfo[!,tax.typelabel]
+    return tax.speciesinfo[!, tax.typelabel]
 end
 
 function _calcsimilarity(::Taxonomy, ::Real)
-    error("Can't generate a taxonomic similarity matrix yet")
+    return error("Can't generate a taxonomic similarity matrix yet")
 end
 
 _getdiversityname(::Taxonomy) = "Taxonomy"
@@ -129,21 +129,22 @@ struct GeneralTypes{FP <: AbstractFloat,
     z::M
     names::LABELS
 
-    function GeneralTypes(zmatrix::M, names::LABELS) where
-        {FP <: AbstractFloat, M <: AbstractMatrix{FP}, LABELS <: AbstractVector}
-
+    function GeneralTypes(zmatrix::M,
+                          names::LABELS) where
+             {FP <: AbstractFloat, M <: AbstractMatrix{FP},
+              LABELS <: AbstractVector}
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
         minimum(zmatrix) ≥ 0 || throw(DomainError(minimum(zmatrix),
-                                      "Similarities must be ≥ 0"))
+                          "Similarities must be ≥ 0"))
         maximum(zmatrix) ≤ 1 || @warn "Similarity matrix has values above 1"
 
         length(names) == size(zmatrix, 1) ||
             error("Species name vector does not match similarity matrix")
 
         return new{FP, M, LABELS}(zmatrix, names)
-    end    
+    end
 end
 
 """

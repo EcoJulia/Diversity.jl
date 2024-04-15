@@ -2,46 +2,46 @@ using EcoBase: AbstractAssemblage
 using Diversity.ShortNames
 
 function norm_sub_alpha(meta::AbstractAssemblage, qs)
-    subdiv(ᾱ(meta), qs)
+    return subdiv(ᾱ(meta), qs)
 end
 function raw_sub_alpha(meta::AbstractAssemblage, qs)
-    subdiv(α(meta), qs)
+    return subdiv(α(meta), qs)
 end
 function norm_sub_beta(meta::AbstractAssemblage, qs)
-    subdiv(β̄(meta), qs)
+    return subdiv(β̄(meta), qs)
 end
 function raw_sub_beta(meta::AbstractAssemblage, qs)
-    subdiv(β(meta), qs)
+    return subdiv(β(meta), qs)
 end
 function norm_sub_rho(meta::AbstractAssemblage, qs)
-    subdiv(ρ̄(meta), qs)
+    return subdiv(ρ̄(meta), qs)
 end
 function raw_sub_rho(meta::AbstractAssemblage, qs)
-    subdiv(ρ(meta), qs)
+    return subdiv(ρ(meta), qs)
 end
 function sub_gamma(meta::AbstractAssemblage, qs)
-    subdiv(Γ(meta), qs)
+    return subdiv(Γ(meta), qs)
 end
 function norm_meta_alpha(meta::AbstractAssemblage, qs)
-    metadiv(ᾱ(meta), qs)
+    return metadiv(ᾱ(meta), qs)
 end
 function raw_meta_alpha(meta::AbstractAssemblage, qs)
-    metadiv(α(meta), qs)
+    return metadiv(α(meta), qs)
 end
 function norm_meta_beta(meta::AbstractAssemblage, qs)
-    metadiv(β̄(meta), qs)
+    return metadiv(β̄(meta), qs)
 end
 function raw_meta_beta(meta::AbstractAssemblage, qs)
-    metadiv(β(meta), qs)
+    return metadiv(β(meta), qs)
 end
 function norm_meta_rho(meta::AbstractAssemblage, qs)
-    metadiv(ρ̄(meta), qs)
+    return metadiv(ρ̄(meta), qs)
 end
 function raw_meta_rho(meta::AbstractAssemblage, qs)
-    metadiv(ρ(meta), qs)
+    return metadiv(ρ(meta), qs)
 end
 function meta_gamma(meta::AbstractAssemblage, qs)
-    metadiv(Γ(meta), qs)
+    return metadiv(Γ(meta), qs)
 end
 
 """

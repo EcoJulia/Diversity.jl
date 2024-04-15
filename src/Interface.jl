@@ -18,7 +18,7 @@ Returns the AbstractPartition component of the metacommunity.
 
 """
 function getpartition(m::AbstractAssemblage)
-        return _getpartition(m)
+    return _getpartition(m)
 end
 
 """
@@ -192,10 +192,10 @@ function calcsimilarity(t::AbstractTypes, scale::Real)
 end
 
 function createsummaryline(vec::AbstractVector{<:AbstractString})
-    linefunc(vec) = mapreduce(x->x*", ", *, vec[1:(end-1)])*vec[end]
+    linefunc(vec) = mapreduce(x -> x * ", ", *, vec[1:(end - 1)]) * vec[end]
     length(vec) == 1 && return vec[1]
     length(vec) < 6 && return linefunc(vec)
-    linefunc(vec[1:3])*"..."*linefunc(vec[(end-1):end])
+    return linefunc(vec[1:3]) * "..." * linefunc(vec[(end - 1):end])
 end
 
 import Base.show
@@ -204,5 +204,6 @@ function show(io::IO, mc::AbstractMetacommunity)
     si = createsummaryline(getsubcommunitynames(mc))
     tk = counttypes(mc) > 1 ? thingkind(mc) : thingkindplural(mc)
     pk = countsubcommunities(mc) > 1 ? placekind(mc) : placekindplural(mc)
-    println(io, "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(tk)) names:\n$(sp)\n\n$(titlecase(pk)) names:\n$(si)")
+    return println(io,
+                   "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(tk)) names:\n$(sp)\n\n$(titlecase(pk)) names:\n$(si)")
 end

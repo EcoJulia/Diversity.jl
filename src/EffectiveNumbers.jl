@@ -20,10 +20,10 @@ is 1, so this is just the arithmetic mean.
 function powermean end
 function powermean(values::V1, order::R = 1,
                    weights::V2 = fill!(similar(values), 1)) where
-    {R <: Real, FP <: AbstractFloat,
-     V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
+         {R <: Real, FP <: AbstractFloat,
+          V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
     length(values) == length(weights) ||
-    throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
+        throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
 
     # Check whether all weights are zero in group.
     # In that case we want to return a NaN
@@ -62,10 +62,10 @@ function powermean(values::V1, order::R = 1,
             s = zero(FP)
             for i in eachindex(values, weights)
                 @inbounds if weights[i] > eps(FP)
-                    s += weights[i] * values[i] ^ order
+                    s += weights[i] * values[i]^order
                 end
             end
-            return (s / sum(weights)) ^ (one(FP) / order)
+            return (s / sum(weights))^(one(FP) / order)
         end
     end
 end
@@ -74,14 +74,17 @@ end
 function powermean(values::V1,
                    orders::VR,
                    weights::V2 = fill!(similar(values), 1.0)) where
-    {R <: Real, VR <: AbstractVector{R},
-     FP <: AbstractFloat, V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
+         {R <: Real, VR <: AbstractVector{R},
+          FP <: AbstractFloat, V1 <: AbstractVector{FP},
+          V2 <: AbstractVector{FP}}
     return map(order -> powermean(values, order, weights), orders)
 end
 
 # This is the next most simple case - matrices with subcommunities, and an order or orders
-function powermean(values::M1, orders, weights::M2 = fill!(similar(values), 1)) where
-    {FP <: AbstractFloat, M1 <: AbstractMatrix{FP}, M2 <: AbstractMatrix{FP}}
+function powermean(values::M1, orders,
+                   weights::M2 = fill!(similar(values), 1)) where
+         {FP <: AbstractFloat, M1 <: AbstractMatrix{FP},
+          M2 <: AbstractMatrix{FP}}
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
                                 "must be the same size"))
@@ -108,15 +111,16 @@ population with given relative proportions.
 """
 function qD end
 function qD(asm::AbstractAssemblage, qs)
-    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    hassimilarity(asm) &&
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     countsubcommunities(asm) == 1 ||
-    throw(DimensionMismatch("Can only calculate diversity of a single community"))
+        throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getabundance(asm), qs .- 1, getabundance(asm))[1] .^ -1
+    return powermean(getabundance(asm), qs .- 1, getabundance(asm))[1] .^ -1
 end
 
-function qD(proportions::AbstractVector{<: Real}, qs)
-    qD(Metacommunity(proportions), qs)
+function qD(proportions::AbstractVector{<:Real}, qs)
+    return qD(Metacommunity(proportions), qs)
 end
 
 """
@@ -143,16 +147,17 @@ function qDZ end
 
 function qDZ(asm::AbstractAssemblage, qs)
     countsubcommunities(asm) == 1 ||
-    throw(DimensionMismatch("Can only calculate diversity of a single community"))
+        throw(DimensionMismatch("Can only calculate diversity of a single community"))
 
-    powermean(getordinariness!(asm), qs .- 1, getabundance(asm))[1] .^ -1
+    return powermean(getordinariness!(asm), qs .- 1, getabundance(asm))[1] .^ -1
 end
 
-function qDZ(proportions::AbstractVector{<: Real}, qs,
+function qDZ(proportions::AbstractVector{<:Real}, qs,
              sim::AbstractTypes = UniqueTypes(size(proportions, 1)))
-    qDZ(Metacommunity(proportions, sim), qs)
+    return qDZ(Metacommunity(proportions, sim), qs)
 end
 
-function qDZ(proportions::AbstractVector{<: Real}, qs, Z::AbstractMatrix{<: AbstractFloat})
-    qDZ(Metacommunity(proportions, GeneralTypes(Z)), qs)
+function qDZ(proportions::AbstractVector{<:Real}, qs,
+             Z::AbstractMatrix{<:AbstractFloat})
+    return qDZ(Metacommunity(proportions, GeneralTypes(Z)), qs)
 end

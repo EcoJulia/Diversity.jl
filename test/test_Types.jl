@@ -18,7 +18,7 @@ ms = GeneralTypes(sim)
     @test_throws DimensionMismatch GeneralTypes(convert(Matrix{Float64}, ab3))
 end
 
-tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
+tax = Taxonomy(DataFrame(Species = ["This", "That"]), Dict(:Species => 1.0))
 @testset "Taxonomy" begin
     @test counttypes(tax) == 2
     @test gettypenames(tax) == ["This", "That"]
@@ -26,18 +26,20 @@ tax = Taxonomy(DataFrame(Species=["This", "That"]), Dict(:Species=>1.0))
     @test Float64 ∈ floattypes(tax)
     @test_throws ErrorException calcsimilarity(tax, 1.0)
     # @test_throws ErrorException _calcordinariness(tax, abnorm, 1.0)
-    @test_throws ErrorException Taxonomy(DataFrame(Species=["This", "That"]),
-                                         Dict(:Species=>1.0, :Genus=>0.5))
-    @test_throws ErrorException Taxonomy(DataFrame(Genus=["This", "That"]),
-                                         Dict(:Genus=>1.0))
-    @test gettypenames(Taxonomy(DataFrame(Genus=["This", "That"]),
-                                Dict(:Genus=>1.0), :Genus)) == ["This", "That"]
+    @test_throws ErrorException Taxonomy(DataFrame(Species = ["This", "That"]),
+                                         Dict(:Species => 1.0, :Genus => 0.5))
+    @test_throws ErrorException Taxonomy(DataFrame(Genus = ["This", "That"]),
+                                         Dict(:Genus => 1.0))
+    @test gettypenames(Taxonomy(DataFrame(Genus = ["This", "That"]),
+                                Dict(:Genus => 1.0), :Genus)) ==
+          ["This", "That"]
 end
 
 @testset "Type names" begin
     @test gettypenames(Species(3)) == map(x -> "$x", 1:3)
     @test gettypenames(Species(["My species"])) == ["My species"]
-    @test gettypenames(GeneralTypes(Diagonal([1.0]), ["My species"])) == ["My species"]
+    @test gettypenames(GeneralTypes(Diagonal([1.0]), ["My species"])) ==
+          ["My species"]
     @test gettypenames(UniqueTypes(["One", "Two"])) == ["One", "Two"]
 end
 

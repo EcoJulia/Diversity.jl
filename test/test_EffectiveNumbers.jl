@@ -6,16 +6,17 @@ using Statistics
 using Diversity
 using Diversity: powermean
 
-numbers = [1.0, 2, 4, 8, 16];
-numspecies = 100;
-fragments = rand(numspecies);
-weights = rand(numspecies);
-weights /= sum(weights);
-Z1 = ones(typeof(weights[1]), (length(weights), length(weights)));
-numcommunities = 8;
-manyweights = rand(numspecies, numcommunities);
-manyweights *= Diagonal(reshape(mapslices(v -> 1. / sum(v), manyweights, dims=1),
-                                numcommunities));
+numbers = [1.0, 2, 4, 8, 16]
+numspecies = 100
+fragments = rand(numspecies)
+weights = rand(numspecies)
+weights /= sum(weights)
+Z1 = ones(typeof(weights[1]), (length(weights), length(weights)))
+numcommunities = 8
+manyweights = rand(numspecies, numcommunities)
+manyweights *= Diagonal(reshape(mapslices(v -> 1.0 / sum(v), manyweights,
+                                          dims = 1),
+                                numcommunities))
 
 # Simple power means - we no longer export these, but we should check
 # them anyway as everything relies on them
@@ -28,17 +29,18 @@ manyweights *= Diagonal(reshape(mapslices(v -> 1. / sum(v), manyweights, dims=1)
     @test powermean([1.0], 0.0, [1.0]) ≈ 1.0
     @test powermean(numbers, 0.0) ≈ 4.0
     @test powermean(numbers, [-Inf]) ≈ [1]
-    @test powermean(numbers, [1.0, -1.0]) ≈ [31.0/5.0, 80.0/31.0]
+    @test powermean(numbers, [1.0, -1.0]) ≈ [31.0 / 5.0, 80.0 / 31.0]
     @test powermean(numbers, Inf, [1.0, 1.0, 1.0, 1.0, 0.0]) ≈ 8
     @test isnan(powermean(numbers, 0.0, 0.0 * numbers))
 
     # Power mean with some random numbers
-    @test powermean(fragments, 0) ≈ prod(fragments .^ (1. / numspecies))
+    @test powermean(fragments, 0) ≈ prod(fragments .^ (1.0 / numspecies))
     @test powermean(fragments, 1) ≈ mean(fragments)
     @test powermean(fragments, Inf) ≈ maximum(fragments)
     @test powermean(fragments, 0, weights) ≈ prod(fragments .^ weights)
     @test powermean(fragments, 1, weights) ≈ sum(fragments .* weights)
-    @test powermean(manyweights, -1, manyweights) .^ -1 ≈ numspecies * ones(size(manyweights, 2))
+    @test powermean(manyweights, -1, manyweights) .^ -1 ≈
+          numspecies * ones(size(manyweights, 2))
 end
 
 @testset "qD" begin
@@ -46,9 +48,10 @@ end
     @test qD(weights, 0) ≈ mapreduce((x) -> x ≈ 0 ? 0 : 1, +, weights)
     @test qD(Metacommunity(weights), 0) == qD(weights, 0)
     @test qD(Metacommunity(weights, UniqueTypes(numspecies)), 0) ==
-        qD(weights, 0)
+          qD(weights, 0)
     @test_throws ErrorException qD(Metacommunity(weights,
-                                   GeneralTypes(rand(numspecies, numspecies))),
+                                                 GeneralTypes(rand(numspecies,
+                                                                   numspecies))),
                                    0)
     @test qD(weights, 1) ≈ prod(weights .^ -weights)
     @test qD(weights, 2) ≈ 1.0 / sum(weights .^ 2)
@@ -56,11 +59,12 @@ end
 
     @test qD(weights, [1, 2]) ≈ [qD(weights, 1), qD(weights, 2)]
 
-    @test typeof(qD(manyweights[:,1], 0)) <: AbstractFloat
-    @test typeof(qD(manyweights[:,1], [0])) <: Vector
+    @test typeof(qD(manyweights[:, 1], 0)) <: AbstractFloat
+    @test typeof(qD(manyweights[:, 1], [0])) <: Vector
 
     for i in axes(manyweights, 2)
-        @test qD(manyweights[:,i], [0]) ≈ numspecies * ones((1, size(manyweights[:,i], 2)))
+        @test qD(manyweights[:, i], [0]) ≈
+              numspecies * ones((1, size(manyweights[:, i], 2)))
     end
 end
 
@@ -69,11 +73,11 @@ end
     @test qDZ(weights, [1, 2]) ≈ qD(weights, [1, 2])
     @test qDZ(weights, [0, 1, 2, 3, Inf], Z1) ≈ [1, 1, 1, 1, 1]
 
-
     for i in axes(manyweights, 2)
-        @test qDZ(manyweights[:,i], [0, 1, 2, Inf],
-                  ones((size(manyweights[:,i], 1),
-                        size(manyweights[:,i], 1)))) ≈ ones((4, size(manyweights[:,i], 2)))
+        @test qDZ(manyweights[:, i], [0, 1, 2, Inf],
+                  ones((size(manyweights[:, i], 1),
+                        size(manyweights[:, i], 1)))) ≈
+              ones((4, size(manyweights[:, i], 2)))
     end
 end
 

@@ -10,13 +10,13 @@ struct Subcommunities <: Diversity.API.AbstractPartition{Nothing}
 
     function Subcommunities(num::Integer)
         num > 0 || error("Too few subcommunities")
-        new(num, map(x -> "$x", 1:num))
+        return new(num, map(x -> "$x", 1:num))
     end
 
     function Subcommunities(names::Vector{String})
         num = length(names)
         num > 0 || error("Too few subcommunities")
-        new(num, names)
+        return new(num, names)
     end
 end
 
@@ -39,7 +39,7 @@ struct Onecommunity <: Diversity.API.AbstractPartition{Nothing}
     namev::Vector{String}
 
     function Onecommunity(name::String = "1")
-        new([name])
+        return new([name])
     end
 end
 

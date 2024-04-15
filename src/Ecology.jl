@@ -29,10 +29,13 @@ for the types / species.
 
 - diversity (at ecosystem level) or diversities (of subcommunities)
 """
-generalisedrichness(level::DiversityLevel,
-                    proportions::AbstractArray,
-                    Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
-    generalisedrichness(level, proportions, GeneralTypes(Z))
+function generalisedrichness(level::DiversityLevel,
+                             proportions::AbstractArray,
+                             Z::AbstractMatrix =
+                             Matrix(1.0I, size(proportions, 1),
+                                    size(proportions, 1)))
+    return generalisedrichness(level, proportions, GeneralTypes(Z))
+end
 
 function generalisedrichness(level::DiversityLevel,
                              proportions::AbstractArray,
@@ -44,8 +47,8 @@ function generalisedrichness(level::DiversityLevel,
     else
         error("Can't calculate richness for $level")
     end
-    gr=level(dm(Metacommunity(proportions, sim)), 0)
-    gr[!,:measure] .= "Richness"
+    gr = level(dm(Metacommunity(proportions, sim)), 0)
+    gr[!, :measure] .= "Richness"
     return gr
 end
 
@@ -64,12 +67,13 @@ columns representing independent subcommunity counts.
 function richness(proportions::AbstractVecOrMat)
     gr = generalisedrichness(subcommunityDiversity, proportions,
                              UniqueTypes(size(proportions, 1)))
-    gr[!,:diversity] .= Int.(round.(gr[!,:diversity]))
+    gr[!, :diversity] .= Int.(round.(gr[!, :diversity]))
     return gr
 end
 
 function richness(asm::AbstractAssemblage)
-    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    hassimilarity(asm) &&
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return richness(occurrences(asm))
 end
 
@@ -96,10 +100,13 @@ similarity matrix for the types / species.
 """
 function generalisedshannon end
 
-generalisedshannon(level::DiversityLevel,
-                   proportions::AbstractArray,
-                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
-    generalisedshannon(level, proportions, GeneralTypes(Z))
+function generalisedshannon(level::DiversityLevel,
+                            proportions::AbstractArray,
+                            Z::AbstractMatrix = Matrix(1.0I,
+                                                       size(proportions, 1),
+                                                       size(proportions, 1)))
+    return generalisedshannon(level, proportions, GeneralTypes(Z))
+end
 
 function generalisedshannon(level::DiversityLevel,
                             proportions::AbstractArray,
@@ -112,8 +119,8 @@ function generalisedshannon(level::DiversityLevel,
         error("Can't calculate richness for $level")
     end
     gs = level(dm(Metacommunity(proportions, sim)), 1)
-    gs[!,:diversity] .= log.(gs[!,:diversity])
-    gs[!,:measure] .= "Shannon"
+    gs[!, :diversity] .= log.(gs[!, :diversity])
+    gs[!, :measure] .= "Shannon"
     select!(gs, Not(:q))
     return gs
 end
@@ -130,12 +137,14 @@ columns representing independent subcommunity counts.
 #### Returns:
 - entropies of subcommunities
 """
-shannon(proportions::AbstractVecOrMat) =
-    generalisedshannon(subcommunityDiversity, proportions,
-                       UniqueTypes(size(proportions, 1)))
+shannon(proportions::AbstractVecOrMat) = generalisedshannon(subcommunityDiversity,
+                                                            proportions,
+                                                            UniqueTypes(size(proportions,
+                                                                             1)))
 
 function shannon(asm::AbstractAssemblage)
-    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    hassimilarity(asm) &&
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return shannon(occurrences(asm))
 end
 
@@ -162,10 +171,13 @@ similarity matrix for the types / species.
 """
 function generalisedsimpson end
 
-generalisedsimpson(level::DiversityLevel,
-                   proportions::AbstractArray,
-                   Z::AbstractMatrix = Matrix(1.0I, size(proportions, 1), size(proportions, 1))) =
-    generalisedsimpson(level, proportions, GeneralTypes(Z))
+function generalisedsimpson(level::DiversityLevel,
+                            proportions::AbstractArray,
+                            Z::AbstractMatrix = Matrix(1.0I,
+                                                       size(proportions, 1),
+                                                       size(proportions, 1)))
+    return generalisedsimpson(level, proportions, GeneralTypes(Z))
+end
 
 function generalisedsimpson(level::DiversityLevel,
                             proportions::AbstractArray,
@@ -178,8 +190,8 @@ function generalisedsimpson(level::DiversityLevel,
         error("Can't calculate richness for $level")
     end
     gs = level(dm(Metacommunity(proportions, sim)), 2)
-    gs[!,:diversity] .= gs[!,:diversity] .^ -1
-    gs[!,:measure] .= "Simpson"
+    gs[!, :diversity] .= gs[!, :diversity] .^ -1
+    gs[!, :measure] .= "Simpson"
     select!(gs, Not(:q))
     return gs
 end
@@ -198,13 +210,14 @@ columns representing independent subcommunity counts.
 
 - concentrations of subcommunities
 """
-simpson(proportions::AbstractVecOrMat) =
-    generalisedsimpson(subcommunityDiversity, proportions,
-                       UniqueTypes(size(proportions, 1)))
+simpson(proportions::AbstractVecOrMat) = generalisedsimpson(subcommunityDiversity,
+                                                            proportions,
+                                                            UniqueTypes(size(proportions,
+                                                                             1)))
 
 function simpson(asm::AbstractAssemblage)
     hassimilarity(asm) &&
-    error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return simpson(occurrences(asm))
 end
 
@@ -235,20 +248,22 @@ better properties.
 """
 function generalisedjaccard end
 
-generalisedjaccard(proportions::AbstractMatrix, Z::AbstractMatrix) =
-    generalisedjaccard(proportions, GeneralTypes(Z))
+function generalisedjaccard(proportions::AbstractMatrix, Z::AbstractMatrix)
+    return generalisedjaccard(proportions, GeneralTypes(Z))
+end
 
-generalisedjaccard(proportions::AbstractMatrix, sim::AbstractTypes) =
-    generalisedjaccard(Metacommunity(proportions, sim))
+function generalisedjaccard(proportions::AbstractMatrix, sim::AbstractTypes)
+    return generalisedjaccard(Metacommunity(proportions, sim))
+end
 
 function generalisedjaccard(meta::AbstractAssemblage)
     countsubcommunities(meta) == 2 ||
-    error("Can only calculate Jaccard index for 2 subcommunities")
+        error("Can only calculate Jaccard index for 2 subcommunities")
     num = sum(minimum(getordinariness!(meta), dims = 2))
     denom = sum(maximum(getordinariness!(meta), dims = 2))
     jac = metadiv(Gamma(meta), 0)
-    jac[!,:diversity] .= num / denom
-    jac[!,:measure] .= "Jaccard"
+    jac[!, :diversity] .= num / denom
+    jac[!, :measure] .= "Jaccard"
     select!(jac, Not([:q]))
     return jac
 end
@@ -273,7 +288,7 @@ jaccard(proportions::AbstractMatrix) = jaccard(Metacommunity(proportions))
 
 function jaccard(asm::AbstractAssemblage)
     hassimilarity(asm) &&
-    error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return generalisedjaccard(asm)
 end
 
@@ -307,20 +322,23 @@ and q is effectively 1.
 """
 =#
 function generalisedpielou end
-generalisedpielou(level::DiversityLevel,
-                  proportions::AbstractArray,
-                  Z::AbstractMatrix) =
-    generalisedpielou(level, Metacommunity(proportions, Z))
+function generalisedpielou(level::DiversityLevel,
+                           proportions::AbstractArray,
+                           Z::AbstractMatrix)
+    return generalisedpielou(level, Metacommunity(proportions, Z))
+end
 
-generalisedpielou(level::DiversityLevel,
-                  proportions::AbstractArray,
-                  sim::AbstractTypes = UniqueTypes(size(proportions, 1))) =
-    generalisedpielou(level, Metacommunity(proportions, sim))
+function generalisedpielou(level::DiversityLevel,
+                           proportions::AbstractArray,
+                           sim::AbstractTypes = UniqueTypes(size(proportions,
+                                                                 1)))
+    return generalisedpielou(level, Metacommunity(proportions, sim))
+end
 
 function generalisedpielou(level::DiversityLevel,
                            mc::AbstractAssemblage)
     hassimilarity(mc) &&
-    error("Can't calculate Pielou evenness for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
+        error("Can't calculate Pielou evenness for $(typeof(gettypes(mc))) type as ill-defined maximum entropy")
 
     if (level == subcommunityDiversity)
         dm = ᾱ
@@ -335,8 +353,8 @@ function generalisedpielou(level::DiversityLevel,
         error("Can't calculate Pielou for $level")
     end
     gp = level(dm(mc), 1)
-    gp[!,:diversity] .= log.(gp[!,:diversity]) ./ hmax
-    gp[!,:measure] .= "Pielou"
+    gp[!, :diversity] .= log.(gp[!, :diversity]) ./ hmax
+    gp[!, :measure] .= "Pielou"
     select!(gp, Not(:q))
     return gp
 end
@@ -368,12 +386,12 @@ communitymat = [10 20 30 20 0;
 pielou(communitymat)
 ```
 """
-pielou(proportions::AbstractVecOrMat) =
-    generalisedpielou(subcommunityDiversity, Metacommunity(proportions))
+pielou(proportions::AbstractVecOrMat) = generalisedpielou(subcommunityDiversity,
+                                                          Metacommunity(proportions))
 
 function pielou(asm::AbstractAssemblage)
     hassimilarity(asm) &&
-    error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return generalisedpielou(subcommunityDiversity, asm)
 end
 
@@ -396,17 +414,24 @@ Calculates Gower's dissimarity of up to two columns representing independent sub
 """
 function gower end
 
-gower(proportions::AbstractArray; countzeros::Bool = false, logscale::Bool = false, normalise::Bool = countzeros) =
-    gower(Metacommunity(proportions), countzeros = countzeros, logscale = logscale, normalise = normalise)
+function gower(proportions::AbstractArray; countzeros::Bool = false,
+               logscale::Bool = false, normalise::Bool = countzeros)
+    return gower(Metacommunity(proportions), countzeros = countzeros,
+                 logscale = logscale, normalise = normalise)
+end
 
-function gower(asm::AbstractAssemblage; countzeros::Bool = false, logscale::Bool = false, normalise::Bool = countzeros)
+function gower(asm::AbstractAssemblage; countzeros::Bool = false,
+               logscale::Bool = false, normalise::Bool = countzeros)
     countsubcommunities(asm) == 2 ||
-    error("Can only calculate Gower distances for 2 subcommunities")
+        error("Can only calculate Gower distances for 2 subcommunities")
 
     g = meta_gamma(asm, 0)
     nz = countzeros ? nthings(asm) : noccurring(asm)
-    occ = logscale ? [x == 0 ? 0 : log10(x) for x in getabundance(asm, true)] : getabundance(asm, true)
-    diff = normalise ? sum(x > 0 ? 1 : 0 for x in abs.(occ[:, 1] .- occ[:, 2])) : sum(abs.(occ[:, 1] .- occ[:, 2]))
+    occ = logscale ? [x == 0 ? 0 : log10(x) for x in getabundance(asm, true)] :
+          getabundance(asm, true)
+    diff = normalise ?
+           sum(x > 0 ? 1 : 0 for x in abs.(occ[:, 1] .- occ[:, 2])) :
+           sum(abs.(occ[:, 1] .- occ[:, 2]))
     g[!, :diversity] .= diff / nz
     g[!, :measure] .= "Gower"
     g[!, :countzeros] .= countzeros

@@ -5,10 +5,10 @@ using Test
 using Diversity
 using EcoBase
 
-numspecies = 10;
-numcommunities = 8;
-manyweights = rand(numspecies, numcommunities);
-manyweights /= sum(manyweights);
+numspecies = 10
+numcommunities = 8
+manyweights = rand(numspecies, numcommunities)
+manyweights /= sum(manyweights)
 
 @testset "Text output" begin
     species = map(n -> "Species $n", 1:numspecies)
