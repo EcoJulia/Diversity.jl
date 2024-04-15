@@ -35,7 +35,8 @@ Metacommunity(abundances::AbstractArray,
   it has not yet been calculated.
 """
 mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
-    Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}
+               Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim,
+                                                   Part}
     rawabundances::ARaw
     processedabundances::AProcessed
     scale::FP
@@ -48,19 +49,22 @@ mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
                                       matrix::AProcessed,
                                       types::Sim,
                                       part::Part) where
-        {FP <: AbstractFloat, ARaw <: AbstractArray, AProcessed <: AbstractArray{FP},
-         Sim <: AbstractTypes, Part <: AbstractPartition}
+             {FP <: AbstractFloat, ARaw <: AbstractArray,
+              AProcessed <: AbstractArray{FP},
+              Sim <: AbstractTypes, Part <: AbstractPartition}
         mcmatch(matrix, types, part) ||
             error("Type or size mismatch between abundance array, " *
                   "partition and type list")
         processedabundances, scale = _calcabundance(types, matrix)
-        new{FP, ARaw, AProcessed, Sim, Part}(abundances, processedabundances, scale,
-                                             types, part, missing)
+        return new{FP, ARaw, AProcessed, Sim, Part}(abundances,
+                                                    processedabundances, scale,
+                                                    types, part, missing)
     end
 end
 
-function Metacommunity(abundances::ARaw, meta::Meta) where
-    {ARaw <: AbstractArray, Meta <: AbstractMetacommunity}
+function Metacommunity(abundances::ARaw,
+                       meta::Meta) where
+         {ARaw <: AbstractArray, Meta <: AbstractMetacommunity}
     types = gettypes(meta)
     part = getpartition(meta)
     mat = reshape(abundances, counttypes(types), countsubcommunities(part))
@@ -69,70 +73,79 @@ function Metacommunity(abundances::ARaw, meta::Meta) where
         mat = mat / sum(mat)
     end
     return Metacommunity{eltype(mat), ARaw, typeof(mat),
-                         typeof(types), typeof(part)}(abundances, mat, types, part)
+                         typeof(types), typeof(part)}(abundances, mat, types,
+                                                      part)
 end
 
 function Metacommunity(abundances::V,
                        types::Sim = UniqueTypes(size(abundances, 1)),
                        part::Part = Onecommunity()) where
-    {V <: AbstractVector, Sim <: AbstractTypes, Part <: AbstractPartition}
+         {V <: AbstractVector, Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = reshape(abundances / sum(abundances), length(abundances), 1)
     return Metacommunity{eltype(mat), V, typeof(mat),
-                         typeof(types), typeof(part)}(abundances, mat, types, part)
+                         typeof(types), typeof(part)}(abundances, mat, types,
+                                                      part)
 end
 
 function Metacommunity(abundances::V,
                        types::Sim = UniqueTypes(size(abundances, 1)),
                        part::Part = Onecommunity()) where
-    {FP <: AbstractFloat, V <: AbstractVector{FP},
-     Sim <: AbstractTypes, Part <: AbstractPartition}
+         {FP <: AbstractFloat, V <: AbstractVector{FP},
+          Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = reshape(abundances, length(abundances), 1)
     if sum(mat) ≉ one(eltype(mat))
         @warn "Abundances not normalised to 1, correcting..."
         mat = mat / sum(mat)
     end
     return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
-                         typeof(types), typeof(part)}(abundances, mat, types, part)
+                         typeof(types), typeof(part)}(abundances, mat, types,
+                                                      part)
 end
 
 function Metacommunity(abundances::M,
                        types::Sim = UniqueTypes(size(abundances, 1)),
                        part::Part = Subcommunities(size(abundances, 2))) where
-    {M <: AbstractMatrix, Sim <: AbstractTypes, Part <: AbstractPartition}
+         {M <: AbstractMatrix, Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = abundances / sum(abundances)
     return Metacommunity{eltype(mat), M, typeof(mat),
-                         typeof(types), typeof(part)}(abundances, mat, types, part)
+                         typeof(types), typeof(part)}(abundances, mat, types,
+                                                      part)
 end
 
 function Metacommunity(abundances::M,
                        types::Sim = UniqueTypes(size(abundances, 1)),
                        part::Part = Subcommunities(size(abundances, 2))) where
-    {FP <: AbstractFloat, M <: AbstractMatrix{FP},
-     Sim <: AbstractTypes, Part <: AbstractPartition}
+         {FP <: AbstractFloat, M <: AbstractMatrix{FP},
+          Sim <: AbstractTypes, Part <: AbstractPartition}
     mat = abundances
     if sum(mat) ≉ one(eltype(mat))
         @warn "Abundances not normalised to 1, correcting..."
         mat = mat / sum(mat)
     end
     return Metacommunity{eltype(mat), typeof(abundances), typeof(mat),
-                         typeof(types), typeof(part)}(abundances, mat, types, part)
+                         typeof(types), typeof(part)}(abundances, mat, types,
+                                                      part)
 end
 
-function Metacommunity(abundances::V, zmatrix::M) where
-    {FP <: AbstractFloat, V <: AbstractVector, M <: AbstractMatrix{FP}}
+function Metacommunity(abundances::V,
+                       zmatrix::M) where
+         {FP <: AbstractFloat, V <: AbstractVector, M <: AbstractMatrix{FP}}
     return Metacommunity(abundances, GeneralTypes(zmatrix), Onecommunity())
 end
 
-function Metacommunity(abundances::MU, zmatrix::M) where
-    {FP <: AbstractFloat, MU <: AbstractMatrix{FP}, M <: AbstractMatrix{FP}}
+function Metacommunity(abundances::MU,
+                       zmatrix::M) where
+         {FP <: AbstractFloat, MU <: AbstractMatrix{FP}, M <:
+                                                         AbstractMatrix{FP}}
     return Metacommunity(abundances, GeneralTypes(zmatrix),
                          Subcommunities(size(abundances, 2)))
 end
 
-Metacommunity(asm::EcoBase.AbstractAssemblage) =
-    hassimilarity(asm) ?
-        Metacommunity(occurrences(asm), _calcsimilarity(asm)) :
-        Metacommunity(occurrences(asm))
+function Metacommunity(asm::EcoBase.AbstractAssemblage)
+    return hassimilarity(asm) ?
+           Metacommunity(occurrences(asm), _calcsimilarity(asm)) :
+           Metacommunity(occurrences(asm))
+end
 
 import Diversity.API._gettypes
 _gettypes(meta::Metacommunity) = meta.types

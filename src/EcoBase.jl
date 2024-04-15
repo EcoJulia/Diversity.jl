@@ -1,6 +1,5 @@
 using Diversity.API
 using EcoBase
-using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
 using RecipesBase
 using DataFrames
 
@@ -47,8 +46,9 @@ import Diversity.API: _getscale
 _getscale(::AbstractAssemblage) = 1
 
 import Diversity.API: _getabundance
-_getabundance(a::AbstractAssemblage, raw::Bool) =
-    raw ? occurrences(a) : occurrences(a) / sum(occurrences(a))
+function _getabundance(a::AbstractAssemblage, raw::Bool)
+    return raw ? occurrences(a) : occurrences(a) / sum(occurrences(a))
+end
 
 import Diversity.API: _getsubcommunitynames
 _getsubcommunitynames(p::AbstractPlaces) = placenames(p)
@@ -63,13 +63,14 @@ import Diversity.API: _counttypes
 _counttypes(t::AbstractThings, raw::Bool) = length(_gettypenames(t, raw))
 
 import Diversity.API: _calcsimilarity
-_calcsimilarity(t::AbstractThings, ::Real) =
-    Matrix(1.0I, counttypes(t), counttypes(t))
+function _calcsimilarity(t::AbstractThings, ::Real)
+    return Matrix(1.0I, counttypes(t), counttypes(t))
+end
 
 import Diversity.API: _getweight
 function _getweight(a::AbstractAssemblage)
     ab = _getabundance(a, false)
-    w = sum(ab, dims=1)
+    w = sum(ab, dims = 1)
     return reshape(w, length(w))
 end
 
@@ -92,7 +93,7 @@ end
 
 import Diversity.API: _getmetaordinariness!
 function _getmetaordinariness!(a::AbstractAssemblage)
-    ord = sum(_getordinariness!(a), dims=2)
+    ord = sum(_getordinariness!(a), dims = 2)
     return reshape(ord, length(ord))
 end
 
@@ -103,5 +104,5 @@ import Diversity.API: _hassimilarity
 _hassimilarity(::AbstractThings) = false
 
 RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)
-    var[:diversity], getcoords(places(asm))
+    return var[:diversity], getcoords(places(asm))
 end

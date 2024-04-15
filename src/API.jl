@@ -11,9 +11,8 @@ subtypes allow you to define how to partition your total metacommunity
 (e.g. an ecosystem) into smaller components (e.g. subcommunities).
 """
 abstract type AbstractPartition{LT <: Union{Nothing,
-                                            EcoBase.AbstractLocationData}} <:
-    EcoBase.AbstractPlaces{LT}
-end
+                                      EcoBase.AbstractLocationData}} <:
+              EcoBase.AbstractPlaces{LT} end
 
 """
     AbstractTypes
@@ -42,8 +41,7 @@ abstract type AbstractMetacommunity{FP <: AbstractFloat,
                                     AProcessed <: AbstractMatrix{FP},
                                     Sim <: AbstractTypes,
                                     Part <: AbstractPartition} <:
-    EcoBase.AbstractAssemblage{FP, Sim, Part}
-end
+              EcoBase.AbstractAssemblage{FP, Sim, Part} end
 
 ### AbstractPartition API
 """
@@ -122,8 +120,9 @@ Calculates the abundance a for AbstractTypes, t (if necessary). May be
 implemented by each AbstractTypes subtype.
 """
 function _calcabundance end
-function _calcabundance(::T, a::A) where {T <: AbstractTypes,
-                                          A <: AbstractArray}
+function _calcabundance(::T,
+                        a::A) where {T <: AbstractTypes,
+                                     A <: AbstractArray}
     return a, one(eltype(a))
 end
 
@@ -134,8 +133,9 @@ Calculates the ordinariness of abundance a from AbstractTypes, t. May be
 implemented by each AbstractTypes subtype.
 """
 function _calcordinariness end
-function _calcordinariness(t::T, a::A, ::Real) where {T <: AbstractTypes,
-                                                      A <: AbstractArray}
+function _calcordinariness(t::T, a::A,
+                           ::Real) where {T <: AbstractTypes,
+                                          A <: AbstractArray}
     abundance, scale = _calcabundance(t, a)
     return _calcsimilarity(t, scale) * abundance
 end
@@ -172,17 +172,20 @@ Returns the metacommunity abundances of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getmetaabundance end
-_getmetaabundance(mc::Meta, raw::Bool) where
-{FP, AProcessed, Sim, Part,
- Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
-                                             AProcessed, Sim, Part}} =
-    _getabundance(mc, raw)
+function _getmetaabundance(mc::Meta,
+                           raw::Bool) where
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector,
+                                              AProcessed, Sim, Part}}
+    return _getabundance(mc, raw)
+end
 
-function _getmetaabundance(mc::Meta, raw::Bool) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
-                                                 AProcessed, Sim, Part}}
-    ab = sum(_getabundance(mc, raw), dims=2)
+function _getmetaabundance(mc::Meta,
+                           raw::Bool) where
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix,
+                                              AProcessed, Sim, Part}}
+    ab = sum(_getabundance(mc, raw), dims = 2)
     return reshape(ab, length(ab))
 end
 
@@ -202,17 +205,19 @@ Returns the subcommunity weights of the metacommunity. May be
 implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
-_getweight(::Meta) where
-{FP, AProcessed, Sim, Part,
- Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector,
-                                             AProcessed, Sim, Part}} = [one(FP)]
+function _getweight(::Meta) where
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector,
+                                              AProcessed, Sim, Part}}
+    return [one(FP)]
+end
 
 function _getweight(mc::Meta) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix,
-                                                 AProcessed, Sim, Part}}
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix,
+                                              AProcessed, Sim, Part}}
     ab = _getabundance(mc, false)
-    w = sum(ab, dims=1)
+    w = sum(ab, dims = 1)
     return reshape(w, length(w))
 end
 
@@ -233,13 +238,14 @@ metacommunity as a whole. May be implemented by each
 AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
-_getmetaordinariness!(mc::Meta) where
-{FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractVector}} =
-    _getordinariness!(mc)
+function _getmetaordinariness!(mc::Meta) where
+         {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector}}
+    return _getordinariness!(mc)
+end
 
 function _getmetaordinariness!(mc::Meta) where
-    {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <: AbstractMatrix}}
-    ord = sum(_getordinariness!(mc), dims=2)
+         {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix}}
+    ord = sum(_getordinariness!(mc), dims = 2)
     return reshape(ord, length(ord))
 end
 
@@ -260,17 +266,17 @@ function floattypes(::A) where {FP <: AbstractFloat, A <: AbstractArray{FP}}
     return Set([FP])
 end
 
-function floattypes(::T) where T <: AbstractTypes
+function floattypes(::T) where {T <: AbstractTypes}
     return Set(subtypes(AbstractFloat))
 end
 
-function floattypes(::P) where P <: AbstractPartition
+function floattypes(::P) where {P <: AbstractPartition}
     return Set(subtypes(AbstractFloat))
 end
 
 function floattypes(::M) where
-    {FP, ARaw, AProcessed, Sim, Part,
-     M <: AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}}
+         {FP, ARaw, AProcessed, Sim, Part,
+          M <: AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}}
     return Set([FP])
 end
 
@@ -290,13 +296,14 @@ Checks for type and size compatibility for elements contributing to a Metacommun
 """
 function mcmatch end
 
-function mcmatch(procm::M, sim::T, part::P) where {M <: AbstractMatrix,
-                                                   T <: AbstractTypes,
-                                                   P <: AbstractPartition}
+function mcmatch(procm::M, sim::T,
+                 part::P) where {M <: AbstractMatrix,
+                                 T <: AbstractTypes,
+                                 P <: AbstractPartition}
     realm = _calcabundance(sim, procm)[1]
     return typematch(realm, sim, part) &&
-        _counttypes(sim, true) == size(procm, 1) &&
-        _counttypes(sim, false) == size(realm, 1) &&
-        _countsubcommunities(part) == size(realm, 2) &&
-        sum(realm) ≈ 1.0
+           _counttypes(sim, true) == size(procm, 1) &&
+           _counttypes(sim, false) == size(realm, 1) &&
+           _countsubcommunities(part) == size(realm, 2) &&
+           sum(realm) ≈ 1.0
 end

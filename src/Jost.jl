@@ -24,14 +24,15 @@ divided by the naive-community beta diversity.
 """
 function jostalpha(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(RawAlpha(Metacommunity(proportions)), qs)
-    md[!,:diversity] ./= qD(reshape(mapslices(sum, proportions, dims=(1,)),
-                            size(proportions)[2]), qs)
-    md[!,:measure] .= "JostAlpha"
+    md[!, :diversity] ./= qD(reshape(mapslices(sum, proportions, dims = (1,)),
+                                     size(proportions)[2]), qs)
+    md[!, :measure] .= "JostAlpha"
     return md
 end
 
 function jostalpha(asm::EcoBase.AbstractAssemblage, qs)
-    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    hassimilarity(asm) &&
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return jostalpha(occurrences(asm), qs)
 end
 
@@ -58,16 +59,18 @@ Jost's alpha diversity
 function jostbeta(proportions::AbstractMatrix, qs)
     md = metacommunityDiversity(Gamma(Metacommunity(proportions)), qs)
     ja = jostalpha(proportions, qs)
-    j = innerjoin(md, ja, on=[:q, :type_level, :type_name,
-                         :partition_level, :partition_name, :div_type],
-             makeunique=true)
-    j[!,:diversity] ./= j[!,:diversity_1]
-    j[!,:measure] .= "JostBeta"
+    j = innerjoin(md, ja,
+                  on = [:q, :type_level, :type_name,
+                      :partition_level, :partition_name, :div_type],
+                  makeunique = true)
+    j[!, :diversity] ./= j[!, :diversity_1]
+    j[!, :measure] .= "JostBeta"
     select!(j, Not([:diversity_1, :measure_1]))
     return j
 end
 
 function jostbeta(asm::EcoBase.AbstractAssemblage, qs)
-    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    hassimilarity(asm) &&
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return jostbeta(occurrences(asm), qs)
 end

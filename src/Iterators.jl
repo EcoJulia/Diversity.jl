@@ -1,6 +1,7 @@
 using Diversity.API
 
-import Base.IteratorSize, Base.length, Base.IteratorEltype, Base.HasEltype, Base.HasLength, Base.eltype
+import Base.IteratorSize, Base.length, Base.IteratorEltype, Base.HasEltype,
+       Base.HasLength, Base.eltype
 
 abstract type AbstractIterator{M <: AbstractMetacommunity} end
 
@@ -9,7 +10,7 @@ struct TypeIterator{M} <: AbstractIterator{M}
     viewfn::Function
 end
 
-function TypeIterator(fn::Function, meta::M) where M <: AbstractMetacommunity
+function TypeIterator(fn::Function, meta::M) where {M <: AbstractMetacommunity}
     n = ndims(fn(meta))
     if n == 2
         viewfn = (meta, i) -> view(fn(meta), i, :)
@@ -21,7 +22,7 @@ function TypeIterator(fn::Function, meta::M) where M <: AbstractMetacommunity
     return TypeIterator(meta, viewfn)
 end
 
-function TypeIterator(meta::M) where M <: AbstractMetacommunity
+function TypeIterator(meta::M) where {M <: AbstractMetacommunity}
     return TypeIterator(getabundance, meta)
 end
 
@@ -55,7 +56,7 @@ struct SubcommunityIterator{M} <: AbstractIterator{M}
 end
 
 function SubcommunityIterator(fn::Function,
-                              meta::M) where M <: AbstractMetacommunity
+                              meta::M) where {M <: AbstractMetacommunity}
     n = ndims(fn(meta))
     if n == 2
         viewfn = (meta, i) -> view(fn(meta), :, i)
@@ -68,7 +69,7 @@ function SubcommunityIterator(fn::Function,
     return SubcommunityIterator(meta, viewfn)
 end
 
-function SubcommunityIterator(meta::M) where M <: AbstractMetacommunity
+function SubcommunityIterator(meta::M) where {M <: AbstractMetacommunity}
     return SubcommunityIterator(getabundance, meta)
 end
 

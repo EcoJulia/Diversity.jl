@@ -22,12 +22,13 @@ population(s) with given relative proportions
 """
 function hillnumber(proportions, qs)
     hill = subdiv(NormalisedAlpha(Metacommunity(proportions)), qs)
-    hill[!,:measure] .= "HillNumber"
+    hill[!, :measure] .= "HillNumber"
     select!(hill, Not(:div_type))
     return hill
 end
 
 function hillnumber(asm::EcoBase.AbstractAssemblage, qs)
-    hassimilarity(asm) && error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
+    hassimilarity(asm) &&
+        error("function cannot run with $(typeof(gettypes(asm))) types as contains similarity")
     return hillnumber(occurrences(asm), qs)
 end
