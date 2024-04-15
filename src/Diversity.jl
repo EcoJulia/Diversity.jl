@@ -127,25 +127,16 @@ if !isdefined(Base, :get_extension)
 end
 
 @static if !isdefined(Base, :get_extension)
-function __init__()
-    @require Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149" include("../ext/DiversityPhyloExt.jl")
-    @require AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9" include("../ext/DiversityAxisArraysExt.jl")
-end
+    function __init__()
+        @require Phylo="aea672f4-3940-5932-aa44-993d1c3ff149" include("../ext/DiversityPhyloExt.jl")
+        @require AxisArrays="39de3d68-74b9-583c-8d2d-e117c070f3a9" include("../ext/DiversityAxisArraysExt.jl")
+    end
 end
 
 abstract type AbstractPhyloTypes{Tree} <:
-    Diversity.API.AbstractTypes
-end
+              Diversity.API.AbstractTypes end
 
-struct PhyloBranches{Tree} <: Diversity.AbstractPhyloTypes{Tree}
-    tree::Tree
-    nleaf::Int64
-    nancestral::Int64
-    leafnames::Vector{String}
-    ancestralnames::Vector{String}
-    ancestralmatrix::Matrix{Float64}
-    Zmatrix::Matrix{Float64}
-end
+abstract type PhyloBranches{Tree} <: Diversity.AbstractPhyloTypes{Tree} end
 
 export AbstractPhyloTypes, PhyloBranches #, PhyloDistances
 
