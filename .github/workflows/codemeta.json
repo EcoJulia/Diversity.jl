@@ -29,7 +29,7 @@
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
-                "name": "Biomathematics and Statstics Scotland"
+                "name": "Biomathematics and Statistics Scotland"
             },
             "email": "claire.harris@bioss.ac.uk",
             "familyName": "Harris",
@@ -46,12 +46,15 @@
     "dateModified": "2024-04-15",
     "datePublished": "2017-04-09",
     "description": "Julia package for measuring diversity",
+    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.12.tar.gz",
     "identifier": "10.5281/zenodo.597610",
     "keywords": [
         "diversity measurement",
+        "diversity",
         "biodiversity",
         "phylogenetic diversity",
         "partitioning diversity",
+        "ecology",
         "EcoJulia",
         "julia"
     ],
@@ -69,5 +72,6 @@
     },
     "continuousIntegration": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml",
     "developmentStatus": "active",
-    "issueTracker": "https://github.com/EcoJulia/Diversity.jl/issues"
+    "issueTracker": "https://github.com/EcoJulia/Diversity.jl/issues",
+    "referencePublication": "https://arxiv.org/abs/1404.6520"
 }
