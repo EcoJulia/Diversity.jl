@@ -1,0 +1,73 @@
+{
+    "@context": "https://w3id.org/codemeta/3.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "ecology",
+    "author": [
+        {
+            "id": "https://orcid.org/0000-0003-2589-8091",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "University of Glasgow"
+            },
+            "email": "richard.reeve@glasgow.ac.uk",
+            "familyName": "Reeve",
+            "givenName": "Richard"
+        },
+        {
+            "type": "Role",
+            "schema:author": "https://orcid.org/0000-0003-2589-8091",
+            "roleName": "Maintainer"
+        },
+        {
+            "type": "Role",
+            "schema:author": "https://orcid.org/0000-0003-2589-8091",
+            "roleName": "Developer"
+        },
+        {
+            "id": "https://orcid.org/0000-0003-0852-2340",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Biomathematics and Statstics Scotland"
+            },
+            "email": "claire.harris@bioss.ac.uk",
+            "familyName": "Harris",
+            "givenName": "Claire"
+        },
+        {
+            "type": "Role",
+            "schema:author": "https://orcid.org/0000-0003-0852-2340",
+            "roleName": "Developer"
+        }
+    ],
+    "codeRepository": "https://github.com/EcoJulia/Diversity.jl",
+    "dateCreated": "2014-08-31",
+    "dateModified": "2024-04-15",
+    "datePublished": "2017-04-09",
+    "description": "Julia package for measuring diversity",
+    "identifier": "10.5281/zenodo.597610",
+    "keywords": [
+        "diversity measurement",
+        "biodiversity",
+        "phylogenetic diversity",
+        "partitioning diversity",
+        "EcoJulia",
+        "julia"
+    ],
+    "license": "https://spdx.org/licenses/BSD-2-Clause",
+    "name": "Diversity.jl",
+    "operatingSystem": [
+        "macOS",
+        "Linux",
+        "Windows"
+    ],
+    "programmingLanguage": "Julia",
+    "version": "0.5.12",
+    "codemeta:contIntegration": {
+        "id": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml"
+    },
+    "continuousIntegration": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml",
+    "developmentStatus": "active",
+    "issueTracker": "https://github.com/EcoJulia/Diversity.jl/issues"
+}
