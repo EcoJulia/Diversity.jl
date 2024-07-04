@@ -53,7 +53,7 @@
         "Windows"
     ],
     "programmingLanguage": "Julia",
-    "version": "0.5.12",
+    "version": "0.5.13",
     "codemeta:contIntegration": {
         "id": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml"
     },

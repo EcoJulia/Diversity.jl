@@ -1,5 +1,8 @@
 # NEWS
 
+- v0.5.13
+  - Fix CI for arm64
+  - Improve metadata
 - v0.5.12
   - Move Phylo structs into extension
 - v0.5.11
