@@ -30,10 +30,10 @@
     ],
     "codeRepository": "https://github.com/EcoJulia/Diversity.jl",
     "dateCreated": "2014-08-31",
-    "dateModified": "2024-04-15",
+    "dateModified": "2024-07-04",
     "datePublished": "2017-04-09",
     "description": "Julia package for measuring diversity",
-    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.12.tar.gz",
+    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.13.tar.gz",
     "identifier": "10.5281/zenodo.597610",
     "keywords": [
         "diversity measurement",
