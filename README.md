@@ -38,17 +38,17 @@ installed with `add`. For example on Julia v1.8:
 (@v1.8) pkg> add Diversity
     Resolving package versions...
     Updating `~/.julia/environments/v1.8/Project.toml`
-  [d3d5718d] + Diversity v0.5.8
+  [d3d5718d] + Diversity v0.5.12
     Updating `~/.julia/environments/v1.8/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.8
+  [d3d5718d] + Diversity v0.5.12
   
 (@v1.8) pkg>
 ```
 
 ## Project Status
 
-The package is confirmed to work against Julia v1.8 and the current release
-and the latest release on Linux, macOS, and Windows. It is also tested
+The package is confirmed to build and work against Julia v1.8 and the current
+release and the latest release on Linux, macOS, and Windows. It is also tested
 against nightly.
 
 ## Contributing and Questions
