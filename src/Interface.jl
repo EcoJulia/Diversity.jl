@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 using Diversity.API
 using EcoBase: AbstractAssemblage, AbstractThings, AbstractPlaces
 using EcoBase: thingkind, thingkindplural, placekind, placekindplural

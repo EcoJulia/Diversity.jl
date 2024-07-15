@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 module DiversityPhyloExt
 
 isdefined(Base, :get_extension) ? (using Phylo) : (using ..Phylo)

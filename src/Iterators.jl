@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 using Diversity.API
 
 import Base.IteratorSize, Base.length, Base.IteratorEltype, Base.HasEltype,

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 module ValidateRCall_rdiversity
 using Test
 using Statistics

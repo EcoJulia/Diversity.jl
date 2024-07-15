@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 using Diversity
 using Diversity.ShortNames
 using Diversity.API

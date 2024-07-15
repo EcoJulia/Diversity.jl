@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 module ValidateEntropies
 using Test
 using Statistics

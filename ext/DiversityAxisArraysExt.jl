@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
 module DiversityAxisArraysExt
 
 isdefined(Base, :get_extension) ? (using AxisArrays) : (using ..AxisArrays)
