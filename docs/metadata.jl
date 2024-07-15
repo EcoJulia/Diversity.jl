@@ -6,6 +6,16 @@ using Pkg
 Pkg.activate(".")
 Pkg.update()
 
+# Update examples folder packages
+if isdir("examples")
+    if isfile("examples/Project.toml")
+        Pkg.activate("examples")
+        Pkg.update()
+        Pkg.rm("Diversity")
+        Pkg.develop("Diversity")
+    end
+end
+
 # Update docs folder packages
 Pkg.activate("docs")
 Pkg.update()
@@ -106,6 +116,23 @@ function get_organisation_from_ror(ror::String)
     end
 end
 
+function get_first_release_date()
+    project = read_project()
+    package = project["name"]
+    url = "https://raw.githubusercontent.com/JuliaRegistries/General/master/$(package[1])/$package/Versions.toml"
+    headers = ["Accept" => "application/toml"]
+    response = HTTP.get(url, headers)
+
+    if response.status == 200
+        data = TOML.parse(String(response.body))
+        version = minimum(VersionNumber.(keys(data)))
+        date = readchomp(`$(Git.git()) log -1 --format=%ad --date=format:%Y-%m-%d refs/tags/v$version`)
+        return date
+    end
+
+    return nothing
+end
+
 function increase_patch()
     project = read_project()
     version = project["version"]
@@ -183,8 +210,8 @@ function crosswalk()
     now = string(today())
     init = readchomp(`$(Git.git()) log --max-parents=0 --format=%ad --date=short -n 1`)
     tags = readlines(`$(Git.git()) tag -l --sort="version:refname"`)
-    tag = VersionNumber(tags[end])
-    tag_date = readchomp(`$(Git.git()) tag -l --format="%(taggerdate:short)" v$tag`)
+    tag = maximum(VersionNumber.(tags))
+    tag_date = readchomp(`$(Git.git()) log -1 --format=%ad --date=format:%Y-%m-%d refs/tags/v$tag`)
     branch = readchomp(`$(Git.git()) branch --show-current`)
     remotes = split(readchomp(`$(Git.git()) remote`), '\n')
     urls = String[]
@@ -260,7 +287,7 @@ function crosswalk()
     project = read_project()
     proj_version = VersionNumber(project["version"])
 
-    if proj_version ≡ tag
+    if proj_version == tag
         @debug "Still on latest release version: $tag"
         codemeta["dateModified"] = tag_date
         if cm_version ≠ tag
@@ -304,6 +331,14 @@ function crosswalk()
         end
     end
 
+    first_release_date = get_first_release_date()
+    if !isnothing(first_release_date)
+        if haskey(codemeta, "datePublished")
+            codemeta["datePublished"] == first_release_date ||
+                @warn "codemeta.json publication date inconsistent with Julia's General registry, fixing ($(codemeta["datePublished"]) ≠ $first_release_date)"
+        end
+        codemeta["datePublished"] = first_release_date
+    end
     project["version"] = string(proj_version)
     codemeta["version"] = "v$cm_version"
 
@@ -406,24 +441,32 @@ function crosswalk()
         end
     end
 
+    open_license = nothing
     if haslicense
-        url = "https://raw.githubusercontent.com/spdx/license-list-data/main/text/$license.txt"
-        response = HTTP.get(url)
-        just_names = replace.(project["author"], r" *<[^>]+> *" => "")
-        name_list = join(just_names, ", ", " and ")
-        content = replace(String(response.body),
-                          r"<year>"i => years,
-                          r"<owners?>"i => name_list,
-                          r"<copyright holders?>"i => name_list,
-                          r"<Owner Organization Name>"i => name_list,
-                          r"<Asset Owner>"i => name_list,
-                          r"<HOLDERS?>"i => name_list,
-                          r"<name of author>"i => name_list,
-                          r"<author's name or designee>"i => name_list)
-        open("LICENSE", "w") do file
-            return write(file, content)
+        url = "https://spdx.org/licenses/$license.json"
+        headers = ["Accept" => "application/json"]
+        response = HTTP.get(url, headers)
+
+        if response.status == 200
+            just_names = replace.(project["author"], r" *<[^>]+> *" => "")
+            name_list = join(just_names, ", ", " and ")
+            json = JSON.parse(String(response.body))
+            open_license = json["isOsiApproved"]
+            text = json["licenseText"]
+            content = replace(text,
+                              r"<year>"i => years,
+                              r"<owners?>"i => name_list,
+                              r"<copyright holders?>"i => name_list,
+                              r"<Owner Organization Name>"i => name_list,
+                              r"<Asset Owner>"i => name_list,
+                              r"<HOLDERS?>"i => name_list,
+                              r"<name of author>"i => name_list,
+                              r"<author's name or designee>"i => name_list)
+            open("LICENSE", "w") do file
+                return write(file, content)
+            end
+            rm("LICENSE.md", force = true)
         end
-        rm("LICENSE.md", force = true)
     end
 
     open("Project.toml", "w") do io
@@ -549,12 +592,14 @@ function crosswalk()
         end
         push!(crosswalk["creators"], dict)
     end
-    crosswalk["access_right"] = "open"
+    if !isnothing(open_license)
+        crosswalk["access_right"] = open_license ? "open" : "closed"
+    end
     crosswalk["license"] = project["license"]["SPDX"]
     dict = OrderedDict{String, String}()
     dict["scheme"] = "url"
     dict["identifier"] = codemeta["codeRepository"]
-    dict["relation"] = "isIdenticalTo"
+    dict["relation"] = "isOriginalFormOf"
     crosswalk["related_identifiers"] = [dict]
     crosswalk["keywords"] = codemeta["keywords"]
 

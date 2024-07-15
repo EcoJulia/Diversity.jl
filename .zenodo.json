@@ -22,7 +22,7 @@
         {
             "scheme": "url",
             "identifier": "https://github.com/EcoJulia/Diversity.jl",
-            "relation": "isIdenticalTo"
+            "relation": "isOriginalFormOf"
         }
     ],
     "keywords": [

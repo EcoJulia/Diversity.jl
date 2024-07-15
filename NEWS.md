@@ -1,8 +1,12 @@
 # NEWS
 
+- v0.5.15
+  - Extensions of crosswalk, bugfixes
+- v0.5.14
+  - Add in crosswalk between Project.toml and codemeta.json, .zenodo.json, LICENSE and Julia file headers
 - v0.5.13
   - Fix CI for arm64
-  - Improve metadata
+  - Add in codemeta.json to allow metadata to follow RSMD standards
 - v0.5.12
   - Move Phylo structs into extension
 - v0.5.11
