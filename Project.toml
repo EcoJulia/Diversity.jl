@@ -1,10 +1,8 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
-author = ["Richard Reeve <richard.reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetom Heida"]
-version = "0.5.15"
-
-[license]
-SPDX = "BSD-2-Clause"
+license = "BSD-2-Clause"
+authors = ["Richard Reeve <richard.reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetoom Heida"]
+version = "0.5.16"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -43,21 +41,22 @@ Statistics = "1.8"
 StatsBase = "0.32, 0.33, 0.34"
 julia = "1.8"
 
-[[authors]]
+[[author_details]]
 name = "Richard Reeve"
 orcid = "0000-0003-2589-8091"
-email = "richard.reeve@glasgow.ac.uk"
 
-    [[authors.affiliation]]
+    [[author_details.affiliation]]
     ror = "00vtgdb53"
-[[authors]]
+[[author_details]]
 name = "Claire Harris"
 orcid = "0000-0003-0852-2340"
 
-    [[authors.affiliation]]
+    [[author_details.affiliation]]
     ror = "03jwrz939"
-[[authors]]
-name = "Isaac Peetom Heida"
+[[author_details]]
+name = "Isaac Peetoom Heida"
+givenName = "Isaac"
+familyName = "Peetoom Heida"
 
 [extras]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
@@ -66,9 +65,10 @@ Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149"
 RCall = "6f49c342-dc21-5d91-9882-a32aef131414"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+ResearchSoftwareMetadata = "58378933-4625-47fa-851e-05ee27d397bd"
 SpatialEcology = "348f2d5d-71a3-5ad4-b565-8af070f99681"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["AxisArrays", "CSV", "Distances", "Phylo", "Random", "RCall", "SpatialEcology", "StatsBase", "Test"]
+test = ["AxisArrays", "CSV", "Distances", "Phylo", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test"]

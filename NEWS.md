@@ -1,5 +1,8 @@
 # NEWS
 
+- v0.5.16
+  - Use ResearchSoftwareMetadata package
+  - Add in testing that metadata is up-to-date
 - v0.5.15
   - Extensions of crosswalk, bugfixes
 - v0.5.14
