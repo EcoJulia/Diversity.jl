@@ -38,9 +38,9 @@ installed with `add`. For example on Julia v1.8:
 (@v1.8) pkg> add Diversity
     Resolving package versions...
     Updating `~/.julia/environments/v1.8/Project.toml`
-  [d3d5718d] + Diversity v0.5.12
+  [d3d5718d] + Diversity v0.5.16
     Updating `~/.julia/environments/v1.8/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.12
+  [d3d5718d] + Diversity v0.5.16
   
 (@v1.8) pkg>
 ```
