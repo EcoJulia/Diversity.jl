@@ -30,6 +30,7 @@ DataFrames = "0.21, 0.22, 1.0"
 Distances = "0.10"
 EcoBase = "0.1"
 InteractiveUtils = "1.8"
+Git = "1"
 LinearAlgebra = "1.8"
 Missings = "0.4, 1.0"
 Phylo = "0.4, 0.5"
@@ -64,6 +65,7 @@ familyName = "Peetoom Heida"
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+Git = "d7ba0133-e1db-5d97-8f8c-041e4b3a1eb2"
 Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 RCall = "6f49c342-dc21-5d91-9882-a32aef131414"
@@ -74,4 +76,4 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["AxisArrays", "CSV", "Distances", "Phylo", "Pkg", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test"]
+test = ["AxisArrays", "CSV", "Distances", "Git", "Phylo", "Pkg", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test"]
