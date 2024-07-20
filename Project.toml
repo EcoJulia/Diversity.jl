@@ -1,7 +1,7 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 author = ["Richard Reeve <richard.reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetom Heida"]
-version = "0.5.14"
+version = "0.5.15"
 
 [license]
 SPDX = "BSD-2-Clause"

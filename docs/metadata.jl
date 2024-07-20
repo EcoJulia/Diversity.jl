@@ -223,7 +223,9 @@ function crosswalk()
 
     repos = replace.(urls, r"^.*/([^/]+)$" => s"\1")
 
-    codemeta = JSON.parsefile("codemeta.json", dicttype = OrderedDict)
+    codemeta = isfile("codemeta.json") ?
+               JSON.parsefile("codemeta.json", dicttype = OrderedDict) :
+               OrderedDict{String, Any}()
 
     codemeta["@context"] = "https://w3id.org/codemeta/3.0"
     codemeta["type"] = "SoftwareSourceCode"
@@ -280,12 +282,12 @@ function crosswalk()
         codemeta["operatingSystem"] = platforms
     end
 
-    cm_version = VersionNumber(codemeta["version"])
-
     years = string(year(Date(init)))
 
     project = read_project()
     proj_version = VersionNumber(project["version"])
+
+    cm_version = VersionNumber(get!(codemeta, "version", string(proj_version)))
 
     if proj_version == tag
         @debug "Still on latest release version: $tag"
@@ -569,7 +571,9 @@ function crosswalk()
 
     crosswalk = OrderedDict{String, Any}()
     crosswalk["title"] = codemeta["name"]
-    crosswalk["description"] = codemeta["description"]
+    if haskey(codemeta, "description")
+        crosswalk["description"] = codemeta["description"]
+    end
     crosswalk["upload_type"] = "software"
     crosswalk["creators"] = []
     for author in codemeta["author"]

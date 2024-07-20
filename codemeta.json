@@ -36,7 +36,7 @@
     "dateModified": "2024-07-15",
     "datePublished": "2018-08-16",
     "description": "Julia package for measuring diversity",
-    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.14.tar.gz",
+    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.15.tar.gz",
     "identifier": "10.5281/zenodo.597610",
     "keywords": [
         "EcoJulia",
@@ -56,7 +56,7 @@
         "macOS"
     ],
     "programmingLanguage": "julia",
-    "version": "v0.5.14",
+    "version": "v0.5.15",
     "codemeta:contIntegration": {
         "id": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml"
     },
