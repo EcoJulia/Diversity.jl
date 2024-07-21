@@ -1,10 +1,9 @@
 # NEWS
 
-- v0.5.16
-  - Use ResearchSoftwareMetadata package
-  - Add in testing that metadata is up-to-date
 - v0.5.15
+  - Use ResearchSoftwareMetadata package
   - Extensions of crosswalk, bugfixes
+  - Add in testing that metadata is up-to-date
 - v0.5.14
   - Add in crosswalk between Project.toml and codemeta.json, .zenodo.json, LICENSE and Julia file headers
 - v0.5.13
