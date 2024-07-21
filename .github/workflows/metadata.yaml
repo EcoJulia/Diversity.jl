@@ -9,19 +9,14 @@ on:
   pull_request:
   workflow_dispatch:
 
-concurrency:
-  # Skip intermediate builds: always.
-  # Cancel intermediate builds: only if it is a pull request build.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+permissions: # needed to allow julia-actions/cache to proactively delete old caches that it has created
+  actions: write
+  contents: read
 
 jobs:
   metadata:
     name: RSMD - ${{ github.event_name }}
     timeout-minutes: 60
-    permissions: # needed to allow julia-actions/cache to proactively delete old caches that it has created
-      actions: write
-      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
