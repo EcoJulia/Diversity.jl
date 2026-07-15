@@ -20,16 +20,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up julia
-        uses: julia-actions/setup-julia@v2
+        uses: julia-actions/setup-julia@v3
         with:
           version: '1'
           arch: x64
       - name: Cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v3
       - name: Build package
         uses: julia-actions/julia-buildpkg@v1
       - name: Running
