@@ -176,17 +176,17 @@ implemented by each AbstractMetacommunity subtype.
 function _getmetaabundance end
 function _getmetaabundance(mc::Meta,
                            raw::Bool) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector,
-                                         AProcessed, Sim, Part}}
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector,
+                                              AProcessed, Sim, Part}}
     return _getabundance(mc, raw)
 end
 
 function _getmetaabundance(mc::Meta,
                            raw::Bool) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix,
-                                         AProcessed, Sim, Part}}
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix,
+                                              AProcessed, Sim, Part}}
     ab = sum(_getabundance(mc, raw), dims = 2)
     return reshape(ab, length(ab))
 end
@@ -208,16 +208,16 @@ implemented by each AbstractMetacommunity subtype.
 """
 function _getweight end
 function _getweight(::Meta) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector,
-                                         AProcessed, Sim, Part}}
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector,
+                                              AProcessed, Sim, Part}}
     return [one(FP)]
 end
 
 function _getweight(mc::Meta) where
-    {FP, AProcessed, Sim, Part,
-     Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix,
-                                         AProcessed, Sim, Part}}
+         {FP, AProcessed, Sim, Part,
+          Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix,
+                                              AProcessed, Sim, Part}}
     ab = _getabundance(mc, false)
     w = sum(ab, dims = 1)
     return reshape(w, length(w))
@@ -241,12 +241,12 @@ AbstractMetacommunity subtype.
 """
 function _getmetaordinariness! end
 function _getmetaordinariness!(mc::Meta) where
-    {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector}}
+         {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractVector}}
     return _getordinariness!(mc)
 end
 
 function _getmetaordinariness!(mc::Meta) where
-    {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix}}
+         {FP, Meta <: Diversity.API.AbstractMetacommunity{FP, <:AbstractMatrix}}
     ord = sum(_getordinariness!(mc), dims = 2)
     return reshape(ord, length(ord))
 end
@@ -277,8 +277,8 @@ function floattypes(::P) where {P <: AbstractPartition}
 end
 
 function floattypes(::M) where
-    {FP, ARaw, AProcessed, Sim, Part,
-     M <: AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}}
+         {FP, ARaw, AProcessed, Sim, Part,
+          M <: AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}}
     return Set([FP])
 end
 

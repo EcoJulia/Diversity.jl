@@ -133,8 +133,8 @@ struct GeneralTypes{FP <: AbstractFloat,
 
     function GeneralTypes(zmatrix::M,
                           names::LABELS) where
-        {FP <: AbstractFloat, M <: AbstractMatrix{FP},
-         LABELS <: AbstractVector}
+             {FP <: AbstractFloat, M <: AbstractMatrix{FP},
+              LABELS <: AbstractVector}
         size(zmatrix, 1) == size(zmatrix, 2) ||
             throw(DimensionMismatch("Similarity matrix is not square"))
 
