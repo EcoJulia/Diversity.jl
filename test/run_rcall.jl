@@ -51,6 +51,22 @@ if !skipR && !rcopy(R"require(vegan)")
 end
 
 if !skipR
+    # vegan >= 2.7 changed method = "gower" to range-standardise columns via
+    # decostand() and drop zero-range (tied / double-zero) columns from the
+    # denominator, returning NA when all columns are tied. Diversity follows the
+    # classic Gower (1971) convention, where tied columns contribute 0 but stay
+    # in M (the total number of types). gowerOld() reproduces that for the two
+    # subcommunities compared here: gower is the column-mean of the
+    # range-standardised Manhattan distance, so each differing column
+    # contributes 1 and each tied column (NaN -> 0) contributes 0.
+    R"""
+    gowerOld <- function(m) {
+        xs <- vegan::decostand(m, "range", 2, na.rm = TRUE)
+        xs[is.na(xs)] <- 0
+        mean(abs(xs[1, ] - xs[2, ]))
+    }
+    """
+
     # Run diversity comparisons with vegan
     @testset "Two community diversity measures from vegan" begin
         @testset "Random pop $i" for i in 2 .^ (1:5)
@@ -64,8 +80,8 @@ if !skipR
             rp = t(pops)
             rj = vegdist(rp, method = "jaccard")[1]
             rj1 = vegdist(rp > 0, method = "jaccard")[1]
-            rg = vegdist(rp, method = "gower")[1]
-            rg1 = vegdist(rp > 0, method = "gower")[1]
+            rg = gowerOld(rp)
+            rg1 = gowerOld(rp > 0)
             rag = vegdist(rp, method = "altGower")[1]
             rag1 = vegdist(rp > 0, method = "altGower")[1]
             """
@@ -105,8 +121,8 @@ if !skipR
             rp = t(pops)
             rj = vegdist(rp, method = "jaccard")[1]
             rj1 = vegdist(rp > 0, method = "jaccard")[1]
-            rg = vegdist(rp, method = "gower")[1]
-            rg1 = vegdist(rp > 0, method = "gower")[1]
+            rg = gowerOld(rp)
+            rg1 = gowerOld(rp > 0)
             rag = vegdist(rp, method = "altGower")[1]
             rag1 = vegdist(rp > 0, method = "altGower")[1]
             """
