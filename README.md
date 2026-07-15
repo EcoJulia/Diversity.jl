@@ -256,7 +256,7 @@ The online documentation for the latest dev (unreleased) branch is
 
 [issues-url]: https://github.com/EcoJulia/Diversity.jl/issues
 
-[paper-url]: http://arxiv.org/abs/1404.6520
+[paper-url]: https://doi.org/10.48550/arXiv.1404.6520
 
 [rdiversity-url]: https://github.com/boydorr/rdiversity
 

@@ -1,8 +1,8 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 license = "BSD-2-Clause"
+version = "0.5.16"
 authors = ["Richard Reeve <richard.reeve@glasgow.ac.uk>", "Claire Harris", "Isaac Peetoom Heida"]
-version = "0.5.15"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -46,23 +46,6 @@ Statistics = "1.9"
 StatsBase = "0.32, 0.33, 0.34"
 julia = "1.9"
 
-[[author_details]]
-name = "Richard Reeve"
-orcid = "0000-0003-2589-8091"
-
-    [[author_details.affiliation]]
-    ror = "00vtgdb53"
-[[author_details]]
-name = "Claire Harris"
-orcid = "0000-0003-0852-2340"
-
-    [[author_details.affiliation]]
-    ror = "03jwrz939"
-[[author_details]]
-name = "Isaac Peetoom Heida"
-givenName = "Isaac"
-familyName = "Peetoom Heida"
-
 [extras]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
@@ -78,6 +61,30 @@ ResearchSoftwareMetadata = "58378933-4625-47fa-851e-05ee27d397bd"
 SpatialEcology = "348f2d5d-71a3-5ad4-b565-8af070f99681"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[rsmd]
+keywords = ["EcoJulia", "biodiversity", "diversity", "diversity measurement", "ecology", "julia", "partitioning diversity", "phylogenetic diversity"]
+category = "ecology"
+description = "Julia package for measuring diversity"
+development_status = "active"
+publications = ["10.48550/arXiv.1404.6520"]
+
+    [[rsmd.author_details]]
+    name = "Richard Reeve"
+    orcid = "0000-0003-2589-8091"
+
+        [[rsmd.author_details.affiliation]]
+        ror = "00vtgdb53"
+    [[rsmd.author_details]]
+    name = "Claire Harris"
+    orcid = "0000-0003-0852-2340"
+
+        [[rsmd.author_details.affiliation]]
+        ror = "03jwrz939"
+    [[rsmd.author_details]]
+    name = "Isaac Peetoom Heida"
+    familyName = "Peetoom Heida"
+    givenName = "Isaac"
 
 [targets]
 test = ["AxisArrays", "CSV", "Distances", "Git", "JuliaFormatter", "Logging", "Phylo", "Pkg", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test"]

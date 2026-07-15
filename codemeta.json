@@ -29,14 +29,19 @@
                     "identifier": "https://ror.org/03jwrz939"
                 }
             ]
+        },
+        {
+            "type": "Person",
+            "givenName": "Isaac Peetoom",
+            "familyName": "Heida"
         }
     ],
     "codeRepository": "https://github.com/EcoJulia/Diversity.jl",
     "dateCreated": "2014-08-31",
-    "dateModified": "2024-07-21",
+    "dateModified": "2026-07-15",
     "datePublished": "2018-08-16",
     "description": "Julia package for measuring diversity",
-    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.15.tar.gz",
+    "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.5.16.tar.gz",
     "identifier": "10.5281/zenodo.597610",
     "keywords": [
         "EcoJulia",
@@ -56,14 +61,16 @@
         "macOS"
     ],
     "programmingLanguage": "julia",
-    "version": "v0.5.15",
+    "version": "v0.5.16",
     "codemeta:contIntegration": {
         "id": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml"
     },
     "continuousIntegration": "https://github.com/EcoJulia/Diversity.jl/actions/workflows/testing.yaml",
     "developmentStatus": "active",
     "issueTracker": "https://github.com/EcoJulia/Diversity.jl/issues",
-    "referencePublication": "https://arxiv.org/abs/1404.6520",
+    "referencePublication": [
+        "https://doi.org/10.48550/arXiv.1404.6520"
+    ],
     "readme": "https://github.com/EcoJulia/Diversity.jl/blob/dev/README.md",
     "buildInstructions": "https://github.com/EcoJulia/Diversity.jl/blob/dev/README.md"
 }
