@@ -67,14 +67,14 @@ end
     va = view(amph, species = 1:10)
 
     #operations
-    amp2 = aggregate(amph, 2)
+    amp2 = coarsen(amph, 2)
     @test sum(richness(amp2)) == 2862
     @test nsites(amp2) == 285
 
     pointamph = Assemblage(amphdat[!, 4:end], amphdat[!, 1:3],
                            sitecolumns = false,
                            cdtype = SpatialEcology.pointdata)
-    amp3 = aggregate(pointamph, 2)
+    amp3 = coarsen(pointamph, 2)
     @test richness(amp3) == richness(amp2)
     rich2 = metadiv(Gamma(amp2), 0)
     rich3 = metadiv(Gamma(amp3), 0)
