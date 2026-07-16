@@ -1,5 +1,9 @@
 # NEWS
 
+- v0.5.16
+  - Fix problem with R vegan validation
+  - Update hygiene tests
+  - Add DOI for arXiv paper
 - v0.5.15
   - Use ResearchSoftwareMetadata package
   - Extensions of crosswalk, bugfixes

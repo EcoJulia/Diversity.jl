@@ -139,10 +139,12 @@ columns representing independent subcommunity counts.
 #### Returns:
 - entropies of subcommunities
 """
-shannon(proportions::AbstractVecOrMat) = generalisedshannon(subcommunityDiversity,
-                                                            proportions,
-                                                            UniqueTypes(size(proportions,
-                                                                             1)))
+function shannon(proportions::AbstractVecOrMat)
+    return generalisedshannon(subcommunityDiversity,
+                              proportions,
+                              UniqueTypes(size(proportions,
+                                               1)))
+end
 
 function shannon(asm::AbstractAssemblage)
     hassimilarity(asm) &&
@@ -212,10 +214,12 @@ columns representing independent subcommunity counts.
 
 - concentrations of subcommunities
 """
-simpson(proportions::AbstractVecOrMat) = generalisedsimpson(subcommunityDiversity,
-                                                            proportions,
-                                                            UniqueTypes(size(proportions,
-                                                                             1)))
+function simpson(proportions::AbstractVecOrMat)
+    return generalisedsimpson(subcommunityDiversity,
+                              proportions,
+                              UniqueTypes(size(proportions,
+                                               1)))
+end
 
 function simpson(asm::AbstractAssemblage)
     hassimilarity(asm) &&
@@ -388,8 +392,10 @@ communitymat = [10 20 30 20 0;
 pielou(communitymat)
 ```
 """
-pielou(proportions::AbstractVecOrMat) = generalisedpielou(subcommunityDiversity,
-                                                          Metacommunity(proportions))
+function pielou(proportions::AbstractVecOrMat)
+    return generalisedpielou(subcommunityDiversity,
+                             Metacommunity(proportions))
+end
 
 function pielou(asm::AbstractAssemblage)
     hassimilarity(asm) &&

@@ -185,14 +185,15 @@ function inddiv end
     types = gettypenames(measure)
     scn = getsubcommunitynames(measure)
     scs = reshape(scn, 1, length(scn))
-    dfs = broadcast((div, tn, pn) -> DataFrame(div_type = getdiversityname(measure),
-                                               measure = getASCIIName(measure),
-                                               q = q,
-                                               type_level = "type",
-                                               type_name = tn,
-                                               partition_level = "subcommunity",
-                                               partition_name = pn,
-                                               diversity = div),
+    dfs = broadcast((div, tn,
+                    pn) -> DataFrame(div_type = getdiversityname(measure),
+                                     measure = getASCIIName(measure),
+                                     q = q,
+                                     type_level = "type",
+                                     type_name = tn,
+                                     partition_level = "subcommunity",
+                                     partition_name = pn,
+                                     diversity = div),
                     raw, types, scs)
     df = reduce(append!, dfs)
     cols = addedoutputcols(_getmeta(measure))

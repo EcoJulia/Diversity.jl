@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         julia-version:
-          - '1.9'
+          - 'lts'
           - '1'
         os:
           - ubuntu-latest
@@ -44,9 +44,9 @@ jobs:
       fail-fast: false
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
     - name: Set up julia
-      uses: julia-actions/setup-julia@v2
+      uses: julia-actions/setup-julia@v3
       with:
         version: ${{ matrix.julia-version }}
         arch: ${{ matrix.arch }}
@@ -63,7 +63,7 @@ jobs:
         install.packages("rdiversity", repos="http://cran.r-project.org")
       shell: R --vanilla --file={0}
     - name: Cache
-      uses: julia-actions/cache@v2
+      uses: julia-actions/cache@v3
     - name: Build package
       uses: julia-actions/julia-buildpkg@v1
     - name: Running
@@ -71,7 +71,7 @@ jobs:
     - name: Process coverage
       uses: julia-actions/julia-processcoverage@v1
     - name: Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v7
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
