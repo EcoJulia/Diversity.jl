@@ -5,77 +5,59 @@ module DiversityBioSequencesExt
 import Diversity
 using Diversity.API
 
-using LinearAlgebra
 using BioSequences
-using PopGen
 using StringDistances
 
-abstract type AbstractGenetic <:
-              Diversity.API.AbstractTypes end
+"""
+    GeneticFASTA
 
-struct GeneticFASTA{GeneticData} <: Diversity.API.AbstractTypes where
-    {ACID <: Alphabet, GeneticData <: AbstractVector{<:BioSequence{ACID}}}
+Genetic similarity type built from a vector of aligned `BioSequence`s. Each
+sequence is a type; similarity is derived from pairwise sequence distances.
+"""
+struct GeneticFASTA{GeneticData} <: Diversity.AbstractGenetic
     dat::GeneticData
+    names::Vector{String}
     ntypes::Int64
     Zmatrix::Matrix{Float64}
 end
 
-struct GeneticVCF{PopData} <: Diversity.API.AbstractTypes
-    dat::PopData
-    ntypes::Int64
-    Zmatrix::Matrix{Float64}
-end
-
-function _hammingDistance(geno1, geno2)
-    ismissing(geno1) || ismissing(geno2) && return missing
-    if length(geno1) > 2
-        @warn "hamming_distance may not work correctly for ploidy > 2"
+# Pairwise Hamming distance between aligned sequences.
+function _sequencedistances(::Val{:hamming}, dat)
+    nseq = length(dat)
+    dist = zeros(Float64, nseq, nseq)
+    for a in 1:nseq, b in (a + 1):nseq
+        dist[a, b] = dist[b, a] = Hamming()(dat[a], dat[b])
     end
-    #TODO Fix ploidy > 2 - e.g. (1, 1, 1, 2) ≠ (1, 2, 2, 2)
-
-    return max(sum(geno1 .∉ Ref(geno2)), sum(geno2 .∉ Ref(geno1)))
+    return dist
 end
 
-function GeneticType(dat::PopData)
-    # Initialise objects
-    matrix_obj = PopGen.loci_matrix(dat)
-    ntypes = size(matrix_obj, 1)
-    output = zeros(Float64, ntypes, ntypes)
-    indices = PopGen.pairwise_pairs(1:ntypes)
-
-    # Calculate distance matrix
-    for (a, b) in indices
-        output[a, b] = sum(_hammingDistance.((@view matrix_obj[a, :]),
-                                             (@view matrix_obj[b, :])))
-    end
-    dist = LinearAlgebra.Symmetric(output)
-    dist /= maximum(dist)
-
-    # Calculate similarity matrix
-    Zmatrix = 1.0 .- dist
-
-    return GeneticVCF{PopData}(dat, ntypes, Zmatrix)
+function _sequencedistances(::Val{D}, _) where {D}
+    return throw(ArgumentError("unknown sequence distance :$D (try :hamming)"))
 end
 
-function GeneticType(dat::GeneticData) where
-    {ACID <: Alphabet, GeneticData <: AbstractVector{<:BioSequence{ACID}}}
-    # Initialise objects
-    ntypes = length(dat)
-    output = zeros(Int64, ntypes, ntypes)
-    indices = PopGen.pairwise_pairs(1:ntypes)
+"""
+    GeneticType(dat::AbstractVector{<:BioSequence}; distance = :hamming,
+                names = string.(1:length(dat)), transform = :linear,
+                k = 1, normalise = true)
 
-    # Calculate distance matrix
-    for (a, b) in indices
-        output[a, b] = StringDistances.evaluate(StringDistances.Hamming(),
-                                                dat[a], dat[b])
-    end
-    dist = LinearAlgebra.Symmetric(output)
-    dist /= maximum(dist)
-
-    # Calculate similarity matrix
-    Zmatrix = 1.0 .- dist
-
-    return GeneticFASTA{GeneticData}(dat, ntypes, Zmatrix)
+Construct a `GeneticFASTA` similarity type from a vector of aligned
+`BioSequence`s. Each sequence is a type. `distance` selects the pairwise
+sequence distance (`:hamming`) and `transform`, `k` and `normalise` control the
+distance-to-similarity conversion (see rdiversity's `dist2sim`).
+"""
+function Diversity.GeneticType(dat::AbstractVector{S};
+                               distance::Symbol = :hamming,
+                               names::AbstractVector = string.(1:length(dat)),
+                               transform::Symbol = :linear,
+                               k::Real = 1,
+                               normalise::Bool = true) where {S <: BioSequence}
+    dist = _sequencedistances(Val(distance), dat)
+    Zmatrix = Diversity._dist2sim(dist; transform = transform, k = k,
+                                  normalise = normalise, max_d = maximum(dist))
+    return GeneticFASTA{typeof(dat)}(dat, String.(names), length(dat), Zmatrix)
 end
+
+import Diversity.API: _getdiversityname
+_getdiversityname(::GeneticFASTA) = "Genetic (sequence)"
 
 end
