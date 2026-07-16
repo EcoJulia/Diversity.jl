@@ -131,6 +131,63 @@ abstract type PhyloBranches{Tree} <: Diversity.AbstractPhyloTypes{Tree} end
 
 export AbstractPhyloTypes, PhyloBranches #, PhyloDistances
 
+# From BioSequences / PopGen (genetic diversity extensions)
+"""
+    AbstractGenetic
+
+Abstract supertype for genetic similarity types, whose similarity is
+derived from pairwise genetic distances between sequences (FASTA) or
+genotyped samples (VCF). Concrete subtypes are provided by the
+`DiversityBioSequencesExt` extension (when `BioSequences` is loaded) and the
+`DiversityPopGenExt` extension (when `PopGen` is loaded).
+"""
+abstract type AbstractGenetic <: Diversity.API.AbstractTypes end
+
+"""
+    GeneticType(dat; distance, transform, k, normalise)
+
+Construct a genetic similarity type from genetic data `dat`. With `BioSequences`
+loaded, `dat` may be a vector of `BioSequence`s (the sequence path); with `PopGen`
+loaded, `dat` may be a `PopGen.PopData` object (the VCF path). `distance` selects
+the pairwise distance method and `transform` (`:linear` or `:exponential`), `k`
+and `normalise` control the distance-to-similarity conversion.
+"""
+function GeneticType end
+
+"""
+    vcf_dataframe(dat)
+
+Convert genetic data `dat` (a `PopGen.PopData` object) into a `DataFrame` laid
+out like the body of a VCF file (a `FORMAT` column followed by one genotype
+column per sample). A method is provided by the `DiversityPopGenExt` extension.
+This is the structure consumed by rdiversity's `gen2dist()`, so the same PopData
+can drive both Julia and R genetic diversity calculations.
+"""
+function vcf_dataframe end
+
+export AbstractGenetic, GeneticType, vcf_dataframe
+
+# Shared genetic-diversity internals, used by both the DiversityBioSequencesExt
+# and DiversityPopGenExt extensions. The concrete AbstractGenetic subtypes they
+# define all carry `names`, `ntypes` and `Zmatrix` fields.
+
+# Convert a distance matrix into a similarity matrix, matching rdiversity's
+# dist2sim(): optionally normalise by the maximum distance, then apply a linear
+# (max(1 - k·d, 0)) or exponential (exp(-k·d)) transform.
+function _dist2sim(dist::AbstractMatrix; transform::Symbol, k::Real,
+                   normalise::Bool, max_d::Real)
+    sim = normalise && !iszero(max_d) ? dist ./ max_d : float.(dist)
+    if transform === :linear
+        sim = max.(1 .- k .* sim, 0)
+    elseif transform === :exponential
+        sim = exp.(-k .* sim)
+    else
+        throw(ArgumentError("transform must be :linear or :exponential, " *
+                            "got :$transform"))
+    end
+    return Matrix{Float64}(sim)
+end
+
 include("GeneralisedDiversities.jl")
 export diversity
 export norm_sub_alpha, raw_sub_alpha, norm_sub_beta, raw_sub_beta
