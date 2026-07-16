@@ -22,7 +22,7 @@ PopGen = "af524d12-c74b-11e9-22a8-3b091653023f"
 
 [extensions]
 DiversityAxisArraysExt = "AxisArrays"
-DiversityGeneticsExt = ["BioSequences", "PopGen"]
+DiversityBioSequencesExt = ["BioSequences", "PopGen"]
 DiversityPhyloExt = "Phylo"
 
 [compat]
