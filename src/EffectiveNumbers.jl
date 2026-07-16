@@ -22,8 +22,8 @@ is 1, so this is just the arithmetic mean.
 function powermean end
 function powermean(values::V1, order::R = 1,
                    weights::V2 = fill!(similar(values), 1)) where
-         {R <: Real, FP <: AbstractFloat,
-          V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
+    {R <: Real, FP <: AbstractFloat,
+     V1 <: AbstractVector{FP}, V2 <: AbstractVector{FP}}
     length(values) == length(weights) ||
         throw(DimensionMismatch("powermean: Weight and value vectors must be the same length"))
 
@@ -76,17 +76,17 @@ end
 function powermean(values::V1,
                    orders::VR,
                    weights::V2 = fill!(similar(values), 1.0)) where
-         {R <: Real, VR <: AbstractVector{R},
-          FP <: AbstractFloat, V1 <: AbstractVector{FP},
-          V2 <: AbstractVector{FP}}
+    {R <: Real, VR <: AbstractVector{R},
+     FP <: AbstractFloat, V1 <: AbstractVector{FP},
+     V2 <: AbstractVector{FP}}
     return map(order -> powermean(values, order, weights), orders)
 end
 
 # This is the next most simple case - matrices with subcommunities, and an order or orders
 function powermean(values::M1, orders,
                    weights::M2 = fill!(similar(values), 1)) where
-         {FP <: AbstractFloat, M1 <: AbstractMatrix{FP},
-          M2 <: AbstractMatrix{FP}}
+    {FP <: AbstractFloat, M1 <: AbstractMatrix{FP},
+     M2 <: AbstractMatrix{FP}}
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
                                 "must be the same size"))
