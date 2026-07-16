@@ -10,7 +10,7 @@ abstract type AbstractGenetic <:
               Diversity.API.AbstractTypes end
 
 struct GeneticFASTA{GeneticData} <: Diversity.API.AbstractTypes where
-    {ACID <: Alphabet, GeneticData <: AbstractVector{<: BioSequence(ACID)}}
+    {ACID <: Alphabet, GeneticData <: AbstractVector{<:BioSequence(ACID)}}
     dat::GeneticData
     ntypes::Int64
     Zmatrix::Matrix{Float64}
@@ -54,7 +54,7 @@ function GeneticType(dat::PopData)
 end
 
 function GeneticType(dat::GeneticData) where
-    {ACID <: Alphabet, GeneticData <: AbstractVector{<: BioSequence(ACID)}}
+    {ACID <: Alphabet, GeneticData <: AbstractVector{<:BioSequence(ACID)}}
     # Initialise objects
     ntypes = length(dat)
     output = zeros(Int64, ntypes, ntypes)
