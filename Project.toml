@@ -1,7 +1,7 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 license = "BSD-2-Clause"
-version = "0.5.16"
+version = "0.6.0"
 authors = ["Richard Reeve <Richard.Reeve@glasgow.ac.uk>", "Claire Harris", "Sonia Mitchell", "Isaac Peetom Heida"]
 
 [deps]
@@ -19,7 +19,6 @@ AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
 BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 Phylo = "aea672f4-3940-5932-aa44-993d1c3ff149"
 PopGen = "af524d12-c74b-11e9-22a8-3b091653023f"
-PopGenCore = "45b36091-5ef7-4b08-b448-aaf24c763a14"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 StringDistances = "88034a9c-02f8-509d-84a9-84ec65e18404"
 
