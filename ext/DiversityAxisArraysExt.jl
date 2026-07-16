@@ -2,7 +2,7 @@
 
 module DiversityAxisArraysExt
 
-isdefined(Base, :get_extension) ? (using AxisArrays) : (using ..AxisArrays)
+using AxisArrays
 import Diversity
 
 function Diversity.GeneralTypes(zmatrix::AM) where

@@ -2,7 +2,7 @@
 
 module DiversityPhyloExt
 
-isdefined(Base, :get_extension) ? (using Phylo) : (using ..Phylo)
+using Phylo
 import Diversity
 using Diversity.API
 using Statistics
