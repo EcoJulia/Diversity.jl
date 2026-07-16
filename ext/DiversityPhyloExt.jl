@@ -2,11 +2,12 @@
 
 module DiversityPhyloExt
 
-using Phylo
 import Diversity
 using Diversity.API
-using Statistics
 using Diversity: AbstractPhyloTypes
+
+using Phylo
+using Statistics
 
 struct PhyloBranches{Tree <: AbstractTree} <: Diversity.PhyloBranches{Tree}
     tree::Tree

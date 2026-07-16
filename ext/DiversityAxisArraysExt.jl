@@ -2,8 +2,9 @@
 
 module DiversityAxisArraysExt
 
-using AxisArrays
 import Diversity
+
+using AxisArrays
 
 function Diversity.GeneralTypes(zmatrix::AM) where
     {FP <: AbstractFloat, M <: AbstractMatrix{FP}, LR, LC, NAMES,

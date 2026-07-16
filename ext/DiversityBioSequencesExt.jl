@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
-module DiversityGeneticsExt
+module DiversityBioSequencesExt
 
-using Diversity
+import Diversity
 using Diversity.API
 
 using LinearAlgebra
