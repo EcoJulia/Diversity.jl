@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
+module DiversityGeneticsExt
+
 using Diversity
 using Diversity.API
 
@@ -72,4 +74,6 @@ function GeneticType(dat::GeneticData) where
     Zmatrix = 1.0 .- dist
 
     return GeneticFASTA{GeneticData}(dat, ntypes, Zmatrix)
+end
+
 end
