@@ -27,7 +27,7 @@ nab = NormalisedAlpha(meta2)
     diversities = [RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
         RawRho, NormalisedRho, Gamma]
     shortds = [α, ᾱ, β, β̄, ρ, ρ̄, Γ]
-    chars = ["α", "ᾱ", "β", "β̄", "ρ", "ρ̄", "γ"]
+    chars = ["α", "ᾱ", "β", "β̄", "ρ", "ρ̄", "γ"]
     asciis = ["RawAlpha", "NormalisedAlpha",
         "RawBeta", "NormalisedBeta",
         "RawRho", "NormalisedRho", "Gamma"]

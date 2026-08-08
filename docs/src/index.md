@@ -11,7 +11,7 @@ similarity-sensitive diversity measures generalising them, and the alpha, beta a
 that partition those across subcommunities. [**The framework**](framework.md) explains what each
 measure means and where it came from; start there if the names below are unfamiliar.
 
-The diversity functions exist both with unicode names (e.g. `ᾱ()`), which are
+The diversity functions exist both with unicode names (e.g. `ᾱ()`), which are
 not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. `NormalisedAlpha()`), which are.
 We also provide functions to calculate appropriate

@@ -424,7 +424,7 @@ function NormalisedAlpha(meta::M) where {M <: AbstractAssemblage}
                            typeof(value), M}(ab, ws, value, meta)
 end
 
-getName(::NormalisedAlpha) = "ᾱ"
+getName(::NormalisedAlpha) = "ᾱ"
 getFullName(::NormalisedAlpha) = "diversity of subcommunity in isolation"
 
 """

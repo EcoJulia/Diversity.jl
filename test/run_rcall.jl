@@ -435,7 +435,7 @@ if !skipR
                 meta = Metacommunity(pops, gv)
                 qs = sort([rand(7) * 10..., 0, 1, Inf])
                 diversities = Dict(:raw_alpha => α(meta),
-                                   :norm_alpha => ᾱ(meta),
+                                   :norm_alpha => ᾱ(meta),
                                    :raw_beta => β(meta),
                                    :norm_beta => β̄(meta),
                                    :raw_rho => ρ(meta),

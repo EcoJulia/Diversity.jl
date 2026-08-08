@@ -23,7 +23,7 @@ end
     # The unicode names are aliases, not separate implementations — if these ever diverge, the two
     # spellings of the same measure would silently disagree.
     @test α ≡ RawAlpha
-    @test ᾱ ≡ NormalisedAlpha
+    @test ᾱ ≡ NormalisedAlpha
     @test β ≡ RawBeta
     @test β̄ ≡ NormalisedBeta
     @test ρ ≡ RawRho

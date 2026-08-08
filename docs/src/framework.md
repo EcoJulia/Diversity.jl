@@ -96,7 +96,7 @@ Five types are present, so at `q = 0` the diversity is 5; as `q` rises the two r
 counting and it falls towards the effective number of common types. ⭐ `q = 1` is the usual default
 when there is no reason to prefer another: it corresponds to Shannon entropy, the most studied case.
 
-Diversities are **decreasing in `q`** — for α, ᾱ, ρ, ρ̄ and γ and their metacommunity counterparts.
+Diversities are **decreasing in `q`** — for α, ᾱ, ρ, ρ̄ and γ and their metacommunity counterparts.
 ⚠️ β and β̄ run the other way, *increasing* in `q`, being reciprocals of ρ and ρ̄; and the
 metacommunity averages `B` and `B̄` are not monotone in either direction.
 
@@ -108,8 +108,8 @@ of the whole — so the table gives both:
 
 | package | symbol | as a subcommunity measure | as a metacommunity measure |
 |---|---|---|---|
-| [`RawAlpha`](@ref) | α / A | estimate of naïve-community metacommunity diversity | naïve-community metacommunity diversity |
-| [`NormalisedAlpha`](@ref) | ᾱ / Ā | diversity of the subcommunity in isolation | average diversity of the subcommunities |
+| [`RawAlpha`](@ref) | α / A | estimate of naïve-community metacommunity diversity | naïve-community metacommunity diversity |
+| [`NormalisedAlpha`](@ref) | ᾱ / Ā | diversity of the subcommunity in isolation | average diversity of the subcommunities |
 | [`RawRho`](@ref) | ρ / R | **redundancy** of the subcommunity | average redundancy of the subcommunities |
 | [`RawBeta`](@ref) | β / B | **distinctiveness** of the subcommunity | average distinctiveness of the subcommunities |
 | [`NormalisedRho`](@ref) | ρ̄ / R̄ | **representativeness** of the subcommunity | average representativeness of the subcommunities |
@@ -197,7 +197,7 @@ sub_gamma(hid, 1)[!, :diversity]
 norm_sub_beta(hid, 1)[!, :diversity]
 ```
 
-The first subcommunity has `ᾱ = 1` — one type, no diversity at all — but `γ ≈ 10⁹`. Adding nine more
+The first subcommunity has `ᾱ = 1` — one type, no diversity at all — but `γ ≈ 10⁹`. Adding nine more
 equally rare types to the second subcommunity raises its alpha tenfold and leaves its gamma
 untouched, because each individual is still just as rare; its distinctiveness falls, because a
 ten-type subcommunity looks a little more like the metacommunity than a one-type one does. Alpha and
@@ -207,7 +207,7 @@ beta alone would have told you the first site was the least interesting in the s
 
 **Invariance under shattering.** If you draw a boundary through a subcommunity that is internally
 well mixed, you have not created a new subcommunity, and the answer should not change. The normalised
-metacommunity measures — `Ā`, `R̄`, `B̄` and `G` — are invariant under such shattering:
+metacommunity measures — `Ā`, `R̄`, `B̄` and `G` — are invariant under such shattering:
 
 ```@repl framework
 whole = [2 1; 1 3; 0 1] ./ 8
@@ -234,12 +234,12 @@ comparisons above.
 
 | when | what happens |
 |---|---|
-| `Z = I` (`UniqueTypes`) | the **naïve-type** case: types wholly distinct, and the measures reduce to Hill numbers |
-| no shared types between subcommunities | the **naïve-community** case: `B = 1`, `B̄` is the effective number of subcommunities, and `G = A` |
-| every subcommunity has the metacommunity's composition | **well-mixed**: `R̄ = B̄ = 1`, and `Ā = G` |
-| one subcommunity | every beta measure is 1, and `α = ᾱ = γ` |
+| `Z = I` (`UniqueTypes`) | the **naïve-type** case: types wholly distinct, and the measures reduce to Hill numbers |
+| no shared types between subcommunities | the **naïve-community** case: `B = 1`, `B̄` is the effective number of subcommunities, and `G = A` |
+| every subcommunity has the metacommunity's composition | **well-mixed**: `R̄ = B̄ = 1`, and `Ā = G` |
+| one subcommunity | every beta measure is 1, and `α = ᾱ = γ` |
 
-The naïve-type case recovers Hill numbers exactly:
+The naïve-type case recovers Hill numbers exactly:
 
 ```@repl framework
 using Diversity.Hill
@@ -250,7 +250,7 @@ hillnumber(naive, [0, 1, 2])[!, :diversity]
 
 ### ⚠️ Similarity can break the bounds you expect
 
-Read only the naïve-type case and you will absorb some inequalities that do not hold in general —
+Read only the naïve-type case and you will absorb some inequalities that do not hold in general —
 notably that representativeness cannot exceed 1. The paper's counterexample is a heterosexual
 transmission network: six individuals as types, similarity being the chance of transmission, split
 into a subcommunity of three males and one of three females. Each individual is *less* similar to its

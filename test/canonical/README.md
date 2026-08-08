@@ -94,7 +94,7 @@ blessed("measures/unique/Gamma/meta_q0", metadiv(Γ(meta), 0)[1, :diversity])
 - **Keep ordinary assertions alongside the blessed ones.** A blessed number tells you *something
   changed*; a property tells you *the answer is still right*. Re-blessing silences the first and must
   never be able to silence the second. Both files assert numbers equivalence, the `β̄ · ρ̄ = 1`
-  reciprocal, `α = ᾱ / w`, and symmetry where symmetry is required.
+  reciprocal, `α = ᾱ / w`, and symmetry where symmetry is required.
 - **Nothing random.** Build trees explicitly with `createnode!` / `createbranch!` rather than
   `rand(Nonultrametric(…))`; a random topology re-blesses to noise every run. There is deliberately no
   seeding here — a fixed structure is readable in the diff, a seed is not.

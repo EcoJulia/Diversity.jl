@@ -64,7 +64,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
                   subdiv(ρ̄(meta), q)[!, :diversity] ≈ ones(3)
             # raw vs normalised differ by exactly the subcommunity weight
             @test subdiv(α(meta), q)[!, :diversity] ≈
-                  subdiv(ᾱ(meta), q)[!, :diversity] ./ w
+                  subdiv(ᾱ(meta), q)[!, :diversity] ./ w
             @test all(isfinite, metadiv(Γ(meta), q)[!, :diversity])
             @test all(>(0), subdiv(Γ(meta), q)[!, :diversity])
         end
@@ -76,7 +76,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
         even = Metacommunity(fill(1 / 5, 5))
         for q in QS
             @test metadiv(Γ(even), q)[1, :diversity] ≈ 5
-            @test metadiv(ᾱ(even), q)[1, :diversity] ≈ 5
+            @test metadiv(ᾱ(even), q)[1, :diversity] ≈ 5
         end
     end
 end

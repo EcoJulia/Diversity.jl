@@ -72,7 +72,7 @@ alpha, beta and gamma measures that partition those across the
 subcommunities of a metacommunity. See **[the
 framework][framework-url]** for what each measure means.
 
-The diversity functions exist both with unicode names (e.g. ᾱ()),
+The diversity functions exist both with unicode names (e.g. ᾱ()),
 which are not automatically exported as we feel they are too short,
 and with matching ascii names (e.g. NormalisedAlpha()), which are. We
 also provide a general function to extract any diversity measure for a
