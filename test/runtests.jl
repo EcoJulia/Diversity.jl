@@ -1,161 +1,96 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
-using Random
 using Test
 using Diversity
-using Pkg
 
-rsmd = get(ENV, "RSMD_CROSSWALK", "FALSE")
+# A test argument names one test file to run *instead of* the whole suite:
+#
+#     julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_clean.jl"])'
+#
+# ⭐ Going through `Pkg.test` rather than running the file directly is the whole point: it is what
+# provisions the test environment. `Git`, `JuliaFormatter`, `ResearchSoftwareMetadata`, `RCall`,
+# `Phylo`, `PopGen` and the rest are `[extras]` in `Project.toml`'s `test` target and nothing else
+# supplies them, so a bare `julia test/extras_clean.jl` dies on `using Git`. `Pkg.test` gets it
+# right by construction; anything else reconstructs it and drifts.
+#
+# The `.jl` is optional, so `test_args = ["extras_clean"]` works too. Any test file may be named —
+# `test_Metacommunity.jl` as readily as a whole set.
+#
+# ⭐ **The suite is six nameable sets**, which is what lets you run one part rather than all of it:
+#
+#     core_test  core_ext
+#     extras_canonical  extras_clean  extras_docs  extras_pkg
+#
+# ⭐ The split is semantic: the **core** sets test this package against itself, the **extras** check
+# it against something outside — another package's answers, the blessed results, the documentation,
+# the repo's own hygiene.
+#
+# ⚠️ `extras_pkg` is the one to know about: it cross-validates against R `rdiversity` and `vegan`,
+# which is most of the suite's wall-clock and installs CRAN packages on a cold machine. Naming
+# `core_test` instead is the difference between seconds and minutes while iterating.
+#
+# ⚠️ **Running the sets in parallel gives up the ordering guarantee below** — the extras then run even
+# when the unit tests are failing, so one broken thing reports as several. ⭐ If you do, let the first
+# invocation get through precompilation before starting the rest, or every process compiles the same
+# package at once and they contend.
 
-if rsmd == "FALSE"
-    # Normal testing
-
-    # Identify files in test/ that are testing matching files in src/
-    #  - src/Source.jl will be matched by test/test_Source.jl
-    filebase = String[]
-    for (root, dirs, files) in walkdir("../src")
-        append!(filebase,
-                map(file -> replace(file, r"(.*).jl" => s"\1"),
-                    filter(file -> occursin(r".*\.jl", file), files)))
-    end
-
-    testbase = map(file -> replace(file, r"test_(.*).jl" => s"\1"),
-                   filter(str -> occursin(r"^test_.*\.jl$", str), readdir()))
-
-    # Identify tests with no matching file
-    superfluous = filter(f -> f ∉ filebase, testbase)
-    if length(superfluous) > 0
-        println()
-        @info "Potentially superfluous tests:"
-        for f in superfluous
-            println("    + $f.jl")
-        end
-        println()
-    end
-
-    # Identify files with no matching test
-    notest = filter(f -> f ∉ testbase, filebase)
-    if length(notest) > 0
-        println()
-        @info "Potentially missing tests:"
-        for f in notest
-            println("    - $f.jl")
-        end
-        println()
-    end
-
-    # Identify files in test/ that are testing matching files in ext/
-    #  - ext/SourceExt.jl will be matched by test/ext_SourceExt.jl
-    filebase = String[]
-    for (root, dirs, files) in walkdir("../ext")
-        append!(filebase,
-                map(file -> replace(file, r"(.*).jl" => s"\1"),
-                    filter(file -> occursin(r".*\.jl", file), files)))
-    end
-
-    extbase = map(file -> replace(file, r"ext_(.*).jl" => s"\1"),
-                  filter(str -> occursin(r"^ext_.*\.jl$", str), readdir()))
-
-    # Identify tests with no matching file
-    superfluous = filter(f -> f ∉ filebase, extbase)
-    if length(superfluous) > 0
-        println()
-        @info "Potentially superfluous extension tests:"
-        for f in superfluous
-            println("    + $f.jl")
-        end
-        println()
-    end
-
-    # Identify files with no matching test
-    notest = filter(f -> f ∉ extbase, filebase)
-    if length(notest) > 0
-        println()
-        @info "Potentially missing extension tests:"
-        for f in notest
-            println("    - $f.jl")
-        end
-        println()
-    end
-
-    # Seed RNG to make tests reproducible
-    Random.seed!(1234)
-
-    @testset "Diversity.jl" begin
-        @test isfile(Diversity.path("runtests.jl"))
-        println()
-        @info "Running tests for files:"
-        for t in testbase
-            println("    = $t.jl")
-        end
-        println()
-
-        @info "Running tests..."
-        @testset for t in testbase
-            fn = "test_$t.jl"
-            println("    * Testing $t.jl ...")
-            include(fn)
-        end
-
-        println()
-        @info "Running tests for extensions:"
-        for t in extbase
-            println("    = $t.jl")
-        end
-        println()
-
-        @info "Running extension tests..."
-        @testset for t in extbase
-            fn = "ext_$t.jl"
-            println("    * Testing $t.jl extension...")
-            include(fn)
-        end
-    end
-
-    # Identify files that are cross-validating results against other packages
-    # test/pkg_Package.jl should validate results against the Package package
-
-    pkgbase = map(file -> replace(file, r"pkg_(.*).jl$" => s"\1"),
-                  filter(str -> occursin(r"^pkg_.*\.jl$", str),
-                         readdir()))
-
-    if length(pkgbase) > 0
-        @info "Cross validation packages:"
-        @testset begin
-            for p in pkgbase
-                println("    = $p")
-            end
-            println()
-
-            @testset for p in pkgbase
-                fn = "pkg_$p.jl"
-                println("    * Validating $p.jl ...")
-                include(fn)
-            end
-        end
-    end
+requested = map(a -> endswith(a, ".jl") ? a : a * ".jl", ARGS)
+for fn in requested
+    isfile(joinpath(@__DIR__, fn)) ||
+        error("`$fn` was asked for with `test_args`, but there is no such file in `test/`.")
 end
 
-if rsmd == "TRUE" || !haskey(ENV, "RUNNER_OS") # Crosswalk runner or local testing
-    # Test RSMD crosswalk and other hygene issues
+if !isempty(requested)
+    @info "Running only the requested test file(s): " * join(requested, ", ")
+    @testset for fn in requested
+        println("    * Running $fn ...")
+        include(fn)
+    end
+else
+    # Two loops, and nothing else. Each `core_*.jl` and `extras_*.jl` is a standalone set that can be
+    # run on its own by name (see above); this file only decides the order they go in.
+    #
+    # ⚠️ The extras run **after** the core sets deliberately: a failing `@testset` throws at its end,
+    # so the extras are reached only once the unit and extension tests pass. There is no point
+    # cross-validating a broken package against R, or blessing results it computed wrongly.
+    #
+    # ⚠️ Unlike EcoSISTEM, the extras are **not** skipped on a Windows runner. There the group holds
+    # notebooks and examples that push the job past its timeout; here it is cross-validation,
+    # canonical results, documentation and hygiene, and skipping it would drop `pkg_Distances` and
+    # `pkg_StatsBase` from Windows entirely. The files that genuinely cannot run there — `pkg_RCall`
+    # and both `clean_*` — already say so themselves.
+    corebase = sort(filter(str -> occursin(r"^core_.*\.jl$", str),
+                           readdir(@__DIR__)))
+    extrabase = sort(filter(str -> occursin(r"^extras_.*\.jl$", str),
+                            readdir(@__DIR__)))
 
-    # Identify files that are checking package hygene
-    cleanbase = map(file -> replace(file, r"clean_(.*).jl$" => s"\1"),
-                    filter(str -> occursin(r"^clean_.*\.jl$", str),
-                           readdir()))
+    println()
+    @info "Running the core test sets:"
+    foreach(f -> println("    = $f"), corebase)
+    println()
 
-    if length(cleanbase) > 0
-        @info "Crosswalk and clean testing:"
-        @testset begin
-            for c in cleanbase
-                println("    = $c")
-            end
-            println()
+    @testset "Diversity.jl" begin
+        @testset for fn in corebase
+            println("    * Running $fn ...")
+            include(joinpath(@__DIR__, fn))
+        end
+    end
 
-            @testset for c in cleanbase
-                fn = "clean_$c.jl"
-                println("    * Verifying $c.jl ...")
-                include(fn)
+    if !isempty(extrabase)
+        println()
+        @info "Running the extra test suites:"
+        foreach(f -> println("    = $f"), extrabase)
+        println()
+
+        # ⚠️ Wrapped in an enclosing testset, exactly as the core loop is, and it is **not**
+        # decoration: a failing `@testset` throws when it is the *outermost* one, so a bare
+        # `@testset for` here would abort the loop at the first set that failed. `extras_clean`
+        # fails on any tree with unstaged changes — i.e. throughout normal development — and would
+        # then stop `extras_docs` and `extras_pkg` from running at all.
+        @testset "Extras" begin
+            @testset for fn in extrabase
+                println("    * Running $fn ...")
+                include(joinpath(@__DIR__, fn))
             end
         end
     end

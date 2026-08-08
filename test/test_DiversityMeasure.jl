@@ -40,6 +40,19 @@ nab = NormalisedAlpha(meta2)
         @test getASCIIName(diversities[i](meta2)) == asciis[i]
         @test getFullName(diversities[i](meta1)) == fulls[i]
     end
+
+    # The descriptive aliases are the names the papers use, and are the same types — so a measure
+    # reached through one spelling must be identical to the same measure reached through another.
+    @test Diversity.Distinctiveness ≡ RawBeta
+    @test Diversity.Redundancy ≡ RawRho
+    @test Diversity.Representativeness ≡ NormalisedRho
+    @test getFullName(Diversity.Representativeness(meta)) ==
+          "representativeness"
+
+    # ⚠️ `getASCIIName` strips the module prefix and the type parameters, so it names the *measure*
+    # rather than the concrete parameterisation — which is what the output DataFrame carries.
+    @test !occursin("Diversity.", getASCIIName(Gamma(meta)))
+    @test !occursin("{", getASCIIName(Gamma(meta)))
 end
 
 numbers = [1.0, 2, 4, 8, 16]

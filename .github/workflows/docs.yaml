@@ -26,8 +26,6 @@ jobs:
           import Pkg
           Pkg.develop(Pkg.PackageSpec(path=pwd()))
           Pkg.instantiate()
-          Pkg.add("Phylo")
-          Pkg.add("Documenter")
         shell: julia --project=docs --color=yes {0}
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-docdeploy@v1

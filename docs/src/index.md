@@ -12,53 +12,42 @@ and related alpha, beta and gamma diversity measures at the level of
 the metacommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
 [Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
-functions exist both with unicode names (e.g. ```ᾱ()```), which are
+functions exist both with unicode names (e.g. `ᾱ()`), which are
 not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. `NormalisedAlpha()`), which are.
 We also provide functions to calculate appropriate
-`subdiv()` and `metadiv()`
-values for each measure, a general `diversity()` function for
-extract any diversity measure at a series of scales.
+`subdiv()` and `metadiv()` values for each measure, and a general
+`diversity()` function to extract any diversity measure at a series of scales.
 
 Accessing the main functionality in the package is simple:
 
-```julia-repl
-julia> # Load the package into R
-       using Diversity
-
-julia> # Example population
-       pop = [1 1 0; 2 0 0; 3 1 4];
-
-julia> pop = pop ./ sum(pop);
-
-julia> # Create Metacommunity object
-       meta = Metacommunity(pop);
-
-julia> diversities = norm_meta_alpha(meta, [0, 1, 2, Inf])
-4×8 DataFrame
- Row │ div_type  measure          q        type_level  type_name  partition_level  partition_name  diversity 
-     │ String    String           Float64  String      String     String           String          Float64   
-─────┼───────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Unique    NormalisedAlpha      0.0  types                  metacommunity                      2.16667
-   2 │ Unique    NormalisedAlpha      1.0  types                  metacommunity                      1.86121
-   3 │ Unique    NormalisedAlpha      2.0  types                  metacommunity                      1.63636
-   4 │ Unique    NormalisedAlpha    Inf    types                  metacommunity                      1.0
-
-julia> Z = [1.0 0 0; 0 1 1; 1 1 1];
-
-julia> meta_z = Metacommunity(pop, Z);
-
-julia> rho = RawRho(meta_z);
-
-julia> redundancies = subdiv(rho, 2)
-3×8 DataFrame
- Row │ div_type     measure  q      type_level  type_name  partition_level  partition_name  diversity 
-     │ String       String   Int64  String      String     String           String          Float64   
-─────┼────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Arbitrary Z  RawRho       2  types                  subcommunity     1                     2.0
-   2 │ Arbitrary Z  RawRho       2  types                  subcommunity     2                     3.0
-   3 │ Arbitrary Z  RawRho       2  types                  subcommunity     3                     3.0
+```@repl usage
+using Diversity
+pop = [1 1 0; 2 0 0; 3 1 4]
+pop = pop ./ sum(pop)
+meta = Metacommunity(pop)
+norm_meta_alpha(meta, [0, 1, 2, Inf])
 ```
+
+Every measure returns a `DataFrame` in the same format, whatever the measure and
+whatever the scale, so results can be compared and concatenated directly. The
+`diversity` column holds the answer; the rest say what was calculated and for
+what.
+
+Adding a similarity matrix makes the measures similarity-sensitive — two types
+that resemble each other now contribute less diversity between them than two
+that do not:
+
+```@repl usage
+Z = [1.0 0 0; 0 1 1; 1 1 1]
+meta_z = Metacommunity(pop, Z)
+subdiv(RawRho(meta_z), 2)
+```
+
+Note that the abundances are relative to the **whole metacommunity** and must
+sum to one across it — not one per subcommunity. Counts are normalised for you,
+and floating point abundances that do not sum to one are corrected with a
+warning.
 
 ```@contents
 ```

@@ -9,22 +9,19 @@ found in the **Diversity.Jost** submodule.
 
 Accessing the main functionality in the package is simple:
 
-```julia-repl
-julia> using Diversity.Jost
-
-julia> ecosystem = [2 2 0; 0 2 2]';
-
-julia> ecosystem = ecosystem ./ sum(ecosystem);
-
-julia> diversities = jostbeta(ecosystem, [0, 1, 2])
-3×8 DataFrame
- Row │ div_type  measure   q      type_level  type_name  partition_level  partition_name  diversity 
-     │ String    String    Int64  String      String     String           String          Float64   
-─────┼──────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Unique    JostBeta      0  types                  metacommunity                      1.5
-   2 │ Unique    JostBeta      1  types                  metacommunity                      1.41421
-   3 │ Unique    JostBeta      2  types                  metacommunity                      1.33333
+```@repl jost
+using Diversity.Jost
+ecosystem = [2 2 0; 0 2 2]'
+ecosystem = ecosystem ./ sum(ecosystem)
+jostbeta(ecosystem, [0, 1, 2])
+jostalpha(ecosystem, [0, 1, 2])
 ```
+
+Jost's beta is the naive gamma diversity divided by Jost's alpha, and his alpha
+is in turn the raw alpha diversity divided by the naive-community beta. We
+believe our own [`NormalisedBeta`](@ref) has better properties — see
+[Reeve et al](http://arxiv.org/abs/1404.6520) — but these are provided for
+comparison.
 
 ```@contents
 ```
