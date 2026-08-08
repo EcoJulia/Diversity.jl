@@ -1,6 +1,9 @@
 # NEWS
 
 - v0.6.0
+  - Document the diversity framework and its origins, with a new page in the manual
+  - Document the fourteen norm_/raw_ diversity wrapper functions, which had no docstrings
+  - Rename the getFullName() descriptions of the measures to match those in the paper
   - Add in genetic diversity, matching the gen2dist() and dist2sim() pipeline in boydorr/rdiversity
   - Provide it through two new extensions, BioSequences for aligned sequences and PopGen for VCF data
   - Cross-validate genetic diversity against rdiversity for every VCF file in test/data

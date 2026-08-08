@@ -2,17 +2,16 @@
 
 ## A package for measuring and partitioning diversity
 
-The main **Diversity** package provides basic numbers-equivalent
-diversity measures (described in
-[Hill, 1973](http://www.jstor.org/stable/1934352)),
-similarity-sensitive diversity measures (generalised from Hill, and
-described in
-[Leinster and Cobbold, 2012](http://www.esajournals.org/doi/abs/10.1890/10-2402.1)),
-and related alpha, beta and gamma diversity measures at the level of
-the metacommunity and its component subcommunities (generalised in
-turn from Leinster and Cobbold, and described in
-[Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
-functions exist both with unicode names (e.g. `ᾱ()`), which are
+The main **Diversity** package measures the alpha, beta and gamma diversity of a metacommunity and of
+each of its subcommunities, for any notion of similarity between the individuals in it — taxonomic,
+phylogenetic, genetic, functional or phenotypic.
+
+It provides numbers-equivalent diversity measures (Hill numbers),
+similarity-sensitive diversity measures generalising them, and the alpha, beta and gamma measures
+that partition those across subcommunities. [**The framework**](framework.md) explains what each
+measure means and where it came from; start there if the names below are unfamiliar.
+
+The diversity functions exist both with unicode names (e.g. `ᾱ()`), which are
 not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. `NormalisedAlpha()`), which are.
 We also provide functions to calculate appropriate

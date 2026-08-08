@@ -31,9 +31,13 @@ nab = NormalisedAlpha(meta2)
     asciis = ["RawAlpha", "NormalisedAlpha",
         "RawBeta", "NormalisedBeta",
         "RawRho", "NormalisedRho", "Gamma"]
-    fulls = ["raw alpha diversity", "normalised alpha diversity",
-        "distinctiveness", "effective number of subcommunities",
-        "redundancy", "representativeness", "gamma diversity"]
+    # ⚠️ These are the paper's own descriptions of the measures, at subcommunity level — which is
+    # the level `getFullName`'s only consumer, the plot recipe, works at.
+    fulls = ["estimate of naive-community metacommunity diversity",
+        "diversity of subcommunity in isolation",
+        "distinctiveness", "effective number of distinct subcommunities",
+        "redundancy", "representativeness",
+        "contribution per individual toward metacommunity diversity"]
     for i in axes(diversities, 1)
         @test diversities[i] == shortds[i]
         @test getName(diversities[i](meta)) == chars[i]

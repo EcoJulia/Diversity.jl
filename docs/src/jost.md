@@ -19,9 +19,9 @@ jostalpha(ecosystem, [0, 1, 2])
 
 Jost's beta is the naive gamma diversity divided by Jost's alpha, and his alpha
 is in turn the raw alpha diversity divided by the naive-community beta. We
-believe our own [`NormalisedBeta`](@ref) has better properties — see
-[Reeve et al](http://arxiv.org/abs/1404.6520) — but these are provided for
-comparison.
+believe our own [`NormalisedBeta`](@ref) has better properties — in particular it
+is invariant under shattering, which Jost's alpha and beta are not, as
+[the framework](framework.md) explains — but these are provided for comparison.
 
 ```@contents
 ```

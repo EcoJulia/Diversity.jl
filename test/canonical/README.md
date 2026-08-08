@@ -54,6 +54,21 @@ to the *specification*, not just to this package. Raise it rather than blessing 
 Keeping them apart is the point: when a number moves, which file moved tells you immediately whether
 to look at `src/DiversityMeasure.jl` or at an extension.
 
+## 🔴 `test_paper.jl` is a third kind, and the strongest
+
+Everything above records what this package produced. `test_paper.jl` records what the **paper says it
+must produce** — the communities its appendices work right through, with every measure stated. So it
+uses **plain `@test`s and no blessed values at all**, and `DIVERSITY_BLESS=true` cannot touch it.
+
+That is the point. A blessed value asks *has this changed?* and can be silenced by re-blessing;
+`test_paper.jl` asks *is this still the published framework?* and cannot. If it fails, either the
+package has stopped implementing the specification or the specification has moved — and both are
+findings, not something to record and move past.
+
+⚠️ Add to it rather than blessing around it whenever a result has a published value to check against.
+And name the examples rather than numbering them: supplementary section numbers move between versions
+of a paper.
+
 ⭐ `test_types.jl` is also the **only numeric gate on the extensions**. `ext_*.jl` checks them against
 hand-computed expectations for one tiny input; nothing else records what they produce.
 
