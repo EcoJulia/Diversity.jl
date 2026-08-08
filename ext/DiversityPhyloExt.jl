@@ -2,11 +2,12 @@
 
 module DiversityPhyloExt
 
-isdefined(Base, :get_extension) ? (using Phylo) : (using ..Phylo)
 import Diversity
 using Diversity.API
-using Statistics
 using Diversity: AbstractPhyloTypes
+
+using Phylo
+using Statistics
 
 struct PhyloBranches{Tree <: AbstractTree} <: Diversity.PhyloBranches{Tree}
     tree::Tree
@@ -84,15 +85,15 @@ Diversity.PhyloBranches(args...) = PhyloBranches(args...)
 
 import Diversity.API: _addedoutputcols
 function _addedoutputcols(::AbstractPhyloTypes{TS}) where
-         {LABEL, RT, NL, N, B,
-          TS <: TreeSet{LABEL, RT, NL, N, B, <:AbstractTree}}
+    {LABEL, RT, NL, N, B,
+     TS <: TreeSet{LABEL, RT, NL, N, B, <:AbstractTree}}
     return Dict{Symbol, Type}(:treename => LABEL)
 end
 
 import Diversity.API: _getaddedoutput
 function _getaddedoutput(pt::AbstractPhyloTypes{TS}) where
-         {LABEL, RT, NL, N, B,
-          TS <: TreeSet{LABEL, RT, NL, N, B, <:AbstractTree}}
+    {LABEL, RT, NL, N, B,
+     TS <: TreeSet{LABEL, RT, NL, N, B, <:AbstractTree}}
     return Dict{Symbol, LABEL}(:treename => first(gettreenames(pt.tree)))
 end
 

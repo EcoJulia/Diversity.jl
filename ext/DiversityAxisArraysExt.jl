@@ -2,13 +2,14 @@
 
 module DiversityAxisArraysExt
 
-isdefined(Base, :get_extension) ? (using AxisArrays) : (using ..AxisArrays)
 import Diversity
 
+using AxisArrays
+
 function Diversity.GeneralTypes(zmatrix::AM) where
-         {FP <: AbstractFloat, M <: AbstractMatrix{FP}, LR, LC, NAMES,
-          T <: Tuple{Axis{LR, NAMES}, Axis{LC, NAMES}},
-          AM <: AxisMatrix{FP, M, T}}
+    {FP <: AbstractFloat, M <: AbstractMatrix{FP}, LR, LC, NAMES,
+     T <: Tuple{Axis{LR, NAMES}, Axis{LC, NAMES}},
+     AM <: AxisMatrix{FP, M, T}}
     size(zmatrix, 1) == size(zmatrix, 2) ||
         throw(DimensionMismatch("Similarity matrix is not square"))
 

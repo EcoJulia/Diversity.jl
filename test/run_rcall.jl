@@ -9,6 +9,7 @@ using Diversity.Ecology
 using Diversity.ShortNames
 using DataFrames
 using Phylo
+using PopGen
 using RCall
 
 # Create a temporary directory to work in
@@ -398,6 +399,63 @@ if !skipR
                 sdr = rcopy(rcall(:subdiv, r_div, qs)[:diversity])
                 for (r, j) in zip(sdr, sdj)
                     @test isnan(j) == isnan(r) && (isnan(j) || j ≈ r)
+                end
+            end
+        end
+    end
+
+    # Run genetic (VCF) comparisons. For every VCF file in test/data, Julia reads
+    # it with PopGen and builds a GeneticType with biallelic Manhattan distances,
+    # which must match rdiversity's gen2dist(vcf, biallelic = TRUE) + dist2sim.
+    # Drop additional .vcf files into test/data to cross-validate them too.
+    @testset "RCall - testing Genetics with boydorr/rdiversity" begin
+        datadir = joinpath(@__DIR__, "data")
+        vcffiles = sort([f
+                         for f in readdir(datadir; join = true)
+                         if endswith(f, ".vcf")])
+        @testset "VCF $(basename(file))" for file in vcffiles
+            pd = PopGen.vcf(file; silent = true)
+            gv = GeneticType(pd; distance = :manhattan)
+            jnames = gettypenames(gv, true)
+
+            # Build the matching R similarity from the *same* PopData that Julia
+            # used, via vcf_dataframe (RCall converts the DataFrame to an R
+            # data.frame that gen2dist accepts). It depends only on the genotypes.
+            vcf = vcf_dataframe(pd)
+            @rput vcf
+            R"""
+            gsim <- dist2sim(gen2dist(vcf, biallelic = TRUE), "linear")
+            """
+
+            # Cross-validate against a range of random abundances for this VCF
+            @testset "Random abundances $j" for j in 1:5
+                sc = rand(2:5)
+                pops = rand(length(jnames), sc)
+                pops ./= sum(pops)
+                meta = Metacommunity(pops, gv)
+                qs = sort([rand(7) * 10..., 0, 1, Inf])
+                diversities = Dict(:raw_alpha => α(meta),
+                                   :norm_alpha => ᾱ(meta),
+                                   :raw_beta => β(meta),
+                                   :norm_beta => β̄(meta),
+                                   :raw_rho => ρ(meta),
+                                   :norm_rho => ρ̄(meta),
+                                   :raw_gamma => Γ(meta))
+
+                @rput pops jnames
+                r_meta = R"""
+                rownames(pops) <- jnames
+                metacommunity(pops, gsim)
+                """
+
+                for (r_func, juliadiv) in diversities
+                    r_div = rcall(r_func, r_meta)
+                    # Check the metacommunity diversity
+                    @test metadiv(juliadiv, qs)[!, :diversity] ≈
+                          rcopy(rcall(:metadiv, r_div, qs)[:diversity])
+                    # and subcommunity diversity
+                    @test subdiv(juliadiv, qs)[!, :diversity] ≈
+                          rcopy(rcall(:subdiv, r_div, qs)[:diversity])
                 end
             end
         end

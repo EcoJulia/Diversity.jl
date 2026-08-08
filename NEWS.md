@@ -1,5 +1,13 @@
 # NEWS
 
+- v0.6.0
+  - Add in genetic diversity, matching the gen2dist() and dist2sim() pipeline in boydorr/rdiversity
+  - Provide it through two new extensions, BioSequences for aligned sequences and PopGen for VCF data
+  - Cross-validate genetic diversity against rdiversity for every VCF file in test/data
+  - Fix showing a metacommunity whose types are not named with strings, such as Metacommunity(pop, Z)
+  - Move StringDistances into core dependencies
+  - Remove pre-v1.9 Requires syntax
+  - Update compat for SpatialEcology and JuliaFormatter
 - v0.5.16
   - Fix problem with R vegan validation
   - Update hygiene tests

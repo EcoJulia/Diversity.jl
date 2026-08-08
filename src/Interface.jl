@@ -193,12 +193,19 @@ function calcsimilarity(t::AbstractTypes, scale::Real)
     return _calcsimilarity(t, scale)
 end
 
+# Summarise a list of names for display: all of them if there are few, otherwise the first three and
+# the last two with an ellipsis between.
 function createsummaryline(vec::AbstractVector{<:AbstractString})
     linefunc(vec) = mapreduce(x -> x * ", ", *, vec[1:(end - 1)]) * vec[end]
     length(vec) == 1 && return vec[1]
     length(vec) < 6 && return linefunc(vec)
     return linefunc(vec[1:3]) * "..." * linefunc(vec[(end - 1):end])
 end
+
+# Type names are not necessarily strings — `GeneralTypes(zmatrix)` numbers its types from the matrix
+# axes, so a metacommunity built as `Metacommunity(abundances, Z)` carries `Int` names, and showing
+# one threw a `MethodError` until this method existed.
+createsummaryline(vec::AbstractVector) = createsummaryline(string.(vec))
 
 import Base.show
 function show(io::IO, mc::AbstractMetacommunity)
