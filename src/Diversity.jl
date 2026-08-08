@@ -188,6 +188,18 @@ function _dist2sim(dist::AbstractMatrix; transform::Symbol, k::Real,
     return Matrix{Float64}(sim)
 end
 
+import Diversity.API._counttypes
+_counttypes(g::AbstractGenetic, ::Bool) = g.ntypes
+
+import Diversity.API._gettypenames
+_gettypenames(g::AbstractGenetic, ::Bool) = g.names
+
+import Diversity.API._calcsimilarity
+_calcsimilarity(g::AbstractGenetic, ::Real) = g.Zmatrix
+
+import Diversity.API.floattypes
+floattypes(::AbstractGenetic) = Set([Float64])
+
 include("GeneralisedDiversities.jl")
 export diversity
 export norm_sub_alpha, raw_sub_alpha, norm_sub_beta, raw_sub_beta

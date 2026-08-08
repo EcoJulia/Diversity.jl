@@ -50,6 +50,7 @@ SpatialEcology = "0.10"
 Statistics = "1.9"
 StatsBase = "0.32, 0.33, 0.34"
 StringDistances = "0.11, 1"
+TOML = "1"
 julia = "1.10"
 
 [extras]
@@ -69,6 +70,7 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 ResearchSoftwareMetadata = "58378933-4625-47fa-851e-05ee27d397bd"
 SpatialEcology = "348f2d5d-71a3-5ad4-b565-8af070f99681"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [rsmd]
@@ -99,4 +101,4 @@ publications = ["10.48550/arXiv.1404.6520"]
     givenName = "Isaac"
 
 [targets]
-test = ["AxisArrays", "BioSequences", "CSV", "Distances", "FASTX", "Git", "JuliaFormatter", "Logging", "Phylo", "Pkg", "PopGen", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test"]
+test = ["AxisArrays", "BioSequences", "CSV", "Distances", "FASTX", "Git", "JuliaFormatter", "Logging", "Phylo", "Pkg", "PopGen", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test", "TOML"]
