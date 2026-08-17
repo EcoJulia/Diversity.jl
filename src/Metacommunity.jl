@@ -142,10 +142,24 @@ function Metacommunity(abundances::MU,
                          Subcommunities(size(abundances, 2)))
 end
 
+# Keep a partition that is already one of ours — a foreign `AbstractPlaces` is not an
+# `AbstractPartition` and cannot be, so rebuild one of the right size in that case.
+_aspartition(part::AbstractPartition, ::Integer) = part
+_aspartition(::EcoBase.AbstractPlaces, num::Integer) = Subcommunities(num)
+
 function Metacommunity(asm::EcoBase.AbstractAssemblage)
-    return hassimilarity(asm) ?
-           Metacommunity(occurrences(asm), _calcsimilarity(asm)) :
-           Metacommunity(occurrences(asm))
+    hassimilarity(asm) || return Metacommunity(occurrences(asm))
+
+    # Materialise the similarity as a plain matrix and hand it to GeneralTypes, whatever the
+    # original types were, so the result computes similarity-sensitive diversity through the
+    # ordinary path with no dependence on the source hierarchy. The *processed* abundances go with
+    # it: for a phylogeny those are the branch abundances the scaled Zmatrix is indexed by, and
+    # `calcsimilarity(t, getscale(asm))` is exactly the matrix the measures would have used.
+    processed = getabundance(asm)
+    types = GeneralTypes(calcsimilarity(gettypes(asm), _getscale(asm)),
+                         gettypenames(asm))
+    return Metacommunity(processed, types,
+                         _aspartition(getpartition(asm), size(processed, 2)))
 end
 
 import Diversity.API._gettypes

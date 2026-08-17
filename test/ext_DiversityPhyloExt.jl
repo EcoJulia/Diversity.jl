@@ -48,6 +48,20 @@ using Diversity
     @test subdiv(Gamma(tsmetaphylo), 0).treename == ["tree"]
     @test metadiv(Gamma(tsmetaphylo), 0).treename == ["tree"]
     @test all(inddiv(Gamma(tsmetaphylo), 0).treename .== "tree")
+
+    # Translating to a GeneralTypes metacommunity has to carry the *scaled* Zmatrix and the
+    # *branch* abundances together, or the phylogeny's numbers do not survive — which is the case
+    # that makes the scale argument to `_calcsimilarity` load-bearing here and nowhere else.
+    conv = Metacommunity(metaphylo)
+    @test gettypes(conv) isa GeneralTypes
+    @test gettypenames(conv) == gettypenames(metaphylo)
+    for q in [0, 1, 2, Inf]
+        @test norm_sub_alpha(conv, q).diversity ≈
+              norm_sub_alpha(metaphylo, q).diversity
+        @test norm_sub_rho(conv, q).diversity ≈
+              norm_sub_rho(metaphylo, q).diversity
+        @test meta_gamma(conv, q).diversity ≈ meta_gamma(metaphylo, q).diversity
+    end
 end
 
 end

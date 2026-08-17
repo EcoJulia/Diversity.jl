@@ -72,4 +72,36 @@ end
     @test_throws ErrorException Metacommunity(Float32.(abf), Z)
 end
 
+@testset "Translating an assemblage that has similarity" begin
+    # `Metacommunity(::AbstractAssemblage)` must reach a metacommunity that computes
+    # similarity-sensitive diversity whatever the source types were, by materialising the
+    # similarity into a GeneralTypes.
+    Z = [1.0 0.5 0.0; 0.5 1.0 0.5; 0.0 0.5 1.0]
+    types = GeneralTypes(Z, ["ash", "oak", "elm"])
+    part = Subcommunities(["north", "south"])
+    source = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2], types, part)
+    conv = Metacommunity(source)
+
+    @test gettypes(conv) isa GeneralTypes
+    @test calcsimilarity(gettypes(conv), 1) ≈ Z
+    # The names of both components survive the translation.
+    @test gettypenames(conv) == gettypenames(source)
+    @test getsubcommunitynames(conv) == getsubcommunitynames(source)
+
+    # And it is the *same* metacommunity as far as every measure is concerned.
+    for q in [0, 1, 2, Inf]
+        @test norm_sub_alpha(conv, q).diversity ≈
+              norm_sub_alpha(source, q).diversity
+        @test norm_sub_beta(conv, q).diversity ≈
+              norm_sub_beta(source, q).diversity
+        @test norm_sub_rho(conv, q).diversity ≈
+              norm_sub_rho(source, q).diversity
+        @test meta_gamma(conv, q).diversity ≈ meta_gamma(source, q).diversity
+    end
+
+    # Without similarity the other branch still gives UniqueTypes, as it always has.
+    plain = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2])
+    @test gettypes(Metacommunity(plain)) isa UniqueTypes
+end
+
 end

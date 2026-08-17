@@ -27,7 +27,7 @@ nothing # hide
 | a similarity matrix as well | `Metacommunity(matrix, Z)` | `GeneralTypes` built from `Z` |
 | named types or subcommunities | `Metacommunity(matrix, types, partition)` | exactly what you passed |
 | a phylogeny, sequences or a VCF | `Metacommunity(matrix, PhyloBranches(tree))` etc. | see [Phylogenetic](phylogenetics.md) and [Genetic diversity](genetics.md) |
-| an `EcoBase` assemblage | `Metacommunity(assemblage)` | its own types, places and occurrences |
+| an `EcoBase` assemblage | `Metacommunity(assemblage)` | its occurrences and places, with `UniqueTypes` — or `GeneralTypes` holding its similarity, if it has any |
 | the same structure, new numbers | `Metacommunity(newabundances, oldmeta)` | reuses the types and partition |
 
 ```@repl building
