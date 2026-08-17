@@ -509,7 +509,9 @@ function NormalisedBeta(meta::M) where {M <: AbstractAssemblage}
 end
 
 getName(::NormalisedBeta) = "β̄"
-getFullName(::NormalisedBeta) = "effective number of distinct subcommunities"
+function getFullName(::NormalisedBeta)
+    return "estimate of effective number of distinct subcommunities"
+end
 
 """
     RawRho
@@ -525,8 +527,9 @@ which the diversity of the metacommunity would be preserved if the subcommunity
 were lost. It takes its minimum of 1 when nothing resembling the subcommunity
 remains elsewhere, so that losing it would lose its diversity entirely. Averaged
 over the subcommunities it gives their average redundancy, which rises towards
-the number of subcommunities as they become more alike. It is the reciprocal of
-`RawBeta`.
+the *effective* number of subcommunities — the Hill number of their weights — as
+they become more alike, reaching the number of subcommunities itself only when
+they are also of equal size. It is the reciprocal of `RawBeta`.
 
 #### Constructor arguments:
 
@@ -557,7 +560,7 @@ getFullName(::RawRho) = "redundancy"
 """
     NormalisedRho
 
-Calculates redundancy (ρ̄, normalised beta diversity) of all of the
+Calculates representativeness (ρ̄, normalised beta diversity) of all of the
 individuals in a metacommunity, and caches them for subsequent
 analysis. This is a subtype of PowerMeanMeasure, meaning that all
 composite diversity measures are simple powermeans of the individual
@@ -566,8 +569,10 @@ measures.
 Per subcommunity, it is the **representativeness** of that subcommunity: how
 typical it is of the metacommunity as a whole. Where all types are equally
 abundant, a subcommunity holding a fraction `r` of them has representativeness
-exactly `r`. Averaged over the subcommunities it gives their average
-representativeness. ⚠️ In the naive-type case representativeness is at most 1,
+exactly `r` — whatever fraction of the *individuals* it holds, since being the
+normalised measure it has the subcommunity's weight divided out. Averaged over
+the subcommunities it gives their average
+representativeness. In the naive-type case representativeness is at most 1,
 attained when the subcommunity has the same type distribution as the
 metacommunity — but that bound does **not** hold for a general similarity
 matrix. It is the reciprocal of `NormalisedBeta`.
@@ -645,5 +650,6 @@ RecipesBase.@recipe function f(var::Tuple{<:DiversityMeasure,
              getdiversityname(var[1]) *
              " diversity"
     colorbar_title := getASCIIName(var[1])
-    return subdiv(var...)[:diversity], getcoords(places(_getmeta(var[1])))
+    return subdiv(var...)[!, :diversity],
+           getcoords(places(_getmeta(var[1])))
 end

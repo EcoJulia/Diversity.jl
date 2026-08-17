@@ -407,18 +407,32 @@ end
     gower(proportions::AbstractMatrix; countzeros::Bool = false, logscale::Bool = true)
     gower(asm::AbstractAssemblage; countzeros::Bool = false, logscale::Bool = true)
 
-Calculates Gower's dissimarity of up to two columns representing independent subcommunity counts.
-    
+Calculates Gower's dissimilarity between exactly two subcommunities. Unlike the other measures here
+this is a genuinely *pairwise* index, so it needs a metacommunity of two subcommunities and no more.
+
 #### Arguments:
-    
+
 - `proportions`: population proportions; or
-- `count`: population counts; or
-- `asm`: Abstract Assemblage
-- ``
+- `asm`: an AbstractAssemblage of exactly two subcommunities
+
+#### Keyword arguments:
+
+- `countzeros`: which of the two published conventions to use, and **not a free choice** — it
+  selects the denominator. `true` divides by the total number of types, so types absent from both
+  subcommunities still count; this is classic Gower (1971), and matches R vegan's `gower`. `false`
+  divides only by the types actually present, matching vegan's `altGower`. Defaults to `false`.
+- `logscale`: take `log10` of the abundances first, so that differences are proportional rather than
+  absolute. Defaults to `false`.
+- `normalise`: count each type as differing or not, rather than by how much it differs — a
+  presence/absence reading. Defaults to whatever `countzeros` is.
 
 #### Returns:
-    
-- Gower dissimilarity of the subcommunities
+
+- Gower dissimilarity of the two subcommunities, as a single-row DataFrame
+
+Note: R vegan 2.7 changed its `gower` to range-standardise columns first and drop tied columns from the
+denominator, which returns `NA` for identical samples. This package keeps the classic reading, so
+`gower(countzeros = true)` matches *old* vegan; see `test/run_rcall.jl`.
 """
 function gower end
 

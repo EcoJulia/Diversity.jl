@@ -7,7 +7,7 @@ using Diversity
 #
 #     julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_clean.jl"])'
 #
-# ⭐ Going through `Pkg.test` rather than running the file directly is the whole point: it is what
+# Going through `Pkg.test` rather than running the file directly is the whole point: it is what
 # provisions the test environment. `Git`, `JuliaFormatter`, `ResearchSoftwareMetadata`, `RCall`,
 # `Phylo`, `PopGen` and the rest are `[extras]` in `Project.toml`'s `test` target and nothing else
 # supplies them, so a bare `julia test/extras_clean.jl` dies on `using Git`. `Pkg.test` gets it
@@ -16,21 +16,21 @@ using Diversity
 # The `.jl` is optional, so `test_args = ["extras_clean"]` works too. Any test file may be named —
 # `test_Metacommunity.jl` as readily as a whole set.
 #
-# ⭐ **The suite is six nameable sets**, which is what lets you run one part rather than all of it:
+# **The suite is six nameable sets**, which is what lets you run one part rather than all of it:
 #
 #     core_test  core_ext
 #     extras_canonical  extras_clean  extras_docs  extras_pkg
 #
-# ⭐ The split is semantic: the **core** sets test this package against itself, the **extras** check
+# The split is semantic: the **core** sets test this package against itself, the **extras** check
 # it against something outside — another package's answers, the blessed results, the documentation,
 # the repo's own hygiene.
 #
-# ⚠️ `extras_pkg` is the one to know about: it cross-validates against R `rdiversity` and `vegan`,
+# `extras_pkg` is the one to know about: it cross-validates against R `rdiversity` and `vegan`,
 # which is most of the suite's wall-clock and installs CRAN packages on a cold machine. Naming
 # `core_test` instead is the difference between seconds and minutes while iterating.
 #
-# ⚠️ **Running the sets in parallel gives up the ordering guarantee below** — the extras then run even
-# when the unit tests are failing, so one broken thing reports as several. ⭐ If you do, let the first
+# **Running the sets in parallel gives up the ordering guarantee below** — the extras then run even
+# when the unit tests are failing, so one broken thing reports as several. If you do, let the first
 # invocation get through precompilation before starting the rest, or every process compiles the same
 # package at once and they contend.
 
@@ -50,15 +50,10 @@ else
     # Two loops, and nothing else. Each `core_*.jl` and `extras_*.jl` is a standalone set that can be
     # run on its own by name (see above); this file only decides the order they go in.
     #
-    # ⚠️ The extras run **after** the core sets deliberately: a failing `@testset` throws at its end,
+    # The extras run **after** the core sets deliberately: a failing `@testset` throws at its end,
     # so the extras are reached only once the unit and extension tests pass. There is no point
     # cross-validating a broken package against R, or blessing results it computed wrongly.
     #
-    # ⚠️ Unlike EcoSISTEM, the extras are **not** skipped on a Windows runner. There the group holds
-    # notebooks and examples that push the job past its timeout; here it is cross-validation,
-    # canonical results, documentation and hygiene, and skipping it would drop `pkg_Distances` and
-    # `pkg_StatsBase` from Windows entirely. The files that genuinely cannot run there — `pkg_RCall`
-    # and both `clean_*` — already say so themselves.
     corebase = sort(filter(str -> occursin(r"^core_.*\.jl$", str),
                            readdir(@__DIR__)))
     extrabase = sort(filter(str -> occursin(r"^extras_.*\.jl$", str),
@@ -82,11 +77,9 @@ else
         foreach(f -> println("    = $f"), extrabase)
         println()
 
-        # ⚠️ Wrapped in an enclosing testset, exactly as the core loop is, and it is **not**
+        # Wrapped in an enclosing testset, exactly as the core loop is, and it is **not**
         # decoration: a failing `@testset` throws when it is the *outermost* one, so a bare
-        # `@testset for` here would abort the loop at the first set that failed. `extras_clean`
-        # fails on any tree with unstaged changes — i.e. throughout normal development — and would
-        # then stop `extras_docs` and `extras_pkg` from running at all.
+        # `@testset for` here would abort the loop at the first set that failed.
         @testset "Extras" begin
             @testset for fn in extrabase
                 println("    * Running $fn ...")

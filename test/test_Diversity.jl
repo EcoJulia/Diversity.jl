@@ -30,7 +30,7 @@ end
     @test ρ̄ ≡ NormalisedRho
     @test Γ ≡ Gamma
 
-    # ⚠️ `γ` cannot be exported (Julia always resolves it as `ShortNames.γ`), so `Γ` is exported in
+    # Note: `γ` cannot be exported (Julia always resolves it as `ShortNames.γ`), so `Γ` is exported in
     # its place. That is deliberate, and this is the assertion that says so.
     @test Diversity.ShortNames.γ ≡ Gamma
     @test :Γ ∈ names(Diversity.ShortNames)
@@ -63,7 +63,7 @@ end
                               normalise = false, max_d = maximum(dist)) ≈
           exp.(-2 .* dist)
 
-    # ⚠️ The linear transform clamps at zero rather than going negative — a similarity below 0 would
+    # The linear transform clamps at zero rather than going negative — a similarity below 0 would
     # be rejected by `GeneralTypes` and is meaningless anyway.
     clamped = Diversity._dist2sim(dist; transform = :linear, k = 10,
                                   normalise = true, max_d = maximum(dist))
@@ -76,7 +76,7 @@ end
     @test Diversity._dist2sim(zeroes; transform = :linear, k = 1,
                               normalise = true, max_d = 0.0) == ones(2, 2)
 
-    # 🔴 The error branch. Reachable in normal use only by passing a bad `transform` to
+    # The error branch. Reachable in normal use only by passing a bad `transform` to
     # `GeneticType`, so nothing else in the suite covers it.
     @test_throws ArgumentError Diversity._dist2sim(dist; transform = :quadratic,
                                                    k = 1, normalise = true,

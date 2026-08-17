@@ -6,12 +6,12 @@
 #
 #     julia --project -e 'using Pkg; Pkg.test(test_args = ["core_test.jl"])'
 #
-# ⭐ That is the point of this file existing. Any *single* file could already be named
+# That is the point of this file existing. Any *single* file could already be named
 # (`test_args = ["test_Metacommunity.jl"]`), but there was no way to say "all the unit tests and
 # nothing else" short of naming all of them — so the only alternative to one file was the whole
 # suite, `extras_pkg.jl` and its R cross-validation included.
 #
-# ⭐ Most of these files also run as bare scripts (`cd test && julia --project=.. test_Types.jl`),
+# Most of these files also run as bare scripts (`cd test && julia --project=.. test_Types.jl`),
 # because they need only the package's own dependencies. The exception is `test_EcoBase.jl`, which
 # needs `SpatialEcology` and `CSV` — `[extras]` in `Project.toml`'s `test` target, and so reachable
 # only through `Pkg.test`.
@@ -55,7 +55,7 @@ let filebase = String[]
         println()
     end
 
-    # ⚠️ Seeded here rather than only in `runtests.jl`, or this file run on its own would not be
+    # Seeded here rather than only in `runtests.jl`, or this file run on its own would not be
     # reproducible — which is most of why it exists.
     Random.seed!(1234)
 

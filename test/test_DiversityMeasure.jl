@@ -7,6 +7,8 @@ using LinearAlgebra
 using Diversity
 using Diversity.ShortNames
 using DataFrames
+using EcoBase: getcoords
+using Plots
 
 pop = [3, 3, 4]
 pop = pop / sum(pop)
@@ -31,11 +33,12 @@ nab = NormalisedAlpha(meta2)
     asciis = ["RawAlpha", "NormalisedAlpha",
         "RawBeta", "NormalisedBeta",
         "RawRho", "NormalisedRho", "Gamma"]
-    # ⚠️ These are the paper's own descriptions of the measures, at subcommunity level — which is
+    # These are the paper's own descriptions of the measures, at subcommunity level — which is
     # the level `getFullName`'s only consumer, the plot recipe, works at.
     fulls = ["estimate of naive-community metacommunity diversity",
         "diversity of subcommunity in isolation",
-        "distinctiveness", "effective number of distinct subcommunities",
+        "distinctiveness",
+        "estimate of effective number of distinct subcommunities",
         "redundancy", "representativeness",
         "contribution per individual toward metacommunity diversity"]
     for i in axes(diversities, 1)
@@ -53,7 +56,7 @@ nab = NormalisedAlpha(meta2)
     @test getFullName(Diversity.Representativeness(meta)) ==
           "representativeness"
 
-    # ⚠️ `getASCIIName` strips the module prefix and the type parameters, so it names the *measure*
+    # `getASCIIName` strips the module prefix and the type parameters, so it names the *measure*
     # rather than the concrete parameterisation — which is what the output DataFrame carries.
     @test !occursin("Diversity.", getASCIIName(Gamma(meta)))
     @test !occursin("{", getASCIIName(Gamma(meta)))
@@ -170,6 +173,23 @@ manyweights *= Diagonal(reshape(mapslices(v -> 1.0 / sum(v), manyweights;
 
     # many (unexported!) diversity levels not yet implemented
     @test_throws ErrorException Diversity.communityDiversity(nab)
+end
+
+@testset "Plot recipe" begin
+    # The recipe is defined on a *tuple*, so the measure and the order go in together.
+    mc = Metacommunity(manyweights)
+    @test plot((NormalisedRho(mc), 1)) isa Plots.Plot
+    @test plot((Gamma(mc), 0)) isa Plots.Plot
+
+    # And it needs coordinates. A partition with no spatial data makes some up, but only because
+    # `getcoords` is wired to `coordinates` in `src/EcoBase.jl` — EcoBase's own fallback returns the
+    # partition itself, which Plots cannot use.
+    @test getcoords(getpartition(mc)) isa AbstractMatrix
+    @test size(getcoords(getpartition(mc))) == (countsubcommunities(mc), 2)
+
+    # The recipe plots *subcommunity* diversities against the partition's coordinates, so it needs
+    # one value per subcommunity.
+    @test nrow(subdiv(NormalisedRho(mc), 1)) == countsubcommunities(mc)
 end
 
 end

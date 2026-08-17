@@ -9,6 +9,7 @@ using EcoBase
 using SpatialEcology
 using CSV
 using DataFrames
+using Plots
 
 numspecies = 10
 numcommunities = 8
@@ -82,6 +83,11 @@ end
           meta_gamma(Metacommunity(amp3), 0).diversity[1]
     @test getaddedoutput(amph) === nothing
     @test getaddedoutput(gettypes(amph)) === nothing
+
+    # This is the route to the spatial diversity maps the framework was designed to produce.
+    @test plot(norm_sub_rho(amph, 1), amph) isa Plots.Plot
+    @test plot(sub_gamma(amph, 0), amph) isa Plots.Plot
+    @test nrow(norm_sub_rho(amph, 1)) == countsubcommunities(amph)
 end
 
 end

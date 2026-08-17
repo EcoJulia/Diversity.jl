@@ -37,11 +37,11 @@ alongside the code. Review it before committing:
 - Did anything move that you did not expect? That is the finding, not the noise.
 - Are the new numbers still sensible — positive, finite, non-increasing in `q`?
 
-⚠️ **Re-blessing is not a way to make a failing test pass.** A canonical failure means the output
+Note: **Re-blessing is not a way to make a failing test pass.** A canonical failure means the output
 changed; your job is to explain *why* before recording the new value. If you cannot say why, do not
 bless it.
 
-🔴 And if a change moves these numbers, it will very likely move rdiversity's too — so it is a change
+And if a change moves these numbers, it will very likely move rdiversity's too — so it is a change
 to the *specification*, not just to this package. Raise it rather than blessing past it.
 
 ## The two kinds, and why there are two
@@ -54,7 +54,7 @@ to the *specification*, not just to this package. Raise it rather than blessing 
 Keeping them apart is the point: when a number moves, which file moved tells you immediately whether
 to look at `src/DiversityMeasure.jl` or at an extension.
 
-## 🔴 `test_paper.jl` is a third kind, and the strongest
+## `test_paper.jl` is a third kind, and the strongest
 
 Everything above records what this package produced. `test_paper.jl` records what the **paper says it
 must produce** — the communities its appendices work right through, with every measure stated. So it
@@ -65,11 +65,11 @@ That is the point. A blessed value asks *has this changed?* and can be silenced 
 package has stopped implementing the specification or the specification has moved — and both are
 findings, not something to record and move past.
 
-⚠️ Add to it rather than blessing around it whenever a result has a published value to check against.
+Add to it rather than blessing around it whenever a result has a published value to check against.
 And name the examples rather than numbering them: supplementary section numbers move between versions
 of a paper.
 
-⭐ `test_types.jl` is also the **only numeric gate on the extensions**. `ext_*.jl` checks them against
+`test_types.jl` is also the **only numeric gate on the extensions**. `ext_*.jl` checks them against
 hand-computed expectations for one tiny input; nothing else records what they produce.
 
 ## Writing one
@@ -99,7 +99,7 @@ blessed("measures/unique/Gamma/meta_q0", metadiv(Γ(meta), 0)[1, :diversity])
   `rand(Nonultrametric(…))`; a random topology re-blesses to noise every run. There is deliberately no
   seeding here — a fixed structure is readable in the diff, a seed is not.
 
-⚠️ The function is `blessed`, not `canonical`, because **`BioSequences` exports `canonical`** (the
+The function is `blessed`, not `canonical`, because **`BioSequences` exports `canonical`** (the
 canonical orientation of a k-mer). A file that loads it — `test_types.jl` does — would get an
 ambiguity between the two rather than either, reported as a bare `UndefVarError`. EcoSISTEM has no
 such clash and calls it `canonical`; do not rename this one back to match.

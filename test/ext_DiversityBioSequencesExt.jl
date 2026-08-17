@@ -30,7 +30,7 @@ using FASTX
 end
 
 @testset "Genetic (sequence) from a FASTA file" begin
-    # ⭐ The documented route into this extension is "a vector of aligned `BioSequence`s", but a user
+    # The documented route into this extension is "a vector of aligned `BioSequence`s", but a user
     # gets those from a file. Reading `test/data/sequences.fasta` — the same three sequences as
     # above — checks that the whole path works and that the names come from the file rather than
     # being invented.

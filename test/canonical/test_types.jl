@@ -5,7 +5,7 @@
 # matrix; this file pins the matrices themselves, so when a number moves, which file moved says
 # whether to look at the measures or at the type.
 #
-# ⭐ It is also the only numeric gate on the extensions. `ext_*.jl` checks them against hand-computed
+# It is also the only numeric gate on the extensions. `ext_*.jl` checks them against hand-computed
 # expectations for one tiny input; nothing else records what they produce.
 
 module CanonicalTypes
@@ -24,7 +24,7 @@ const QS = [0, 1, 2, Inf]
 qlabel(q) = isinf(q) ? "qInf" : "q$(Int(q))"
 
 @testset "canonical: types" begin
-    # ⚠️ The tree is built explicitly rather than drawn with `rand(Nonultrametric(…))`. A blessed
+    # The tree is built explicitly rather than drawn with `rand(Nonultrametric(…))`. A blessed
     # value must be a pure function of the code; a random topology would re-bless to noise every run.
     @testset "PhyloBranches" begin
         species = ["Dog", "Human", "Cat"]
@@ -39,7 +39,7 @@ qlabel(q) = isinf(q) ? "qInf" : "q$(Int(q))"
         ph = PhyloBranches(tree)
         meta = Metacommunity([0.4, 0.3, 0.3], ph)
 
-        # ⚠️ `vec` throughout: a metacommunity built from a vector still stores its abundances as a
+        # `vec` throughout: a metacommunity built from a vector still stores its abundances as a
         # one-column matrix, and the similarity matrix is 5×5. Shapes are asserted below instead.
         blessed("types/phylo/abundance", vec(getabundance(meta)))
         blessed("types/phylo/ordinariness", vec(getordinariness!(meta)))
@@ -49,7 +49,7 @@ qlabel(q) = isinf(q) ? "qInf" : "q$(Int(q))"
                     metadiv(Γ(meta), q)[1, :diversity])
         end
 
-        # ⭐ Raw types are the leaves, processed types the ancestral branches — the distinction the
+        # Raw types are the leaves, processed types the ancestral branches — the distinction the
         # whole `raw::Bool` argument exists for. Shape is asserted here because the blessed vectors
         # above are flat.
         @test gettypenames(ph, true) == species

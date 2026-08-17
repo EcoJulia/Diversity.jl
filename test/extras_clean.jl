@@ -7,7 +7,7 @@
 #
 #     julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_clean.jl"])'
 #
-# ⚠️ **Not** runnable as a bare script, and that is a dependency fact rather than an oversight: the
+# **Not** runnable as a bare script, and that is a dependency fact rather than an oversight: the
 # checks need `Git`, `JuliaFormatter` and `ResearchSoftwareMetadata`, which are `[extras]` in
 # `Project.toml`'s `test` target — a combination only `Pkg.test` provisions. Going through it means
 # the environment is right by construction rather than reconstructed here and drifting the moment a
@@ -18,7 +18,7 @@
 # it *skips* on a CI runner, because the dedicated `metadata.yaml` job asks for this file by name and
 # there is no reason for every matrix entry to redo the crosswalk.
 #
-# ⚠️ These checks read the *working tree*, so they only mean anything on a tree whose changes are
+# These checks read the *working tree*, so they only mean anything on a tree whose changes are
 # staged or committed: `is_repo_clean` counts unstaged tracked changes, and the crosswalk regenerates
 # `codemeta.json`. A dirty tree fails them for reasons that have nothing to do with the code. The
 # local loop is crosswalk → format → `git add` → run this set.
@@ -33,7 +33,7 @@ using Diversity
 # as part of the whole suite — no environment variable needed to tell those apart, because "was I
 # asked for?" is the question that actually distinguishes them.
 #
-# ⭐ This replaced an `RSMD_CROSSWALK=TRUE` environment variable that did the same job less well: it
+# This replaced an `RSMD_CROSSWALK=TRUE` environment variable that did the same job less well: it
 # lived in `runtests.jl` as a whole-suite either/or, so asking for the hygiene checks meant *also*
 # suppressing every other test, and the workflow and the harness had to agree about a name that
 # appeared in neither's interface.

@@ -9,10 +9,10 @@ using Documenter
 using Diversity
 using Phylo
 
-# ⚠️ The page order is set explicitly. Left to itself Documenter sorts alphabetically, which buries
-# framework.md — the page that explains what every other page assumes — between ecology and genetics.
-# The order here is: what the package is, what it measures, then the capabilities, the submodules of
-# older measures, and finally the extension API.
+# Note: GR needs to be told there is no display, or plotting fails on a CI runner.
+get!(ENV, "GKSwstype", "100")
+
+# The page order is set explicitly - otherwise Documenter sorts alphabetically.
 makedocs(modules = [Diversity,
              Diversity.Ecology, Diversity.Jost,
              Diversity.Hill,
@@ -20,6 +20,8 @@ makedocs(modules = [Diversity,
          sitename = "Diversity.jl",
          pages = ["Introduction" => "index.md",
              "The framework" => "framework.md",
+             "Building a metacommunity" => "metacommunities.md",
+             "Coming from vegan" => "vegan.md",
              "Phylogenetic diversity" => "phylogenetics.md",
              "Genetic diversity" => "genetics.md",
              "Diversity.Ecology" => "ecology.md",

@@ -8,7 +8,7 @@ module Canonical
 using Test
 using TOML
 
-# ⚠️ The function is `blessed`, not `canonical`, and that is not a style choice: **`BioSequences`
+# Note: The function is `blessed`, not `canonical`, and that is not a style choice: **`BioSequences`
 # exports `canonical`** (the canonical orientation of a k-mer), so a canonical test file that loads it
 # — `test_types.jl` does — gets an ambiguity rather than either function, reported as a bare
 # `UndefVarError`. Checked against every package the test target can load; `blessed` is free in all of
@@ -19,7 +19,7 @@ export blessed, canonical_reference, writereference, blessing
 # reviewable diff rather than a scatter of them.
 const REFERENCE = joinpath(@__DIR__, "reference.toml")
 
-# ⚠️ Blessed values are written through **on every call**, not accumulated and flushed at the end.
+# Note: Blessed values are written through **on every call**, not accumulated and flushed at the end.
 # That looks wasteful and is deliberate: each canonical test file `include`s this file into its own
 # module, so every file gets its *own* copy of any in-memory state — an accumulate-then-flush design
 # silently blesses nothing at all, because the runner writes out its own empty dict rather than the
@@ -43,7 +43,7 @@ function canonical_reference()
     return _CACHE[]
 end
 
-# TOML holds numbers and flat arrays of them. ⚠️ `TOML.print` **errors outright on a `Matrix`**, so a
+# TOML holds numbers and flat arrays of them. `TOML.print` **errors outright on a `Matrix`**, so a
 # similarity matrix has to be flattened — and refusing it here, with the fix in the message, is much
 # clearer than letting the write fail deep inside a re-blessing run. Flattening at the *call site* is
 # also the point: it leaves the shape asserted in the test, where a reader can see it, rather than
@@ -64,7 +64,7 @@ end
 
 Compare `value` against the blessed result for `name`, or record it when re-blessing.
 
-⚠️ Flatten matrices before calling — `vec(Z)` — and assert the shape in the test instead.
+Flatten matrices before calling — `vec(Z)` — and assert the shape in the test instead.
 
 `rtol` is deliberately tight by default. A canonical test exists to notice change, so a loose
 tolerance defeats it; widen it only where a result is genuinely only reproducible to fewer digits, and
@@ -101,9 +101,6 @@ function _write(merged)
                 "# Blessed canonical results — regenerate with DIVERSITY_BLESS=true, and read")
         println(io,
                 "# test/canonical/README.md before committing a change to this file.")
-        # ⚠️ `sorted = true` on the *printer*, not a pre-sorted `Dict` — building a `Dict` from sorted
-        # keys throws the order away again, so the file came out in hash order and every re-blessing
-        # reshuffled it. "The diff is the deliverable" only holds if the order is stable.
         return TOML.print(io, merged; sorted = true)
     end
     return nothing
@@ -114,7 +111,7 @@ end
 
 Write everything recorded this run to `reference.toml`. Call once, after all canonical tests.
 
-⚠️ **Merges rather than replaces.** A run that executed only some of the canonical files would
+Note: **Merges rather than replaces.** A run that executed only some of the canonical files would
 otherwise silently delete the blessed values of the rest, turning a partial re-blessing into a
 wholesale loss — the sort of damage that only shows up much later, as a test that stopped checking
 anything.

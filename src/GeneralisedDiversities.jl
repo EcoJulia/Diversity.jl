@@ -191,9 +191,9 @@ end
 """
     norm_meta_beta(meta::AbstractAssemblage, qs)
 
-Calculates the effective number of distinct subcommunities. It reaches its maximum, the number of
-subcommunities, when they are completely distinct and of equal size, and is invariant under
-shattering.
+Calculates the effective number of distinct subcommunities. When they are completely distinct it
+reaches `qD(w, q)`, the Hill number of their weights — which is the number of subcommunities itself
+only when they are also of equal size. It is invariant under shattering.
 
 # Arguments:
 
@@ -249,8 +249,9 @@ end
     raw_meta_rho(meta::AbstractAssemblage, qs)
 
 Calculates the average redundancy of the subcommunities. It takes its minimum of 1 when the
-subcommunities have nothing in common, and rises towards the number of subcommunities as they
-become more alike.
+subcommunities have nothing in common, and rises towards the *effective* number of subcommunities
+— the Hill number of their weights — as they become more alike, reaching the number of
+subcommunities itself only when they are also of equal size.
 
 # Arguments:
 

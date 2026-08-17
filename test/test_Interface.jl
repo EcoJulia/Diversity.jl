@@ -25,7 +25,7 @@ manyweights /= sum(manyweights)
     @test startswith(long, "a, b, c")
     @test endswith(long, "f, g")
 
-    # ⚠️ Type names are not necessarily strings — `GeneralTypes(zmatrix)` numbers its types from the
+    # Type names are not necessarily strings — `GeneralTypes(zmatrix)` numbers its types from the
     # matrix axes — and showing such a metacommunity threw a `MethodError` until this worked.
     @test createsummaryline([1, 2, 3]) == "1, 2, 3"
 end

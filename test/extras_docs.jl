@@ -7,22 +7,21 @@
 #
 #     julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_docs.jl"])'
 #
-# ⚠️ **Not** runnable as a bare script, and that is a dependency fact rather than an oversight:
+# **Not** runnable as a bare script, and that is a dependency fact rather than an oversight:
 # `phylogenetics.md` and `genetics.md` `using` `Phylo`, `PopGen` and `BioSequences`, which are
-# `[extras]` in `Project.toml`'s `test` target. ✅ Verified — a bare
-# `cd test && julia --project=.. extras_docs.jl` does not skip those pages, it *errors* on them.
+# `[extras]` in `Project.toml`'s `test` target.
 #
-# ⭐ **A ```@repl fence is the single source of truth for "this code is checked".** Documenter runs
+# **A ```@repl fence is the single source of truth for "this code is checked".** Documenter runs
 # those blocks when it builds the site; this file runs the same blocks in the test suite. A plain
 # ```julia fence stays illustrative and is deliberately *not* run. One marker, two runners, and no
 # second list to keep in step.
 #
-# ⚠️ This does **not** call Documenter, and cannot: `Documenter` lives in `docs/Project.toml`, not in
+# This does **not** call Documenter, and cannot: `Documenter` lives in `docs/Project.toml`, not in
 # `Project.toml`'s `test` target, so `makedocs` is unavailable here. The blocks are extracted and run
 # directly instead — which also means an executable block may only `using` packages reachable from
 # the *test* environment.
 #
-# ⚠️ It also means this file checks that the code **runs**, not that it produces the output shown:
+# It also means this file checks that the code **runs**, not that it produces the output shown:
 # under `@repl` Documenter regenerates the output at build time, so there is nothing recorded here to
 # compare against. Pinning numbers is `extras_canonical.jl`'s job, not this one's.
 
@@ -30,6 +29,10 @@ module ExtrasDocs
 
 using Test
 using Diversity
+
+# Pages that plot need GR told there is no display, exactly as `docs/make.jl` does — otherwise a
+# headless runner fails on the first figure.
+get!(ENV, "GKSwstype", "100")
 
 # The fence languages Documenter *executes* while building a page. `@example` and `@setup` run as
 # scripts (the latter without showing its code); `@repl` runs line by line and shows a prompt. The
@@ -83,6 +86,34 @@ function _sandboxes(path::AbstractString)
     return [name => join(code[name], "\n") for name in order]
 end
 
+# Run one sandbox and assert two separate things: that it does not throw, and that it produces no
+# warning or error on stderr.
+#
+# It deliberately does **not** use `@test_nowarn`, which fails on *any* stderr output including
+# `@info`. That is too strict for documentation: a page is entitled to call a package that logs
+# — `SpatialEcology` announces "Matrix data assumed to be presence-absence" whenever an assemblage is
+# built — and forbidding that would mean either hiding the call or dropping the example. A *warning*
+# still fails, because a documentation example that warns is usually a documentation example doing
+# something wrong.
+function _runblock(sandbox, source, label)
+    ok, log = mktemp() do path, io
+        result = redirect_stderr(io) do
+            try
+                include_string(sandbox, source, label)
+                true
+            catch e
+                @error "documentation block failed" label exception = e
+                false
+            end
+        end
+        flush(io)
+        return result, read(path, String)
+    end
+    @test ok
+    @test !occursin("Warning:", log) && !occursin("Error:", log)
+    return nothing
+end
+
 @testset "Documentation code" begin
     docsdir = joinpath(@__DIR__, "..", "docs", "src")
     pages = sort(filter(f -> endswith(f, ".md"), readdir(docsdir)))
@@ -103,13 +134,12 @@ end
                                         "_",
                                         replace(name, r"\W" => "_")))
                 @testset "$name" begin
-                    @test_nowarn include_string(sandbox, source,
-                                                "$page [$name]")
+                    _runblock(sandbox, source, "$page [$name]")
                 end
             end
         end
     end
-    # ⚠️ The check that this file is doing anything at all. A regex that quietly matches nothing
+    # The check that this file is doing anything at all. A regex that quietly matches nothing
     # reports success just as loudly as one that works, and this suite exists precisely because
     # unexecuted documentation rots invisibly — so a run that executed no code is a failure.
     @test total > 0

@@ -2,12 +2,19 @@
 
 - v0.6.0
   - Document the diversity framework and its origins, with a new page in the manual
+  - Add a page on building metacommunities, and one for users coming from R's vegan
+  - Document the options to gower(), and how they relate to vegan's gower and altGower
   - Document the fourteen norm_/raw_ diversity wrapper functions, which had no docstrings
   - Rename the getFullName() descriptions of the measures to match those in the paper
+  - Fix the NormalisedRho docstring, which named it redundancy rather than representativeness
+  - Fix docstrings giving the maximum of raw rho and normalised beta as the number of
+    subcommunities, rather than the effective number of them
   - Add in genetic diversity, matching the gen2dist() and dist2sim() pipeline in boydorr/rdiversity
   - Provide it through two new extensions, BioSequences for aligned sequences and PopGen for VCF data
   - Cross-validate genetic diversity against rdiversity for every VCF file in test/data
   - Fix showing a metacommunity whose types are not named with strings, such as Metacommunity(pop, Z)
+  - Fix the plot recipes, which errored on any input, and add tests for them
+  - Allow Metacommunity(counts, Z) with integer counts, as every other constructor does
   - Move StringDistances into core dependencies
   - Remove pre-v1.9 Requires syntax
   - Update compat for SpatialEcology and JuliaFormatter

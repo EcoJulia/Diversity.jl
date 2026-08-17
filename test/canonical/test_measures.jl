@@ -20,7 +20,7 @@ const POP = [2.0 1.0 0.0
              1.0 3.0 1.0
              0.0 1.0 4.0]
 
-# ⚠️ **Asymmetric on purpose.** Similarity need not be symmetric — `run_rcall.jl` cross-validates
+# **Asymmetric on purpose.** Similarity need not be symmetric — `run_rcall.jl` cross-validates
 # both cases against rdiversity — so blessing a symmetric matrix here would leave the asymmetric path
 # unpinned, which is the one where a transposed index goes unnoticed.
 const ZASYM = [1.0 0.5 0.0
@@ -40,7 +40,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
                                     "asymmetricz" => GeneralTypes(ZASYM)]
         meta = Metacommunity(POP, types)
 
-        # ⭐ Both scales are blessed, not just the metacommunity. They aggregate with *different*
+        # Both scales are blessed, not just the metacommunity. They aggregate with *different*
         # power-mean orders — opposite ones for the relative-entropy measures — so a subcommunity
         # vector can move while its metacommunity summary does not.
         for (mname, measure) in MEASURES
@@ -53,7 +53,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
             end
         end
 
-        # ⭐ The properties that must hold whatever the blessed numbers are. Re-blessing silences the
+        # The properties that must hold whatever the blessed numbers are. Re-blessing silences the
         # values above; it must never be able to silence these.
         w = getweight(meta)
         for q in QS
@@ -70,7 +70,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
         end
     end
 
-    # 🔴 Numbers equivalence: n equally-abundant, wholly distinct types must give exactly n at every
+    # Note: Numbers equivalence: n equally-abundant, wholly distinct types must give exactly n at every
     # q. It is the defining property of the whole framework and the cheapest thing in this file.
     @testset "numbers equivalence" begin
         even = Metacommunity(fill(1 / 5, 5))
