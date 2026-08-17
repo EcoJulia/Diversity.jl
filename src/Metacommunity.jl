@@ -142,10 +142,14 @@ function Metacommunity(abundances::MU,
                          Subcommunities(size(abundances, 2)))
 end
 
-# Keep a partition that is already one of ours — a foreign `AbstractPlaces` is not an
-# `AbstractPartition` and cannot be, so rebuild one of the right size in that case.
-_aspartition(part::AbstractPartition, ::Integer) = part
-_aspartition(::EcoBase.AbstractPlaces, num::Integer) = Subcommunities(num)
+# Keep a partition that is already one of ours. A foreign `AbstractPlaces` is not an
+# `AbstractPartition` and cannot be, so rebuild one from its names instead — `placenames` is part of
+# EcoBase's own interface for `AbstractPlaces`, so it is always there to ask, and `collect` is what
+# turns whatever vector of strings it returns into the `Vector{String}` `Subcommunities` takes.
+_aspartition(part::AbstractPartition) = part
+function _aspartition(places::EcoBase.AbstractPlaces)
+    return Subcommunities(collect(String, placenames(places)))
+end
 
 function Metacommunity(asm::EcoBase.AbstractAssemblage)
     hassimilarity(asm) || return Metacommunity(occurrences(asm))
@@ -158,8 +162,7 @@ function Metacommunity(asm::EcoBase.AbstractAssemblage)
     processed = getabundance(asm)
     types = GeneralTypes(calcsimilarity(gettypes(asm), _getscale(asm)),
                          gettypenames(asm))
-    return Metacommunity(processed, types,
-                         _aspartition(getpartition(asm), size(processed, 2)))
+    return Metacommunity(processed, types, _aspartition(getpartition(asm)))
 end
 
 import Diversity.API._gettypes

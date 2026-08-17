@@ -6,7 +6,23 @@ using LinearAlgebra
 
 using Diversity
 using Diversity.API
+using EcoBase
 using Missings
+
+# An assemblage from outside our hierarchy whose *types* nonetheless carry similarity — the shape
+# EcoSISTEM's Ecosystem has. Its places are an EcoBase `AbstractPlaces`, which cannot also be an
+# `AbstractPartition`, so this is what reaches the second `_aspartition` method.
+struct ForeignPlaces <: EcoBase.AbstractPlaces{Nothing} end
+EcoBase.placenames(::ForeignPlaces) = ["west", "east"]
+
+struct ForeignAssemblage{T <: Diversity.AbstractTypes} <:
+       EcoBase.AbstractAssemblage{Float64, T, ForeignPlaces}
+    types::T
+    abundances::Matrix{Float64}
+end
+EcoBase.things(fa::ForeignAssemblage) = fa.types
+EcoBase.places(::ForeignAssemblage) = ForeignPlaces()
+EcoBase.occurrences(fa::ForeignAssemblage) = fa.abundances
 
 three = [0.3
          0.3
@@ -102,6 +118,38 @@ end
     # Without similarity the other branch still gives UniqueTypes, as it always has.
     plain = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2])
     @test gettypes(Metacommunity(plain)) isa UniqueTypes
+end
+
+@testset "Translating a foreign assemblage that has similarity" begin
+    # The other `_aspartition` method: the source is an EcoBase assemblage from outside this
+    # package, so its places cannot be an AbstractPartition and a Subcommunities of the right size
+    # is built instead. Everything else must still come across.
+    Z = [1.0 0.5 0.0; 0.5 1.0 0.5; 0.0 0.5 1.0]
+    types = GeneralTypes(Z, ["ash", "oak", "elm"])
+    foreign = ForeignAssemblage(types, [0.1 0.2; 0.2 0.1; 0.2 0.2])
+    conv = Metacommunity(foreign)
+
+    @test getpartition(foreign) isa ForeignPlaces
+    @test !(getpartition(foreign) isa Diversity.AbstractPartition)
+    @test getpartition(conv) isa Subcommunities
+    @test countsubcommunities(conv) == 2
+
+    # The similarity and both sets of names survive: the partition object itself cannot be reused,
+    # but its `placenames` are carried into the Subcommunities built to replace it.
+    @test gettypes(conv) isa GeneralTypes
+    @test calcsimilarity(gettypes(conv), 1) ≈ Z
+    @test gettypenames(conv) == ["ash", "oak", "elm"]
+    @test getsubcommunitynames(conv) == ["west", "east"]
+    @test getsubcommunitynames(conv) == placenames(getpartition(foreign))
+
+    # And it measures the same as the assemblage it came from, which is the point of translating.
+    for q in [0, 1, 2, Inf]
+        @test norm_sub_alpha(conv, q).diversity ≈
+              norm_sub_alpha(foreign, q).diversity
+        @test norm_sub_rho(conv, q).diversity ≈
+              norm_sub_rho(foreign, q).diversity
+        @test meta_gamma(conv, q).diversity ≈ meta_gamma(foreign, q).diversity
+    end
 end
 
 end
