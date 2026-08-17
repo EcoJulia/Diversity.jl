@@ -25,6 +25,14 @@ struct BareMC <:
                                        Matrix{Float64}, BareTypes,
                                        BarePartition} end
 
+# Two types that name themselves but supply no similarity matrix, differing only in whether they
+# claim to have similarity at all — which is what decides whether the identity default is right.
+struct ClaimsSimilarity <: Diversity.AbstractTypes end
+struct DeclaresNoSimilarity <: Diversity.AbstractTypes end
+Diversity.API._gettypenames(::ClaimsSimilarity, ::Bool) = ["a", "b"]
+Diversity.API._gettypenames(::DeclaresNoSimilarity, ::Bool) = ["a", "b"]
+Diversity.API._hassimilarity(::DeclaresNoSimilarity) = false
+
 @testset "EcoBase interface" begin
     species = map(n -> "Species $n", 1:numspecies)
     communities = map(n -> "SC $n", 1:numcommunities)
@@ -116,6 +124,20 @@ end
                      ["s1", "s2", "s3", "s4"], ["a", "b", "c"])
     @test size(norm_sub_alpha(asm, 1.0)) == (4, 8)
     @test size(meta_gamma(asm, 1.0)) == (1, 8)
+end
+
+@testset "Similarity claimed but not implemented" begin
+    # `_calcsimilarity` fails the other way: the EcoBase fallback answers it with an identity
+    # matrix rather than recursing, so a type that claims similarity and never supplied one used
+    # to get silently wrong numbers. It is the claim that is refused, not the omission —
+    # declaring no similarity still earns the identity default.
+    @test_throws ErrorException calcsimilarity(ClaimsSimilarity(), 1)
+    @test calcsimilarity(DeclaresNoSimilarity(), 1) == [1.0 0.0; 0.0 1.0]
+
+    # And the types the package ships are untouched, similarity or not.
+    @test calcsimilarity(UniqueTypes(2), 1) == [1.0 0.0; 0.0 1.0]
+    Z = [1.0 0.3; 0.3 1.0]
+    @test calcsimilarity(GeneralTypes(Z), 1) == Z
 end
 
 end

@@ -19,6 +19,9 @@
   - Fix a stack overflow when a type subtyping AbstractMetacommunity, AbstractPartition or
     AbstractTypes implements neither the Diversity API nor the EcoBase interface, which now
     reports the missing method instead
+  - Report an AbstractTypes that says it has similarity but never implements _calcsimilarity(),
+    rather than silently measuring it with an identity matrix; types that declare
+    _hassimilarity() false still get that matrix as their default
   - Allow Metacommunity(counts, Z) with integer counts, as every other constructor does
   - Move StringDistances into core dependencies
   - Remove pre-v1.9 Requires syntax

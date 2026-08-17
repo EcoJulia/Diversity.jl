@@ -72,8 +72,12 @@ import Diversity.API: _counttypes
 _counttypes(t::AbstractThings, raw::Bool) = length(_gettypenames(t, raw))
 
 import Diversity.API: _calcsimilarity
+# The similarity of types that have none: everything is like itself and nothing else. Shared with
+# the AbstractTypes guard at the end of the file, which hands back the same matrix.
+_identitysimilarity(t) = Matrix(1.0I, counttypes(t), counttypes(t))
+
 function _calcsimilarity(t::AbstractThings, ::Real)
-    return Matrix(1.0I, counttypes(t), counttypes(t))
+    return _identitysimilarity(t)
 end
 
 import Diversity.API: _getweight
@@ -120,12 +124,13 @@ _hassimilarity(::AbstractThings) = false
 # API defines a still more specific method and wins, so these are only ever reached by an incomplete
 # implementation.
 
-# Reports the API function an incomplete implementation failed to provide, in place of the
-# infinite recursion that would otherwise result — see the comment above.
-function _notimplemented(fname, x)
+# Reports the API function an incomplete implementation failed to provide, in place of whatever the
+# EcoBase fallback would otherwise have done silently — `why` says what that was.
+function _notimplemented(fname, x,
+                         why = "the EcoBase fallback cannot be used here " *
+                               "because it would call back into this method")
     return error("$fname is not implemented for $(typeof(x)). A Diversity " *
-                 "subtype must implement it; the EcoBase fallback cannot be " *
-                 "used here because it would call back into this method.")
+                 "subtype must implement it; $why.")
 end
 
 _getpartition(m::AbstractMetacommunity) = _notimplemented("_getpartition", m)
@@ -137,6 +142,21 @@ function _getsubcommunitynames(p::AbstractPartition)
     return _notimplemented("_getsubcommunitynames", p)
 end
 _gettypenames(t::AbstractTypes, ::Bool) = _notimplemented("_gettypenames", t)
+
+# `_calcsimilarity` fails differently, and needs its own guard: the AbstractThings fallback above
+# does not recurse, it quietly returns an identity matrix. That is *right* for a type declaring it
+# has no similarity — which is why the fallback exists — but for one that claims similarity and
+# never supplied the matrix it means silently wrong answers instead of an error. So make the claim,
+# not the omission, the thing that is refused. `_hassimilarity` is a trait with one method per type,
+# so the branch below is folded away during inference rather than tested at run time.
+function _calcsimilarity(t::AbstractTypes, ::Real)
+    _hassimilarity(t) &&
+        _notimplemented("_calcsimilarity", t,
+                        "its `_hassimilarity` reports that it has similarity, " *
+                        "so the identity matrix the EcoBase fallback would " *
+                        "return is not right for it")
+    return _identitysimilarity(t)
+end
 
 RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)
     return var[!, :diversity], getcoords(places(asm))

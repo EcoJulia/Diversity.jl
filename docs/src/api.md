@@ -61,7 +61,7 @@ meta_gamma(Metacommunity([0.5, 0.3, 0.2],
 
 | for a new... | must implement | may implement — and what you get if you do not |
 |---|---|---|
-| `AbstractTypes` | `_gettypenames`, `_calcsimilarity` | `_counttypes` (counts the type names), `_calcabundance` (the abundances unchanged, with scale `1`), `_calcordinariness` (`_calcsimilarity(t, scale) * abundances`), `_getdiversityname` (`"unknown"`), `_addedoutputcols` (no extra columns), `_getaddedoutput` (`nothing`), `floattypes` (every `AbstractFloat`), `_hassimilarity` (`true`) |
+| `AbstractTypes` | `_gettypenames`, `_calcsimilarity` (unless `_hassimilarity` is `false`) | `_counttypes` (counts the type names), `_calcabundance` (the abundances unchanged, with scale `1`), `_calcordinariness` (`_calcsimilarity(t, scale) * abundances`), `_getdiversityname` (`"unknown"`), `_addedoutputcols` (no extra columns), `_getaddedoutput` (`nothing`), `floattypes` (every `AbstractFloat`), `_hassimilarity` (`true`) |
 | `AbstractPartition` | `_getsubcommunitynames` | `_countsubcommunities` (counts the subcommunity names) |
 | `AbstractMetacommunity` | `_gettypes`, `_getpartition`, `_getabundance` | `_getmetaabundance` (abundances summed across subcommunities), `_getweight` (abundances summed across types), `_getordinariness!` (`_calcordinariness` of the types, abundances and scale), `_getmetaordinariness!` (ordinariness summed across subcommunities), `_getscale` (`1`) |
 
@@ -77,6 +77,13 @@ because these abstract types are subtypes of `EcoBase`'s, so the fallbacks that
 let a plain `EcoBase` assemblage be measured directly would otherwise call back
 into the method you had not written, and the symptom would be a stack overflow
 rather than a missing method.
+
+`_calcsimilarity` is the one required method with a way out, and it is the pair
+to `_hassimilarity` above. Declare `_hassimilarity(::YourTypes) = false` and you
+need not write it: you get an identity matrix, every type like itself and nothing
+else, which is what `UniqueTypes` means. Claim similarity and omit the matrix and
+you get the error instead — otherwise that same identity matrix would be used for
+you, and the diversities would come back quietly wrong rather than not at all.
 
 ```@contents
 ```
