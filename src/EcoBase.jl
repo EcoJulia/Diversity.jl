@@ -22,6 +22,13 @@ function coordinates(part::AbstractPartition{Nothing})
     return coords
 end
 
+import EcoBase: getcoords
+# EcoBase's fallback is `getcoords(plc::AbstractPlaces{Nothing}) = plc`, on the grounds that a
+# partition with no location data has no coordinates to give. Ours *does* — `coordinates` above makes
+# up a grid — so without this method the plot recipes hand Plots a partition object instead of a
+# coordinate matrix, and plotting any metacommunity without real spatial data fails outright.
+getcoords(part::AbstractPartition{Nothing}) = coordinates(part)
+
 import EcoBase: nthings, thingnames
 nthings(types::AbstractTypes) = counttypes(types)
 thingnames(types::AbstractTypes) = gettypenames(types)
@@ -106,5 +113,5 @@ import Diversity.API: _hassimilarity
 _hassimilarity(::AbstractThings) = false
 
 RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)
-    return var[:diversity], getcoords(places(asm))
+    return var[!, :diversity], getcoords(places(asm))
 end

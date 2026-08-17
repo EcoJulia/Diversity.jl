@@ -137,8 +137,7 @@ end
 
 function Metacommunity(abundances::MU,
                        zmatrix::M) where
-    {FP <: AbstractFloat, MU <: AbstractMatrix{FP}, M <:
-                                                    AbstractMatrix{FP}}
+    {FP <: AbstractFloat, MU <: AbstractMatrix, M <: AbstractMatrix{FP}}
     return Metacommunity(abundances, GeneralTypes(zmatrix),
                          Subcommunities(size(abundances, 2)))
 end

@@ -2,20 +2,27 @@
 
 module TestIterators
 using Test
-using Phylo
 using Diversity
 
+# Deliberately built from `GeneralTypes` rather than a phylogeny, so this file needs nothing
+# beyond the package's own dependencies and runs as a bare script. The iterators do not care what
+# kind of types they are walking. The phylogenetic case — where the processed types outnumber the
+# raw ones — is covered in `ext_DiversityPhyloExt.jl`, where `Phylo` is loaded anyway.
 @testset "Iterators" begin
     species = 10
     sc = 5
     abund = rand(species, sc)
     abund ./= sum(abund)
-    ru = rand(Ultrametric(species))
-    m = Metacommunity(abund, PhyloBranches(ru))
+    Z = fill(0.5, species, species)
+    for i in 1:species
+        Z[i, i] = 1.0
+    end
+    m = Metacommunity(abund, GeneralTypes(Z))
+
     ti2 = TypeIterator(m)
     ti = TypeIterator(getmetaabundance, m)
-    @test length(ti2) == counttypes(PhyloBranches(ru))
-    @test length(ti) == counttypes(PhyloBranches(ru))
+    @test length(ti2) == counttypes(m)
+    @test length(ti) == counttypes(m)
     @test_throws "Can't iterate" TypeIterator(sum ∘ getweight, m)
 
     si = SubcommunityIterator(m)
@@ -34,6 +41,10 @@ using Diversity
     @test Base.IteratorSize(typeof(si)) == Base.HasLength()
     @test Base.IteratorEltype(typeof(si)) == Base.HasEltype()
     @test eltype(si) ≡ Float64
+
+    # Iterating types and iterating subcommunities partition the same abundances two ways, so both
+    # must total the same thing.
+    @test sum(sum, ti2) ≈ sum(sum, si) ≈ 1.0
 end
 
 end

@@ -42,7 +42,7 @@ using DataFrames
     meta = Metacommunity(pops, gv)
     @test gettypenames(meta, true) == ["s1", "s2", "s3"]
     @test all(isfinite, metadiv(Γ(meta), 1)[!, :diversity])
-    @test all(isfinite, subdiv(ᾱ(meta), 0)[!, :diversity])
+    @test all(isfinite, subdiv(ᾱ(meta), 0)[!, :diversity])
 end
 
 end

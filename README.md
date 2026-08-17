@@ -12,22 +12,26 @@
 **Diversity** is a [Julia](http://www.julialang.org) package that
 provides functionality for measuring alpha, beta and gamma diversity
 of metacommunities (e.g. ecosystems) and their constituent
-subcommunities. It uses the diversity measures described in the arXiv
+subcommunities. It implements the framework described in the arXiv
 paper [arXiv:1404.6520 (q-bio.QM)][paper-url],
-*How to partition diversity*. It also provides a series of other
-older diversity measures through sub-modules. Currently
-these are all ecological diversity measures, but this will be
-expanded through interfacing to EcoJulia and BioJulia.
+*How to partition diversity*, which generalises Hill numbers and the
+similarity-sensitive measures of Leinster and Cobbold so that the
+diversity of a community can be partitioned among its subcommunities.
+Similarity between individuals may be of any kind — taxonomic,
+phylogenetic, genetic, functional or phenotypic — and the package
+provides a series of older ecological diversity measures through
+sub-modules as well.
 
-This package is in beta now, but is cross-validated against our R
-package [boydorr/rdiversity][rdiversity-url], which is developed
+**[The framework][framework-url]** page of the documentation explains
+what each measure means and where it comes from; it is the place to
+start if the names below are unfamiliar.
+
+The package is cross-validated against our R package
+[boydorr/rdiversity][rdiversity-url], which is developed
 independently, so please [raise an issue][issues-url] if you find any
-problems. We now use a DataFrame as the common output format for all
-of the diversity calculations to provide consistency with our R
-package [rdiversity][rdiversity-url]. The code is not
-optimised for speed at the moment due to the substantial changes that
-have happened to it under the hood, and the Phylogenetics submodule is
-also recently revised, and may need further improvements.
+problems. We use a DataFrame as the common output format for all
+of the diversity calculations to provide consistency with
+[rdiversity][rdiversity-url].
 
 ## Installation
 
@@ -38,17 +42,17 @@ installed with `add`. For example on Julia v1.10:
 (@v1.10) pkg> add Diversity
     Resolving package versions...
     Updating `~/.julia/environments/v1.10/Project.toml`
-  [d3d5718d] + Diversity v0.5.15
+  [d3d5718d] + Diversity v0.6.0
     Updating `~/.julia/environments/v1.10/Manifest.toml`
-  [d3d5718d] + Diversity v0.5.15
+  [d3d5718d] + Diversity v0.6.0
   
 (@v1.10) pkg>
 ```
 
 ## Project Status
 
-The package is confirmed to build and work against Julia v1.9 and the current
-release and the latest release on Linux, macOS, and Windows. It is also tested
+The package is confirmed to build and work against Julia v1.10 (the current LTS)
+and the current release, on Linux, macOS and Windows. It is also tested
 against nightly.
 
 ## Contributing and Questions
@@ -61,20 +65,18 @@ just like to ask a question.
 
 ### Diversity Measures
 
-The main package provides basic numbers-equivalent diversity measures
-(described in [Hill, 1973](http://www.jstor.org/stable/1934352)),
-similarity-sensitive diversity measures (generalised from Hill, and
-described in
-[Leinster and Cobbold, 2012][leinster-cobbold-url]),
-and related alpha, beta and gamma diversity measures at the level of
-the metacommunity and its component subcommunities (generalised in
-turn from Leinster and Cobbold, and described in
-[arXiv:1404.6520 (q-bio.QM)][paper-url]). The diversity functions
-exist both with unicode names (e.g. ᾱ()), which are not automatically
-exported as we feel they are too short and with matching ascii names
-(e.g. NormalisedAlpha()), which are. We also provide a general
-function for extract any diversity measure for a series of
-subcommunity relative abundances.
+The main package provides numbers-equivalent diversity measures (Hill
+numbers), similarity-sensitive diversity measures generalising them
+(from [Leinster and Cobbold, 2012][leinster-cobbold-url]), and the
+alpha, beta and gamma measures that partition those across the
+subcommunities of a metacommunity. See **[the
+framework][framework-url]** for what each measure means.
+
+The diversity functions exist both with unicode names (e.g. ᾱ()),
+which are not automatically exported as we feel they are too short,
+and with matching ascii names (e.g. NormalisedAlpha()), which are. We
+also provide a general function to extract any diversity measure for a
+series of subcommunity relative abundances.
 
 #### Getting started
 
@@ -178,6 +180,28 @@ julia> raw_meta_rho(metaphylo, [1, 2])
 │ 2   │ Phylogenetic Branch │ RawRho  │ 2     │ types      │           │ metacommunity   │                │ 1.66749   │
 ```
 
+#### Genetic diversity
+
+Genetic diversity is provided by two lightweight extensions, so you
+only load what your data needs: `BioSequences` for a vector of aligned
+sequences, and `PopGen` for a `PopData` object read from a VCF file.
+Similarity between types is derived from pairwise genetic distances,
+mirroring the `gen2dist()` / `dist2sim()` pipeline in
+[rdiversity][rdiversity-url]. Documentation for these measures can be
+found [here](https://docs.ecojulia.org/Diversity.jl/stable/genetics/).
+
+```julia-repl
+julia> using Diversity, BioSequences
+
+julia> seqs = [dna"ACGTACGT", dna"ACGAACGT", dna"TTTTTTTT"];
+
+julia> gt = GeneticType(seqs; names = ["a", "b", "c"]);
+
+julia> meta_gamma(Metacommunity([0.3, 0.3, 0.4], gt), 0).diversity
+1-element Vector{Float64}:
+ 1.930059437936407
+```
+
 The package also provides some other sub-modules for related measures:
 
 #### Diversity.Ecology
@@ -241,6 +265,8 @@ The online documentation for the latest dev (unreleased) branch is
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://docs.ecojulia.org/Diversity.jl/dev
+
+[framework-url]: https://docs.ecojulia.org/Diversity.jl/stable/framework/
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://docs.ecojulia.org/Diversity.jl/stable

@@ -29,6 +29,17 @@ using Diversity
     @test meta_gamma(metaphylo, 0)[!, :diversity] == [2.5]
     @test sub_gamma(metaphylo, 0)[!, :diversity] == [2.5]
 
+    # Iterating a metacommunity whose processed types (branches) outnumber its raw ones (species).
+    # `test_Iterators.jl` covers the iterators themselves without needing `Phylo`; this is the case
+    # only a phylogeny produces, so it lives here where `Phylo` is loaded anyway.
+    ti = TypeIterator(metaphylo)
+    si = SubcommunityIterator(metaphylo)
+    @test length(ti) == counttypes(metaphylo, false) == 5
+    @test length(ti) > counttypes(metaphylo, true)
+    @test length(si) == countsubcommunities(metaphylo)
+    @test all(reduce(+, ti) .≈ getweight(metaphylo))
+    @test sum(sum, ti) ≈ 1.0
+
     tsph = PhyloBranches(TreeSet(Dict("tree" => nt)))
     @test species == gettypenames(tsph, true)
     tsmetaphylo = Metacommunity(abund, tsph)

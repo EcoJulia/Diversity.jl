@@ -15,7 +15,7 @@ and related alpha, beta and gamma diversity measures at the level of
 the metacommunity and its component subcommunities (generalised in
 turn from Leinster and Cobbold, and described in
 [Reeve et al, 2014](http://arxiv.org/abs/1404.6520)). The diversity
-functions exist both with unicode names (e.g. ```ᾱ()```), which are
+functions exist both with unicode names (e.g. ```ᾱ()```), which are
 not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. ```NormalisedAlpha()```), which are.
 We also provide functions to calculate appropriate

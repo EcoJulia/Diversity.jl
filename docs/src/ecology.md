@@ -11,81 +11,53 @@ diversity, so small components are more diverse).
 
 ## Usage
 
-Accessing the functionality in the package is simple:
+Accessing the functionality in the package is simple. Note that the submodule
+provides the ecological measures themselves, while `Metacommunity` and the
+[`DiversityLevel`](@ref)s come from `Diversity`, so both are loaded here:
 
-```julia-repl
-julia> using Diversity.Ecology, LinearAlgebra
-
-julia> community = [10, 20, 20];
-
-julia> community = community ./ sum(community); # Convert counts to proportions
-
-julia> diversity = simpson(community)
-1×7 DataFrame
- Row │ div_type  measure  type_level  type_name  partition_level  partition_name  diversity 
-     │ String    String   String      String     String           String          Float64   
-─────┼──────────────────────────────────────────────────────────────────────────────────────
-   1 │ Unique    Simpson  types                  subcommunity     1                    0.36
-
-julia> ecosystem = [2 2 0; 0 2 2]';
-
-julia> ecosystem = ecosystem ./ sum(ecosystem);
-
-julia> jaccard(ecosystem)
-1×8 DataFrame
- Row │ div_type  measure  q      type_level  type_name  partition_level  partition_name  diversity 
-     │ String    String   Int64  String      String     String           String          Float64   
-─────┼─────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Unique    Jaccard      0  types                  metacommunity                     0.333333
-
-julia> generalisedjaccard(Metacommunity(ecosystem))
-1×7 DataFrame
- Row │ div_type  measure  type_level  type_name  partition_level  partition_name  diversity 
-     │ String    String   String      String     String           String          Float64   
-─────┼──────────────────────────────────────────────────────────────────────────────────────
-   1 │ Unique    Jaccard  types                  metacommunity                     0.333333
-
-julia> generalisedjaccard(ecosystem, Matrix(1.0I, 3, 3))
-1×7 DataFrame
- Row │ div_type     measure  type_level  type_name  partition_level  partition_name  diversity 
-     │ String       String   String      String     String           String          Float64   
-─────┼─────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Arbitrary Z  Jaccard  types                  metacommunity                     0.333333
-
-julia> community = [0.7, 0.2, 0.1];
-
-julia> pielou(community)
-1×7 DataFrame
- Row │ div_type  measure  type_level  type_name  partition_level  partition_name  diversity 
-     │ String    String   String      String     String           String          Float64   
-─────┼──────────────────────────────────────────────────────────────────────────────────────
-   1 │ Unique    Pielou   types                  subcommunity     1                0.729847
-
-julia> communitymat = [10 20 30 20 0; #5 sites/subcommunities (columns) and 6 species (rows)
-                       10 0 50 80 10;
-                       60 10 90 0 0; 
-                       10 10 10 10 10;
-                       70 70 70 70 70;
-                       10 0 0 90 0];
-
-julia> generalisedpielou(subcommunityDiversity, communitymat)
-5×7 DataFrame
- Row │ div_type     measure  type_level  type_name  partition_level  partition_name  diversity 
-     │ String       String   String      String     String           String          Float64   
-─────┼─────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Arbitrary Z  Pielou   types                  subcommunity     1                0.781115
-   2 │ Arbitrary Z  Pielou   types                  subcommunity     2                0.745557
-   3 │ Arbitrary Z  Pielou   types                  subcommunity     3                0.888073
-   4 │ Arbitrary Z  Pielou   types                  subcommunity     4                0.864562
-   5 │ Arbitrary Z  Pielou   types                  subcommunity     5                0.622366
-
-julia> generalisedpielou(metacommunityDiversity, communitymat)
-1×7 DataFrame
- Row │ div_type     measure  type_level  type_name  partition_level  partition_name  diversity 
-     │ String       String   String      String     String           String          Float64   
-─────┼─────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Arbitrary Z  Pielou   types                  metacommunity                     0.510146
+```@repl ecology
+using Diversity
+using Diversity.Ecology
+community = [10, 20, 20]
+community = community ./ sum(community)
+simpson(community)
+shannon(community)
+richness(community)
 ```
+
+Two subcommunities can be compared with the Jaccard index, either directly or —
+since it is a special case of our general measures — through a `Metacommunity`,
+with or without a similarity matrix:
+
+```@repl ecology
+using LinearAlgebra
+ecosystem = [2 2 0; 0 2 2]'
+ecosystem = ecosystem ./ sum(ecosystem)
+jaccard(ecosystem)
+generalisedjaccard(Metacommunity(ecosystem))
+generalisedjaccard(ecosystem, Matrix(1.0I, 3, 3))
+```
+
+Pielou's evenness measures how equally the individuals are spread across the
+types, from zero to one:
+
+```@repl ecology
+pielou([0.7, 0.2, 0.1])
+communitymat = [10 20 30 20 0;   # 5 subcommunities (columns), 6 species (rows)
+                10  0 50 80 10;
+                60 10 90  0  0;
+                10 10 10 10 10;
+                70 70 70 70 70;
+                10  0  0 90  0]
+Diversity.Ecology.generalisedpielou(subcommunityDiversity, communitymat)
+Diversity.Ecology.generalisedpielou(metacommunityDiversity, communitymat)
+```
+
+!!! note
+    `generalisedpielou` is not exported, so it must be qualified as above (or
+    imported explicitly with
+    `using Diversity.Ecology: generalisedpielou`). Every other measure on this
+    page is exported by the submodule.
 
 ```@contents
 ```

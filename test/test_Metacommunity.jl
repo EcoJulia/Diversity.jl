@@ -55,4 +55,21 @@ g2 = GeneralTypes(Matrix(1.0I, 2, 2))
                         gettypes(meta)])
 end
 
+@testset "Counts with a similarity matrix" begin
+    Z = Matrix(1.0I, 2, 2)
+    @test getabundance(Metacommunity(ab3, Z)) ≈
+          getabundance(Metacommunity(abf, Z))
+    Z3 = Matrix(1.0I, 3, 3)      # `three_1` has three types, so it needs a 3x3 similarity matrix
+    @test getabundance(Metacommunity(three_1, Z3)) ≈
+          getabundance(Metacommunity(three_1 ./ sum(three_1), Z3))
+
+    # Integer counts normalise silently; floats that miss still warn.
+    @test_nowarn Metacommunity(ab3, Z)
+    @test_warn "Abundances not normalised" Metacommunity(abf .* 2, Z)
+
+    # Genuinely mismatched float types are still refused — but by `mcmatch`, which says so,
+    # rather than by there being no applicable method at all.
+    @test_throws ErrorException Metacommunity(Float32.(abf), Z)
+end
+
 end
