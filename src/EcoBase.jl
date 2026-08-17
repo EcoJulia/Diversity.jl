@@ -112,6 +112,32 @@ _getdiversityname(::AbstractThings) = "species"
 import Diversity.API: _hassimilarity
 _hassimilarity(::AbstractThings) = false
 
+# The reverse bridge above is typed on EcoBase's supertypes, and Diversity's own abstract types are
+# subtypes of them — so without these guards a Diversity subtype that implements *neither* side
+# recurses (the forward method calls the underscore API, which dispatches straight back to the
+# reverse method) until the stack overflows. These more specific methods break the cycle and say
+# what is actually missing instead. They must stay: any subtype that *does* implement the underscore
+# API defines a still more specific method and wins, so these are only ever reached by an incomplete
+# implementation.
+
+# Reports the API function an incomplete implementation failed to provide, in place of the
+# infinite recursion that would otherwise result — see the comment above.
+function _notimplemented(fname, x)
+    return error("$fname is not implemented for $(typeof(x)). A Diversity " *
+                 "subtype must implement it; the EcoBase fallback cannot be " *
+                 "used here because it would call back into this method.")
+end
+
+_getpartition(m::AbstractMetacommunity) = _notimplemented("_getpartition", m)
+_gettypes(m::AbstractMetacommunity) = _notimplemented("_gettypes", m)
+function _getabundance(m::AbstractMetacommunity, ::Bool)
+    return _notimplemented("_getabundance", m)
+end
+function _getsubcommunitynames(p::AbstractPartition)
+    return _notimplemented("_getsubcommunitynames", p)
+end
+_gettypenames(t::AbstractTypes, ::Bool) = _notimplemented("_gettypenames", t)
+
 RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)
     return var[!, :diversity], getcoords(places(asm))
 end

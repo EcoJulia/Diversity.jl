@@ -16,6 +16,15 @@ numcommunities = 8
 manyweights = rand(numspecies, numcommunities)
 manyweights /= sum(manyweights)
 
+# Subtypes that implement neither the Diversity API nor the EcoBase interface — the case the guards
+# in src/EcoBase.jl exist for. Fully qualified because SpatialEcology is loaded here too.
+struct BarePartition <: Diversity.AbstractPartition{Nothing} end
+struct BareTypes <: Diversity.AbstractTypes end
+struct BareMC <:
+       Diversity.AbstractMetacommunity{Float64, Matrix{Float64},
+                                       Matrix{Float64}, BareTypes,
+                                       BarePartition} end
+
 @testset "EcoBase interface" begin
     species = map(n -> "Species $n", 1:numspecies)
     communities = map(n -> "SC $n", 1:numcommunities)
@@ -88,6 +97,25 @@ end
     @test plot(norm_sub_rho(amph, 1), amph) isa Plots.Plot
     @test plot(sub_gamma(amph, 0), amph) isa Plots.Plot
     @test nrow(norm_sub_rho(amph, 1)) == countsubcommunities(amph)
+end
+
+@testset "EcoBase bridge does not recurse" begin
+    # A subtype that implements neither the Diversity API nor the EcoBase interface must say so,
+    # not overflow the stack. Regression for the two-way bridge in src/EcoBase.jl.
+    @test_throws ErrorException Diversity.API._getpartition(BareMC())
+    @test_throws ErrorException Diversity.API._gettypes(BareMC())
+    @test_throws ErrorException Diversity.API._getabundance(BareMC(), true)
+    @test_throws ErrorException Diversity.API._getsubcommunitynames(BarePartition())
+    @test_throws ErrorException Diversity.API._gettypenames(BareTypes(), true)
+
+    # …and the reverse bridge must still work for a genuine non-Diversity assemblage. This overlaps
+    # the SpatialEcology testset above deliberately: that one is the real coverage, on real data,
+    # while this hand-built four-site case sits beside the guards and shows what they must not break.
+    asm = Assemblage([1 0 1 1; 0 1 1 0; 1 1 0 1],
+                     Float64[1 1; 2 1; 1 2; 2 2],
+                     ["s1", "s2", "s3", "s4"], ["a", "b", "c"])
+    @test size(norm_sub_alpha(asm, 1.0)) == (4, 8)
+    @test size(meta_gamma(asm, 1.0)) == (1, 8)
 end
 
 end

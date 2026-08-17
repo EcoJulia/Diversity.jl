@@ -72,6 +72,12 @@ diversity over branches rather than over species. And the `raw::Bool` argument
 carried through the API distinguishes the types the user supplied from the types
 diversity is actually computed over, which differ for exactly that reason.
 
+Leave a required method out and you get an error naming it. That is worth saying
+because these abstract types are subtypes of `EcoBase`'s, so the fallbacks that
+let a plain `EcoBase` assemblage be measured directly would otherwise call back
+into the method you had not written, and the symptom would be a stack overflow
+rather than a missing method.
+
 ```@contents
 ```
 

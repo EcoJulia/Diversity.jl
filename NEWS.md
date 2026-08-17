@@ -14,6 +14,9 @@
   - Cross-validate genetic diversity against rdiversity for every VCF file in test/data
   - Fix showing a metacommunity whose types are not named with strings, such as Metacommunity(pop, Z)
   - Fix the plot recipes, which errored on any input, and add tests for them
+  - Fix a stack overflow when a type subtyping AbstractMetacommunity, AbstractPartition or
+    AbstractTypes implements neither the Diversity API nor the EcoBase interface, which now
+    reports the missing method instead
   - Allow Metacommunity(counts, Z) with integer counts, as every other constructor does
   - Move StringDistances into core dependencies
   - Remove pre-v1.9 Requires syntax
