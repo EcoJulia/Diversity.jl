@@ -61,7 +61,9 @@ Diversity.Ecology.generalisedpielou(metacommunityDiversity, communitymat)
 
 ## Faith's PD
 
-[`faith_pd`](@ref) and [`generalisedfaith_pd`](@ref) are the exception on this
+[`faith_pd`](@ref Diversity.Ecology.faith_pd) and
+[`generalisedfaith_pd`](@ref Diversity.Ecology.generalisedfaith_pd) are the
+exception on this
 page, in two ways. The measures above are the classical ones for wholly distinct
 types, and refuse to run when similarity is present; Faith's phylogenetic
 diversity is the opposite — it is meaningless without a tree, so it is defined

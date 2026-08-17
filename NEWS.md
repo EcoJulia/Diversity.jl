@@ -6,6 +6,9 @@
   - Document the options to gower(), and how they relate to vegan's gower and altGower
   - Document the fourteen norm_/raw_ diversity wrapper functions, which had no docstrings
   - Document what each optional function of the extension contract does if you do not implement it
+  - Document the exported AbstractPhyloTypes and PhyloBranches, which had no docstrings
+  - Build the manual with Documenter in the test suite, so a dangling cross-reference fails there
+    rather than only in the documentation workflow
   - Rename the getFullName() descriptions of the measures to match those in the paper
   - Fix the NormalisedRho docstring, which named it redundancy rather than representativeness
   - Fix docstrings giving the maximum of raw rho and normalised beta as the number of

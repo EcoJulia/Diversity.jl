@@ -32,6 +32,7 @@ BioSequences = "3"
 CSV = "0.10"
 DataFrames = "0.21, 0.22, 1.0"
 Distances = "0.10"
+Documenter = "1"
 EcoBase = "0.1"
 FASTX = "2"
 Git = "1"
@@ -60,6 +61,7 @@ AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
 BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 FASTX = "c2308a5c-f048-11e8-3e8a-31650f418d12"
 Git = "d7ba0133-e1db-5d97-8f8c-041e4b3a1eb2"
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
@@ -105,4 +107,4 @@ publications = ["10.48550/arXiv.1404.6520"]
     givenName = "Isaac"
 
 [targets]
-test = ["AxisArrays", "BioSequences", "CSV", "Distances", "FASTX", "Git", "JuliaFormatter", "Logging", "ParallelTestRunner", "Phylo", "Pkg", "Plots", "PopGen", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test", "TOML"]
+test = ["AxisArrays", "BioSequences", "CSV", "Distances", "Documenter", "FASTX", "Git", "JuliaFormatter", "Logging", "ParallelTestRunner", "Phylo", "Pkg", "Plots", "PopGen", "RCall", "Random", "ResearchSoftwareMetadata", "SpatialEcology", "StatsBase", "Test", "TOML"]

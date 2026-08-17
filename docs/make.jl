@@ -4,28 +4,17 @@ using Pkg
 Pkg.resolve()
 
 using Documenter
-using Diversity
-using Phylo
+
+# The modules, page order and site name are shared with `test/extras_docs.jl`, which builds the
+# manual too so that a dangling cross-reference fails there rather than only here.
+include("config.jl")
 
 # Note: GR needs to be told there is no display, or plotting fails on a CI runner.
 get!(ENV, "GKSwstype", "100")
 
-# The page order is set explicitly - otherwise Documenter sorts alphabetically.
-makedocs(modules = [Diversity,
-             Diversity.Ecology, Diversity.Jost,
-             Diversity.Hill,
-             Diversity.ShortNames, Diversity.API],
-         sitename = "Diversity.jl",
-         pages = ["Introduction" => "index.md",
-             "The framework" => "framework.md",
-             "Building a metacommunity" => "metacommunities.md",
-             "Coming from vegan" => "vegan.md",
-             "Phylogenetic diversity" => "phylogenetics.md",
-             "Genetic diversity" => "genetics.md",
-             "Diversity.Ecology" => "ecology.md",
-             "Diversity.Hill" => "hill.md",
-             "Diversity.Jost" => "jost.md",
-             "Diversity.API" => "api.md"])
+makedocs(modules = DOCS_MODULES,
+         sitename = DOCS_SITENAME,
+         pages = DOCS_PAGES)
 
 deploydocs(repo = "github.com/EcoJulia/Diversity.jl.git",
            devbranch = "dev",

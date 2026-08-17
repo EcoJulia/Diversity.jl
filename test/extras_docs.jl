@@ -16,19 +16,35 @@
 # ```julia fence stays illustrative and is deliberately *not* run. One marker, two runners, and no
 # second list to keep in step.
 #
-# This does **not** call Documenter, and cannot: `Documenter` lives in `docs/Project.toml`, not in
-# `Project.toml`'s `test` target, so `makedocs` is unavailable here. The blocks are extracted and run
-# directly instead — which also means an executable block may only `using` packages reachable from
-# the *test* environment.
+# The blocks are extracted and run directly rather than through Documenter, which is why an
+# executable block may only `using` packages reachable from the *test* environment. It also means
+# this half checks that the code **runs**, not that it produces the output shown: under `@repl`
+# Documenter regenerates the output at build time, so there is nothing recorded here to compare
+# against. Pinning numbers is `extras_canonical.jl`'s job, not this one's.
 #
-# It also means this file checks that the code **runs**, not that it produces the output shown:
-# under `@repl` Documenter regenerates the output at build time, so there is nothing recorded here to
-# compare against. Pinning numbers is `extras_canonical.jl`'s job, not this one's.
+# **The second half builds the manual with Documenter**, which is a different question and catches
+# what the first half structurally cannot: prose. A `[foo](@ref)` pointing at nothing, an
+# `@autodocs` that collects no docstring, a page missing from the navigation — none of those are
+# code, so none of them can fail above. Before this was added they surfaced only in the
+# `Documentation` workflow, after a push.
+#
+# Both halves are kept, because they fail on different things: Documenter is content with a block
+# that emits warnings, and it runs each page's blocks with the manual's own imports rather than
+# checking that a page brings its own.
 
 module ExtrasDocs
 
 using Test
 using Diversity
+using Documenter
+
+# The manual build below runs when this file was asked for by name and when running locally, but not
+# on a CI runner that merely reached it as part of the whole suite — the `Documentation` workflow
+# already builds the manual, on the same triggers, so doing it again in each of the six test jobs
+# checks nothing new. Same "was I asked for?" idiom as `extras_clean.jl`, and for the same reason:
+# it needs no environment variable to tell the cases apart. The code blocks above still run
+# everywhere, being cheap and platform-dependent in a way the build is not.
+const ASKED_FOR = any(a -> occursin("extras_docs", a), ARGS)
 
 # Pages that plot need GR told there is no display, exactly as `docs/make.jl` does — otherwise a
 # headless runner fails on the first figure.
@@ -143,6 +159,29 @@ end
     # reports success just as loudly as one that works, and this suite exists precisely because
     # unexecuted documentation rots invisibly — so a run that executed no code is a failure.
     @test total > 0
+end
+
+if !(ASKED_FOR || !haskey(ENV, "RUNNER_OS"))
+    @info "Skipping the manual build: this is a CI runner and it was not asked for directly, so " *
+          "the `Documentation` workflow builds the manual instead."
+else
+    @testset "Documentation build" begin
+        docsdir = joinpath(@__DIR__, "..", "docs")
+        # The same modules, pages and site name `docs/make.jl` publishes with — included rather
+        # than repeated, so this cannot drift into checking a different site.
+        include(joinpath(docsdir, "config.jl"))
+        println()
+        @info "Building the manual to check its cross-references ..."
+
+        # `deploydocs` is deliberately not called: this is a check, not a publication. The build
+        # goes to a temporary directory so it cannot leave `docs/build` behind for the hygiene
+        # tests to find.
+        @test isnothing(makedocs(root = docsdir,
+                                 modules = DOCS_MODULES,
+                                 sitename = DOCS_SITENAME,
+                                 pages = DOCS_PAGES,
+                                 build = mktempdir()))
+    end
 end
 
 end

@@ -134,7 +134,7 @@ _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
 # Faith's PD. The parent declares both functions method-less in `Diversity.Ecology`; these are their
 # only methods, because PD is meaningless without a phylogeny.
 #
-# ⭐ PD is a *total branch length*, so it is the framework's q = 0 diversity multiplied back up by
+# PD is a *total branch length*, so it is the framework's q = 0 diversity multiplied back up by
 # the scale — the abundance-weighted mean root-to-tip distance that `_calcabundance` divided the
 # branch abundances by. Without that factor you get Chao, Chiu and Jost's `⁰D̄(T)`, PD *per unit*
 # branch length, which is a different measure and is not abundance-independent as PD must be.

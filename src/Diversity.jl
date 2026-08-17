@@ -125,9 +125,25 @@ end
 export getName, getASCIIName, getFullName
 
 # From Phylo
+"""
+    AbstractPhyloTypes{Tree}
+
+Abstract supertype for types whose similarity comes from a phylogeny `Tree`,
+so that diversity is measured over evolutionary history rather than over
+species treated as wholly distinct. Concrete subtypes are provided by the
+`DiversityPhyloExt` extension, when `Phylo` is loaded.
+"""
 abstract type AbstractPhyloTypes{Tree} <:
               Diversity.API.AbstractTypes end
 
+"""
+    PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
+
+Abstract supertype for phylogenetic types that expand a tree into the ancestral
+**branches** leading to each species, and measure diversity over those branches.
+The concrete type is supplied by the `DiversityPhyloExt` extension, so
+`PhyloBranches(tree)` works once `Phylo` is loaded.
+"""
 abstract type PhyloBranches{Tree} <: Diversity.AbstractPhyloTypes{Tree} end
 
 export AbstractPhyloTypes, PhyloBranches #, PhyloDistances
