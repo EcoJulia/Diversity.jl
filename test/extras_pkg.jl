@@ -20,13 +20,14 @@
 # **Not** runnable as a bare script: `Distances`, `RCall` and `StatsBase` are `[extras]` in
 # `Project.toml`'s `test` target, and `run_rcall.jl` additionally needs `Phylo` and `PopGen`.
 #
-# ⚠️ A red cross-validation is a *question*, not automatically a defect here — the reference
+# Note: A red cross-validation is a *question*, not automatically a defect here — the reference
 # implementation may have changed its convention. See the Gower/vegan note in `run_rcall.jl` and the
 # "Before changing what a measure computes" section of `CLAUDE.md` before changing anything.
 
 using Random
 using Test
 using Diversity
+using ParallelTestRunner: find_tests, parse_args, runtests
 
 let pkgbase = map(file -> replace(file, r"pkg_(.*).jl$" => s"\1"),
                   filter(str -> occursin(r"^pkg_.*\.jl$", str),
@@ -40,11 +41,9 @@ let pkgbase = map(file -> replace(file, r"pkg_(.*).jl$" => s"\1"),
             end
             println()
 
-            @testset for p in pkgbase
-                fn = "pkg_$p.jl"
-                println("    * Validating $p.jl ...")
-                include(joinpath(@__DIR__, fn))
-            end
+            runtests(Diversity, parse_args(String[]),
+                     testsuite = filter(kv -> startswith(kv.first, "pkg_"),
+                                        find_tests(@__DIR__)))
         end
     end
 end

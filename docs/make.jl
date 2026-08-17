@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 using Pkg
-"Diversity" ∈ [p.name for p in values(Pkg.dependencies())] &&
-    Pkg.rm("Diversity")
-Pkg.develop(path = joinpath(@__DIR__, ".."))
+Pkg.resolve()
 
 using Documenter
 using Diversity

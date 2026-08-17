@@ -19,6 +19,7 @@
 using Random
 using Test
 using Diversity
+using ParallelTestRunner: find_tests, parse_args, runtests
 
 # Identify files in test/ that are testing matching files in src/
 #  - src/Source.jl will be matched by test/test_Source.jl
@@ -60,7 +61,7 @@ let filebase = String[]
     Random.seed!(1234)
 
     @testset "Unit tests" begin
-        @test isfile(Diversity.path("runtests.jl"))
+        @test isfile(pkgdir(Diversity, "test", "runtests.jl"))
         println()
         @info "Running tests for files:"
         for t in testbase
@@ -68,11 +69,8 @@ let filebase = String[]
         end
         println()
 
-        @info "Running tests..."
-        @testset for t in testbase
-            fn = "test_$t.jl"
-            println("    * Testing $t.jl ...")
-            include(joinpath(@__DIR__, fn))
-        end
+        runtests(Diversity, parse_args(String[]),
+                 testsuite = filter(kv -> startswith(kv.first, "test_"),
+                                    find_tests(@__DIR__)))
     end
 end

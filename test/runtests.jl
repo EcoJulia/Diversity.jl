@@ -2,6 +2,7 @@
 
 using Test
 using Diversity
+using ParallelTestRunner: find_tests, parse_args, runtests
 
 # A test argument names one test file to run *instead of* the whole suite:
 #
@@ -77,14 +78,24 @@ else
         foreach(f -> println("    = $f"), extrabase)
         println()
 
-        # Wrapped in an enclosing testset, exactly as the core loop is, and it is **not**
-        # decoration: a failing `@testset` throws when it is the *outermost* one, so a bare
-        # `@testset for` here would abort the loop at the first set that failed.
-        @testset "Extras" begin
-            @testset for fn in extrabase
+        parallelextras = ["extras_docs", "extras_examples", "extras_notebooks"]
+        serialextras = filter(fn -> chop(fn, tail = 3) ∉ parallelextras,
+                              extrabase)
+
+        @testset "Serial extras..." begin
+            @testset for fn in serialextras
                 println("    * Running $fn ...")
-                include(joinpath(@__DIR__, fn))
+                include(fn)
             end
+        end
+
+        suite = filter(kv -> kv.first in parallelextras, find_tests(@__DIR__))
+        if !isempty(suite)
+            println()
+            @info "Running these concurrently: " *
+                  join(sort(collect(keys(suite))), ", ")
+            println()
+            runtests(Diversity, parse_args(String[]), testsuite = suite)
         end
     end
 end
