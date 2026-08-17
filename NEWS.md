@@ -5,6 +5,7 @@
   - Add a page on building metacommunities, and one for users coming from R's vegan
   - Document the options to gower(), and how they relate to vegan's gower and altGower
   - Document the fourteen norm_/raw_ diversity wrapper functions, which had no docstrings
+  - Document what each optional function of the extension contract does if you do not implement it
   - Rename the getFullName() descriptions of the measures to match those in the paper
   - Fix the NormalisedRho docstring, which named it redundancy rather than representativeness
   - Fix docstrings giving the maximum of raw rho and normalised beta as the number of

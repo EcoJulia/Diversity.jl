@@ -59,11 +59,11 @@ meta_gamma(Metacommunity([0.5, 0.3, 0.2],
 
 ## The contract
 
-| for a new... | must implement | may implement |
+| for a new... | must implement | may implement — and what you get if you do not |
 |---|---|---|
-| `AbstractTypes` | `_gettypenames`, `_calcsimilarity` | `_counttypes`, `_calcabundance`, `_calcordinariness`, `_getdiversityname`, `_addedoutputcols`, `_getaddedoutput`, `floattypes`, `_hassimilarity` |
-| `AbstractPartition` | `_getsubcommunitynames` | `_countsubcommunities` |
-| `AbstractMetacommunity` | `_gettypes`, `_getpartition`, `_getabundance` | `_getmetaabundance`, `_getweight`, `_getordinariness!`, `_getmetaordinariness!`, `_getscale` |
+| `AbstractTypes` | `_gettypenames`, `_calcsimilarity` | `_counttypes` (counts the type names), `_calcabundance` (the abundances unchanged, with scale `1`), `_calcordinariness` (`_calcsimilarity(t, scale) * abundances`), `_getdiversityname` (`"unknown"`), `_addedoutputcols` (no extra columns), `_getaddedoutput` (`nothing`), `floattypes` (every `AbstractFloat`), `_hassimilarity` (`true`) |
+| `AbstractPartition` | `_getsubcommunitynames` | `_countsubcommunities` (counts the subcommunity names) |
+| `AbstractMetacommunity` | `_gettypes`, `_getpartition`, `_getabundance` | `_getmetaabundance` (abundances summed across subcommunities), `_getweight` (abundances summed across types), `_getordinariness!` (`_calcordinariness` of the types, abundances and scale), `_getmetaordinariness!` (ordinariness summed across subcommunities), `_getscale` (`1`) |
 
 Two of the optional ones are worth knowing about even if you do not implement
 them. `_calcabundance` returns both the processed abundances and a **scale**,

@@ -42,15 +42,16 @@ export _getsubcommunitynames # required
 export _countsubcommunities  # optional
 
 # Base class and functions required for each type
-export _gettypenames, _calcsimilarity, _getscale      # required
+export _gettypenames, _calcsimilarity                 # required
 export _counttypes, _calcabundance, _calcordinariness # optional
 export _getdiversityname, _addedoutputcols, _getaddedoutput # optional
+export _hassimilarity                                 # optional
 
 # Base class and functions required for each metacommunity
 export _gettypes, _getpartition, _getabundance  # required
 export _getmetaabundance, _getweight            # optional
 export _getordinariness!, _getmetaordinariness! # optional
-export _hassimilarity
+export _getscale                                # optional
 
 # Function with minimal default implementation for types and partitions
 export floattypes
