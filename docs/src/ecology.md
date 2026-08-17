@@ -59,6 +59,21 @@ Diversity.Ecology.generalisedpielou(metacommunityDiversity, communitymat)
     `using Diversity.Ecology: generalisedpielou`). Every other measure on this
     page is exported by the submodule.
 
+## Faith's PD
+
+[`faith_pd`](@ref) and [`generalisedfaith_pd`](@ref) are the exception on this
+page, in two ways. The measures above are the classical ones for wholly distinct
+types, and refuse to run when similarity is present; Faith's phylogenetic
+diversity is the opposite — it is meaningless without a tree, so it is defined
+only for a metacommunity built over the `PhyloBranches` that the `Phylo`
+extension supplies, and therefore appears only once `Phylo` is loaded. See
+[Phylogenetic diversity](phylogenetics.md).
+
+It is also the one measure here that ignores abundances entirely: PD is the
+total length of the branches spanned by the types that are *present*, so it
+answers "how much evolutionary history is here?" rather than "how is it
+distributed?".
+
 ```@contents
 ```
 

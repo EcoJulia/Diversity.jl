@@ -45,6 +45,45 @@ counttypes(metaphylo, true)
 counttypes(metaphylo, false)
 ```
 
+## Faith's PD
+
+Faith's phylogenetic diversity is the older, historical measure: the **total
+length of the branches** of the tree spanned by the species present, with no
+normalisation. It lives in `Diversity.Ecology` with the other classical indices,
+but works only on a metacommunity built over the [`PhyloBranches`](@ref) this
+extension supplies — the calculation depends on how that type in particular maps
+leaf abundances onto branches — and so appears only once `Phylo` is loaded:
+
+```@repl phylo
+using Diversity.Ecology: faith_pd, generalisedfaith_pd
+generalisedfaith_pd(metacommunityDiversity, metaphylo)[!, :diversity]
+```
+
+The tree above has branches of length 1, 1, 1 and 2, so its total is 5.0.
+
+There is no `q` to give it, and the output has no `q` column: Faith's PD is the
+q = 0 case by definition, so there is no profile to ask for. It also does not
+depend on the abundances at all, only on which species are present — which is
+exactly what distinguishes it from the framework's own q = 0 diversity:
+
+```@repl phylo
+generalisedfaith_pd(metacommunityDiversity,
+                    Metacommunity([0.98, 0.01, 0.01], ph))[!, :diversity]
+meta_gamma(Metacommunity([0.98, 0.01, 0.01], ph), 0)[!, :diversity]
+```
+
+The first is unchanged, because the same three species are still there. The
+second is not, because it measures diversity *per unit* of branch length — the
+two differ by exactly the scale factor the phylogenetic types carry.
+
+With several subcommunities, `faith_pd` gives the PD of each one in isolation:
+
+```@repl phylo
+faith_pd(Metacommunity([0.4 0.0; 0.1 0.2; 0.0 0.3], ph))[!,
+                                                         [:partition_name,
+                                                          :diversity]]
+```
+
 ```@contents
 ```
 

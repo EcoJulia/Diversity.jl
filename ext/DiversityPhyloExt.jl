@@ -131,4 +131,42 @@ end
 import Diversity.API: _getdiversityname
 _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
 
+# Faith's PD. The parent declares both functions method-less in `Diversity.Ecology`; these are their
+# only methods, because PD is meaningless without a phylogeny.
+#
+# ⭐ PD is a *total branch length*, so it is the framework's q = 0 diversity multiplied back up by
+# the scale — the abundance-weighted mean root-to-tip distance that `_calcabundance` divided the
+# branch abundances by. Without that factor you get Chao, Chiu and Jost's `⁰D̄(T)`, PD *per unit*
+# branch length, which is a different measure and is not abundance-independent as PD must be.
+# Checked against branch lengths summed directly from the tree, ultrametric and not, with types
+# absent and with abundances varied: `subcommunityDiversity` needs `ᾱ` (the subcommunity in
+# isolation), not `Gamma`, whose subcommunity reading is a contribution rather than a diversity.
+import Diversity.Ecology: generalisedfaith_pd, faith_pd
+using Diversity: DiversityLevel, subcommunityDiversity, metacommunityDiversity
+using Diversity: norm_sub_alpha, meta_gamma
+using DataFrames
+
+function generalisedfaith_pd(level::DiversityLevel,
+                             mc::M) where
+    {FP, ARaw, AProcessed, Sim <: PhyloBranches,
+     M <: Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim}}
+    if (level == subcommunityDiversity)
+        gs = norm_sub_alpha(mc, 0)
+    elseif (level == metacommunityDiversity)
+        gs = meta_gamma(mc, 0)
+    else
+        error("Can't calculate Faith's PD for $level")
+    end
+    gs[!, :diversity] .*= _getscale(mc)
+    gs[!, :measure] .= "Faith's PD"
+    select!(gs, Not(:q))
+    return gs
+end
+
+function faith_pd(mc::M) where
+    {FP, ARaw, AProcessed, Sim <: PhyloBranches,
+     M <: Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim}}
+    return generalisedfaith_pd(subcommunityDiversity, mc)
+end
+
 end

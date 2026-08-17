@@ -10,6 +10,7 @@
   - Fix the NormalisedRho docstring, which named it redundancy rather than representativeness
   - Fix docstrings giving the maximum of raw rho and normalised beta as the number of
     subcommunities, rather than the effective number of them
+  - Add Faith's PD to Diversity.Ecology as faith_pd() and generalisedfaith_pd()
   - Add in genetic diversity, matching the gen2dist() and dist2sim() pipeline in boydorr/rdiversity
   - Provide it through two new extensions, BioSequences for aligned sequences and PopGen for VCF data
   - Cross-validate genetic diversity against rdiversity for every VCF file in test/data

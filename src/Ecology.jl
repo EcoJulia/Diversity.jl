@@ -462,3 +462,47 @@ function gower(asm::AbstractAssemblage; countzeros::Bool = false,
     select!(g, Not(:q))
     return g
 end
+
+"""
+    generalisedfaith_pd(level::DiversityLevel, mc::AbstractMetacommunity)
+
+Calculates Faith's phylogenetic diversity (PD) — the total length of the
+branches of the tree spanned by the types present — at the level requested.
+
+Unlike the other measures here, this one needs a tree, and is defined only for a
+metacommunity built over the `PhyloBranches` supplied by the `Phylo` extension —
+not for phylogenetic types in general, since the calculation relies on how that
+type in particular maps leaf abundances onto branches. It is therefore available
+only once `Phylo` is loaded.
+
+It also takes no `q`: Faith's PD is the q = 0 case by definition, so there is no
+profile to ask for, and PD depends on which types are present and not at all on
+their abundances.
+
+#### Arguments:
+- `level`: the diversity level to calculate at — `subcommunityDiversity` for the
+  PD of each subcommunity in isolation, `metacommunityDiversity` for the PD of
+  the whole tree spanned by the metacommunity
+- `mc`: a metacommunity built over a `PhyloBranches`
+
+#### Returns:
+- PD of the metacommunity, or PDs of the subcommunities
+"""
+function generalisedfaith_pd end
+
+"""
+    faith_pd(mc::AbstractMetacommunity)
+
+Calculates Faith's phylogenetic diversity (PD) of each subcommunity of `mc` in
+isolation — the total length of the branches of the tree spanned by the types
+present in it. See [`generalisedfaith_pd`](@ref) for the metacommunity as a
+whole, for why there is no `q` argument, and for why this needs a `PhyloBranches`
+specifically.
+
+#### Arguments:
+- `mc`: a metacommunity built over a `PhyloBranches`
+
+#### Returns:
+- PDs of the subcommunities
+"""
+function faith_pd end

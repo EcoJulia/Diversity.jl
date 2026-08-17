@@ -229,6 +229,9 @@ export generalisedsimpson, simpson
 export generalisedjaccard, jaccard
 export pielou
 export gower
+# Method-less here on purpose: `DiversityPhyloExt` supplies the only methods, since Faith's PD
+# needs phylogenetic types. Exported anyway so it is one name whether or not `Phylo` is loaded.
+export generalisedfaith_pd, faith_pd
 end # sub-module Ecology
 
 """
