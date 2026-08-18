@@ -44,7 +44,7 @@
     ],
     "codeRepository": "https://github.com/EcoJulia/Diversity.jl",
     "dateCreated": "2014-08-31",
-    "dateModified": "2026-08-17",
+    "dateModified": "2026-08-18",
     "datePublished": "2018-08-16",
     "description": "Julia package for measuring diversity",
     "downloadUrl": "https://github.com/EcoJulia/Diversity.jl/archive/refs/tags/v0.6.1.tar.gz",
