@@ -6,6 +6,8 @@ using Test
 # Checking EcoBase interface
 using Diversity
 using EcoBase
+# Not in EcoBase's export list, so they must be named explicitly.
+using EcoBase: thingkind, thingkindplural, placekind, placekindplural
 using SpatialEcology
 using CSV
 using DataFrames
@@ -211,6 +213,16 @@ end
     # generic assemblage would say "1 subcommunities" here.
     out = sprint(show, v)
     @test occursin("with 3 species in 1 subcommunity ", out)
+
+    # A subset names its units from its own types and partition rather than falling back to
+    # EcoBase's "thing" and "place". Both plurals need more than one of something to appear, which
+    # is why they are asserted here as well as through `show`.
+    whole = view(mc)
+    @test thingkind(whole) == "species"
+    @test thingkindplural(whole) == "species"
+    @test placekind(whole) == "subcommunity"
+    @test placekindplural(whole) == "subcommunities"
+    @test occursin("with 3 species in 2 subcommunities", sprint(show, whole))
 
     # This is what the missing `view` was blocking in EcoBase itself.
     @test EcoBase.cooccurring(mc, [1, 2]) == [true, true]
