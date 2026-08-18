@@ -148,4 +148,47 @@ end
                                                     OtherPhyloTypes()))
 end
 
+@testset "view over branches" begin
+    species = ["Dog", "Human", "Cat"]
+    nt = RootedTree(species)
+    n = createnode!(nt)
+    createbranch!(nt, n, species[1], 1.0)
+    createbranch!(nt, n, species[2], 1.0)
+    r = createnode!(nt)
+    createbranch!(nt, r, n, 1.0)
+    createbranch!(nt, r, species[3], 2.0)
+    ph = PhyloBranches(nt)
+    mc = Metacommunity([0.4 0.2; 0.1 0.1; 0.1 0.1], ph)
+
+    # `species` selects things, and for this type a thing is a branch -- there are five of them for
+    # three species. That is the whole point of the type, and the keyword name is EcoBase's.
+    @test counttypes(mc) == 5
+    @test length(gettypenames(mc)) == 5
+    @test gettypenames(view(mc, species = [1, 2, 3])) == gettypenames(mc)[1:3]
+
+    # Restricting only the subcommunities leaves the phylogeny alone, so nothing is lost.
+    sites = view(mc, sites = 1:1)
+    @test gettypes(sites) === gettypes(mc)
+    @test getdiversityname(gettypes(sites)) == "Phylogenetic Branch"
+    @test thingkind(sites) == "branch"
+
+    # Restricting branches cannot: an arbitrary subset of branches is not a tree, so it becomes a
+    # GeneralTypes carrying the *scaled* similarity submatrix. That is what keeps the numbers
+    # right, and it is why the result reports itself as arbitrary rather than phylogenetic.
+    sub = view(mc, species = [1, 2, 3])
+    @test gettypes(sub) isa GeneralTypes
+    @test getdiversityname(gettypes(sub)) == "Arbitrary Z"
+
+    scaled = calcsimilarity(ph, Diversity.API._getscale(mc))
+    ab = getabundance(mc)[1:3, :]
+    byhand = Metacommunity(ab ./ sum(ab),
+                           GeneralTypes(scaled[1:3, 1:3],
+                                        gettypenames(mc)[1:3]))
+    for q in [0, 1, 2, Inf]
+        @test meta_gamma(sub, q).diversity ≈ meta_gamma(byhand, q).diversity
+        @test norm_sub_alpha(sub, q).diversity ≈
+              norm_sub_alpha(byhand, q).diversity
+    end
+end
+
 end

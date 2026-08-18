@@ -239,6 +239,37 @@ fauna is least like Europe's overall. They are not necessarily the most species-
 `norm_sub_alpha` would show — and the difference between the two maps is precisely what the framework
 was built to expose.
 
+## Taking a view of part of one
+
+`view` restricts a metacommunity to some of its types, some of its
+subcommunities, or both, and is how the rest of the
+[EcoBase](https://github.com/EcoJulia/EcoBase.jl) ecosystem subsets an
+assemblage. Indices, names and boolean masks all work:
+
+```@repl building
+sub = view(mc, sites = ["Reference", "Refuge"])
+norm_sub_alpha(sub, 1)[!, [:partition_name, :diversity]]
+```
+
+The result is a genuine view: it aliases the original's abundances rather than
+copying them, and it holds only part of them, so they no longer sum to one. That
+is deliberate. Only a `Metacommunity` requires abundances summing to one, and the
+measures normalise what they read, so the subset is measured as a metacommunity
+in its own right. Convert it with `Metacommunity(sub)` if you want a cached
+object instead of a window.
+
+!!! warning
+    `species` selects **things**, which is not always what the word suggests. For
+    a phylogeny a thing is a *branch*, because `PhyloBranches` measures over
+    branches rather than over species — printing the metacommunity tells you what
+    it calls its units. The keyword names come from EcoBase.
+
+    Restricting `species` on a phylogeny also gives up the tree: an arbitrary set
+    of branches is not one, so the types become a `GeneralTypes` holding the
+    corresponding similarity submatrix. It measures identically, but reports
+    itself as arbitrary rather than phylogenetic. Restricting only `sites` leaves
+    the phylogeny untouched.
+
 ```@contents
 ```
 

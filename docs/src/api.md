@@ -61,8 +61,8 @@ meta_gamma(Metacommunity([0.5, 0.3, 0.2],
 
 | for a new... | must implement | may implement — and what you get if you do not |
 |---|---|---|
-| `AbstractTypes` | `_gettypenames`, `_calcsimilarity` (unless `_hassimilarity` is `false`) | `_counttypes` (counts the type names), `_calcabundance` (the abundances unchanged, with scale `1`), `_calcordinariness` (`_calcsimilarity(t, scale) * abundances`), `_getdiversityname` (`"unknown"`), `_addedoutputcols` (no extra columns), `_getaddedoutput` (`nothing`), `floattypes` (every `AbstractFloat`), `_hassimilarity` (`true`) |
-| `AbstractPartition` | `_getsubcommunitynames` | `_countsubcommunities` (counts the subcommunity names) |
+| `AbstractTypes` | `_gettypenames`, `_calcsimilarity` (unless `_hassimilarity` is `false`) | `_counttypes` (counts the type names), `_calcabundance` (the abundances unchanged, with scale `1`), `_calcordinariness` (`_calcsimilarity(t, scale) * abundances`), `_getdiversityname` (`"unknown"`), `_addedoutputcols` (no extra columns), `_getaddedoutput` (`nothing`), `floattypes` (every `AbstractFloat`), `_hassimilarity` (`true`), `_subsettypes` (materialises the similarity into a `GeneralTypes`) |
+| `AbstractPartition` | `_getsubcommunitynames` | `_countsubcommunities` (counts the subcommunity names), `_subsetpartition` (builds a `Subcommunities` from the names kept) |
 | `AbstractMetacommunity` | `_gettypes`, `_getpartition`, `_getabundance` | `_getmetaabundance` (abundances summed across subcommunities), `_getweight` (abundances summed across types), `_getordinariness!` (`_calcordinariness` of the types, abundances and scale), `_getmetaordinariness!` (ordinariness summed across subcommunities), `_getscale` (`1`) |
 
 Two of the optional ones are worth knowing about even if you do not implement

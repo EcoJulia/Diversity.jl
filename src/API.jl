@@ -253,6 +253,26 @@ end
 
 ### Other optional APIs to implement
 
+"""
+    _subsettypes(t::AbstractTypes, idx, scale::Real)
+
+Returns an AbstractTypes containing only the types at `idx`. May be implemented
+by each AbstractTypes subtype; the default materialises the similarity matrix at
+`scale` and returns a GeneralTypes holding the corresponding submatrix. This is
+what `view()` uses to restrict a metacommunity's types.
+"""
+function _subsettypes end
+
+"""
+    _subsetpartition(p::AbstractPartition, idx)
+
+Returns an AbstractPartition containing only the subcommunities at `idx`. May be
+implemented by each AbstractPartition subtype; the default builds a
+Subcommunities from the corresponding names. This is what `view()` uses to
+restrict a metacommunity's partition.
+"""
+function _subsetpartition end
+
 _hassimilarity(::Diversity.API.AbstractTypes) = true
 
 """

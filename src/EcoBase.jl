@@ -34,6 +34,8 @@ nthings(types::AbstractTypes) = counttypes(types)
 thingnames(types::AbstractTypes) = gettypenames(types)
 
 import EcoBase: occurrences, places, things
+import EcoBase: view
+using EcoBase: asindices
 occurrences(mc::AbstractMetacommunity) = getabundance(mc)
 places(mc::AbstractMetacommunity) = getpartition(mc)
 things(mc::AbstractMetacommunity) = gettypes(mc)
@@ -173,6 +175,106 @@ function _calcsimilarity(t::AbstractTypes, ::Real)
                         "so the identity matrix the EcoBase fallback would " *
                         "return is not right for it")
     return _identitysimilarity(t)
+end
+
+# Subsetting, which is what `view` below is made of.
+#
+# The default materialises the similarity matrix and hands it to a GeneralTypes. That is right for
+# any types object whose `_calcsimilarity` is a matrix, which is all of them except `UniqueTypes`,
+# whose identity similarity is a `UniformScaling` and cannot be indexed -- it supplies its own
+# method. Note the scale is baked into the matrix, so the result needs no scale of its own: that is
+# exactly what makes a subset of a phylogeny's branches go on measuring correctly, and it is why an
+# arbitrary subset of branches becomes a GeneralTypes rather than staying a phylogeny. It is not a
+# tree any more.
+import Diversity.API: _subsettypes, _subsetpartition
+
+function _subsettypes(t::AbstractTypes, idx, scale::Real)
+    return GeneralTypes(calcsimilarity(t, scale)[idx, idx],
+                        gettypenames(t, false)[idx])
+end
+
+function _subsetpartition(p::AbstractPartition, idx)
+    return Subcommunities(getsubcommunitynames(p)[idx])
+end
+
+"""
+    SubAssemblage(types, partition, occurrences)
+
+A subset of a metacommunity, as returned by `view`. It is an EcoBase
+`AbstractAssemblage` rather than a `Metacommunity`, which is what lets it be a
+genuine view: it aliases the parent's abundances rather than copying them, and
+it carries them unnormalised, since only a `Metacommunity` requires them to sum
+to one. The diversity measures still work on it, because abundances are
+normalised when they are read.
+"""
+struct SubAssemblage{FP <: Real, T <: AbstractTypes, P <: AbstractPartition,
+                     A <: AbstractArray{FP}} <:
+       EcoBase.AbstractAssemblage{FP, T, P}
+    types::T
+    partition::P
+    occurrences::A
+end
+
+things(sub::SubAssemblage) = sub.types
+places(sub::SubAssemblage) = sub.partition
+occurrences(sub::SubAssemblage) = sub.occurrences
+
+# The units are the subset's types', not "thing" and "place" -- see the naming hooks above.
+Base.show(io::IO, sub::SubAssemblage) = _showassemblage(io, sub)
+
+thingkind(sub::SubAssemblage) = thingkind(things(sub))
+thingkindplural(sub::SubAssemblage) = thingkindplural(things(sub))
+placekind(sub::SubAssemblage) = placekind(places(sub))
+placekindplural(sub::SubAssemblage) = placekindplural(places(sub))
+
+"""
+    view(mc::AbstractMetacommunity; species, sites)
+
+Takes a view of part of a metacommunity, returning a `SubAssemblage` over the
+types at `species` and the subcommunities at `sites`. Either may be given as
+indices, as a boolean mask, or as names, and either may be omitted to keep
+everything.
+
+Warning: `species` selects **things**, whatever the metacommunity's types call
+them. For a phylogeny a thing is a *branch*, not a species, because
+`PhyloBranches` measures over branches -- ask `EcoBase.thingkind` if in doubt, or
+look at what `show` calls them. The keyword name is EcoBase's.
+
+A dimension you do not restrict keeps its object untouched, so restricting only
+`sites` leaves a phylogeny a phylogeny. Restricting `species` cannot: an
+arbitrary subset of branches is no longer a tree, so the types become a
+`GeneralTypes` carrying the scaled similarity submatrix, which measures
+identically but reports itself as `"Arbitrary Z"` and drops any added output
+columns.
+
+The result aliases the parent's abundances rather than copying them, so it
+reflects later changes to them, and unlike a `Metacommunity` it caches nothing.
+Its abundances are a subset of the parent's and so do not sum to one; the
+measures normalise them on reading, which means the subset measures as a
+metacommunity in its own right. Use `Metacommunity(view(...))` for a converted,
+cached object instead.
+"""
+# Whether a selection keeps everything, in order -- in which case there is nothing to subset.
+function _keepsall(idx, n)
+    return length(idx) == n && all(i == j for (i, j) in zip(idx, Base.OneTo(n)))
+end
+
+function view(mc::AbstractMetacommunity;
+              species = Base.OneTo(counttypes(mc)),
+              sites = Base.OneTo(countsubcommunities(mc)))
+    # `asindices` is EcoBase's own name resolution, so names, masks and indices all work here
+    # exactly as they do for the rest of its interface.
+    sp = asindices(species, gettypenames(mc))
+    st = asindices(sites, getsubcommunitynames(mc))
+    # A dimension that is not actually restricted keeps its object untouched, which is not just an
+    # optimisation: subsetting types is what turns a phylogeny into a GeneralTypes, so a view that
+    # only picks subcommunities must not do it, or restricting sites would silently cost you the
+    # tree.
+    types = _keepsall(sp, counttypes(mc)) ? gettypes(mc) :
+            _subsettypes(gettypes(mc), sp, _getscale(mc))
+    part = _keepsall(st, countsubcommunities(mc)) ? getpartition(mc) :
+           _subsetpartition(getpartition(mc), st)
+    return SubAssemblage(types, part, Base.view(occurrences(mc), sp, st))
 end
 
 RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)

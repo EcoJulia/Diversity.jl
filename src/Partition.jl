@@ -52,3 +52,10 @@ end
 function _countsubcommunities(::Onecommunity)
     return 1
 end
+
+import Diversity.API._subsetpartition
+# Selecting the one subcommunity there is leaves an undivided metacommunity undivided, rather than
+# demoting it to a Subcommunities of one.
+function _subsetpartition(oc::Onecommunity, idx)
+    return length(idx) == 1 ? oc : Subcommunities(oc.namev[idx])
+end
