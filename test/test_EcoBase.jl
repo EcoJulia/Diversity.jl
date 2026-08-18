@@ -6,6 +6,8 @@ using Test
 # Checking EcoBase interface
 using Diversity
 using EcoBase
+# Not in EcoBase's export list, so they must be named explicitly.
+using EcoBase: thingkind, thingkindplural, placekind, placekindplural
 using SpatialEcology
 using CSV
 using DataFrames
@@ -81,8 +83,11 @@ end
     @test occupied(amph, ["Pleurodeles_waltl", "Salamandra_corsica"])[50] == 885
     @test occupancy(amph)[1] == 353
 
-    # views
+    # views: SpatialEcology's own, on its own assemblage -- asserted rather than just called,
+    # which is what it was before.
     va = view(amph, species = 1:10)
+    @test counttypes(va) == 10
+    @test countsubcommunities(va) == countsubcommunities(amph)
 
     #operations
     amp2 = coarsen(amph, 2)
@@ -138,6 +143,109 @@ end
     @test calcsimilarity(UniqueTypes(2), 1) == [1.0 0.0; 0.0 1.0]
     Z = [1.0 0.3; 0.3 1.0]
     @test calcsimilarity(GeneralTypes(Z), 1) == Z
+end
+
+@testset "view" begin
+    Z = [1.0 0.5 0.0; 0.5 1.0 0.5; 0.0 0.5 1.0]
+    types = GeneralTypes(Z, ["ash", "oak", "elm"])
+    ab = [0.1 0.2; 0.2 0.1; 0.2 0.2]
+    mc = Metacommunity(ab, types, Subcommunities(["north", "south"]))
+
+    # It is a genuine view: a SubArray aliasing the parent, holding a subset that does not sum to
+    # one. Only a Metacommunity requires that, and this deliberately is not one.
+    v = view(mc, sites = 1:1)
+    @test v isa EcoBase.AbstractAssemblage
+    @test !(v isa Diversity.AbstractMetacommunity)
+    @test occurrences(v) isa SubArray
+    @test sum(occurrences(v)) ≈ sum(ab[:, 1])
+    @test sum(occurrences(v)) < 1
+
+    # Aliasing, not copying: a change to the parent's abundances shows through. A Metacommunity
+    # caches and would not, which is the substantive difference between the two.
+    parent = Metacommunity(copy(ab), types, Subcommunities(["north", "south"]))
+    alias = view(parent, sites = 1:1)
+    before = occurrences(alias)[1, 1]
+    getabundance(parent)[1, 1] *= 2
+    @test occurrences(alias)[1, 1] ≈ 2 * before
+
+    # The abundances are normalised when read, so the subset measures as a metacommunity in its own
+    # right: identical to what a user would have built by hand from the same columns.
+    byhand = Metacommunity(ab[:, 1:1] ./ sum(ab[:, 1:1]), types,
+                           Subcommunities(["north"]))
+    for q in [0, 1, 2, Inf]
+        @test meta_gamma(v, q).diversity ≈ meta_gamma(byhand, q).diversity
+        @test norm_sub_alpha(v, q).diversity ≈
+              norm_sub_alpha(byhand, q).diversity
+    end
+
+    # Indices, names and boolean masks all select, because EcoBase's own `asindices` resolves them.
+    @test gettypenames(view(mc, species = ["ash", "elm"])) == ["ash", "elm"]
+    @test gettypenames(view(mc, species = [1, 3])) == ["ash", "elm"]
+    @test gettypenames(view(mc, species = [true, false, true])) ==
+          ["ash", "elm"]
+    @test getsubcommunitynames(view(mc, sites = ["south"])) == ["south"]
+
+    # Subsetting types materialises the similarity into a GeneralTypes; ash and elm are the pair
+    # with no similarity between them, so the submatrix is the identity.
+    @test calcsimilarity(gettypes(view(mc, species = [1, 3])), 1) ==
+          [1.0 0.0; 0.0 1.0]
+
+    # A dimension that is not restricted keeps its object untouched rather than rebuilding it.
+    @test gettypes(view(mc, sites = 1:1)) === gettypes(mc)
+    @test getpartition(view(mc, species = 1:2)) === getpartition(mc)
+    @test gettypes(view(mc)) === gettypes(mc)
+
+    # UniqueTypes cannot go through the generic default, since its similarity is a UniformScaling.
+    umc = Metacommunity(ab)
+    @test gettypes(view(umc, species = [1, 3])) isa UniqueTypes
+    @test gettypenames(view(umc, species = [1, 3])) == ["1", "3"]
+
+    # An undivided metacommunity stays undivided rather than becoming a Subcommunities of one.
+    @test getpartition(view(Metacommunity([0.5, 0.5]), sites = [1])) isa
+          Onecommunity
+
+    # Converting gives back a cached Metacommunity measuring the same thing.
+    conv = Metacommunity(v)
+    @test conv isa Diversity.AbstractMetacommunity
+    @test meta_gamma(conv, 1).diversity ≈ meta_gamma(v, 1).diversity
+
+    # It prints as one of ours, with the singular where it belongs -- EcoBase's own `show` for a
+    # generic assemblage would say "1 subcommunities" here.
+    out = sprint(show, v)
+    @test occursin("with 3 species in 1 subcommunity ", out)
+
+    # A subset names its units from its own types and partition rather than falling back to
+    # EcoBase's "thing" and "place". Both plurals need more than one of something to appear, which
+    # is why they are asserted here as well as through `show`.
+    whole = view(mc)
+    @test thingkind(whole) == "species"
+    @test thingkindplural(whole) == "species"
+    @test placekind(whole) == "subcommunity"
+    @test placekindplural(whole) == "subcommunities"
+    @test occursin("with 3 species in 2 subcommunities", sprint(show, whole))
+
+    # This is what the missing `view` was blocking in EcoBase itself.
+    @test EcoBase.cooccurring(mc, [1, 2]) == [true, true]
+end
+
+@testset "view unlocks SpatialEcology grouping" begin
+    # `groupsites` and `groupspecies` are typed on EcoBase.AbstractAssemblage rather than on
+    # SpatialEcology's own types, so implementing `view` is all that was needed to make them work
+    # on a metacommunity. They were a MethodError before.
+    mc = Metacommunity([0.1 0.2 0.1; 0.2 0.1 0.1; 0.1 0.05 0.05],
+                       UniqueTypes(["a", "b", "c"]),
+                       Subcommunities(["x", "y", "z"]))
+    groups = groupsites(mc, ["left", "left", "right"])
+    @test length(groups) == 2
+    @test all(g -> g isa EcoBase.AbstractAssemblage, groups)
+    @test getsubcommunitynames.(groups) == [["x", "y"], ["z"]]
+    # Each group is measurable, and the two-site group is the one with two subcommunities.
+    @test nrow(norm_sub_alpha(groups[1], 1)) == 2
+    @test nrow(norm_sub_alpha(groups[2], 1)) == 1
+
+    species = groupspecies(mc, ["plant", "plant", "animal"])
+    @test length(species) == 2
+    @test sort(vcat(gettypenames.(species)...)) == ["a", "b", "c"]
 end
 
 end

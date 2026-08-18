@@ -208,11 +208,18 @@ end
 createsummaryline(vec::AbstractVector) = createsummaryline(string.(vec))
 
 import Base.show
-function show(io::IO, mc::AbstractMetacommunity)
+# Shared by every assemblage this package owns. Not defined on `AbstractAssemblage` itself, which
+# would overwrite EcoBase's own `show` rather than adding to it -- and EcoBase's uses the plural
+# unconditionally, so "1 subcommunities" is what a `SubAssemblage` would otherwise print.
+function _showassemblage(io::IO, mc::AbstractAssemblage)
     sp = createsummaryline(gettypenames(mc))
     si = createsummaryline(getsubcommunitynames(mc))
-    tk = counttypes(mc) > 1 ? thingkind(mc) : thingkindplural(mc)
-    pk = countsubcommunities(mc) > 1 ? placekind(mc) : placekindplural(mc)
+    # Plural for the counts, singular for the headings — the same split EcoBase's own `show` makes,
+    # because "Branch names:" is right where "Branches names:" is not.
+    tk = counttypes(mc) > 1 ? thingkindplural(mc) : thingkind(mc)
+    pk = countsubcommunities(mc) > 1 ? placekindplural(mc) : placekind(mc)
     return println(io,
-                   "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(tk)) names:\n$(sp)\n\n$(titlecase(pk)) names:\n$(si)")
+                   "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(thingkind(mc))) names:\n$(sp)\n\n$(titlecase(placekind(mc))) names:\n$(si)")
 end
+
+show(io::IO, mc::AbstractMetacommunity) = _showassemblage(io, mc)

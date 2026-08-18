@@ -40,11 +40,13 @@ export AbstractPartition, AbstractTypes, AbstractMetacommunity
 # Base class and functions required for each partition
 export _getsubcommunitynames # required
 export _countsubcommunities  # optional
+export _subsetpartition      # optional
 
 # Base class and functions required for each type
 export _gettypenames, _calcsimilarity                 # required
 export _counttypes, _calcabundance, _calcordinariness # optional
 export _getdiversityname, _addedoutputcols, _getaddedoutput # optional
+export _subsettypes                                         # optional
 export _hassimilarity                                 # optional
 
 # Base class and functions required for each metacommunity

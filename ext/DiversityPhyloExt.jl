@@ -131,6 +131,12 @@ end
 import Diversity.API: _getdiversityname
 _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
 
+# The units here are branches, not species — this type is opinionated about that, and these are how
+# a reader is told. The plural is spelled out because EcoBase's default is `"$(thingkind(x))s"`.
+import EcoBase: thingkind, thingkindplural
+thingkind(::PhyloBranches) = "branch"
+thingkindplural(::PhyloBranches) = "branches"
+
 # Faith's PD. The parent declares both functions method-less in `Diversity.Ecology`; these are their
 # only methods, because PD is meaningless without a phylogeny.
 #

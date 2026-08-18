@@ -1,5 +1,14 @@
 # NEWS
 
+- v0.6.1
+  - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
+    parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()
+    and groupspecies() work on a metacommunity, which were previously a MethodError
+  - Add _subsettypes() and _subsetpartition() to the extension contract, as optional functions with
+    defaults, so a new type can say how it is subset
+  - Fix showing a metacommunity using the singular where it needed the plural, and name the units
+    through EcoBase's thingkind()/placekind() hooks, so output reads "3 species in 4 subcommunities"
+    rather than "3 thing in 4 place", and says "branches" for a phylogeny
 - v0.6.0
   - Document the diversity framework and its origins, with a new page in the manual
   - Add a page on building metacommunities, and one for users coming from R's vegan

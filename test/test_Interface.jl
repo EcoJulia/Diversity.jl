@@ -6,6 +6,7 @@ using Test
 using Diversity
 using Diversity: createsummaryline
 using EcoBase
+using EcoBase: thingkind, thingkindplural, placekind, placekindplural
 using LinearAlgebra
 
 numspecies = 10
@@ -88,6 +89,32 @@ end
     # No added output columns unless a type asks for them (the Phylo extension does).
     @test isempty(addedoutputcols(mc))
     @test isnothing(getaddedoutput(mc))
+end
+
+@testset "Naming the units" begin
+    # EcoBase asks the assemblage what its units are called and defaults to "thing"/"place"; we
+    # answer on the types and the partition instead, so that output says what it means. This is
+    # also how a reader is told that a phylogeny's units are branches rather than species.
+    mc = Metacommunity(manyweights)
+    @test thingkind(mc) == "species"
+    @test placekind(mc) == "subcommunity"
+    @test placekindplural(mc) == "subcommunities"
+    @test thingkindplural(mc) == "species"
+
+    # It is the *types* that are asked, not the metacommunity, so a new types object can answer.
+    @test thingkind(gettypes(mc)) == thingkind(mc)
+    @test placekind(getpartition(mc)) == placekind(mc)
+
+    out = sprint(show, mc)
+    @test occursin("with $numspecies species in $numcommunities subcommunities",
+                   out)
+    @test occursin("Species names:", out)
+    @test occursin("Subcommunity names:", out)
+    @test occursin("measuring Unique diversity", out)
+
+    # And the singular really is used when there is one of something.
+    single = sprint(show, Metacommunity([1.0]))
+    @test occursin("with 1 species in 1 subcommunity measuring", single)
 end
 
 end

@@ -36,6 +36,11 @@ function _counttypes(ut::UniqueTypes, ::Bool)
     return ut.num
 end
 
+import Diversity.API._subsettypes
+# The generic default indexes the similarity matrix, but this type's is a `UniformScaling` that is
+# never materialised -- and a subset of wholly distinct types is just fewer wholly distinct types.
+_subsettypes(ut::UniqueTypes, idx, ::Real) = UniqueTypes(ut.names[idx])
+
 import Diversity.API._gettypenames
 function _gettypenames(ut::UniqueTypes, ::Bool)
     return ut.names

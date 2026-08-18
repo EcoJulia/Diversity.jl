@@ -6,6 +6,7 @@ using Test
 using Phylo
 using Diversity
 using Diversity.Ecology: faith_pd, generalisedfaith_pd
+using EcoBase: thingkind, thingkindplural, placekind
 
 # A phylogenetic type that is *not* this extension's `PhyloBranches` — enough of the API to build a
 # metacommunity from, and no more. Faith's PD must decline to run on it.
@@ -56,6 +57,15 @@ Diversity.API._calcsimilarity(::OtherPhyloTypes, ::Real) = [1.0 0.5; 0.5 1.0]
     @test metadiv(Gamma(tsmetaphylo), 0).treename == ["tree"]
     @test all(inddiv(Gamma(tsmetaphylo), 0).treename .== "tree")
 
+    # Note: The units of a phylogenetic metacommunity are *branches*, and this is how a reader is told
+    # — `PhyloBranches` is opinionated about that, so it answers EcoBase's naming hooks itself.
+    @test thingkind(metaphylo) == "branch"
+    @test thingkindplural(metaphylo) == "branches"   # not EcoBase's default "branchs"
+    @test placekind(metaphylo) == "subcommunity"
+    out = sprint(show, metaphylo)
+    @test occursin("with 5 branches in 1 subcommunity", out)
+    @test occursin("Branch names:", out)             # singular in the heading
+
     # Translating to a GeneralTypes metacommunity has to carry the *scaled* Zmatrix and the
     # *branch* abundances together, or the phylogeny's numbers do not survive — which is the case
     # that makes the scale argument to `_calcsimilarity` load-bearing here and nowhere else.
@@ -88,9 +98,6 @@ end
                               Metacommunity([0.4, 0.3, 0.3],
                                             ph)).diversity[1] ≈ 5.0
 
-    # 🔴 PD depends on which types are present and not at all on how abundant they are. This is
-    # what separates it from the framework's q = 0 diversity, which is PD *per unit* branch
-    # length and does move with the abundances.
     @test generalisedfaith_pd(metacommunityDiversity,
                               Metacommunity([0.1, 0.1, 0.8],
                                             ph)).diversity[1] ≈ 5.0
@@ -124,14 +131,14 @@ end
     @test all(pd.measure .== "Faith's PD")
     @test_throws ErrorException generalisedfaith_pd(individualDiversity, mc)
 
-    # 🔴 And it is only defined for phylogenetic types — there is no PD without a tree.
+    # It is only defined for phylogenetic types — there is no PD without a tree.
     @test_throws MethodError faith_pd(Metacommunity([0.5, 0.5]))
 
-    # 🔴 Narrower than that, in fact: only for the `PhyloBranches` this extension supplies, not for
+    # Narrower than that, in fact: only for the `PhyloBranches` this extension supplies, not for
     # `AbstractPhyloTypes` at large. The scale is a total branch length only because that type's
     # `_calcabundance` makes it one; another phylogenetic type may process abundances differently,
     # and would get a confidently wrong number rather than a refusal if the signature were widened.
-    # ⚠️ Reached through `get_extension` on purpose: the bare name `PhyloBranches` here is the
+    # Note: Reached through `get_extension` on purpose: the bare name `PhyloBranches` here is the
     # *abstract* one the parent exports, not the concrete struct the signature is written against.
     concrete = Base.get_extension(Diversity, :DiversityPhyloExt).PhyloBranches
     @test concrete <: Diversity.PhyloBranches <: Diversity.AbstractPhyloTypes
@@ -139,6 +146,76 @@ end
     @test !(OtherPhyloTypes <: concrete)
     @test_throws MethodError faith_pd(Metacommunity([0.5, 0.5],
                                                     OtherPhyloTypes()))
+end
+
+@testset "view over branches" begin
+    species = ["Dog", "Human", "Cat"]
+    nt = RootedTree(species)
+    n = createnode!(nt)
+    createbranch!(nt, n, species[1], 1.0)
+    createbranch!(nt, n, species[2], 1.0)
+    r = createnode!(nt)
+    createbranch!(nt, r, n, 1.0)
+    createbranch!(nt, r, species[3], 2.0)
+    ph = PhyloBranches(nt)
+    mc = Metacommunity([0.4 0.2; 0.1 0.1; 0.1 0.1], ph)
+
+    # `species` selects things, and for this type a thing is a branch -- there are five of them for
+    # three species. That is the whole point of the type, and the keyword name is EcoBase's.
+    @test counttypes(mc) == 5
+    @test length(gettypenames(mc)) == 5
+    @test gettypenames(view(mc, species = [1, 2, 3])) == gettypenames(mc)[1:3]
+
+    # Restricting only the subcommunities leaves the phylogeny alone, so nothing is lost.
+    sites = view(mc, sites = 1:1)
+    @test gettypes(sites) === gettypes(mc)
+    @test getdiversityname(gettypes(sites)) == "Phylogenetic Branch"
+    @test thingkind(sites) == "branch"
+
+    # The subset measures with its *own* scale, not the parent's. This is the one place a view has
+    # to compute something rather than carry it: the scale is the abundance-weighted mean
+    # root-to-tip distance, so dropping subcommunities changes it, and it cannot be recovered from
+    # branch abundances alone. Getting it wrong is not subtle -- inheriting the generic default of
+    # one doubled every diversity here.
+    @test meta_gamma(sites, 1).diversity ≈
+          meta_gamma(Metacommunity(getabundance(mc, true)[:, 1:1] ./
+                                   sum(getabundance(mc, true)[:, 1:1]), ph),
+                     1).diversity
+
+    # And on a non-ultrametric tree the parent's scale and the subset's genuinely differ, so this
+    # would fail if the parent's were carried across instead of the subset's being worked out.
+    nu = RootedTree(species)
+    ni = createnode!(nu)
+    createbranch!(nu, ni, species[1], 1.0)
+    createbranch!(nu, ni, species[2], 3.0)
+    nr = createnode!(nu)
+    createbranch!(nu, nr, ni, 1.0)
+    createbranch!(nu, nr, species[3], 2.0)
+    nuleaf = [0.5 0.02; 0.02 0.02; 0.02 0.42]
+    numc = Metacommunity(nuleaf, PhyloBranches(nu))
+    nuview = view(numc, sites = 1:1)
+    @test Diversity.API._getscale(nuview) ≉ Diversity.API._getscale(numc)
+    @test meta_gamma(nuview, 1).diversity ≈
+          meta_gamma(Metacommunity(nuleaf[:, 1:1] ./ sum(nuleaf[:, 1:1]),
+                                   PhyloBranches(nu)), 1).diversity
+
+    # Restricting branches cannot: an arbitrary subset of branches is not a tree, so it becomes a
+    # GeneralTypes carrying the *scaled* similarity submatrix. That is what keeps the numbers
+    # right, and it is why the result reports itself as arbitrary rather than phylogenetic.
+    sub = view(mc, species = [1, 2, 3])
+    @test gettypes(sub) isa GeneralTypes
+    @test getdiversityname(gettypes(sub)) == "Arbitrary Z"
+
+    scaled = calcsimilarity(ph, Diversity.API._getscale(mc))
+    ab = getabundance(mc)[1:3, :]
+    byhand = Metacommunity(ab ./ sum(ab),
+                           GeneralTypes(scaled[1:3, 1:3],
+                                        gettypenames(mc)[1:3]))
+    for q in [0, 1, 2, Inf]
+        @test meta_gamma(sub, q).diversity ≈ meta_gamma(byhand, q).diversity
+        @test norm_sub_alpha(sub, q).diversity ≈
+              norm_sub_alpha(byhand, q).diversity
+    end
 end
 
 end
