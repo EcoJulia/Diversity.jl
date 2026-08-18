@@ -172,6 +172,33 @@ end
     @test getdiversityname(gettypes(sites)) == "Phylogenetic Branch"
     @test thingkind(sites) == "branch"
 
+    # The subset measures with its *own* scale, not the parent's. This is the one place a view has
+    # to compute something rather than carry it: the scale is the abundance-weighted mean
+    # root-to-tip distance, so dropping subcommunities changes it, and it cannot be recovered from
+    # branch abundances alone. Getting it wrong is not subtle -- inheriting the generic default of
+    # one doubled every diversity here.
+    @test meta_gamma(sites, 1).diversity ≈
+          meta_gamma(Metacommunity(getabundance(mc, true)[:, 1:1] ./
+                                   sum(getabundance(mc, true)[:, 1:1]), ph),
+                     1).diversity
+
+    # And on a non-ultrametric tree the parent's scale and the subset's genuinely differ, so this
+    # would fail if the parent's were carried across instead of the subset's being worked out.
+    nu = RootedTree(species)
+    ni = createnode!(nu)
+    createbranch!(nu, ni, species[1], 1.0)
+    createbranch!(nu, ni, species[2], 3.0)
+    nr = createnode!(nu)
+    createbranch!(nu, nr, ni, 1.0)
+    createbranch!(nu, nr, species[3], 2.0)
+    nuleaf = [0.5 0.02; 0.02 0.02; 0.02 0.42]
+    numc = Metacommunity(nuleaf, PhyloBranches(nu))
+    nuview = view(numc, sites = 1:1)
+    @test Diversity.API._getscale(nuview) ≉ Diversity.API._getscale(numc)
+    @test meta_gamma(nuview, 1).diversity ≈
+          meta_gamma(Metacommunity(nuleaf[:, 1:1] ./ sum(nuleaf[:, 1:1]),
+                                   PhyloBranches(nu)), 1).diversity
+
     # Restricting branches cannot: an arbitrary subset of branches is not a tree, so it becomes a
     # GeneralTypes carrying the *scaled* similarity submatrix. That is what keeps the numbers
     # right, and it is why the result reports itself as arbitrary rather than phylogenetic.

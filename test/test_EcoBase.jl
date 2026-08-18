@@ -81,8 +81,11 @@ end
     @test occupied(amph, ["Pleurodeles_waltl", "Salamandra_corsica"])[50] == 885
     @test occupancy(amph)[1] == 353
 
-    # views
+    # views: SpatialEcology's own, on its own assemblage -- asserted rather than just called,
+    # which is what it was before.
     va = view(amph, species = 1:10)
+    @test counttypes(va) == 10
+    @test countsubcommunities(va) == countsubcommunities(amph)
 
     #operations
     amp2 = coarsen(amph, 2)
@@ -154,6 +157,14 @@ end
     @test occurrences(v) isa SubArray
     @test sum(occurrences(v)) ≈ sum(ab[:, 1])
     @test sum(occurrences(v)) < 1
+
+    # Aliasing, not copying: a change to the parent's abundances shows through. A Metacommunity
+    # caches and would not, which is the substantive difference between the two.
+    parent = Metacommunity(copy(ab), types, Subcommunities(["north", "south"]))
+    alias = view(parent, sites = 1:1)
+    before = occurrences(alias)[1, 1]
+    getabundance(parent)[1, 1] *= 2
+    @test occurrences(alias)[1, 1] ≈ 2 * before
 
     # The abundances are normalised when read, so the subset measures as a metacommunity in its own
     # right: identical to what a user would have built by hand from the same columns.

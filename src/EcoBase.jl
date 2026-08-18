@@ -213,9 +213,11 @@ struct SubAssemblage{FP <: Real, T <: AbstractTypes, P <: AbstractPartition,
     types::T
     partition::P
     occurrences::A
+    scale::Float64
 end
 
 things(sub::SubAssemblage) = sub.types
+_getscale(sub::SubAssemblage) = sub.scale
 places(sub::SubAssemblage) = sub.partition
 occurrences(sub::SubAssemblage) = sub.occurrences
 
@@ -254,6 +256,19 @@ measures normalise them on reading, which means the subset measures as a
 metacommunity in its own right. Use `Metacommunity(view(...))` for a converted,
 cached object instead.
 """
+# The scale a subset should measure with. It is its own, not the parent's: for a phylogeny the scale
+# is the abundance-weighted mean root-to-tip distance, so dropping subcommunities changes it. It
+# cannot be recovered from the branch abundances alone, which is why it is worked out here, from the
+# leaf abundances of the subcommunities kept, while the parent metacommunity is still to hand.
+# Everything except a phylogeny has a scale of one, and short-circuits.
+function _subsetscale(mc::AbstractMetacommunity, st)
+    _getscale(mc) == 1 && return 1.0
+    raw = getabundance(mc, true)
+    raw isa AbstractMatrix || return Float64(_getscale(mc))
+    kept = raw[:, st]
+    return Float64(_calcabundance(gettypes(mc), kept ./ sum(kept))[2])
+end
+
 # Whether a selection keeps everything, in order -- in which case there is nothing to subset.
 function _keepsall(idx, n)
     return length(idx) == n && all(i == j for (i, j) in zip(idx, Base.OneTo(n)))
@@ -270,11 +285,15 @@ function view(mc::AbstractMetacommunity;
     # optimisation: subsetting types is what turns a phylogeny into a GeneralTypes, so a view that
     # only picks subcommunities must not do it, or restricting sites would silently cost you the
     # tree.
-    types = _keepsall(sp, counttypes(mc)) ? gettypes(mc) :
-            _subsettypes(gettypes(mc), sp, _getscale(mc))
+    scale = _subsetscale(mc, st)
+    # When the types are subset the scale is baked into the similarity matrix, so the result needs
+    # none of its own; when they are passed through it has to be carried instead.
+    keeptypes = _keepsall(sp, counttypes(mc))
+    types = keeptypes ? gettypes(mc) : _subsettypes(gettypes(mc), sp, scale)
     part = _keepsall(st, countsubcommunities(mc)) ? getpartition(mc) :
            _subsetpartition(getpartition(mc), st)
-    return SubAssemblage(types, part, Base.view(occurrences(mc), sp, st))
+    return SubAssemblage(types, part, Base.view(occurrences(mc), sp, st),
+                         keeptypes ? scale : 1.0)
 end
 
 RecipesBase.@recipe function f(var::DataFrame, asm::AbstractAssemblage)
