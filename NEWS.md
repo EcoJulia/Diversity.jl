@@ -1,5 +1,9 @@
 # NEWS
 
+- v0.6.1
+  - Fix showing a metacommunity using the singular where it needed the plural, and name the units
+    through EcoBase's thingkind()/placekind() hooks, so output reads "3 species in 4 subcommunities"
+    rather than "3 thing in 4 place", and says "branches" for a phylogeny
 - v0.6.0
   - Document the diversity framework and its origins, with a new page in the manual
   - Add a page on building metacommunities, and one for users coming from R's vegan

@@ -211,8 +211,10 @@ import Base.show
 function show(io::IO, mc::AbstractMetacommunity)
     sp = createsummaryline(gettypenames(mc))
     si = createsummaryline(getsubcommunitynames(mc))
-    tk = counttypes(mc) > 1 ? thingkind(mc) : thingkindplural(mc)
-    pk = countsubcommunities(mc) > 1 ? placekind(mc) : placekindplural(mc)
+    # Plural for the counts, singular for the headings — the same split EcoBase's own `show` makes,
+    # because "Branch names:" is right where "Branches names:" is not.
+    tk = counttypes(mc) > 1 ? thingkindplural(mc) : thingkind(mc)
+    pk = countsubcommunities(mc) > 1 ? placekindplural(mc) : placekind(mc)
     return println(io,
-                   "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(tk)) names:\n$(sp)\n\n$(titlecase(pk)) names:\n$(si)")
+                   "$(typeof(mc)) with $(counttypes(mc)) $tk in $(countsubcommunities(mc)) $pk measuring $(getdiversityname(gettypes(mc))) diversity.\n\n$(titlecase(thingkind(mc))) names:\n$(sp)\n\n$(titlecase(placekind(mc))) names:\n$(si)")
 end

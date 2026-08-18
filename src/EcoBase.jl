@@ -38,6 +38,23 @@ occurrences(mc::AbstractMetacommunity) = getabundance(mc)
 places(mc::AbstractMetacommunity) = getpartition(mc)
 things(mc::AbstractMetacommunity) = gettypes(mc)
 
+# What the units are called, so that anything printing a metacommunity says what it means rather than
+# "thing" and "place". EcoBase supplies these four hooks and defaults them on the *assemblage*; we
+# answer on the **types** and the **partition** instead, because the unit is a property of what is
+# being measured, not of the metacommunity that holds it. That is what lets `PhyloBranches` say
+# "branch" — its things really are branches, and the extension overrides these there.
+import EcoBase: thingkind, thingkindplural, placekind, placekindplural
+
+thingkind(mc::AbstractMetacommunity) = thingkind(gettypes(mc))
+thingkind(::AbstractTypes) = "species"
+thingkindplural(mc::AbstractMetacommunity) = thingkindplural(gettypes(mc))
+thingkindplural(::AbstractTypes) = "species"
+
+placekind(mc::AbstractMetacommunity) = placekind(getpartition(mc))
+placekind(::AbstractPartition) = "subcommunity"
+placekindplural(mc::AbstractMetacommunity) = placekindplural(getpartition(mc))
+placekindplural(::AbstractPartition) = "subcommunities"
+
 # And use the EcoBase interface to provide a basic diversity interface
 import Diversity.API: _getpartition
 _getpartition(p::AbstractAssemblage) = places(p)

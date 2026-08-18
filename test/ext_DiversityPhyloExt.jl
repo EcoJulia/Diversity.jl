@@ -6,6 +6,7 @@ using Test
 using Phylo
 using Diversity
 using Diversity.Ecology: faith_pd, generalisedfaith_pd
+using EcoBase: thingkind, thingkindplural, placekind
 
 # A phylogenetic type that is *not* this extension's `PhyloBranches` — enough of the API to build a
 # metacommunity from, and no more. Faith's PD must decline to run on it.
@@ -56,6 +57,15 @@ Diversity.API._calcsimilarity(::OtherPhyloTypes, ::Real) = [1.0 0.5; 0.5 1.0]
     @test metadiv(Gamma(tsmetaphylo), 0).treename == ["tree"]
     @test all(inddiv(Gamma(tsmetaphylo), 0).treename .== "tree")
 
+    # Note: The units of a phylogenetic metacommunity are *branches*, and this is how a reader is told
+    # — `PhyloBranches` is opinionated about that, so it answers EcoBase's naming hooks itself.
+    @test thingkind(metaphylo) == "branch"
+    @test thingkindplural(metaphylo) == "branches"   # not EcoBase's default "branchs"
+    @test placekind(metaphylo) == "subcommunity"
+    out = sprint(show, metaphylo)
+    @test occursin("with 5 branches in 1 subcommunity", out)
+    @test occursin("Branch names:", out)             # singular in the heading
+
     # Translating to a GeneralTypes metacommunity has to carry the *scaled* Zmatrix and the
     # *branch* abundances together, or the phylogeny's numbers do not survive — which is the case
     # that makes the scale argument to `_calcsimilarity` load-bearing here and nowhere else.
@@ -88,9 +98,6 @@ end
                               Metacommunity([0.4, 0.3, 0.3],
                                             ph)).diversity[1] ≈ 5.0
 
-    # 🔴 PD depends on which types are present and not at all on how abundant they are. This is
-    # what separates it from the framework's q = 0 diversity, which is PD *per unit* branch
-    # length and does move with the abundances.
     @test generalisedfaith_pd(metacommunityDiversity,
                               Metacommunity([0.1, 0.1, 0.8],
                                             ph)).diversity[1] ≈ 5.0
@@ -124,14 +131,14 @@ end
     @test all(pd.measure .== "Faith's PD")
     @test_throws ErrorException generalisedfaith_pd(individualDiversity, mc)
 
-    # 🔴 And it is only defined for phylogenetic types — there is no PD without a tree.
+    # It is only defined for phylogenetic types — there is no PD without a tree.
     @test_throws MethodError faith_pd(Metacommunity([0.5, 0.5]))
 
-    # 🔴 Narrower than that, in fact: only for the `PhyloBranches` this extension supplies, not for
+    # Narrower than that, in fact: only for the `PhyloBranches` this extension supplies, not for
     # `AbstractPhyloTypes` at large. The scale is a total branch length only because that type's
     # `_calcabundance` makes it one; another phylogenetic type may process abundances differently,
     # and would get a confidently wrong number rather than a refusal if the signature were widened.
-    # ⚠️ Reached through `get_extension` on purpose: the bare name `PhyloBranches` here is the
+    # Note: Reached through `get_extension` on purpose: the bare name `PhyloBranches` here is the
     # *abstract* one the parent exports, not the concrete struct the signature is written against.
     concrete = Base.get_extension(Diversity, :DiversityPhyloExt).PhyloBranches
     @test concrete <: Diversity.PhyloBranches <: Diversity.AbstractPhyloTypes
