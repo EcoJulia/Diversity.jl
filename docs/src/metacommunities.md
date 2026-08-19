@@ -270,6 +270,10 @@ object instead of a window.
     itself as arbitrary rather than phylogenetic. Restricting only `sites` leaves
     the phylogeny untouched.
 
+```@docs
+Diversity.view
+```
+
 ```@contents
 ```
 

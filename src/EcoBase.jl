@@ -229,6 +229,24 @@ thingkindplural(sub::SubAssemblage) = thingkindplural(things(sub))
 placekind(sub::SubAssemblage) = placekind(places(sub))
 placekindplural(sub::SubAssemblage) = placekindplural(places(sub))
 
+# The scale a subset should measure with. It is its own, not the parent's: for a phylogeny the scale
+# is the abundance-weighted mean root-to-tip distance, so dropping subcommunities changes it. It
+# cannot be recovered from the branch abundances alone, which is why it is worked out here, from the
+# leaf abundances of the subcommunities kept, while the parent metacommunity is still to hand.
+# Everything except a phylogeny has a scale of one, and short-circuits.
+function _subsetscale(mc::AbstractMetacommunity, st)
+    _getscale(mc) == 1 && return 1.0
+    raw = getabundance(mc, true)
+    raw isa AbstractMatrix || return Float64(_getscale(mc))
+    kept = raw[:, st]
+    return Float64(_calcabundance(gettypes(mc), kept ./ sum(kept))[2])
+end
+
+# Whether a selection keeps everything, in order -- in which case there is nothing to subset.
+function _keepsall(idx, n)
+    return length(idx) == n && all(i == j for (i, j) in zip(idx, Base.OneTo(n)))
+end
+
 """
     view(mc::AbstractMetacommunity; species, sites)
 
@@ -256,24 +274,6 @@ measures normalise them on reading, which means the subset measures as a
 metacommunity in its own right. Use `Metacommunity(view(...))` for a converted,
 cached object instead.
 """
-# The scale a subset should measure with. It is its own, not the parent's: for a phylogeny the scale
-# is the abundance-weighted mean root-to-tip distance, so dropping subcommunities changes it. It
-# cannot be recovered from the branch abundances alone, which is why it is worked out here, from the
-# leaf abundances of the subcommunities kept, while the parent metacommunity is still to hand.
-# Everything except a phylogeny has a scale of one, and short-circuits.
-function _subsetscale(mc::AbstractMetacommunity, st)
-    _getscale(mc) == 1 && return 1.0
-    raw = getabundance(mc, true)
-    raw isa AbstractMatrix || return Float64(_getscale(mc))
-    kept = raw[:, st]
-    return Float64(_calcabundance(gettypes(mc), kept ./ sum(kept))[2])
-end
-
-# Whether a selection keeps everything, in order -- in which case there is nothing to subset.
-function _keepsall(idx, n)
-    return length(idx) == n && all(i == j for (i, j) in zip(idx, Base.OneTo(n)))
-end
-
 function view(mc::AbstractMetacommunity;
               species = Base.OneTo(counttypes(mc)),
               sites = Base.OneTo(countsubcommunities(mc)))
