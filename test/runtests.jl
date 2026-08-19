@@ -34,6 +34,7 @@ using ParallelTestRunner: find_tests, parse_args, runtests
 # when the unit tests are failing, so one broken thing reports as several. If you do, let the first
 # invocation get through precompilation before starting the rest, or every process compiles the same
 # package at once and they contend.
+get!(ENV, "GKSwstype", "100")
 
 requested = map(a -> endswith(a, ".jl") ? a : a * ".jl", ARGS)
 for fn in requested
@@ -55,10 +56,9 @@ else
     # so the extras are reached only once the unit and extension tests pass. There is no point
     # cross-validating a broken package against R, or blessing results it computed wrongly.
     #
-    corebase = sort(filter(str -> occursin(r"^core_.*\.jl$", str),
-                           readdir(@__DIR__)))
+    corebase = sort(filter(str -> occursin(r"^core_.*\.jl$", str), readdir()))
     extrabase = sort(filter(str -> occursin(r"^extras_.*\.jl$", str),
-                            readdir(@__DIR__)))
+                            readdir()))
 
     println()
     @info "Running the core test sets:"
@@ -68,11 +68,15 @@ else
     @testset "Diversity.jl" begin
         @testset for fn in corebase
             println("    * Running $fn ...")
-            include(joinpath(@__DIR__, fn))
+            include(fn)
         end
     end
 
-    if !isempty(extrabase)
+    skipextras = get(ENV, "RUNNER_OS", "") == "Windows"
+    if skipextras
+        println()
+        @info "Skipping the extra test suites on a Windows runner."
+    elseif !isempty(extrabase)
         println()
         @info "Running the extra test suites:"
         foreach(f -> println("    = $f"), extrabase)
