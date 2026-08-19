@@ -270,6 +270,39 @@ object instead of a window.
     itself as arbitrary rather than phylogenetic. Restricting only `sites` leaves
     the phylogeny untouched.
 
+## Asking for several things at once
+
+[`diversity`](@ref Diversity.diversity) takes a collection of levels, a collection
+of measures and one or more values of `q`, and answers them all together:
+
+```@repl building
+using Diversity.ShortNames
+levels = [subcommunityDiversity, metacommunityDiversity];
+result = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2]);
+size(result)
+unique(result.measure)
+```
+
+This is worth preferring over separate calls. Each measure holds an array of
+individual diversities the size of the abundance matrix, and `diversity` builds
+each one **once** and then asks it for every level and every order — where
+calling `norm_sub_alpha` and then `norm_meta_alpha` would build it twice.
+
+## Getting something other than a DataFrame
+
+Every function that returns results takes an optional first argument saying what
+to return, in the same way as `CSV.read(file, DataFrame)`:
+
+```@repl building
+using Tables
+columns = subdiv(Tables.columntable, ᾱ(mc), 1);
+keys(columns)
+```
+
+Anything implementing the [Tables.jl](https://github.com/JuliaData/Tables.jl)
+interface will do, so results can go straight to a file with `CSV.write` or
+`Arrow.write` without a `DataFrame` in between. A `DataFrame` remains the default.
+
 ```@docs
 Diversity.view
 ```

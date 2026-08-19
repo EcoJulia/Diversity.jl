@@ -2,6 +2,8 @@
 
 using EcoBase: AbstractAssemblage
 using Diversity.ShortNames
+using DataFrames
+using Tables
 
 # The fourteen wrappers below each name one measure at one scale, so that a caller who knows what
 # they want to measure need not also know which DiversityMeasure and which of subdiv/metadiv
@@ -23,6 +25,10 @@ each subcommunity would have if it were the whole of the community.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function norm_sub_alpha(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, ᾱ(meta), qs)
+end
+
 function norm_sub_alpha(meta::AbstractAssemblage, qs)
     return subdiv(ᾱ(meta), qs)
 end
@@ -44,6 +50,10 @@ subcommunity.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function raw_sub_alpha(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, α(meta), qs)
+end
+
 function raw_sub_alpha(meta::AbstractAssemblage, qs)
     return subdiv(α(meta), qs)
 end
@@ -64,6 +74,10 @@ high when a subcommunity is both distinctive and small, and is the reciprocal of
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function norm_sub_beta(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, β̄(meta), qs)
+end
+
 function norm_sub_beta(meta::AbstractAssemblage, qs)
     return subdiv(β̄(meta), qs)
 end
@@ -84,6 +98,10 @@ similarity to the types that are. It is the reciprocal of [`raw_sub_rho`](@ref).
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function raw_sub_beta(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, β(meta), qs)
+end
+
 function raw_sub_beta(meta::AbstractAssemblage, qs)
     return subdiv(β(meta), qs)
 end
@@ -104,6 +122,10 @@ has representativeness equal to that fraction.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function norm_sub_rho(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, ρ̄(meta), qs)
+end
+
 function norm_sub_rho(meta::AbstractAssemblage, qs)
     return subdiv(ρ̄(meta), qs)
 end
@@ -124,6 +146,10 @@ resembling the subcommunity remains elsewhere.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function raw_sub_rho(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, ρ(meta), qs)
+end
+
 function raw_sub_rho(meta::AbstractAssemblage, qs)
     return subdiv(ρ(meta), qs)
 end
@@ -144,6 +170,10 @@ subcommunity of a few very rare types contributes heavily however dull it looks 
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function sub_gamma(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, Γ(meta), qs)
+end
+
 function sub_gamma(meta::AbstractAssemblage, qs)
     return subdiv(Γ(meta), qs)
 end
@@ -164,6 +194,10 @@ not change it.
 
 - A DataFrame of diversities, one row per order.
 """
+function norm_meta_alpha(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, ᾱ(meta), qs)
+end
+
 function norm_meta_alpha(meta::AbstractAssemblage, qs)
     return metadiv(ᾱ(meta), qs)
 end
@@ -184,6 +218,10 @@ metacommunity diversity [`meta_gamma`](@ref).
 
 - A DataFrame of diversities, one row per order.
 """
+function raw_meta_alpha(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, α(meta), qs)
+end
+
 function raw_meta_alpha(meta::AbstractAssemblage, qs)
     return metadiv(α(meta), qs)
 end
@@ -204,6 +242,10 @@ only when they are also of equal size. It is invariant under shattering.
 
 - A DataFrame of diversities, one row per order.
 """
+function norm_meta_beta(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, β̄(meta), qs)
+end
+
 function norm_meta_beta(meta::AbstractAssemblage, qs)
     return metadiv(β̄(meta), qs)
 end
@@ -223,6 +265,10 @@ between each subcommunity and the rest of the metacommunity.
 
 - A DataFrame of diversities, one row per order.
 """
+function raw_meta_beta(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, β(meta), qs)
+end
+
 function raw_meta_beta(meta::AbstractAssemblage, qs)
     return metadiv(β(meta), qs)
 end
@@ -241,6 +287,10 @@ Calculates the average representativeness of the subcommunities.
 
 - A DataFrame of diversities, one row per order.
 """
+function norm_meta_rho(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, ρ̄(meta), qs)
+end
+
 function norm_meta_rho(meta::AbstractAssemblage, qs)
     return metadiv(ρ̄(meta), qs)
 end
@@ -262,6 +312,10 @@ subcommunities itself only when they are also of equal size.
 
 - A DataFrame of diversities, one row per order.
 """
+function raw_meta_rho(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, ρ(meta), qs)
+end
+
 function raw_meta_rho(meta::AbstractAssemblage, qs)
     return metadiv(ρ(meta), qs)
 end
@@ -282,6 +336,10 @@ as a whole, ignoring how it is divided. It is the average of the subcommunity co
 
 - A DataFrame of diversities, one row per order.
 """
+function meta_gamma(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, Γ(meta), qs)
+end
+
 function meta_gamma(meta::AbstractAssemblage, qs)
     return metadiv(Γ(meta), qs)
 end
@@ -302,7 +360,15 @@ repesented as one or a vector of qs.
 
 A vector containing all of the diversity levels of all of the requested diversities.
 """
+function diversity(sink, dls, dms, meta::AbstractAssemblage, qs)
+    # Each measure is built once and then asked for every level, because a measure holds an
+    # ntypes x nsubcommunities array of individual diversities that all the levels read. The columns
+    # are concatenated before materialising, so only one table is ever built.
+    parts = [Diversity._levelcolumns(dl, measure, qs)
+             for measure in map(dm -> dm(meta), dms) for dl in dls]
+    return Tables.materializer(sink)(Diversity._vcatcolumns(parts))
+end
+
 function diversity(dls, dms, meta::AbstractAssemblage, qs)
-    return mapreduce(measure -> mapreduce(dl -> dl(measure, qs), append!, dls),
-                     append!, map(dm -> dm(meta), dms))
+    return diversity(DataFrame, dls, dms, meta, qs)
 end

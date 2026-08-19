@@ -7,6 +7,7 @@ using LinearAlgebra
 using Diversity
 using Diversity.ShortNames
 using DataFrames
+using Tables
 using EcoBase: getcoords
 using Plots
 
@@ -190,6 +191,42 @@ end
     # The recipe plots *subcommunity* diversities against the partition's coordinates, so it needs
     # one value per subcommunity.
     @test nrow(subdiv(NormalisedRho(mc), 1)) == countsubcommunities(mc)
+end
+
+@testset "Choosing what comes back" begin
+    # The result is built as columns and then materialised into whatever table the caller asks for.
+    # A DataFrame stays the default, so every existing call is unaffected.
+    mc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2])
+    a = NormalisedAlpha(mc)
+
+    @test subdiv(a, 1) isa DataFrame
+    @test subdiv(DataFrame, a, 1) == subdiv(a, 1)
+    @test inddiv(DataFrame, a, 1) == inddiv(a, 1)
+    @test metadiv(DataFrame, a, 1) == metadiv(a, 1)
+
+    # Any Tables sink works, and agrees with the DataFrame column for column.
+    ct = subdiv(Tables.columntable, a, [0, 1])
+    df = subdiv(a, [0, 1])
+    @test keys(ct) == Tuple(Symbol.(names(df)))
+    @test all(collect(ct[k]) == df[!, k] for k in keys(ct))
+
+    # What is handed to the sink is a Tables source in its own right, which is what lets
+    # CSV.write and friends take a result with no conversion step.
+    @test Tables.istable(typeof(subdiv(a, 1)))
+
+    # The sink threads through the wrappers and through the combined entry point.
+    @test norm_sub_alpha(DataFrame, mc, 1) == norm_sub_alpha(mc, 1)
+    @test meta_gamma(DataFrame, mc, 1) == meta_gamma(mc, 1)
+    levels = [subcommunityDiversity, metacommunityDiversity]
+    @test diversity(DataFrame, levels, [ᾱ, Γ], mc, [0, 1]) ==
+          diversity(levels, [ᾱ, Γ], mc, [0, 1])
+
+    # Several measures, orders and levels in one call: each measure is built once and asked for
+    # every level, which is the reason this entry point exists.
+    combined = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2])
+    @test length(unique(combined.measure)) == 3
+    @test length(unique(combined.q)) == 3
+    @test length(unique(combined.partition_level)) == 2
 end
 
 end

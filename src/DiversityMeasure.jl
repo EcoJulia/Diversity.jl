@@ -1,12 +1,56 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 using DataFrames
+using Tables
 import EcoBase: AbstractAssemblage
 
 """
 ### Enumeration of levels that can exist / be calculated for a metacommunity.
 """
 @enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity
+
+# The seven measures, in the order every "all measures" call has always produced them. A function
+# rather than a const because the structs are defined further down this file.
+function _allmeasures()
+    return (RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+            RawRho, NormalisedRho, Gamma)
+end
+
+# The columns of a result, as a NamedTuple of equal-length vectors. That is already a Tables source,
+# so it can be handed to `Tables.materializer(sink)` for any table type the caller asks for -- a
+# DataFrame by default, but equally an Arrow table, a CSV sink or anything else implementing the
+# interface. Building the columns whole rather than a row at a time is also what makes this cheap;
+# see the performance notes in CLAUDE.md.
+#
+# `addedoutputcols` lets a types object contribute extra columns (the Phylo extension adds
+# `:treename`), merged in here rather than inserted afterwards, since a NamedTuple is immutable and
+# a sink may not support insertion at all.
+function _addedcolumns(measure, columns, n)
+    cols = addedoutputcols(_getmeta(measure))
+    isempty(cols) && return columns
+    data = getaddedoutput(_getmeta(measure))
+    extra = NamedTuple(col => fill(data[col], n) for col in keys(cols))
+    return merge(columns, extra)
+end
+
+# Which set of columns a DiversityLevel asks for. The counterpart of `getPartitionFunction`, but
+# returning the columns rather than a materialised table, so that a caller wanting several levels at
+# once builds only one.
+function _levelcolumns(level::DiversityLevel, measure, qs)
+    level == individualDiversity && return _inddiv_columns(measure, qs)
+    level == subcommunityDiversity && return _subdiv_columns(measure, qs)
+    level == metacommunityDiversity && return _metadiv_columns(measure, qs)
+    return error("Can't calculate diversity for $level")
+end
+
+# Concatenate several results' columns, which is what asking for several orders, measures or levels
+# at once produces. Done on the columns so that only one table is ever materialised.
+function _vcatcolumns(parts)
+    length(parts) == 1 && return only(parts)
+    ks = keys(first(parts))
+    return NamedTuple{ks}(map(k -> reduce(vcat, (part[k] for part in parts)),
+                              ks))
+end
 
 """
 ### Generates the function to calculate individual diversities
@@ -179,7 +223,7 @@ returns a DataFrame containing the individual diversities for those values.
 """
 function inddiv end
 
-@inline function inddiv(measure::DiversityMeasure, q::Real)
+function _inddiv_columns(measure::DiversityMeasure, q::Real)
     raw = inddiv_raw(measure, q)
     types = gettypenames(measure)
     scn = getsubcommunitynames(measure)
@@ -190,38 +234,37 @@ function inddiv end
     # relies on it broadcasting across the subcommunities.
     divs = Matrix{eltype(raw)}(undef, nt, ns)
     divs .= raw
-    # Built as whole columns, in the order `reduce(append!, ...)` over a column-major matrix used to
-    # produce: types cycling fastest within each subcommunity. Every column but the last is either
-    # constant or a repetition, so none of them needs to be assembled a row at a time.
-    df = DataFrame(div_type = fill(getdiversityname(measure), n),
-                   measure = fill(getASCIIName(measure), n),
-                   q = fill(q, n),
-                   type_level = fill("type", n),
-                   type_name = repeat(types, outer = ns),
-                   partition_level = fill("subcommunity", n),
-                   partition_name = repeat(scn, inner = nt),
-                   diversity = vec(divs))
-    cols = addedoutputcols(_getmeta(measure))
-    if length(cols) > 0
-        data = getaddedoutput(_getmeta(measure))
-        for col in keys(cols)
-            insertcols!(df, ncol(df) + 1, col => data[col])
-        end
-    end
-    return df
+    # The row order `reduce(append!, ...)` over a column-major matrix used to produce: types
+    # cycling fastest within each subcommunity.
+    columns = (div_type = fill(getdiversityname(measure), n),
+               measure = fill(getASCIIName(measure), n),
+               q = fill(q, n),
+               type_level = fill("type", n),
+               type_name = repeat(types, outer = ns),
+               partition_level = fill("subcommunity", n),
+               partition_name = repeat(scn, inner = nt),
+               diversity = vec(divs))
+    return _addedcolumns(measure, columns, n)
 end
 
-@inline function inddiv(measure::DiversityMeasure, qs::AbstractVector)
-    return mapreduce(q -> inddiv(measure, q), append!, qs)
+function _inddiv_columns(measure::DiversityMeasure, qs::AbstractVector)
+    return _vcatcolumns([_inddiv_columns(measure, q) for q in qs])
 end
 
-@inline function inddiv(meta::AbstractAssemblage, qs)
-    return mapreduce(dm -> inddiv(dm(meta), qs),
-                     append!,
-                     [RawAlpha, NormalisedAlpha,
-                         RawBeta, NormalisedBeta,
-                         RawRho, NormalisedRho, Gamma])
+function _inddiv_columns(meta::AbstractAssemblage, qs)
+    return _vcatcolumns([_inddiv_columns(dm(meta), qs) for dm in _allmeasures()])
 end
+
+@inline function inddiv(sink, measure::DiversityMeasure, qs)
+    return Tables.materializer(sink)(_inddiv_columns(measure, qs))
+end
+
+@inline function inddiv(sink, meta::AbstractAssemblage, qs)
+    return Tables.materializer(sink)(_inddiv_columns(meta, qs))
+end
+
+@inline inddiv(measure::DiversityMeasure, qs) = inddiv(DataFrame, measure, qs)
+@inline inddiv(meta::AbstractAssemblage, qs) = inddiv(DataFrame, meta, qs)
 
 @inline function inddiv_raw(measure::DiversityMeasure, ::Real)
     return measure.diversities
@@ -245,41 +288,41 @@ calculates and returns the subcommunity diversities for those values.
 """
 function subdiv end
 
-@inline function subdiv(measure::DiversityMeasure, q::Real)
+function _subdiv_columns(measure::DiversityMeasure, q::Real)
     raw = subdiv_raw(measure, q)
     scn = getsubcommunitynames(measure)
     n = length(scn)
     divs = Vector{eltype(raw)}(undef, n)
     divs .= raw
-    df = DataFrame(div_type = fill(getdiversityname(measure), n),
-                   measure = fill(getASCIIName(measure), n),
-                   q = fill(q, n),
-                   type_level = fill("types", n),
-                   type_name = fill("", n),
-                   partition_level = fill("subcommunity", n),
-                   partition_name = copy(scn),
-                   diversity = divs)
-    cols = addedoutputcols(_getmeta(measure))
-    if length(cols) > 0
-        data = getaddedoutput(_getmeta(measure))
-        for col in keys(cols)
-            insertcols!(df, ncol(df) + 1, col => data[col])
-        end
-    end
-    return df
+    columns = (div_type = fill(getdiversityname(measure), n),
+               measure = fill(getASCIIName(measure), n),
+               q = fill(q, n),
+               type_level = fill("types", n),
+               type_name = fill("", n),
+               partition_level = fill("subcommunity", n),
+               partition_name = copy(scn),
+               diversity = divs)
+    return _addedcolumns(measure, columns, n)
 end
 
-@inline function subdiv(measure::DiversityMeasure, qs::AbstractVector)
-    return mapreduce(q -> subdiv(measure, q), append!, qs)
+function _subdiv_columns(measure::DiversityMeasure, qs::AbstractVector)
+    return _vcatcolumns([_subdiv_columns(measure, q) for q in qs])
 end
 
-@inline function subdiv(meta::AbstractAssemblage, qs)
-    return mapreduce(dm -> subdiv(dm(meta), qs),
-                     append!,
-                     [RawAlpha, NormalisedAlpha,
-                         RawBeta, NormalisedBeta,
-                         RawRho, NormalisedRho, Gamma])
+function _subdiv_columns(meta::AbstractAssemblage, qs)
+    return _vcatcolumns([_subdiv_columns(dm(meta), qs) for dm in _allmeasures()])
 end
+
+@inline function subdiv(sink, measure::DiversityMeasure, qs)
+    return Tables.materializer(sink)(_subdiv_columns(measure, qs))
+end
+
+@inline function subdiv(sink, meta::AbstractAssemblage, qs)
+    return Tables.materializer(sink)(_subdiv_columns(meta, qs))
+end
+
+@inline subdiv(measure::DiversityMeasure, qs) = subdiv(DataFrame, measure, qs)
+@inline subdiv(meta::AbstractAssemblage, qs) = subdiv(DataFrame, meta, qs)
 
 @inline function subdiv_raw(measure::PowerMeanMeasure, q::Real)
     return powermean(inddiv_raw(measure, q), one(q) - q, measure.abundances)
@@ -308,35 +351,38 @@ calculates and returns the metacommunity diversities for those values.
 """
 function metadiv end
 
-@inline function metadiv(measure::DiversityMeasure, q::Real)
+function _metadiv_columns(measure::DiversityMeasure, q::Real)
     raw = metadiv_raw(measure, q)
-    df = DataFrame(div_type = getdiversityname(measure),
-                   measure = getASCIIName(measure), q = q,
-                   type_level = "types", type_name = "",
-                   partition_level = "metacommunity",
-                   partition_name = "",
-                   diversity = raw)
-    cols = addedoutputcols(_getmeta(measure))
-    if length(cols) > 0
-        data = getaddedoutput(_getmeta(measure))
-        for col in keys(cols)
-            insertcols!(df, ncol(df) + 1, col => data[col])
-        end
-    end
-    return df
+    columns = (div_type = [getdiversityname(measure)],
+               measure = [getASCIIName(measure)],
+               q = [q],
+               type_level = ["types"],
+               type_name = [""],
+               partition_level = ["metacommunity"],
+               partition_name = [""],
+               diversity = [raw])
+    return _addedcolumns(measure, columns, 1)
 end
 
-@inline function metadiv(measure::DiversityMeasure, qs::AbstractVector)
-    return mapreduce(q -> metadiv(measure, q), append!, qs)
+function _metadiv_columns(measure::DiversityMeasure, qs::AbstractVector)
+    return _vcatcolumns([_metadiv_columns(measure, q) for q in qs])
 end
 
-@inline function metadiv(meta::AbstractAssemblage, qs)
-    return mapreduce(dm -> metadiv(dm(meta), qs),
-                     append!,
-                     [RawAlpha, NormalisedAlpha,
-                         RawBeta, NormalisedBeta,
-                         RawRho, NormalisedRho, Gamma])
+function _metadiv_columns(meta::AbstractAssemblage, qs)
+    return _vcatcolumns([_metadiv_columns(dm(meta), qs)
+                         for dm in _allmeasures()])
 end
+
+@inline function metadiv(sink, measure::DiversityMeasure, qs)
+    return Tables.materializer(sink)(_metadiv_columns(measure, qs))
+end
+
+@inline function metadiv(sink, meta::AbstractAssemblage, qs)
+    return Tables.materializer(sink)(_metadiv_columns(meta, qs))
+end
+
+@inline metadiv(measure::DiversityMeasure, qs) = metadiv(DataFrame, measure, qs)
+@inline metadiv(meta::AbstractAssemblage, qs) = metadiv(DataFrame, meta, qs)
 
 @inline function metadiv_raw(measure::DiversityMeasure, q::Real)
     return powermean(subdiv_raw(measure, q), one(q) - q, measure.weights)
