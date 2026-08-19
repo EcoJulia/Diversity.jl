@@ -1,6 +1,7 @@
 # NEWS
 
 - v0.6.1
+  - Make measurement dramatically faster and less memory-hungry fixing getASCIIName()
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()
     and groupspecies() work on a metacommunity, which were previously a MethodError

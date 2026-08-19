@@ -87,8 +87,7 @@ Return the ASCII name of the DiversityMeasure
 - String containing simple ASCII name of DiversityMeasure
 """
 function getASCIIName(dm::DiversityMeasure)
-    s = replace(string(typeof(dm)), "Diversity." => "")
-    return replace(s, r"{.*}$" => "")
+    return string(nameof(typeof(dm)))
 end
 
 """
