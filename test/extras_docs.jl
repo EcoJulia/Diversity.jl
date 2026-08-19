@@ -46,6 +46,18 @@ using Documenter
 # everywhere, being cheap and platform-dependent in a way the build is not.
 const ASKED_FOR = any(a -> occursin("extras_docs", a), ARGS)
 
+# Documenter resolves an `@autodocs` block's `Modules = [...]`, and a `@docs` block's bindings, in
+# `Main` -- so the packages have to be loaded there, not merely in this module. `docs/make.jl` gets
+# that for free by running as `Main`, and naming this file directly gets it because `runtests.jl`
+# does `using Diversity` at top level; but a `ParallelTestRunner` worker running the whole suite
+# does not, and every `@autodocs` and `@docs` block then fails with
+# `UndefVarError: Diversity not defined in Main`.
+#
+# Warning: this has to happen at module top level. Inside the `@testset` it is too late -- `@testset`
+# wraps its body in a function, and the new binding is not visible to the call that created it.
+Core.eval(Main, :(using Diversity))
+Core.eval(Main, :(using Phylo))
+
 # Pages that plot need GR told there is no display, exactly as `docs/make.jl` does — otherwise a
 # headless runner fails on the first figure.
 get!(ENV, "GKSwstype", "100")
