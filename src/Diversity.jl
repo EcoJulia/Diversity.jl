@@ -217,7 +217,7 @@ import Diversity.API._calcsimilarity
 _calcsimilarity(g::AbstractGenetic, ::Real) = g.Zmatrix
 
 import Diversity.API.floattypes
-floattypes(::AbstractGenetic) = Set([Float64])
+floattypes(::AbstractGenetic) = Set{Type}([Float64])
 
 include("GeneralisedDiversities.jl")
 export diversity

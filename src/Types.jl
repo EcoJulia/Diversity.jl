@@ -99,7 +99,7 @@ end
 
 import Diversity.API.floattypes
 function floattypes(::Taxonomy{FP}) where {FP <: AbstractFloat}
-    return Set([FP])
+    return Set{Type}([FP])
 end
 
 function _counttypes(tax::Taxonomy, ::Bool)
@@ -168,7 +168,7 @@ function GeneralTypes(zmatrix::M) where {FP <: AbstractFloat,
 end
 
 function floattypes(::GeneralTypes{FP}) where {FP <: AbstractFloat}
-    return Set([FP])
+    return Set{Type}([FP])
 end
 
 function _counttypes(gt::GeneralTypes, ::Bool)

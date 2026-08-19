@@ -65,10 +65,12 @@ g2 = GeneralTypes(Matrix(1.0I, 2, 2))
     #@test_throws ErrorException Metacommunity(-abf, g2, sc)
     @test calcsimilarity(gettypes(meta2), _getscale(meta2)) ≈
           Matrix(1.0I, size(ab3, 1), size(ab3, 1))
-    @test floattypes(meta) ⊆ mapreduce(floattypes, ∩,
-                    [getabundance(meta),
-                        getpartition(meta),
-                        gettypes(meta)])
+    # The metacommunity's float type has to be compatible with the parts it was built from. Asked
+    # through `typematch`, which is the contract: a literal set intersection will not do it, since
+    # a types object or a partition answers "any float" with the abstract type rather than by
+    # listing the concrete ones.
+    @test typematch(getabundance(meta), getpartition(meta), gettypes(meta))
+    @test floattypes(meta) == floattypes(getabundance(meta))
 end
 
 @testset "Counts with a similarity matrix" begin

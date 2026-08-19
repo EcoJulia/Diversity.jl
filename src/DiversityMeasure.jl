@@ -183,18 +183,24 @@ function inddiv end
     raw = inddiv_raw(measure, q)
     types = gettypenames(measure)
     scn = getsubcommunitynames(measure)
-    scs = reshape(scn, 1, length(scn))
-    dfs = broadcast((div, tn,
-                     pn) -> DataFrame(div_type = getdiversityname(measure),
-                                      measure = getASCIIName(measure),
-                                      q = q,
-                                      type_level = "type",
-                                      type_name = tn,
-                                      partition_level = "subcommunity",
-                                      partition_name = pn,
-                                      diversity = div),
-                    raw, types, scs)
-    df = reduce(append!, dfs)
+    nt, ns = length(types), length(scn)
+    n = nt * ns
+    # Broadcast into the full shape rather than reshaping `raw` directly: most measures hold an
+    # ntypes x nsubcommunities array of individual diversities, but Gamma holds one column and
+    # relies on it broadcasting across the subcommunities.
+    divs = Matrix{eltype(raw)}(undef, nt, ns)
+    divs .= raw
+    # Built as whole columns, in the order `reduce(append!, ...)` over a column-major matrix used to
+    # produce: types cycling fastest within each subcommunity. Every column but the last is either
+    # constant or a repetition, so none of them needs to be assembled a row at a time.
+    df = DataFrame(div_type = fill(getdiversityname(measure), n),
+                   measure = fill(getASCIIName(measure), n),
+                   q = fill(q, n),
+                   type_level = fill("type", n),
+                   type_name = repeat(types, outer = ns),
+                   partition_level = fill("subcommunity", n),
+                   partition_name = repeat(scn, inner = nt),
+                   diversity = vec(divs))
     cols = addedoutputcols(_getmeta(measure))
     if length(cols) > 0
         data = getaddedoutput(_getmeta(measure))
@@ -241,16 +247,18 @@ function subdiv end
 
 @inline function subdiv(measure::DiversityMeasure, q::Real)
     raw = subdiv_raw(measure, q)
-    scs = getsubcommunitynames(measure)
-    dfs = broadcast((div, pn) -> DataFrame(div_type = getdiversityname(measure),
-                                           measure = getASCIIName(measure),
-                                           q = q,
-                                           type_level = "types", type_name = "",
-                                           partition_level = "subcommunity",
-                                           partition_name = pn,
-                                           diversity = div),
-                    raw, scs)
-    df = reduce(append!, dfs)
+    scn = getsubcommunitynames(measure)
+    n = length(scn)
+    divs = Vector{eltype(raw)}(undef, n)
+    divs .= raw
+    df = DataFrame(div_type = fill(getdiversityname(measure), n),
+                   measure = fill(getASCIIName(measure), n),
+                   q = fill(q, n),
+                   type_level = fill("types", n),
+                   type_name = fill("", n),
+                   partition_level = fill("subcommunity", n),
+                   partition_name = copy(scn),
+                   diversity = divs)
     cols = addedoutputcols(_getmeta(measure))
     if length(cols) > 0
         data = getaddedoutput(_getmeta(measure))

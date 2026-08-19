@@ -1,7 +1,10 @@
 # NEWS
 
-- v0.6.1
+- v0.6.2
   - Make measurement dramatically faster and less memory-hungry fixing getASCIIName()
+  - Fix typematch() rejecting float types that are not direct subtypes of AbstractFloat
+  - Build the result DataFrame from whole columns rather than one single-row DataFrame per element
+- v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()
     and groupspecies() work on a metacommunity, which were previously a MethodError
