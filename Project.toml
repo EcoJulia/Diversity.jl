@@ -1,7 +1,7 @@
 name = "Diversity"
 uuid = "d3d5718d-52de-57ab-b67a-eca7fd6175a4"
 license = "BSD-2-Clause"
-version = "0.6.1"
+version = "0.6.2"
 authors = ["Richard Reeve <richard.reeve@glasgow.ac.uk>", "Claire Harris", "Sonia Mitchell", "Isaac Peetoom Heida"]
 
 [deps]
