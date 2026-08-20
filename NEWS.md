@@ -6,17 +6,14 @@
   - Build the result DataFrame from whole columns rather than one single-row DataFrame per element
   - Allow the caller to name a Tables.jl sink as an optional first argument, as CSV.read() does, so
     results can go to CSV or Arrow without a DataFrame in between; DataFrame remains the default
-  - Spread the power means over threads when there is enough work to be worth it. Small
-    calculations stay on the serial path where threading would cost more than it saves
   - Hold each measure's individual diversities as a rule for computing an element rather than as an
     array to remove the largest allocation in a measurement, at the cost of about a sixth of the
     analysis time, since each element is recomputed rather than re-read every time it is used
   - Cache the subcommunity weights and the metacommunity ordinariness on a Metacommunity, as the
     ordinariness itself already was.
-  - Hold the repeated result columns as rules too, since seven of the eight are one value repeated
-    or a short list cycled. A caller asking for a DataFrame gets the same mutable Vector columns as
-    before and pays less, because the intermediate vectors are gone; a caller naming a streaming
-    sink never materialises them at all
+  - Complex diversity calculations can create huge outputs, so there are now generators for the
+    repeated columns since enormous storage costs until they are materialised (which isn't needed
+    if writing to disk).
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()

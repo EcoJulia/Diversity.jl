@@ -357,6 +357,64 @@ end
     @test df.type_name[2] == "renamed"
 end
 
+@testset "Several orders or levels chain rather than concatenate" begin
+    # Asking for more than one order, measure or level builds one part per combination. Joining them
+    # with `vcat` materialised every rule the parts held, exactly when the result is largest, so
+    # they are chained instead. What has to be pinned is that chaining is indistinguishable from the
+    # concatenation it replaced -- including at the part boundaries, which is where an off-by-one
+    # would hide.
+    chainmc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2],
+                            UniqueTypes(["a", "b", "c"]),
+                            Subcommunities(["x", "y"]))
+    chaindm = NormalisedAlpha(chainmc)
+
+    parts = [Diversity._subdiv_columns(chaindm, q) for q in [0, 1, 2]]
+    for k in keys(first(parts))
+        chained = Diversity._chaincolumn([part[k] for part in parts])
+        @test chained == reduce(vcat, (part[k] for part in parts))
+        @test length(chained) == sum(length(part[k]) for part in parts)
+        @test eltype(chained) == eltype(first(parts)[k])
+        @test chained isa Diversity.ChainedColumn
+        @test Base.IndexStyle(typeof(chained)) == IndexLinear()
+        # Every row individually, so a boundary cannot be papered over by a whole-vector compare.
+        want = reduce(vcat, (part[k] for part in parts))
+        @test all(chained[i] == want[i] for i in eachindex(want))
+    end
+
+    # Parts of different lengths -- a subcommunity result has one row per subcommunity, a
+    # metacommunity result exactly one -- so the cumulative bounds have to be right, not assumed
+    # uniform.
+    mixedlengths = [Diversity._subdiv_columns(chaindm, 1),
+        Diversity._metadiv_columns(chaindm, 1)]
+    joined = Diversity._chaincolumn([part[:partition_name]
+                                     for part in mixedlengths])
+    @test joined == ["x", "y", ""]
+    @test length(joined) == 3
+
+    # Where the parts do not share a concrete type there is nothing to gain, so it falls back to
+    # copying. Individual results cycle their type names where subcommunity results repeat one, so
+    # asking for both is the case that reaches it -- and it must still be correct.
+    mixedtypes = [Diversity._inddiv_columns(chaindm, 1),
+        Diversity._subdiv_columns(chaindm, 1)]
+    fellback = Diversity._chaincolumn([part[:type_name]
+                                       for part in mixedtypes])
+    @test !(fellback isa Diversity.ChainedColumn)
+    @test fellback == vcat(repeat(["a", "b", "c"], outer = 2), ["", ""])
+
+    # And end to end: the whole result, over two levels and three orders, is what it was. Note the
+    # ordering `diversity` produces -- level outer, order inner, so every subcommunity row for every
+    # order comes before the first metacommunity row.
+    levels = [subcommunityDiversity, metacommunityDiversity]
+    combined = diversity(levels, [NormalisedAlpha], chainmc, [0, 1, 2])
+    separate = vcat(subdiv(NormalisedAlpha(chainmc), [0, 1, 2]),
+                    metadiv(NormalisedAlpha(chainmc), [0, 1, 2]))
+    @test size(combined) == size(separate)
+    @test combined.diversity ≈ separate.diversity
+    @test combined.partition_name == separate.partition_name
+    @test combined.q == separate.q
+    @test all(col -> col isa Vector, eachcol(combined))
+end
+
 @testset "Plot recipe" begin
     # The recipe is defined on a *tuple*, so the measure and the order go in together.
     mc = Metacommunity(manyweights)

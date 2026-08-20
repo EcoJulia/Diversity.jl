@@ -89,12 +89,49 @@ function _levelcolumns(level::DiversityLevel, measure, qs)
     return error("Can't calculate diversity for $level")
 end
 
+# Several columns presented as one, replacing the `vcat` that used to join them. Asking for more
+# than one order, measure or level builds one part per combination, and concatenating those parts
+# materialised every rule the parts held -- precisely when the result is largest. Chained instead,
+# the parts are kept and indexed through, so a `DataFrame` still materialises exactly once, in its
+# own copy, and a streaming sink still materialises nothing.
+#
+# `bounds` is cumulative -- `bounds[k]` is the number of rows in parts 1 through k -- so finding the
+# part holding row `i` is a search over `bounds`, not over the parts.
+struct ChainedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
+    parts::Vector{V}
+    bounds::Vector{Int}
+
+    function ChainedColumn(parts::Vector{V}) where {T, V <: AbstractVector{T}}
+        return new{T, V}(parts, cumsum(length.(parts)))
+    end
+end
+
+function Base.size(col::ChainedColumn)
+    return (isempty(col.bounds) ? 0 : last(col.bounds),)
+end
+Base.IndexStyle(::Type{<:ChainedColumn}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(col::ChainedColumn, i::Int)
+    part = searchsortedfirst(col.bounds, i)
+    before = part == 1 ? 0 : col.bounds[part - 1]
+    return col.parts[part][i - before]
+end
+
+# Chain a column's parts when they share a concrete type, and copy them when they do not. Parts are
+# mixed only when one call asks for levels whose name columns are held differently -- individual
+# results cycle their type names where subcommunity results repeat one -- and a chain over an
+# abstract element type would dispatch dynamically on every row, costing more than the copy it
+# saves.
+function _chaincolumn(cols)
+    isconcretetype(eltype(cols)) || return reduce(vcat, cols)
+    return ChainedColumn(cols)
+end
+
 # Concatenate several results' columns, which is what asking for several orders, measures or levels
 # at once produces. Done on the columns so that only one table is ever materialised.
 function _vcatcolumns(parts)
     length(parts) == 1 && return only(parts)
     ks = keys(first(parts))
-    return NamedTuple{ks}(map(k -> reduce(vcat, (part[k] for part in parts)),
+    return NamedTuple{ks}(map(k -> _chaincolumn([part[k] for part in parts]),
                               ks))
 end
 
@@ -430,12 +467,15 @@ function metadiv end
 
 function _metadiv_columns(measure::DiversityMeasure, q::Real)
     raw = metadiv_raw(measure, q)
-    columns = (div_type = [getdiversityname(measure)],
-               measure = [getASCIIName(measure)],
-               q = [q],
-               type_level = ["types"],
-               type_name = [""],
-               partition_level = ["metacommunity"],
+    # Held the same way a subcommunity result holds them, even though there is only one row: it
+    # costs nothing here, and it means the two levels' parts share a type when a single call asks
+    # for both, which is what lets `_chaincolumn` chain them rather than copy.
+    columns = (div_type = ConstantColumn(getdiversityname(measure), 1),
+               measure = ConstantColumn(getASCIIName(measure), 1),
+               q = ConstantColumn(q, 1),
+               type_level = ConstantColumn("types", 1),
+               type_name = ConstantColumn("", 1),
+               partition_level = ConstantColumn("metacommunity", 1),
                partition_name = [""],
                diversity = [raw])
     return _addedcolumns(measure, columns, 1)
