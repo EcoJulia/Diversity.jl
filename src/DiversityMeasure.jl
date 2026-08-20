@@ -105,6 +105,42 @@ series of orders, represented as a vector of qs.
 """
 metacommunityDiversity
 
+# The individual diversities of a measure -- one number for every type in every subcommunity --
+# held as a rule for computing an element rather than as an array of them. Every one of the seven
+# measures is an elementwise combination of at most three things: the ordinariness of the
+# individuals of a type in a subcommunity, the ordinariness of that type in the metacommunity, and
+# the subcommunity's weight. Only the first is large, and the measure already has it -- the
+# metacommunity caches it -- so materialising the combination doubles the memory for no new
+# information.
+#
+# It matters at the sizes this package is meant to reach: the array is ntypes x nplaces, which is
+# 307 MiB at 200 types and 200,000 places, and was the single largest allocation in a measurement.
+# Computing each element on demand costs one arithmetic operation and reads exactly the same memory
+# -- the ordinariness either way -- so a measure built and used once is *faster* as well as
+# smaller. A measure asked for many scales and orders pays that operation on each pass instead of
+# once, which is the trade: measured at 200 x 200,000, building the array costs 5.7 ms and each
+# pass over it saves 1.6 ms, so materialising would only win after about four passes, and then by
+# a few percent.
+#
+# The rule is a closure so that each measure captures exactly the arrays it uses -- alpha and gamma
+# do not need both ordinarinesses, and forcing them to would compute one they have no use for.
+struct IndividualDiversities{FP <: AbstractFloat, F} <: AbstractMatrix{FP}
+    value::F
+    dims::Tuple{Int, Int}
+end
+
+function IndividualDiversities{FP}(value::F,
+                                   dims::Tuple{Int, Int}) where {FP, F}
+    return IndividualDiversities{FP, F}(value, dims)
+end
+
+Base.size(divs::IndividualDiversities) = divs.dims
+Base.IndexStyle(::Type{<:IndividualDiversities}) = IndexCartesian()
+Base.@propagate_inbounds function Base.getindex(divs::IndividualDiversities,
+                                                i::Int, j::Int)
+    return divs.value(i, j)
+end
+
 """
     DiversityMeasure
 
@@ -229,9 +265,8 @@ function _inddiv_columns(measure::DiversityMeasure, q::Real)
     scn = getsubcommunitynames(measure)
     nt, ns = length(types), length(scn)
     n = nt * ns
-    # Broadcast into the full shape rather than reshaping `raw` directly: most measures hold an
-    # ntypes x nsubcommunities array of individual diversities, but Gamma holds one column and
-    # relies on it broadcasting across the subcommunities.
+    # The individual diversities are held as a rule rather than an array, so this is where they
+    # are materialised -- which has to happen anyway, since a column of the output is a vector.
     divs = Matrix{eltype(raw)}(undef, nt, ns)
     divs .= raw
     # The row order `reduce(append!, ...)` over a column-major matrix used to produce: types
@@ -436,7 +471,9 @@ end
 function RawAlpha(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getordinariness!(meta) .^ -1
+    zp = getordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> inv(zp[i, j]),
+                                              size(ab))
     return RawAlpha{eltype(ab), typeof(ab),
                     typeof(value), M}(ab, ws, value, meta)
 end
@@ -472,7 +509,9 @@ end
 function NormalisedAlpha(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = ws' ./ getordinariness!(meta)
+    zp = getordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> ws[j] / zp[i, j],
+                                              size(ab))
     return NormalisedAlpha{eltype(ab), typeof(ab),
                            typeof(value), M}(ab, ws, value, meta)
 end
@@ -513,7 +552,10 @@ end
 function RawBeta(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getordinariness!(meta) ./ getmetaordinariness!(meta)
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zp[i, j] / zP[i],
+                                              size(ab))
     return RawBeta{eltype(ab), typeof(ab),
                    typeof(value), M}(ab, ws, value, meta)
 end
@@ -556,7 +598,11 @@ end
 function NormalisedBeta(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getordinariness!(meta) ./ (getmetaordinariness!(meta) .* ws')
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zp[i, j] /
+                                                        (zP[i] * ws[j]),
+                                              size(ab))
     return NormalisedBeta{eltype(ab), typeof(ab),
                           typeof(value), M}(ab, ws, value, meta)
 end
@@ -599,7 +645,10 @@ end
 function RawRho(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getmetaordinariness!(meta) ./ getordinariness!(meta)
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zP[i] / zp[i, j],
+                                              size(ab))
     return RawRho{eltype(ab), typeof(ab),
                   typeof(value), M}(ab, ws, value, meta)
 end
@@ -645,7 +694,11 @@ end
 function NormalisedRho(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = (getmetaordinariness!(meta) .* ws') ./ getordinariness!(meta)
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zP[i] * ws[j] /
+                                                        zp[i, j],
+                                              size(ab))
     return NormalisedRho{eltype(ab), typeof(ab),
                          typeof(value), M}(ab, ws, value, meta)
 end
@@ -688,7 +741,8 @@ end
 function Gamma(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = fill!(similar(ws), 1)' ./ getmetaordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> inv(zP[i]), size(ab))
     return Gamma{eltype(ab), typeof(ab), typeof(value), M}(ab, ws, value, meta)
 end
 

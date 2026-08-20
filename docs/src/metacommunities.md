@@ -189,8 +189,8 @@ unstack(ind, :type_name, :partition_name, :diversity)
 
 The columns that identify a row are `div_type`, `measure`, `q`, `type_level`, `type_name`,
 `partition_level` and `partition_name`; `diversity` holds the answer. Selecting several orders at
-once and filtering afterwards is usually faster than repeated calls, because the individual
-diversities are computed once when the measure is built:
+once and filtering afterwards is usually faster than repeated calls, because the measure and
+everything it caches are then built once rather than once per order:
 
 ```@repl building
 profile = subdiv(NormalisedAlpha(mc), [0, 1, 2]);
@@ -283,10 +283,11 @@ size(result)
 unique(result.measure)
 ```
 
-This is worth preferring over separate calls. Each measure holds an array of
-individual diversities the size of the abundance matrix, and `diversity` builds
-each one **once** and then asks it for every level and every order — where
-calling `norm_sub_alpha` and then `norm_meta_alpha` would build it twice.
+This is worth preferring over separate calls. Building a measure means summing
+the abundances and the ordinariness across the whole metacommunity, which is
+work proportional to the data rather than to the answer; `diversity` builds each
+measure **once** and then asks it for every level and every order, where calling
+`norm_sub_alpha` and then `norm_meta_alpha` would build it twice.
 
 ## Getting something other than a DataFrame
 

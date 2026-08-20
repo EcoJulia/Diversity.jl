@@ -8,6 +8,9 @@
     results can go to CSV or Arrow without a DataFrame in between; DataFrame remains the default
   - Spread the power means over threads when there is enough work to be worth it. Small
     calculations stay on the serial path where threading would cost more than it saves
+  - Hold each measure's individual diversities as a rule for computing an element rather than as an
+    array to remove the largest allocation in a measurement, at the cost of recomputing rather than
+    re-reading when one measure is asked for many scales and orders
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()

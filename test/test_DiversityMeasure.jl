@@ -176,6 +176,114 @@ manyweights *= Diagonal(reshape(mapslices(v -> 1.0 / sum(v), manyweights;
     @test_throws ErrorException Diversity.communityDiversity(nab)
 end
 
+@testset "Individual diversities are held as a rule, not an array" begin
+    # The seven measures no longer materialise their ntypes x nplaces individual diversities;
+    # each holds a closure over the arrays it needs. The values must be exactly what the
+    # broadcast expressions they replaced produced, so those are written out here in full rather
+    # than derived from the package -- a formula copied out of the source would only prove that
+    # the source agrees with itself.
+    for mc in (meta2, Metacommunity(ab3, GeneralTypes(Matrix(1.0I, 2, 2)), sc),
+        Metacommunity(pop, ms, oc))
+        zp = getordinariness!(mc)
+        zP = getmetaordinariness!(mc)
+        w = getweight(mc)
+        ab = getabundance(mc)
+        expected = Dict(RawAlpha => zp .^ -1,
+                        NormalisedAlpha => w' ./ zp,
+                        RawBeta => zp ./ zP,
+                        NormalisedBeta => zp ./ (zP .* w'),
+                        RawRho => zP ./ zp,
+                        NormalisedRho => (zP .* w') ./ zp,
+                        Gamma => fill!(similar(w), 1)' ./ zP)
+        for (measure, want) in expected
+            raw = Diversity.inddiv_raw(measure(mc), 1)
+            @test raw isa Diversity.IndividualDiversities
+            @test raw isa AbstractMatrix{Float64}
+            @test size(raw) == size(ab)
+            @test eltype(raw) == eltype(ab)
+            @test Base.IndexStyle(typeof(raw)) == IndexCartesian()
+            # Elementwise, and as a whole: `collect` and broadcasting are the two ways anything
+            # downstream touches it, and both go through `getindex`.
+            @test collect(raw) == want
+            @test raw .* 2 == want .* 2
+            @test all(raw[i, j] == want[i, j]
+                      for i in axes(want, 1), j in axes(want, 2))
+        end
+    end
+
+    # The whole point: building a measure over a metacommunity whose ordinariness is already
+    # cached allocates nothing of that size. The weights vector is the only array involved.
+    big = Metacommunity(fill(1 / 2000, 20, 100))
+    getordinariness!(big)
+    getmetaordinariness!(big)
+    for measure in (RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+        RawRho, NormalisedRho, Gamma)
+        measure(big)                       # compile it before counting bytes
+        @test @allocated(measure(big)) < 8 * 20 * 100
+    end
+end
+
+# A metacommunity that recomputes its ordinariness on every call and counts them. `SubAssemblage`,
+# which `view` returns, is exactly this shape -- it inherits the generic `_getordinariness!` and so
+# caches nothing -- but a counter is needed to assert how often it is asked.
+const ORDCALLS = Ref(0)
+
+mutable struct Uncached{FP, A, T, P} <:
+               Diversity.API.AbstractMetacommunity{FP, A, A, T, P}
+    types::T
+    part::P
+    ab::A
+end
+
+Diversity.API._gettypes(mc::Uncached) = mc.types
+Diversity.API._getpartition(mc::Uncached) = mc.part
+Diversity.API._getabundance(mc::Uncached, ::Bool) = mc.ab
+function Diversity.API._getordinariness!(mc::Uncached)
+    ORDCALLS[] += 1
+    return Diversity.API._calcordinariness(mc.types, mc.ab, 1)
+end
+
+@testset "A measure asks for the ordinariness once, at construction" begin
+    # The individual diversities being a closure over the ordinariness makes this worth pinning: a
+    # rule that reached back into the metacommunity on every element would be catastrophic for a
+    # subtype that does not cache, and nothing else in the suite would notice, since the package's
+    # own `Metacommunity` does cache.
+    Z = [1.0 0.5 0.0; 0.5 1.0 0.5; 0.0 0.5 1.0]
+    p = [0.1 0.2; 0.2 0.1; 0.2 0.2]
+    types, part = GeneralTypes(Z), Subcommunities(2)
+    uncached = Uncached{Float64, typeof(p), typeof(types), typeof(part)}(types,
+                                                                         part,
+                                                                         p)
+    cached = Metacommunity(p, GeneralTypes(Z), Subcommunities(2))
+
+    for measure in (RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+        RawRho, NormalisedRho, Gamma)
+        ORDCALLS[] = 0
+        dm = measure(uncached)
+        # Alpha and gamma need one of the two ordinarinesses, the betas and rhos both -- and
+        # `_getmetaordinariness!` is itself defined in terms of `_getordinariness!`, hence two.
+        built = ORDCALLS[]
+        @test built in (1, 2)
+
+        sub = subdiv(dm, [0, 1, 2])
+        meta = metadiv(dm, [0, 1, 2])
+        ind = inddiv(dm, 1)
+        # Six passes over the individual diversities, and not one of them goes back to the
+        # metacommunity.
+        @test ORDCALLS[] == built
+
+        reference = measure(cached)
+        @test sub.diversity ≈ subdiv(reference, [0, 1, 2]).diversity
+        @test meta.diversity ≈ metadiv(reference, [0, 1, 2]).diversity
+        @test ind.diversity ≈ inddiv(reference, 1).diversity
+    end
+
+    # And the in-repo case that has no cache at all.
+    whole = view(cached, sites = [1, 2])
+    @test subdiv(NormalisedAlpha(whole), 1).diversity ≈
+          subdiv(NormalisedAlpha(cached), 1).diversity
+end
+
 @testset "Plot recipe" begin
     # The recipe is defined on a *tuple*, so the measure and the order go in together.
     mc = Metacommunity(manyweights)
