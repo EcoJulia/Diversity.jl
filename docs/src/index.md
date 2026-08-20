@@ -16,7 +16,9 @@ not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. `NormalisedAlpha()`), which are.
 We also provide functions to calculate appropriate
 `subdiv()` and `metadiv()` values for each measure, and a general
-`diversity()` function to extract any diversity measure at a series of scales.
+`diversity()` function to extract several measures at several scales and several
+orders in one call — which is the one to reach for on anything large, and is
+covered in [**Large metacommunities**](largescale.md).
 
 Accessing the main functionality in the package is simple:
 

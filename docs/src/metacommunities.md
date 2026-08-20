@@ -188,9 +188,10 @@ unstack(ind, :type_name, :partition_name, :diversity)
 ```
 
 The columns that identify a row are `div_type`, `measure`, `q`, `type_level`, `type_name`,
-`partition_level` and `partition_name`; `diversity` holds the answer. Selecting several orders at
-once and filtering afterwards is usually faster than repeated calls, because the measure and
-everything it caches are then built once rather than once per order:
+`partition_level` and `partition_name`; `diversity` holds the answer. Asking for several orders at
+once and filtering afterwards is cheaper than repeated calls — not because the arithmetic changes,
+which it does not, but because one call builds one table where several calls build several and leave
+you to join them:
 
 ```@repl building
 profile = subdiv(NormalisedAlpha(mc), [0, 1, 2]);
@@ -283,11 +284,16 @@ size(result)
 unique(result.measure)
 ```
 
-This is worth preferring over separate calls. Building a measure means summing
-the abundances and the ordinariness across the whole metacommunity, which is
-work proportional to the data rather than to the answer; `diversity` builds each
-measure **once** and then asks it for every level and every order, where calling
-`norm_sub_alpha` and then `norm_meta_alpha` would build it twice.
+This is worth preferring over separate calls, and the reason is the result rather
+than the arithmetic. Every route does the same power means; what differs is how
+many tables get built on the way. `diversity` assembles one, where six wrapper
+calls build six and you then have to `vcat` them. Measured over 200 types and
+200,000 subcommunities, for the call above: **165 MiB against 275 MiB**, for the
+same answer in the same time.
+
+It also saves you naming the same metacommunity six times, which matters more
+than it sounds — see [Large metacommunities](largescale.md) for what does and
+does not scale.
 
 ## Getting something other than a DataFrame
 
@@ -303,6 +309,8 @@ keys(columns)
 Anything implementing the [Tables.jl](https://github.com/JuliaData/Tables.jl)
 interface will do, so results can go straight to a file with `CSV.write` or
 `Arrow.write` without a `DataFrame` in between. A `DataFrame` remains the default.
+That choice matters most when the result is large — see
+[Large metacommunities](largescale.md).
 
 ```@docs
 Diversity.view

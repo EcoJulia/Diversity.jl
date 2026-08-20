@@ -72,6 +72,15 @@ diversity over branches rather than over species. And the `raw::Bool` argument
 carried through the API distinguishes the types the user supplied from the types
 diversity is actually computed over, which differ for exactly that reason.
 
+If you implement `_getabundance`, `_getweight`, `_getordinariness!` or
+`_getmetaordinariness!` for a metacommunity type of your own, note that **every
+measure built over it asks for all of them**, and that the last three are each a
+full pass over the abundance array. `Metacommunity` answers them from a cache
+populated on first use, which is why building a second measure over one costs
+nothing; a type that recomputes them will pay that cost once per measure. If
+yours is expensive to answer, cache it the same way. See
+[Large metacommunities](largescale.md) for what that is worth in practice.
+
 Leave a required method out and you get an error naming it. That is worth saying
 because these abstract types are subtypes of `EcoBase`'s, so the fallbacks that
 let a plain `EcoBase` assemblage be measured directly would otherwise call back
