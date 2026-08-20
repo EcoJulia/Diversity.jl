@@ -82,6 +82,35 @@ function powermean(values::V1,
     return map(order -> powermean(values, order, weights), orders)
 end
 
+# Above this many elements the columns are spread over threads. Each column is an independent
+# reduction, so this parallelises almost perfectly -- 11.5x on 12 threads at 200 types x 200,000
+# places -- but spawning the tasks costs about ten microseconds, which is far more than the whole
+# calculation for a handful of columns. Measured: threading is 48x *slower* at 10 types x 2 places,
+# breaks even around a thousand elements, and is 4.7x faster by twenty thousand. Ten thousand sits
+# safely inside the winning region.
+const THREADINGTHRESHOLD = 10_000
+
+# Split out from `powermean` so that both paths can be tested against each other. The threaded one
+# has to be exercised deliberately: the test workers run with JULIA_NUM_THREADS=1, so nothing would
+# reach it otherwise, and what it can get wrong -- the order results are written back in -- does not
+# need real parallelism to show up.
+function _powermeancolumns(values, orders, weights, threaded::Bool)
+    ncols = size(values, 2)
+    if !threaded
+        return @views map(col -> powermean(values[:, col], orders,
+                                           weights[:, col]), 1:ncols)
+    end
+    # The first column serially, to learn what one answer looks like: `orders` may be a single
+    # number or a vector of them, so the element type is not known in advance.
+    firstcol = @views powermean(values[:, 1], orders, weights[:, 1])
+    out = Vector{typeof(firstcol)}(undef, ncols)
+    out[1] = firstcol
+    Threads.@threads for col in 2:ncols
+        @views out[col] = powermean(values[:, col], orders, weights[:, col])
+    end
+    return out
+end
+
 # This is the next most simple case - matrices with subcommunities, and an order or orders
 function powermean(values::M1, orders,
                    weights::M2 = fill!(similar(values), 1)) where
@@ -90,8 +119,9 @@ function powermean(values::M1, orders,
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
                                 "must be the same size"))
-    @views map(col -> powermean(values[:, col], orders,
-                                weights[:, col]), 1:size(values, 2))
+    threaded = Threads.nthreads() > 1 &&
+               length(values) >= THREADINGTHRESHOLD
+    return _powermeancolumns(values, orders, weights, threaded)
 end
 
 """

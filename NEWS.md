@@ -6,7 +6,8 @@
   - Build the result DataFrame from whole columns rather than one single-row DataFrame per element
   - Allow the caller to name a Tables.jl sink as an optional first argument, as CSV.read() does, so
     results can go to CSV or Arrow without a DataFrame in between; DataFrame remains the default
-  - Add examples/benchmarks, recording timings and allocations per commit
+  - Spread the power means over threads when there is enough work to be worth it. Small
+    calculations stay on the serial path where threading would cost more than it saves
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()
