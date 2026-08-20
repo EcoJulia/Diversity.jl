@@ -221,12 +221,90 @@ end
     @test diversity(DataFrame, levels, [ᾱ, Γ], mc, [0, 1]) ==
           diversity(levels, [ᾱ, Γ], mc, [0, 1])
 
+    # The all-seven forms take a sink too, at every scale.
+    for f in (inddiv, subdiv, metadiv)
+        @test f(DataFrame, mc, 1) == f(mc, 1)
+        @test collect(f(Tables.columntable, mc, [0, 1]).diversity) ==
+              f(mc, [0, 1]).diversity
+    end
+
+    # Individual diversities are a level like any other, so `diversity` can ask for them.
+    ind = diversity([individualDiversity], [ᾱ], mc, 1)
+    @test nrow(ind) == counttypes(mc) * countsubcommunities(mc)
+    @test ind == inddiv(ᾱ(mc), 1)
+    @test collect(diversity(Tables.columntable, [individualDiversity], [ᾱ], mc,
+                            1).diversity) == ind.diversity
+
     # Several measures, orders and levels in one call: each measure is built once and asked for
     # every level, which is the reason this entry point exists.
     combined = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2])
     @test length(unique(combined.measure)) == 3
     @test length(unique(combined.q)) == 3
     @test length(unique(combined.partition_level)) == 2
+end
+
+@testset "Every wrapper takes a sink, and takes the right one" begin
+    # The fourteen sink methods were generated mechanically, so a copy-paste error in one of them
+    # would be invisible without checking all fourteen: each must reach the same measure and the
+    # same scale as the sinkless method it shadows.
+    species = ["a", "b", "c"]
+    sites = ["north", "south"]
+    mc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2], UniqueTypes(species),
+                       Subcommunities(sites))
+    subs = [norm_sub_alpha, raw_sub_alpha, norm_sub_beta, raw_sub_beta,
+        norm_sub_rho, raw_sub_rho, sub_gamma]
+    metas = [norm_meta_alpha, raw_meta_alpha, norm_meta_beta, raw_meta_beta,
+        norm_meta_rho, raw_meta_rho, meta_gamma]
+
+    for f in vcat(subs, metas)
+        @test f(DataFrame, mc, 1) == f(mc, 1)
+        columns = f(Tables.columntable, mc, 1)
+        @test collect(columns.diversity) == f(mc, 1).diversity
+        @test collect(columns.measure) == f(mc, 1).measure
+    end
+
+    # A subcommunity wrapper must not have been wired to metadiv, or vice versa.
+    @test all(f -> only(unique(f(mc, 1).partition_level)) == "subcommunity",
+              subs)
+    @test all(f -> only(unique(f(mc, 1).partition_level)) == "metacommunity",
+              metas)
+    # Seven measures, each named by one subcommunity and one metacommunity wrapper.
+    @test length(unique(first(f(mc, 1).measure) for f in subs)) == 7
+    @test [first(f(mc, 1).measure) for f in subs] ==
+          [first(f(mc, 1).measure) for f in metas]
+end
+
+@testset "Result rows are in the documented order" begin
+    # Individual diversities are one row per type per subcommunity, with the types cycling fastest
+    # -- the order the old row-at-a-time construction produced, and what rdiversity expects.
+    species = ["a", "b", "c"]
+    sites = ["north", "south"]
+    mc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2], UniqueTypes(species),
+                       Subcommunities(sites))
+    ind = inddiv(ᾱ(mc), 1)
+    @test nrow(ind) == length(species) * length(sites)
+    @test ind.type_name == repeat(species, outer = length(sites))
+    @test ind.partition_name == repeat(sites, inner = length(species))
+    @test ind.diversity == vec(inddiv(ᾱ(mc), 1).diversity)
+
+    # Subcommunity diversities are one row per subcommunity, in order, with no type named.
+    sub = subdiv(ᾱ(mc), 1)
+    @test sub.partition_name == sites
+    @test all(isempty, sub.type_name)
+
+    # Several orders are stacked in the order asked for, not interleaved.
+    many = subdiv(ᾱ(mc), [0, 1, 2])
+    @test many.q == repeat([0, 1, 2], inner = length(sites))
+    @test many.partition_name == repeat(sites, outer = 3)
+
+    # All seven measures come back in their long-standing order.
+    @test unique(subdiv(mc, 1).measure) ==
+          ["RawAlpha", "NormalisedAlpha", "RawBeta", "NormalisedBeta", "RawRho",
+        "NormalisedRho", "Gamma"]
+
+    # A level with no implementation is refused rather than silently skipped.
+    @test_throws ErrorException diversity([Diversity.communityDiversity], [ᾱ],
+                                          mc, 1)
 end
 
 end

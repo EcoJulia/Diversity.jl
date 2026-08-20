@@ -7,6 +7,8 @@ using Phylo
 using Diversity
 using Diversity.Ecology: faith_pd, generalisedfaith_pd
 using EcoBase: thingkind, thingkindplural, placekind
+using Tables
+using DataFrames
 
 # A phylogenetic type that is *not* this extension's `PhyloBranches` — enough of the API to build a
 # metacommunity from, and no more. Faith's PD must decline to run on it.
@@ -56,6 +58,29 @@ Diversity.API._calcsimilarity(::OtherPhyloTypes, ::Real) = [1.0 0.5; 0.5 1.0]
     @test subdiv(Gamma(tsmetaphylo), 0).treename == ["tree"]
     @test metadiv(Gamma(tsmetaphylo), 0).treename == ["tree"]
     @test all(inddiv(Gamma(tsmetaphylo), 0).treename .== "tree")
+
+    # A types object may add columns of its own, and they have to be merged into the result before
+    # it is materialised rather than inserted into a DataFrame afterwards -- a NamedTuple is
+    # immutable, and a sink need not support insertion at all. So the added column has to survive
+    # every route out, not just the default one.
+    for f in (inddiv, subdiv, metadiv)
+        columns = f(Tables.columntable, Gamma(tsmetaphylo), 0)
+        @test haskey(columns, :treename)
+        @test all(==("tree"), columns.treename)
+        # the same number of rows as every other column, which is what makes it a valid table
+        @test length(columns.treename) == length(columns.diversity)
+        @test Tables.istable(typeof(f(DataFrame, Gamma(tsmetaphylo), 0)))
+    end
+
+    # And across several orders, where the columns of each are concatenated before materialising.
+    many = subdiv(Gamma(tsmetaphylo), [0, 1, 2])
+    @test all(==("tree"), many.treename)
+    @test nrow(many) == 3 * countsubcommunities(tsmetaphylo)
+
+    # A metacommunity whose types add nothing must not grow a column.
+    plain = Metacommunity([0.4, 0.3, 0.3], ph)
+    @test "treename" ∉ names(subdiv(Gamma(plain), 0))
+    @test !haskey(subdiv(Tables.columntable, Gamma(plain), 0), :treename)
 
     # Note: The units of a phylogenetic metacommunity are *branches*, and this is how a reader is told
     # — `PhyloBranches` is opinionated about that, so it answers EcoBase's naming hooks itself.
