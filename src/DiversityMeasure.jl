@@ -16,6 +16,51 @@ function _allmeasures()
             RawRho, NormalisedRho, Gamma)
 end
 
+# Seven of a result's eight columns are repeated patterns - only `diversity` is unpredictable data.
+#
+# Held as rules instead they cost nothing, and nothing downstream has to know. `Tables.materializer`
+# decides: `DataFrame` copies its columns by default, and `copy` of an `AbstractVector` goes through
+# `similar` and `copyto!`, so a caller asking for a DataFrame gets ordinary `Vector`s exactly as
+# before.
+#
+# Warning: `_vcatcolumns` concatenates with `vcat`, which materialises, so a result covering several
+# orders, measures or levels loses this again. Streaming those as partitions is a separate question.
+
+# One value, repeated for every row.
+struct ConstantColumn{T} <: AbstractVector{T}
+    value::T
+    len::Int
+end
+
+Base.size(col::ConstantColumn) = (col.len,)
+Base.IndexStyle(::Type{<:ConstantColumn}) = IndexLinear()
+Base.@propagate_inbounds Base.getindex(col::ConstantColumn, ::Int) = col.value
+
+# A short list cycled to fill a column, replacing `repeat`. `runlength` is how many consecutive rows
+# share an entry before the next is used -- 1 for the type names, which cycle fastest, and ntypes
+# for the subcommunity names, which change once per block -- so this covers `repeat(v, outer = k)`
+# and `repeat(v, inner = k)` alike.
+#
+# The inner constructor copies, so the column can never alias the names it was built from. That is
+# free relative to what it replaces: the list is ntypes or nplaces long where the column is their
+# product.
+struct RepeatedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
+    values::V
+    runlength::Int
+    len::Int
+
+    function RepeatedColumn(values::V, runlength::Int,
+                            len::Int) where {T, V <: AbstractVector{T}}
+        return new{T, V}(copy(values), runlength, len)
+    end
+end
+
+Base.size(col::RepeatedColumn) = (col.len,)
+Base.IndexStyle(::Type{<:RepeatedColumn}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(col::RepeatedColumn, i::Int)
+    return col.values[mod1(cld(i, col.runlength), length(col.values))]
+end
+
 # The columns of a result, as a NamedTuple of equal-length vectors. That is already a Tables source,
 # so it can be handed to `Tables.materializer(sink)` for any table type the caller asks for -- a
 # DataFrame by default, but equally an Arrow table, a CSV sink or anything else implementing the
@@ -29,7 +74,8 @@ function _addedcolumns(measure, columns, n)
     cols = addedoutputcols(_getmeta(measure))
     isempty(cols) && return columns
     data = getaddedoutput(_getmeta(measure))
-    extra = NamedTuple(col => fill(data[col], n) for col in keys(cols))
+    extra = NamedTuple(col => ConstantColumn(data[col], n)
+                       for col in keys(cols))
     return merge(columns, extra)
 end
 
@@ -267,13 +313,13 @@ function _inddiv_columns(measure::DiversityMeasure, q::Real)
     divs .= raw
     # The row order `reduce(append!, ...)` over a column-major matrix used to produce: types
     # cycling fastest within each subcommunity.
-    columns = (div_type = fill(getdiversityname(measure), n),
-               measure = fill(getASCIIName(measure), n),
-               q = fill(q, n),
-               type_level = fill("type", n),
-               type_name = repeat(types, outer = ns),
-               partition_level = fill("subcommunity", n),
-               partition_name = repeat(scn, inner = nt),
+    columns = (div_type = ConstantColumn(getdiversityname(measure), n),
+               measure = ConstantColumn(getASCIIName(measure), n),
+               q = ConstantColumn(q, n),
+               type_level = ConstantColumn("type", n),
+               type_name = RepeatedColumn(types, 1, n),
+               partition_level = ConstantColumn("subcommunity", n),
+               partition_name = RepeatedColumn(scn, nt, n),
                diversity = vec(divs))
     return _addedcolumns(measure, columns, n)
 end
@@ -325,12 +371,12 @@ function _subdiv_columns(measure::DiversityMeasure, q::Real)
     n = length(scn)
     divs = Vector{eltype(raw)}(undef, n)
     divs .= raw
-    columns = (div_type = fill(getdiversityname(measure), n),
-               measure = fill(getASCIIName(measure), n),
-               q = fill(q, n),
-               type_level = fill("types", n),
-               type_name = fill("", n),
-               partition_level = fill("subcommunity", n),
+    columns = (div_type = ConstantColumn(getdiversityname(measure), n),
+               measure = ConstantColumn(getASCIIName(measure), n),
+               q = ConstantColumn(q, n),
+               type_level = ConstantColumn("types", n),
+               type_name = ConstantColumn("", n),
+               partition_level = ConstantColumn("subcommunity", n),
                partition_name = copy(scn),
                diversity = divs)
     return _addedcolumns(measure, columns, n)

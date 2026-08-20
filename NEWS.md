@@ -13,6 +13,10 @@
     analysis time, since each element is recomputed rather than re-read every time it is used
   - Cache the subcommunity weights and the metacommunity ordinariness on a Metacommunity, as the
     ordinariness itself already was.
+  - Hold the repeated result columns as rules too, since seven of the eight are one value repeated
+    or a short list cycled. A caller asking for a DataFrame gets the same mutable Vector columns as
+    before and pays less, because the intermediate vectors are gone; a caller naming a streaming
+    sink never materialises them at all
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()

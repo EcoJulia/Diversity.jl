@@ -284,6 +284,79 @@ end
           subdiv(NormalisedAlpha(cached), 1).diversity
 end
 
+@testset "Repeated result columns are rules, not arrays" begin
+    # Seven of the eight columns are a constant or a cycled short list. They are now held as rules,
+    # so what has to be pinned is that they still produce exactly the `fill` and `repeat`
+    # expressions they replaced -- written out here rather than derived from the package.
+    lazymc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2],
+                           UniqueTypes(["a", "b", "c"]),
+                           Subcommunities(["x", "y"]))
+    lazydm = NormalisedAlpha(lazymc)
+    nt, ns = 3, 2
+    n = nt * ns
+    cols = Diversity._inddiv_columns(lazydm, 1)
+
+    @test collect(cols.div_type) == fill(getdiversityname(lazydm), n)
+    @test collect(cols.measure) == fill("NormalisedAlpha", n)
+    @test collect(cols.q) == fill(1, n)
+    @test collect(cols.type_level) == fill("type", n)
+    @test collect(cols.type_name) == repeat(["a", "b", "c"], outer = ns)
+    @test collect(cols.partition_level) == fill("subcommunity", n)
+    @test collect(cols.partition_name) == repeat(["x", "y"], inner = nt)
+    @test cols.diversity isa Vector{Float64}
+
+    @test cols.div_type isa Diversity.ConstantColumn
+    @test cols.type_name isa Diversity.RepeatedColumn
+    for col in (cols.div_type, cols.type_name, cols.partition_name)
+        @test col isa AbstractVector
+        @test length(col) == n
+        @test size(col) == (n,)
+        @test Base.IndexStyle(typeof(col)) == IndexLinear()
+    end
+    @test eltype(cols.type_name) == String
+    @test eltype(cols.q) == Int
+
+    # A subcommunity result has no type name to cycle, so all six of its repeated columns are
+    # constant; only the subcommunity names and the diversities are real.
+    subcols = Diversity._subdiv_columns(lazydm, 1)
+    @test subcols.type_name isa Diversity.ConstantColumn
+    @test collect(subcols.type_name) == ["", ""]
+    @test subcols.partition_name == ["x", "y"]
+
+    # A rule must not alias the names it was built from -- that is what the copy in the inner
+    # constructor is for, and it is invisible without a test.
+    names = ["a", "b", "c"]
+    col = Diversity.RepeatedColumn(names, 1, 6)
+    names[1] = "changed"
+    @test col[1] == "a"
+    @test collect(col) == repeat(["a", "b", "c"], outer = 2)
+end
+
+@testset "The DataFrame a caller gets back is unchanged" begin
+    # The whole design rests on the sink deciding: DataFrame copies its columns by default, so the
+    # rules are materialised back into ordinary mutable Vectors and a caller cannot tell. If that
+    # ever stops being true, this is where it shows.
+    lazymc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2],
+                           UniqueTypes(["a", "b", "c"]),
+                           Subcommunities(["x", "y"]))
+    for df in (inddiv(NormalisedAlpha(lazymc), 1),
+        subdiv(NormalisedAlpha(lazymc), [0, 1]),
+        metadiv(NormalisedAlpha(lazymc), 1))
+        @test all(col -> col isa Vector, eachcol(df))
+        @test eltype(df.measure) == String
+        @test eltype(df.diversity) == Float64
+    end
+
+    df = inddiv(NormalisedAlpha(lazymc), 1)
+    @test df.measure isa Vector{String}
+    df.measure[1] = "mutated"
+    @test df.measure[1] == "mutated"
+    @test df.measure[2] == "NormalisedAlpha"    # and only the one row moved
+    df.type_name[2] = "renamed"
+    @test df.type_name[1] == "a"
+    @test df.type_name[2] == "renamed"
+end
+
 @testset "Plot recipe" begin
     # The recipe is defined on a *tuple*, so the measure and the order go in together.
     mc = Metacommunity(manyweights)
