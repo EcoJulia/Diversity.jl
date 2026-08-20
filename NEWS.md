@@ -10,10 +10,13 @@
     array to remove the largest allocation in a measurement, at the cost of about a sixth of the
     analysis time, since each element is recomputed rather than re-read every time it is used
   - Cache the subcommunity weights and the metacommunity ordinariness on a Metacommunity, as the
-    ordinariness itself already was.
+    ordinariness itself already was
   - Complex diversity calculations can create huge outputs, so there are now generators for the
     repeated columns since enormous storage costs until they are materialised (which isn't needed
-    if writing to disk).
+    if writing to disk)
+  - Recognise an empty subcommunity from its cached weight instead of by scanning its abundances,
+    so a metacommunity that is mostly empty costs very nearly what it would if those subcommunities
+    were not there at all
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()

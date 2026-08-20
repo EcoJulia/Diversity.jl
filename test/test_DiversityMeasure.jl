@@ -415,6 +415,37 @@ end
     @test all(col -> col isa Vector, eachcol(combined))
 end
 
+@testset "Empty subcommunities change nothing" begin
+    # A subcommunity with no individuals -- a sea cell in a species grid, an inactive cell in a
+    # landscape simulation -- must not move any other subcommunity's answer, nor the
+    # metacommunity's. This is what makes it safe to recognise them from their cached weight and
+    # skip them, and it follows from the framework rather than the implementation: abundances are
+    # relative to the whole metacommunity so zeros do not move the total, a subcommunity's measures
+    # depend only on its own composition and the metacommunity as a whole, and a power mean ignores
+    # zero-weight entries.
+    occupied = rand(4, 3) .+ 0.1
+    padded = zeros(4, 7)
+    padded[:, [2, 4, 6]] .= occupied
+    padded ./= sum(padded)
+    occupied = padded[:, [2, 4, 6]]
+    dead = [1, 3, 5, 7]
+    Zmat = Matrix(1.0I, 4, 4)
+
+    for (whole, part) in ((Metacommunity(padded), Metacommunity(occupied)),
+                          (Metacommunity(padded, GeneralTypes(Zmat)),
+                           Metacommunity(occupied, GeneralTypes(Zmat))))
+        for measure in (RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+            RawRho, NormalisedRho, Gamma),
+            q in (0, 0.5, 1, 2, Inf)
+            full = subdiv(measure(whole), q).diversity
+            @test full[[2, 4, 6]] ≈ subdiv(measure(part), q).diversity
+            @test all(isnan, full[dead])
+            @test metadiv(measure(whole), q).diversity[1] ≈
+                  metadiv(measure(part), q).diversity[1]
+        end
+    end
+end
+
 @testset "Plot recipe" begin
     # The recipe is defined on a *tuple*, so the measure and the order go in together.
     mc = Metacommunity(manyweights)

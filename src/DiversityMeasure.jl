@@ -439,11 +439,13 @@ end
 @inline subdiv(meta::AbstractAssemblage, qs) = subdiv(DataFrame, meta, qs)
 
 @inline function subdiv_raw(measure::PowerMeanMeasure, q::Real)
-    return powermean(inddiv_raw(measure, q), one(q) - q, measure.abundances)
+    return powermean(inddiv_raw(measure, q), one(q) - q, measure.abundances,
+                     measure.weights)
 end
 
 @inline function subdiv_raw(measure::RelativeEntropyMeasure, q::Real)
-    return powermean(inddiv_raw(measure, q), q - one(q), measure.abundances)
+    return powermean(inddiv_raw(measure, q), q - one(q), measure.abundances,
+                     measure.weights)
 end
 
 """
