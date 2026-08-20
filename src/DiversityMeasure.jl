@@ -113,25 +113,21 @@ metacommunityDiversity
 # metacommunity caches it -- so materialising the combination doubles the memory for no new
 # information.
 #
-# It matters at the sizes this package is meant to reach: the array is ntypes x nplaces, which is
-# 307 MiB at 200 types and 200,000 places, and was the single largest allocation in a measurement.
-# Computing each element on demand costs one arithmetic operation and reads exactly the same memory
-# -- the ordinariness either way -- so a measure built and used once is *faster* as well as
-# smaller. A measure asked for many scales and orders pays that operation on each pass instead of
-# once, which is the trade: measured at 200 x 200,000, building the array costs 5.7 ms and each
-# pass over it saves 1.6 ms, so materialising would only win after about four passes, and then by
-# a few percent.
+# This is a trade, not a free win, and the direction is worth being plain about. Computing an
+# element reads exactly the same memory the array would have -- the ordinariness, either way -- but
+# adds one division, and saves storing the whole array.
 #
 # The rule is a closure so that each measure captures exactly the arrays it uses -- alpha and gamma
 # do not need both ordinarinesses, and forcing them to would compute one they have no use for.
 struct IndividualDiversities{FP <: AbstractFloat, F} <: AbstractMatrix{FP}
     value::F
     dims::Tuple{Int, Int}
-end
 
-function IndividualDiversities{FP}(value::F,
-                                   dims::Tuple{Int, Int}) where {FP, F}
-    return IndividualDiversities{FP, F}(value, dims)
+    function IndividualDiversities{FP}(value::F,
+                                       dims::Tuple{Int, Int}) where
+        {FP <: AbstractFloat, F}
+        return new{FP, F}(value, dims)
+    end
 end
 
 Base.size(divs::IndividualDiversities) = divs.dims

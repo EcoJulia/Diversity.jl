@@ -73,6 +73,69 @@ g2 = GeneralTypes(Matrix(1.0I, 2, 2))
     @test floattypes(meta) == floattypes(getabundance(meta))
 end
 
+@testset "The metacommunity caches its reductions" begin
+    # `ordinariness`, `weights` and `metaordinariness` are each a full pass over an
+    # ntypes x nplaces array, and every measure built over the metacommunity asks for all three, so
+    # they are computed once and kept. The values must be exactly what the reductions they replaced
+    # produced -- written out here rather than taken from the package, which would only show the
+    # package agreeing with itself.
+    ab = [0.1 0.2; 0.2 0.1; 0.2 0.2]
+    mc = Metacommunity(ab, GeneralTypes(Matrix(1.0I, 3, 3)), Subcommunities(2))
+
+    @test ismissing(mc.weights)
+    @test ismissing(mc.metaordinariness)
+    @test ismissing(mc.ordinariness)
+
+    @test getweight(mc) ≈ vec(sum(ab, dims = 1))
+    @test !ismissing(mc.weights)
+    @test getmetaordinariness!(mc) ≈ vec(sum(ab, dims = 2))
+    @test !ismissing(mc.metaordinariness)
+    @test !ismissing(mc.ordinariness)      # asking for the metacommunity one populates both
+
+    # Asking again returns the cached object itself, not an equal copy -- which is the point.
+    @test getweight(mc) === mc.weights
+    @test getmetaordinariness!(mc) === mc.metaordinariness
+    @test getordinariness!(mc) === mc.ordinariness
+
+    # And they are the inferrable types the measures capture, not a union with Missing.
+    @test getweight(mc) isa Vector{Float64}
+    @test getmetaordinariness!(mc) isa Vector{Float64}
+
+    # A warm metacommunity therefore builds a measure for nothing at all: the two reductions were
+    # the entire remaining cost once the individual diversities became a rule.
+    big = Metacommunity(fill(1 / 2000, 20, 100))
+    getweight(big)
+    getmetaordinariness!(big)
+    for measure in (RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+        RawRho, NormalisedRho, Gamma)
+        measure(big)                       # compile it before counting bytes
+        @test @allocated(measure(big)) < 256
+    end
+end
+
+@testset "One subcommunity keeps the uncached defaults" begin
+    # Where the raw abundances are a vector there is a single subcommunity, so the weight is [1] and
+    # the metacommunity ordinariness *is* the subcommunity ordinariness, already cached. Both fall
+    # through to the generic definitions in API.jl, and the cache fields stay missing -- asserted so
+    # that adding a Metacommunity-specific method for this case cannot pass unnoticed.
+    single = Metacommunity([0.3, 0.3, 0.4])
+    @test getweight(single) == [1.0]
+    @test getmetaordinariness!(single) === getordinariness!(single)
+    @test ismissing(single.weights)
+    @test ismissing(single.metaordinariness)
+
+    # The measures still agree with the same data presented as a one-column matrix, which does go
+    # through the cached path.
+    asmatrix = Metacommunity(reshape([0.3, 0.3, 0.4], 3, 1),
+                             UniqueTypes(3), Subcommunities(1))
+    for q in [0, 1, 2, Inf]
+        @test norm_sub_alpha(single, q).diversity ≈
+              norm_sub_alpha(asmatrix, q).diversity
+        @test meta_gamma(single, q).diversity ≈
+              meta_gamma(asmatrix, q).diversity
+    end
+end
+
 @testset "Counts with a similarity matrix" begin
     Z = Matrix(1.0I, 2, 2)
     @test getabundance(Metacommunity(ab3, Z)) ≈
