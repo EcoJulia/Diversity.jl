@@ -77,19 +77,40 @@ else
         println()
         @info "Skipping the extra test suites on a Windows runner."
     elseif !isempty(extrabase)
-        println()
-        @info "Running the extra test suites:"
-        foreach(f -> println("    = $f"), extrabase)
-        println()
-
+        # Three groups, in this order: the serial extras, then the concurrent ones, then hygiene.
+        #
+        # `extras_clean` being **last of all** rather than beside its siblings is load-bearing, not
+        # tidiness. It fails on any unstaged change to a tracked file — the normal state of a
+        # working tree mid-task — and on a stale `dateModified` in `codemeta.json`, which goes stale
+        # overnight. A `@testset` throws at its end, so while it sat in the serial group that
+        # routine failure aborted the run before `extras_docs` had even started, and the
+        # documentation went unchecked locally. Moving it within the serial group would not have
+        # helped: the throw comes from the enclosing testset, whichever member failed.
+        #
+        # The cost of the swap is the mirror case — a failing `extras_docs` now stops `extras_clean`
+        # from running — which is much the better trade, since a broken docs build is a real defect
+        # while a dirty tree is not.
         parallelextras = ["extras_docs", "extras_examples", "extras_notebooks"]
-        serialextras = filter(fn -> chop(fn, tail = 3) ∉ parallelextras,
-                              extrabase)
+        lastextras = ["extras_clean"]
+        setname(fn) = chop(fn, tail = 3)
+        serialextras = filter(fn -> setname(fn) ∉ parallelextras &&
+                                    setname(fn) ∉ lastextras, extrabase)
+        finalextras = filter(fn -> setname(fn) ∈ lastextras, extrabase)
 
-        @testset "Serial extras..." begin
-            @testset for fn in serialextras
-                println("    * Running $fn ...")
-                include(fn)
+        println()
+        @info "Running the extra test suites, in this order:"
+        foreach(f -> println("    = $f"), serialextras)
+        foreach(f -> println("    = $f (concurrently)"),
+                filter(fn -> setname(fn) ∈ parallelextras, extrabase))
+        foreach(f -> println("    = $f (last)"), finalextras)
+        println()
+
+        if !isempty(serialextras)
+            @testset "Serial extras..." begin
+                @testset for fn in serialextras
+                    println("    * Running $fn ...")
+                    include(fn)
+                end
             end
         end
 
@@ -100,6 +121,16 @@ else
                   join(sort(collect(keys(suite))), ", ")
             println()
             runtests(Diversity, parse_args(String[]), testsuite = suite)
+        end
+
+        if !isempty(finalextras)
+            println()
+            @testset "Hygiene, last of all..." begin
+                @testset for fn in finalextras
+                    println("    * Running $fn ...")
+                    include(fn)
+                end
+            end
         end
     end
 end
