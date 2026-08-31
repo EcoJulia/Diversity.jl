@@ -77,8 +77,14 @@ What was bought by giving it up:
 | comparability | consequently, two subcommunities can be compared directly, and ranked |
 
 Those three are what let you ask *"which of my sites is the most distinctive?"* and get an answer
-that does not change when someone redraws a boundary elsewhere. A framework built to satisfy
-`α × β = γ` cannot also guarantee them. See [Properties](@ref) below for the demonstrations.
+that does not change when someone redraws a boundary elsewhere. The conflict is with the first of
+them: solving the partition for beta makes it gamma divided by alpha, which ties its behaviour under
+shattering to alpha's. Gamma cannot depend on how the metacommunity was divided, so an alpha that is
+not invariant forces a beta that is not invariant either, and the size-weighted average alpha the
+partition is usually built on is exactly that. Reeve *et al.* prove this for Jost's measures, by
+splitting one well-mixed subcommunity of a two-subcommunity metacommunity: their alpha and beta both
+move for every `q` except 1, where they coincide with the measures used here. See
+[Properties](@ref) below for what this framework guarantees instead.
 
 ## What you supply
 
