@@ -63,7 +63,7 @@ subcommunity **weights**, and a subcommunity's size is part of the answer rather
 divided out. Give it counts and it will normalise them for you; give it proportions that sum to one
 *per column* and you will get a warning telling you they did not sum to one overall.
 
-Note: **α * β = γ does not hold here, and that is the central design decision.** vegan offers
+Note: **Ā * B̄ = G does not hold here, and that is the central design decision.** vegan offers
 `adipart` and `multipart` for exactly that partitioning, and a great deal of the literature assumes
 it. In this framework the relationship holds when `q = 1`, and in degenerate cases, but not in
 general.
@@ -205,6 +205,16 @@ of the whole - so the table gives both:
 | [`NormalisedBeta`](@ref) | β̄ / B̄ | estimate of effective number of distinct subcommunities | effective number of distinct subcommunities |
 | [`Gamma`](@ref) | γ / G | contribution per individual toward metacommunity diversity | metacommunity similarity-sensitive diversity |
 
+Note: **a symbol's alphabet and case carry its level.** Lowercase Greek is a subcommunity measure,
+capital Roman is the corresponding metacommunity one, and lowercase Roman is the individual value
+the other two are built from - a subcommunity measure is a power mean of individual values, and a
+metacommunity measure a mean of subcommunity ones. So `ā` is one individual's normalised alpha,
+`ᾱ` a subcommunity's, and `Ā` the metacommunity's. That distinction is carried entirely by the
+alphabet, since `ā` and `ᾱ` are otherwise near-identical to the eye, so read them carefully.
+The exported short names are the one exception: they name the measure *type* rather than a level, so
+they are Greek whichever level you go on to ask for, and gamma is exported as `Γ` because `γ` cannot
+be.
+
 Two axes run through that table:
 
 - **raw versus normalised** is a factor of the subcommunity's size `w`, and nothing else. A raw
@@ -233,7 +243,7 @@ meta_gamma(Metacommunity(fill(1 / 5, 5)), [0, 1, 2, Inf])[!, :diversity]
 ### Representativeness is a proportion
 
 Take a metacommunity where all types are equally abundant, and each subcommunity holds an equal share
-of them. A subcommunity holding a fraction `r` of the types has representativeness exactly `r`:
+of them. A subcommunity holding a fraction `f` of the types has representativeness exactly `f`:
 
 ```@repl framework
 twothirds = [1 1 0; 1 1 0; 0 1 1; 0 1 1; 1 0 1; 1 0 1] ./ 12

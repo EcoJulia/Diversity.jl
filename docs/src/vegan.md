@@ -16,7 +16,7 @@ Read [What this package does differently](framework.md) first if you have not. I
 
 1. **Beta diversity is not pairwise here.** There is no `dist` object to get back.
 2. **Abundances are relative to the whole metacommunity**, not normalised per site.
-3. **α * β = γ does not hold**, except at `q = 1`. There is no `adipart`/`multipart` equivalent, on
+3. **Ā * B̄ = G does not hold**, except at `q = 1`. There is no `adipart`/`multipart` equivalent, on
    purpose.
 
 Everything below makes more sense once those are in place.
@@ -74,8 +74,8 @@ This is where the packages genuinely diverge, and where the extra capability is.
 
 | vegan | here | |
 |---|---|---|
-| `adipart` (additive α + β = γ) | deliberately absent | |
-| `multipart` (multiplicative α * β = γ) | deliberately absent except at `q = 1` | |
+| `adipart` (additive Ā + B̄ = G) | deliberately absent | |
+| `multipart` (multiplicative Ā * B̄ = G) | deliberately absent except at `q = 1` | |
 | `betadiver(x, method)` | no equivalent - pairwise beta | |
 | `betadisper` | no equivalent | |
 | - | `norm_sub_rho` - how *representative* each subcommunity is | |

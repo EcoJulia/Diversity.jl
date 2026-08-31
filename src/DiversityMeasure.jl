@@ -755,8 +755,8 @@ measures.
 
 Per subcommunity, it is the **representativeness** of that subcommunity: how
 typical it is of the metacommunity as a whole. Where all types are equally
-abundant, a subcommunity holding a fraction `r` of them has representativeness
-exactly `r` - whatever fraction of the *individuals* it holds, since being the
+abundant, a subcommunity holding a fraction `f` of them has representativeness
+exactly `f` - whatever fraction of the *individuals* it holds, since being the
 normalised measure it has the subcommunity's weight divided out. Averaged over
 the subcommunities it gives their average
 representativeness. In the naive-type case representativeness is at most 1,
