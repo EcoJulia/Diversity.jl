@@ -17,6 +17,12 @@
   - Recognise an empty subcommunity from its cached weight instead of by scanning its abundances,
     so a metacommunity that is mostly empty costs very nearly what it would if those subcommunities
     were not there at all
+  - Add a manual page on large metacommunities, covering what actually scales with the data, using
+    diversity() to ask for everything at once, sending results straight to a sink rather than
+    through a DataFrame, and why empty subcommunities are nearly free
+  - Document the notation convention on the framework page: a symbol's alphabet and case give its
+    level, lowercase Roman for individual values, lowercase Greek for subcommunity measures and
+    capital Roman for metacommunity ones
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()
