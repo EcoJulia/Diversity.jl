@@ -9,7 +9,7 @@ using Diversity.ShortNames
 using LinearAlgebra
 
 # A minimal third-party `AbstractTypes`, implementing *only* the two methods the API documents as
-# required. Everything else must come from the defaults — which is the whole claim `Diversity.API`
+# required. Everything else must come from the defaults - which is the whole claim `Diversity.API`
 # makes, and which nothing else in this suite checks.
 #
 # This matters beyond tidiness: EcoSISTEM attaches its `SpeciesList`, `AbstractHabitat` and
@@ -64,7 +64,7 @@ end
     good = [0.2 0.1; 0.1 0.3; 0.2 0.1]
     @test mcmatch(good, types, part)
 
-    # Note: Each failure mode separately — this is the gate every `Metacommunity` constructor runs, and
+    # Note: Each failure mode separately - this is the gate every `Metacommunity` constructor runs, and
     # a silent hole in it would let a mis-shaped metacommunity through to the measures.
     @test !mcmatch(good, UniqueTypes(2), part)          # wrong number of types
     @test !mcmatch(good, types, Subcommunities(3))      # wrong number of subcommunities
@@ -77,7 +77,7 @@ end
 @testset "Minimal AbstractTypes implementation" begin
     types = UniformSimilarity(["a", "b", "c"], 0.5)
 
-    # Not implemented here — supplied by the defaults, which is the point.
+    # Not implemented here - supplied by the defaults, which is the point.
     @test counttypes(types) == 3
     @test gettypenames(types) == ["a", "b", "c"]
     # A type that does not name itself is "unknown", not "species": `AbstractTypes` overrides the

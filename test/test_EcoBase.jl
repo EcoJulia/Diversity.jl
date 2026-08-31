@@ -18,7 +18,7 @@ numcommunities = 8
 manyweights = rand(numspecies, numcommunities)
 manyweights /= sum(manyweights)
 
-# Subtypes that implement neither the Diversity API nor the EcoBase interface — the case the guards
+# Subtypes that implement neither the Diversity API nor the EcoBase interface - the case the guards
 # in src/EcoBase.jl exist for. Fully qualified because SpatialEcology is loaded here too.
 struct BarePartition <: Diversity.AbstractPartition{Nothing} end
 struct BareTypes <: Diversity.AbstractTypes end
@@ -28,7 +28,7 @@ struct BareMC <:
                                        BarePartition} end
 
 # Two types that name themselves but supply no similarity matrix, differing only in whether they
-# claim to have similarity at all — which is what decides whether the identity default is right.
+# claim to have similarity at all - which is what decides whether the identity default is right.
 struct ClaimsSimilarity <: Diversity.AbstractTypes end
 struct DeclaresNoSimilarity <: Diversity.AbstractTypes end
 Diversity.API._gettypenames(::ClaimsSimilarity, ::Bool) = ["a", "b"]
@@ -121,7 +121,7 @@ end
     @test_throws ErrorException Diversity.API._getsubcommunitynames(BarePartition())
     @test_throws ErrorException Diversity.API._gettypenames(BareTypes(), true)
 
-    # …and the reverse bridge must still work for a genuine non-Diversity assemblage. This overlaps
+    # ...and the reverse bridge must still work for a genuine non-Diversity assemblage. This overlaps
     # the SpatialEcology testset above deliberately: that one is the real coverage, on real data,
     # while this hand-built four-site case sits beside the guards and shows what they must not break.
     asm = Assemblage([1 0 1 1; 0 1 1 0; 1 1 0 1],
@@ -134,7 +134,7 @@ end
 @testset "Similarity claimed but not implemented" begin
     # `_calcsimilarity` fails the other way: the EcoBase fallback answers it with an identity
     # matrix rather than recursing, so a type that claims similarity and never supplied one used
-    # to get silently wrong numbers. It is the claim that is refused, not the omission —
+    # to get silently wrong numbers. It is the claim that is refused, not the omission -
     # declaring no similarity still earns the identity default.
     @test_throws ErrorException calcsimilarity(ClaimsSimilarity(), 1)
     @test calcsimilarity(DeclaresNoSimilarity(), 1) == [1.0 0.0; 0.0 1.0]

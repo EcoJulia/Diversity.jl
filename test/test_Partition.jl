@@ -21,7 +21,7 @@ sc = Subcommunities(size(ab3, 2))
 end
 
 @testset "Constructor validation" begin
-    # Both `Subcommunities` constructors reject an empty partition — a metacommunity divided into no
+    # Both `Subcommunities` constructors reject an empty partition - a metacommunity divided into no
     # subcommunities has no weights to normalise by, so this must fail at construction rather than
     # producing NaNs later.
     @test_throws ErrorException Subcommunities(0)
@@ -38,7 +38,7 @@ end
 
 @testset "In a metacommunity" begin
     # A partition is only meaningful attached to abundances, and the subcommunity count has to match
-    # the number of columns — the check `mcmatch` makes.
+    # the number of columns - the check `mcmatch` makes.
     meta = Metacommunity(ab3, UniqueTypes(2), sc)
     @test countsubcommunities(meta) == 3
     @test getsubcommunitynames(meta) == ["1", "2", "3"]

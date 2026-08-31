@@ -108,7 +108,7 @@ function Diversity.GeneticType(dat::PopData;
 end
 
 # Reconstruct a VCF genotype string from a PopGen genotype tuple. PopGen stores
-# alleles as 1-based codes (ref = 1, alt = 2, …), so mapping code k -> k-1 gives
+# alleles as 1-based codes (ref = 1, alt = 2, ...), so mapping code k -> k-1 gives
 # the original 0-based VCF genotype (e.g. (1, 2) -> "0|1"). Missing genotypes
 # become ".|.", which gen2dist recodes as no mutation.
 _genotype_string(::Missing) = ".|."

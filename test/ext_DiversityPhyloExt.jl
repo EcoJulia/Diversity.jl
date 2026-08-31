@@ -10,7 +10,7 @@ using EcoBase: thingkind, thingkindplural, placekind
 using Tables
 using DataFrames
 
-# A phylogenetic type that is *not* this extension's `PhyloBranches` — enough of the API to build a
+# A phylogenetic type that is *not* this extension's `PhyloBranches` - enough of the API to build a
 # metacommunity from, and no more. Faith's PD must decline to run on it.
 struct OtherPhyloTypes <: Diversity.AbstractPhyloTypes{Nothing} end
 Diversity.API._gettypenames(::OtherPhyloTypes, ::Bool) = ["a", "b"]
@@ -83,7 +83,7 @@ Diversity.API._calcsimilarity(::OtherPhyloTypes, ::Real) = [1.0 0.5; 0.5 1.0]
     @test !haskey(subdiv(Tables.columntable, Gamma(plain), 0), :treename)
 
     # Note: The units of a phylogenetic metacommunity are *branches*, and this is how a reader is told
-    # — `PhyloBranches` is opinionated about that, so it answers EcoBase's naming hooks itself.
+    # - `PhyloBranches` is opinionated about that, so it answers EcoBase's naming hooks itself.
     @test thingkind(metaphylo) == "branch"
     @test thingkindplural(metaphylo) == "branches"   # not EcoBase's default "branchs"
     @test placekind(metaphylo) == "subcommunity"
@@ -92,7 +92,7 @@ Diversity.API._calcsimilarity(::OtherPhyloTypes, ::Real) = [1.0 0.5; 0.5 1.0]
     @test occursin("Branch names:", out)             # singular in the heading
 
     # Translating to a GeneralTypes metacommunity has to carry the *scaled* Zmatrix and the
-    # *branch* abundances together, or the phylogeny's numbers do not survive — which is the case
+    # *branch* abundances together, or the phylogeny's numbers do not survive - which is the case
     # that makes the scale argument to `_calcsimilarity` load-bearing here and nowhere else.
     conv = Metacommunity(metaphylo)
     @test gettypes(conv) isa GeneralTypes
@@ -108,7 +108,7 @@ end
 
 @testset "Faith's PD" begin
     # Faith's PD is the total length of the branches spanned by the types present, with no
-    # normalisation — so the numbers here are read straight off the tree, not off the framework.
+    # normalisation - so the numbers here are read straight off the tree, not off the framework.
     species = ["Dog", "Human", "Cat"]
     nt = RootedTree(species)              # 1 + 1 + 1 + 2 = 5.0 of branch, ultrametric
     n = createnode!(nt)
@@ -156,7 +156,7 @@ end
     @test all(pd.measure .== "Faith's PD")
     @test_throws ErrorException generalisedfaith_pd(individualDiversity, mc)
 
-    # It is only defined for phylogenetic types — there is no PD without a tree.
+    # It is only defined for phylogenetic types - there is no PD without a tree.
     @test_throws MethodError faith_pd(Metacommunity([0.5, 0.5]))
 
     # Narrower than that, in fact: only for the `PhyloBranches` this extension supplies, not for

@@ -534,8 +534,8 @@ metacommunity, and caches them for subsequent analysis. This is a
 subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
-Per subcommunity, it is an estimate of naive-community metacommunity diversity
-— the diversity the whole metacommunity would have if this subcommunity shared
+Per subcommunity, it is an estimate of naive-community metacommunity diversity -
+the diversity the whole metacommunity would have if this subcommunity shared
 no types, and no similarity, with any other. Averaged over the subcommunities it
 gives naive-community metacommunity diversity itself, which is an upper bound on
 the true metacommunity diversity `Gamma`. It is `NormalisedAlpha` measured per
@@ -575,7 +575,7 @@ subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
 Per subcommunity, it is the similarity-sensitive diversity of that subcommunity
-in isolation — what its diversity would be if it were the whole community.
+in isolation - what its diversity would be if it were the whole community.
 Averaged over the subcommunities it gives their average diversity, which is
 invariant under shattering.
 
@@ -664,8 +664,8 @@ composite types are powermeans of those measures.
 Per subcommunity, it is an estimate of the effective number of distinct
 subcommunities, and is high when a subcommunity is both distinctive and small.
 Averaged over the subcommunities it gives the effective number of distinct
-subcommunities itself, which is at most the number of subcommunities — reaching
-that maximum when they are completely distinct and of equal size — and which is
+subcommunities itself, which is at most the number of subcommunities - reaching
+that maximum when they are completely distinct and of equal size - and which is
 invariant under shattering. It is the reciprocal of `NormalisedRho`.
 
 #### Constructor arguments:
@@ -711,7 +711,7 @@ which the diversity of the metacommunity would be preserved if the subcommunity
 were lost. It takes its minimum of 1 when nothing resembling the subcommunity
 remains elsewhere, so that losing it would lose its diversity entirely. Averaged
 over the subcommunities it gives their average redundancy, which rises towards
-the *effective* number of subcommunities — the Hill number of their weights — as
+the *effective* number of subcommunities - the Hill number of their weights - as
 they become more alike, reaching the number of subcommunities itself only when
 they are also of equal size. It is the reciprocal of `RawBeta`.
 
@@ -756,12 +756,12 @@ measures.
 Per subcommunity, it is the **representativeness** of that subcommunity: how
 typical it is of the metacommunity as a whole. Where all types are equally
 abundant, a subcommunity holding a fraction `r` of them has representativeness
-exactly `r` — whatever fraction of the *individuals* it holds, since being the
+exactly `r` - whatever fraction of the *individuals* it holds, since being the
 normalised measure it has the subcommunity's weight divided out. Averaged over
 the subcommunities it gives their average
 representativeness. In the naive-type case representativeness is at most 1,
 attained when the subcommunity has the same type distribution as the
-metacommunity — but that bound does **not** hold for a general similarity
+metacommunity - but that bound does **not** hold for a general similarity
 matrix. It is the reciprocal of `NormalisedBeta`.
 
 #### Constructor arguments:
@@ -806,7 +806,7 @@ measures are simple powermeans of the individual measures.
 The two scales read differently here, and the difference matters. Per
 subcommunity, it is the contribution *per individual* toward metacommunity
 diversity, combining a subcommunity's own diversity with the rarity of its types
-in the metacommunity — so a subcommunity of a few very rare types contributes
+in the metacommunity - so a subcommunity of a few very rare types contributes
 heavily however dull it looks in isolation. Averaged over the subcommunities it
 gives the metacommunity's own similarity-sensitive diversity, the diversity of
 the whole taken without regard to how it is divided.

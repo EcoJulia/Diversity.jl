@@ -13,7 +13,7 @@ using Tables
 """
     norm_sub_alpha(meta::AbstractAssemblage, qs)
 
-Calculates the similarity-sensitive diversity of each subcommunity in isolation — the diversity
+Calculates the similarity-sensitive diversity of each subcommunity in isolation - the diversity
 each subcommunity would have if it were the whole of the community.
 
 # Arguments:
@@ -36,7 +36,7 @@ end
 """
     raw_sub_alpha(meta::AbstractAssemblage, qs)
 
-Calculates the per-subcommunity estimate of naive-community metacommunity diversity — the diversity
+Calculates the per-subcommunity estimate of naive-community metacommunity diversity - the diversity
 of the metacommunity that this subcommunity alone would imply, if no type were shared with any
 other subcommunity. It is [`norm_sub_alpha`](@ref) per individual, rescaled by the size of the
 subcommunity.
@@ -85,7 +85,7 @@ end
 """
     raw_sub_beta(meta::AbstractAssemblage, qs)
 
-Calculates the distinctiveness of individual subcommunities — how much of each subcommunity is
+Calculates the distinctiveness of individual subcommunities - how much of each subcommunity is
 unlike the rest of the metacommunity, whether through types found nowhere else or through low
 similarity to the types that are. It is the reciprocal of [`raw_sub_rho`](@ref).
 
@@ -109,7 +109,7 @@ end
 """
     norm_sub_rho(meta::AbstractAssemblage, qs)
 
-Calculates the representativeness of individual subcommunities — how typical each subcommunity is
+Calculates the representativeness of individual subcommunities - how typical each subcommunity is
 of the metacommunity as a whole. A subcommunity holding a fixed fraction of equally abundant types
 has representativeness equal to that fraction.
 
@@ -133,7 +133,7 @@ end
 """
     raw_sub_rho(meta::AbstractAssemblage, qs)
 
-Calculates the redundancy of individual subcommunities — the extent to which the diversity of the
+Calculates the redundancy of individual subcommunities - the extent to which the diversity of the
 metacommunity would survive the loss of each subcommunity. It takes its minimum of 1 when nothing
 resembling the subcommunity remains elsewhere.
 
@@ -182,7 +182,7 @@ end
     norm_meta_alpha(meta::AbstractAssemblage, qs)
 
 Calculates the average similarity-sensitive diversity of the subcommunities, each taken in
-isolation. It is invariant under shattering — subdividing a subcommunity into identical parts does
+isolation. It is invariant under shattering - subdividing a subcommunity into identical parts does
 not change it.
 
 # Arguments:
@@ -205,7 +205,7 @@ end
 """
     raw_meta_alpha(meta::AbstractAssemblage, qs)
 
-Calculates naive-community metacommunity diversity — the diversity the metacommunity would have if
+Calculates naive-community metacommunity diversity - the diversity the metacommunity would have if
 its subcommunities shared no types and no similarity. It is an upper bound on the true
 metacommunity diversity [`meta_gamma`](@ref).
 
@@ -230,7 +230,7 @@ end
     norm_meta_beta(meta::AbstractAssemblage, qs)
 
 Calculates the effective number of distinct subcommunities. When they are completely distinct it
-reaches `qD(w, q)`, the Hill number of their weights — which is the number of subcommunities itself
+reaches `qD(w, q)`, the Hill number of their weights - which is the number of subcommunities itself
 only when they are also of equal size. It is invariant under shattering.
 
 # Arguments:
@@ -299,8 +299,8 @@ end
     raw_meta_rho(meta::AbstractAssemblage, qs)
 
 Calculates the average redundancy of the subcommunities. It takes its minimum of 1 when the
-subcommunities have nothing in common, and rises towards the *effective* number of subcommunities
-— the Hill number of their weights — as they become more alike, reaching the number of
+subcommunities have nothing in common, and rises towards the *effective* number of subcommunities -
+the Hill number of their weights - as they become more alike, reaching the number of
 subcommunities itself only when they are also of equal size.
 
 # Arguments:
@@ -323,7 +323,7 @@ end
 """
     meta_gamma(meta::AbstractAssemblage, qs)
 
-Calculates metacommunity similarity-sensitive diversity — the diversity of the metacommunity taken
+Calculates metacommunity similarity-sensitive diversity - the diversity of the metacommunity taken
 as a whole, ignoring how it is divided. It is the average of the subcommunity contributions
 [`sub_gamma`](@ref).
 

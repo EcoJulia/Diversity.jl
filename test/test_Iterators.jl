@@ -6,8 +6,8 @@ using Diversity
 
 # Deliberately built from `GeneralTypes` rather than a phylogeny, so this file needs nothing
 # beyond the package's own dependencies and runs as a bare script. The iterators do not care what
-# kind of types they are walking. The phylogenetic case — where the processed types outnumber the
-# raw ones — is covered in `ext_DiversityPhyloExt.jl`, where `Phylo` is loaded anyway.
+# kind of types they are walking. The phylogenetic case - where the processed types outnumber the
+# raw ones - is covered in `ext_DiversityPhyloExt.jl`, where `Phylo` is loaded anyway.
 @testset "Iterators" begin
     species = 10
     sc = 5

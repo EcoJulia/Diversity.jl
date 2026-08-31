@@ -24,7 +24,7 @@
 #
 # **The second half builds the manual with Documenter**, which is a different question and catches
 # what the first half structurally cannot: prose. A `[foo](@ref)` pointing at nothing, an
-# `@autodocs` that collects no docstring, a page missing from the navigation — none of those are
+# `@autodocs` that collects no docstring, a page missing from the navigation - none of those are
 # code, so none of them can fail above. Before this was added they surfaced only in the
 # `Documentation` workflow, after a push.
 #
@@ -39,7 +39,7 @@ using Diversity
 using Documenter
 
 # The manual build below runs when this file was asked for by name and when running locally, but not
-# on a CI runner that merely reached it as part of the whole suite — the `Documentation` workflow
+# on a CI runner that merely reached it as part of the whole suite - the `Documentation` workflow
 # already builds the manual, on the same triggers, so doing it again in each of the six test jobs
 # checks nothing new. Same "was I asked for?" idiom as `extras_clean.jl`, and for the same reason:
 # it needs no environment variable to tell the cases apart. The code blocks above still run
@@ -58,13 +58,13 @@ const ASKED_FOR = any(a -> occursin("extras_docs", a), ARGS)
 Core.eval(Main, :(using Diversity))
 Core.eval(Main, :(using Phylo))
 
-# Pages that plot need GR told there is no display, exactly as `docs/make.jl` does — otherwise a
+# Pages that plot need GR told there is no display, exactly as `docs/make.jl` does - otherwise a
 # headless runner fails on the first figure.
 get!(ENV, "GKSwstype", "100")
 
 # The fence languages Documenter *executes* while building a page. `@example` and `@setup` run as
 # scripts (the latter without showing its code); `@repl` runs line by line and shows a prompt. The
-# rest of Documenter's blocks — `@meta`, `@docs`, `@autodocs`, `@index`, `@contents`, `@raw` — are
+# rest of Documenter's blocks - `@meta`, `@docs`, `@autodocs`, `@index`, `@contents`, `@raw` - are
 # directives rather than code, and `jldoctest` is checked against its own recorded output by
 # Documenter itself, so running it here would duplicate that badly (we would execute it but compare
 # nothing).
@@ -72,7 +72,7 @@ const EXECUTED = ("@example", "@setup", "@repl")
 
 # One page's executable code, split into sandboxes **exactly as Documenter groups them**: blocks
 # sharing a name share a module and run in order, while an anonymous block gets a module to itself.
-# Matching that rule is what makes this runner and the docs build agree by construction — a page that
+# Matching that rule is what makes this runner and the docs build agree by construction - a page that
 # passes here for the wrong reason (state leaking between blocks that Documenter keeps apart) would
 # fail there.
 #
@@ -94,7 +94,7 @@ function _sandboxes(path::AbstractString)
                 push!(buffer, line)
             end
         elseif startswith(line, "```")
-            # ```@repl name — the language is the first word, the sandbox name the rest.
+            # ```@repl name - the language is the first word, the sandbox name the rest.
             spec = split(strip(chopprefix(line, "```")); limit = 2)
             isempty(spec) && continue
             first(spec) in EXECUTED || continue
@@ -119,8 +119,8 @@ end
 #
 # It deliberately does **not** use `@test_nowarn`, which fails on *any* stderr output including
 # `@info`. That is too strict for documentation: a page is entitled to call a package that logs
-# — `SpatialEcology` announces "Matrix data assumed to be presence-absence" whenever an assemblage is
-# built — and forbidding that would mean either hiding the call or dropping the example. A *warning*
+# - `SpatialEcology` announces "Matrix data assumed to be presence-absence" whenever an assemblage is
+# built - and forbidding that would mean either hiding the call or dropping the example. A *warning*
 # still fails, because a documentation example that warns is usually a documentation example doing
 # something wrong.
 function _runblock(sandbox, source, label)
@@ -152,11 +152,11 @@ end
         sandboxes = _sandboxes(joinpath(docsdir, page))
         isempty(sandboxes) && continue
         total += length(sandboxes)
-        println("    * $page — $(length(sandboxes)) executable block group(s) ...")
+        println("    * $page - $(length(sandboxes)) executable block group(s) ...")
         @testset "$page" begin
             for (name, source) in sandboxes
                 # A fresh, bare module per sandbox: the page must bring its own `using` statements,
-                # which is the point — a page whose imports only work because the test suite had
+                # which is the point - a page whose imports only work because the test suite had
                 # already loaded something is a page a reader cannot follow.
                 sandbox = Module(Symbol("Docs_", replace(page, r"\W" => "_"),
                                         "_",
@@ -169,7 +169,7 @@ end
     end
     # The check that this file is doing anything at all. A regex that quietly matches nothing
     # reports success just as loudly as one that works, and this suite exists precisely because
-    # unexecuted documentation rots invisibly — so a run that executed no code is a failure.
+    # unexecuted documentation rots invisibly - so a run that executed no code is a failure.
     @test total > 0
 end
 
@@ -179,7 +179,7 @@ if !(ASKED_FOR || !haskey(ENV, "RUNNER_OS"))
 else
     @testset "Documentation build" begin
         docsdir = joinpath(@__DIR__, "..", "docs")
-        # The same modules, pages and site name `docs/make.jl` publishes with — included rather
+        # The same modules, pages and site name `docs/make.jl` publishes with - included rather
         # than repeated, so this cannot drift into checking a different site.
         include(joinpath(docsdir, "config.jl"))
         println()

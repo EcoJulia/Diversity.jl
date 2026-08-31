@@ -14,8 +14,8 @@ using RCall
 
 # The output columns both packages promise. Neither package's column set contains the other's,
 # which is why the subset assertions these replace could never pass, in either direction: `div_type`
-# is this package's name for what rdiversity calls `dat_id` — and the vocabularies differ too, ours
-# saying "Arbitrary Z" where rdiversity says "UserGenerated" — while rdiversity carries four columns
+# is this package's name for what rdiversity calls `dat_id` - and the vocabularies differ too, ours
+# saying "Arbitrary Z" where rdiversity says "UserGenerated" - while rdiversity carries four columns
 # recording how a similarity matrix was derived from distances (`normalised`, `k`, `max_d`,
 # `transformation`) that this package does not. So the shared contract is what is worth asserting,
 # and asserting it is not vacuous: it is exactly what lets a result move between the two packages.
@@ -25,7 +25,7 @@ const SHARED_COLUMNS = Set(["diversity", "measure", "partition_level",
 
 # Check a Diversity result and an rdiversity result against the columns they both promise.
 # Column *names* only. The `measure` column's *values* differ between the packages for every
-# measure — "NormalisedBeta" against "normalised beta", "Gamma" against "gamma" — which this does
+# measure - "NormalisedBeta" against "normalised beta", "Gamma" against "gamma" - which this does
 # not test. That divergence is known and is a question for the two maintainers, not an oversight.
 function _checkcolumns(jmd, rmd)
     jcols = Set(map(string, names(jmd)))

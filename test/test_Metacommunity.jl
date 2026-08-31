@@ -9,7 +9,7 @@ using Diversity.API
 using EcoBase
 using Missings
 
-# An assemblage from outside our hierarchy whose *types* nonetheless carry similarity — the shape
+# An assemblage from outside our hierarchy whose *types* nonetheless carry similarity - the shape
 # EcoSISTEM's Ecosystem has. Its places are an EcoBase `AbstractPlaces`, which cannot also be an
 # `AbstractPartition`, so this is what reaches the second `_aspartition` method.
 struct ForeignPlaces <: EcoBase.AbstractPlaces{Nothing} end
@@ -148,7 +148,7 @@ end
     @test_nowarn Metacommunity(ab3, Z)
     @test_warn "Abundances not normalised" Metacommunity(abf .* 2, Z)
 
-    # Genuinely mismatched float types are still refused — but by `mcmatch`, which says so,
+    # Genuinely mismatched float types are still refused - but by `mcmatch`, which says so,
     # rather than by there being no applicable method at all.
     @test_throws ErrorException Metacommunity(Float32.(abf), Z)
 end

@@ -17,8 +17,8 @@ paper [arXiv:1404.6520 (q-bio.QM)][paper-url],
 *How to partition diversity*, which generalises Hill numbers and the
 similarity-sensitive measures of Leinster and Cobbold so that the
 diversity of a community can be partitioned among its subcommunities.
-Similarity between individuals may be of any kind — taxonomic,
-phylogenetic, genetic, functional or phenotypic — and the package
+Similarity between individuals may be of any kind - taxonomic,
+phylogenetic, genetic, functional or phenotypic - and the package
 provides a series of older ecological diversity measures through
 sub-modules as well.
 

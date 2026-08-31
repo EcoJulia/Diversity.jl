@@ -33,7 +33,7 @@ jobs:
       - name: Build package
         uses: julia-actions/julia-buildpkg@v1
       # Asks for the hygiene set by name. `test/extras_clean.jl` runs when it is named or when
-      # running locally, and skips on a CI runner that merely reached it as part of the whole suite —
+      # running locally, and skips on a CI runner that merely reached it as part of the whole suite -
       # so this job is the only place in CI the crosswalk and formatter checks run.
       - name: Running
         run: julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_clean.jl"])'

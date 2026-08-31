@@ -155,7 +155,7 @@ function Metacommunity(abundances::MU,
 end
 
 # Keep a partition that is already one of ours. A foreign `AbstractPlaces` is not an
-# `AbstractPartition` and cannot be, so rebuild one from its names instead — `placenames` is part of
+# `AbstractPartition` and cannot be, so rebuild one from its names instead - `placenames` is part of
 # EcoBase's own interface for `AbstractPlaces`, so it is always there to ask, and `collect` is what
 # turns whatever vector of strings it returns into the `Vector{String}` `Subcommunities` takes.
 _aspartition(part::AbstractPartition) = part

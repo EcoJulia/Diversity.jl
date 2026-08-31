@@ -12,7 +12,7 @@ julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_canonical.jl"])'
 
 ## Why these exist, given `pkg_RCall.jl`
 
-The R cross-validation is a strictly stronger check — it compares against
+The R cross-validation is a strictly stronger check - it compares against
 [rdiversity](https://github.com/boydorr/rdiversity), an independent implementation of the same
 specification, rather than against this package's own past output.
 
@@ -29,19 +29,19 @@ updated:
 DIVERSITY_BLESS=true julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_canonical.jl"])'
 ```
 
-This rewrites `reference.toml`. **The diff to that file is the deliverable** — it is the
+This rewrites `reference.toml`. **The diff to that file is the deliverable** - it is the
 machine-checked statement of what your change did to the output, and it belongs in the pull request
 alongside the code. Review it before committing:
 
 - Did exactly the results you expected to move, move?
 - Did anything move that you did not expect? That is the finding, not the noise.
-- Are the new numbers still sensible — positive, finite, non-increasing in `q`?
+- Are the new numbers still sensible - positive, finite, non-increasing in `q`?
 
 Note: **Re-blessing is not a way to make a failing test pass.** A canonical failure means the output
 changed; your job is to explain *why* before recording the new value. If you cannot say why, do not
 bless it.
 
-And if a change moves these numbers, it will very likely move rdiversity's too — so it is a change
+And if a change moves these numbers, it will very likely move rdiversity's too - so it is a change
 to the *specification*, not just to this package. Raise it rather than blessing past it.
 
 ## The two kinds, and why there are two
@@ -57,12 +57,12 @@ to look at `src/DiversityMeasure.jl` or at an extension.
 ## `test_paper.jl` is a third kind, and the strongest
 
 Everything above records what this package produced. `test_paper.jl` records what the **paper says it
-must produce** — the communities its appendices work right through, with every measure stated. So it
+must produce** - the communities its appendices work right through, with every measure stated. So it
 uses **plain `@test`s and no blessed values at all**, and `DIVERSITY_BLESS=true` cannot touch it.
 
 That is the point. A blessed value asks *has this changed?* and can be silenced by re-blessing;
 `test_paper.jl` asks *is this still the published framework?* and cannot. If it fails, either the
-package has stopped implementing the specification or the specification has moved — and both are
+package has stopped implementing the specification or the specification has moved - and both are
 findings, not something to record and move past.
 
 Add to it rather than blessing around it whenever a result has a published value to check against.
@@ -81,26 +81,26 @@ using .Canonical
 blessed("measures/unique/Gamma/meta_q0", metadiv(Γ(meta), 0)[1, :diversity])
 ```
 
-- **Flatten matrices at the call site** — `vec(Z)`. `TOML.print` errors outright on a `Matrix`, and
+- **Flatten matrices at the call site** - `vec(Z)`. `TOML.print` errors outright on a `Matrix`, and
   the helper refuses one with the fix in the message. Assert the shape separately in the test, where a
   reader can see it.
 - **Name as `area/thing`**, so `reference.toml` sorts into groups and a diff stays readable.
 - **Prefer several specific numbers to one summary.** The per-subcommunity `subdiv` vectors catch a
   change that redistributes diversity between subcommunities while preserving the metacommunity
   figure; the `metadiv` scalar alone does not. Both are blessed for exactly that reason.
-- **Bless both scales.** They aggregate with *different* power-mean orders — opposite ones for the
-  relative-entropy measures — so a subcommunity vector can move while its metacommunity summary does
+- **Bless both scales.** They aggregate with *different* power-mean orders - opposite ones for the
+  relative-entropy measures - so a subcommunity vector can move while its metacommunity summary does
   not.
 - **Keep ordinary assertions alongside the blessed ones.** A blessed number tells you *something
   changed*; a property tells you *the answer is still right*. Re-blessing silences the first and must
-  never be able to silence the second. Both files assert numbers equivalence, the `β̄ · ρ̄ = 1`
-  reciprocal, `α = ᾱ / w`, and symmetry where symmetry is required.
+  never be able to silence the second. Both files assert numbers equivalence, the `β̄ .* ρ̄ = 1`
+  reciprocal, `α = ᾱ ./ w`, and symmetry where symmetry is required.
 - **Nothing random.** Build trees explicitly with `createnode!` / `createbranch!` rather than
-  `rand(Nonultrametric(…))`; a random topology re-blesses to noise every run. There is deliberately no
-  seeding here — a fixed structure is readable in the diff, a seed is not.
+  `rand(Nonultrametric(...))`; a random topology re-blesses to noise every run. There is deliberately no
+  seeding here - a fixed structure is readable in the diff, a seed is not.
 
 The function is `blessed`, not `canonical`, because **`BioSequences` exports `canonical`** (the
-canonical orientation of a k-mer). A file that loads it — `test_types.jl` does — would get an
+canonical orientation of a k-mer). A file that loads it - `test_types.jl` does - would get an
 ambiguity between the two rather than either, reported as a bare `UndefVarError`. EcoSISTEM has no
 such clash and calls it `canonical`; do not rename this one back to match.
 

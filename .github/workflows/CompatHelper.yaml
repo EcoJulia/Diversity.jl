@@ -15,7 +15,7 @@ jobs:
         julia-version:
           - '1'
         # x64, not x86: this is an infrastructure job, not a compatibility matrix, and 32-bit
-        # Julia is where CompatHelper's TLS stack (HTTP → Reseau) fails to precompile.
+        # Julia is where CompatHelper's TLS stack (HTTP -> Reseau) fails to precompile.
         arch:
           - x64
         os:

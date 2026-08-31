@@ -14,7 +14,7 @@ using ParallelTestRunner: find_tests, parse_args, runtests
 # supplies them, so a bare `julia test/extras_clean.jl` dies on `using Git`. `Pkg.test` gets it
 # right by construction; anything else reconstructs it and drifts.
 #
-# The `.jl` is optional, so `test_args = ["extras_clean"]` works too. Any test file may be named —
+# The `.jl` is optional, so `test_args = ["extras_clean"]` works too. Any test file may be named -
 # `test_Metacommunity.jl` as readily as a whole set.
 #
 # **The suite is six nameable sets**, which is what lets you run one part rather than all of it:
@@ -23,14 +23,14 @@ using ParallelTestRunner: find_tests, parse_args, runtests
 #     extras_canonical  extras_clean  extras_docs  extras_pkg
 #
 # The split is semantic: the **core** sets test this package against itself, the **extras** check
-# it against something outside — another package's answers, the blessed results, the documentation,
+# it against something outside - another package's answers, the blessed results, the documentation,
 # the repo's own hygiene.
 #
 # `extras_pkg` is the one to know about: it cross-validates against R `rdiversity` and `vegan`,
 # which is most of the suite's wall-clock and installs CRAN packages on a cold machine. Naming
 # `core_test` instead is the difference between seconds and minutes while iterating.
 #
-# **Running the sets in parallel gives up the ordering guarantee below** — the extras then run even
+# **Running the sets in parallel gives up the ordering guarantee below** - the extras then run even
 # when the unit tests are failing, so one broken thing reports as several. If you do, let the first
 # invocation get through precompilation before starting the rest, or every process compiles the same
 # package at once and they contend.
@@ -80,15 +80,15 @@ else
         # Three groups, in this order: the serial extras, then the concurrent ones, then hygiene.
         #
         # `extras_clean` being **last of all** rather than beside its siblings is load-bearing, not
-        # tidiness. It fails on any unstaged change to a tracked file — the normal state of a
-        # working tree mid-task — and on a stale `dateModified` in `codemeta.json`, which goes stale
+        # tidiness. It fails on any unstaged change to a tracked file - the normal state of a
+        # working tree mid-task - and on a stale `dateModified` in `codemeta.json`, which goes stale
         # overnight. A `@testset` throws at its end, so while it sat in the serial group that
         # routine failure aborted the run before `extras_docs` had even started, and the
         # documentation went unchecked locally. Moving it within the serial group would not have
         # helped: the throw comes from the enclosing testset, whichever member failed.
         #
-        # The cost of the swap is the mirror case — a failing `extras_docs` now stops `extras_clean`
-        # from running — which is much the better trade, since a broken docs build is a real defect
+        # The cost of the swap is the mirror case - a failing `extras_docs` now stops `extras_clean`
+        # from running - which is much the better trade, since a broken docs build is a real defect
         # while a dirty tree is not.
         parallelextras = ["extras_docs", "extras_examples", "extras_notebooks"]
         lastextras = ["extras_clean"]

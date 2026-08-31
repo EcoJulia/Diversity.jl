@@ -34,7 +34,7 @@ nab = NormalisedAlpha(meta2)
     asciis = ["RawAlpha", "NormalisedAlpha",
         "RawBeta", "NormalisedBeta",
         "RawRho", "NormalisedRho", "Gamma"]
-    # These are the paper's own descriptions of the measures, at subcommunity level — which is
+    # These are the paper's own descriptions of the measures, at subcommunity level - which is
     # the level `getFullName`'s only consumer, the plot recipe, works at.
     fulls = ["estimate of naive-community metacommunity diversity",
         "diversity of subcommunity in isolation",
@@ -49,7 +49,7 @@ nab = NormalisedAlpha(meta2)
         @test getFullName(diversities[i](meta1)) == fulls[i]
     end
 
-    # The descriptive aliases are the names the papers use, and are the same types — so a measure
+    # The descriptive aliases are the names the papers use, and are the same types - so a measure
     # reached through one spelling must be identical to the same measure reached through another.
     @test Diversity.Distinctiveness ≡ RawBeta
     @test Diversity.Redundancy ≡ RawRho
@@ -58,7 +58,7 @@ nab = NormalisedAlpha(meta2)
           "representativeness"
 
     # `getASCIIName` strips the module prefix and the type parameters, so it names the *measure*
-    # rather than the concrete parameterisation — which is what the output DataFrame carries.
+    # rather than the concrete parameterisation - which is what the output DataFrame carries.
     @test !occursin("Diversity.", getASCIIName(Gamma(meta)))
     @test !occursin("{", getASCIIName(Gamma(meta)))
 end
@@ -453,7 +453,7 @@ end
     @test plot((Gamma(mc), 0)) isa Plots.Plot
 
     # And it needs coordinates. A partition with no spatial data makes some up, but only because
-    # `getcoords` is wired to `coordinates` in `src/EcoBase.jl` — EcoBase's own fallback returns the
+    # `getcoords` is wired to `coordinates` in `src/EcoBase.jl` - EcoBase's own fallback returns the
     # partition itself, which Plots cannot use.
     @test getcoords(getpartition(mc)) isa AbstractMatrix
     @test size(getcoords(getpartition(mc))) == (countsubcommunities(mc), 2)
@@ -488,8 +488,8 @@ end
     @test norm_sub_alpha(DataFrame, mc, 1) == norm_sub_alpha(mc, 1)
     @test meta_gamma(DataFrame, mc, 1) == meta_gamma(mc, 1)
     levels = [subcommunityDiversity, metacommunityDiversity]
-    @test diversity(DataFrame, levels, [ᾱ, Γ], mc, [0, 1]) ==
-          diversity(levels, [ᾱ, Γ], mc, [0, 1])
+    @test diversity(DataFrame, levels, [ᾱ, Γ], mc, [0, 1]) ==
+          diversity(levels, [ᾱ, Γ], mc, [0, 1])
 
     # The all-seven forms take a sink too, at every scale.
     for f in (inddiv, subdiv, metadiv)
@@ -499,15 +499,15 @@ end
     end
 
     # Individual diversities are a level like any other, so `diversity` can ask for them.
-    ind = diversity([individualDiversity], [ᾱ], mc, 1)
+    ind = diversity([individualDiversity], [ᾱ], mc, 1)
     @test nrow(ind) == counttypes(mc) * countsubcommunities(mc)
-    @test ind == inddiv(ᾱ(mc), 1)
-    @test collect(diversity(Tables.columntable, [individualDiversity], [ᾱ], mc,
+    @test ind == inddiv(ᾱ(mc), 1)
+    @test collect(diversity(Tables.columntable, [individualDiversity], [ᾱ], mc,
                             1).diversity) == ind.diversity
 
     # Several measures, orders and levels in one call: each measure is built once and asked for
     # every level, which is the reason this entry point exists.
-    combined = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2])
+    combined = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2])
     @test length(unique(combined.measure)) == 3
     @test length(unique(combined.q)) == 3
     @test length(unique(combined.partition_level)) == 2
@@ -551,19 +551,19 @@ end
     sites = ["north", "south"]
     mc = Metacommunity([0.1 0.2; 0.2 0.1; 0.2 0.2], UniqueTypes(species),
                        Subcommunities(sites))
-    ind = inddiv(ᾱ(mc), 1)
+    ind = inddiv(ᾱ(mc), 1)
     @test nrow(ind) == length(species) * length(sites)
     @test ind.type_name == repeat(species, outer = length(sites))
     @test ind.partition_name == repeat(sites, inner = length(species))
-    @test ind.diversity == vec(inddiv(ᾱ(mc), 1).diversity)
+    @test ind.diversity == vec(inddiv(ᾱ(mc), 1).diversity)
 
     # Subcommunity diversities are one row per subcommunity, in order, with no type named.
-    sub = subdiv(ᾱ(mc), 1)
+    sub = subdiv(ᾱ(mc), 1)
     @test sub.partition_name == sites
     @test all(isempty, sub.type_name)
 
     # Several orders are stacked in the order asked for, not interleaved.
-    many = subdiv(ᾱ(mc), [0, 1, 2])
+    many = subdiv(ᾱ(mc), [0, 1, 2])
     @test many.q == repeat([0, 1, 2], inner = length(sites))
     @test many.partition_name == repeat(sites, outer = 3)
 
@@ -573,7 +573,7 @@ end
         "NormalisedRho", "Gamma"]
 
     # A level with no implementation is refused rather than silently skipped.
-    @test_throws ErrorException diversity([Diversity.communityDiversity], [ᾱ],
+    @test_throws ErrorException diversity([Diversity.communityDiversity], [ᾱ],
                                           mc, 1)
 end
 
