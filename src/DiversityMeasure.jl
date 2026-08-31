@@ -23,8 +23,9 @@ end
 # `similar` and `copyto!`, so a caller asking for a DataFrame gets ordinary `Vector`s exactly as
 # before.
 #
-# Warning: `_vcatcolumns` concatenates with `vcat`, which materialises, so a result covering several
-# orders, measures or levels loses this again. Streaming those as partitions is a separate question.
+# A result covering several orders, measures or levels is built as one part per combination, and
+# `_chaincolumn` joins those by holding them with their cumulative bounds rather than by copying, so
+# the rules survive the join too.
 
 # One value, repeated for every row.
 struct ConstantColumn{T} <: AbstractVector{T}
