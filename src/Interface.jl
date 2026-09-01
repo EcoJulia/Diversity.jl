@@ -202,7 +202,7 @@ function createsummaryline(vec::AbstractVector{<:AbstractString})
     return linefunc(vec[1:3]) * "..." * linefunc(vec[(end - 1):end])
 end
 
-# Type names are not necessarily strings — `GeneralTypes(zmatrix)` numbers its types from the matrix
+# Type names are not necessarily strings - `GeneralTypes(zmatrix)` numbers its types from the matrix
 # axes, so a metacommunity built as `Metacommunity(abundances, Z)` carries `Int` names, and showing
 # one threw a `MethodError` until this method existed.
 createsummaryline(vec::AbstractVector) = createsummaryline(string.(vec))
@@ -214,7 +214,7 @@ import Base.show
 function _showassemblage(io::IO, mc::AbstractAssemblage)
     sp = createsummaryline(gettypenames(mc))
     si = createsummaryline(getsubcommunitynames(mc))
-    # Plural for the counts, singular for the headings — the same split EcoBase's own `show` makes,
+    # Plural for the counts, singular for the headings - the same split EcoBase's own `show` makes,
     # because "Branch names:" is right where "Branches names:" is not.
     tk = counttypes(mc) > 1 ? thingkindplural(mc) : thingkind(mc)
     pk = countsubcommunities(mc) > 1 ? placekindplural(mc) : placekind(mc)

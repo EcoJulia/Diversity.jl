@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 using Diversity
-using InteractiveUtils
 using EcoBase
 
 ### Abstract supertype definitions
@@ -279,27 +278,29 @@ _hassimilarity(::Diversity.API.AbstractTypes) = true
     floattypes(t)
 
 This function returns a set containing the floating point types that
-are compatible with the Diversity-related object, t.
+are compatible with the Diversity-related object, t. An abstract type
+in the set stands for any of its subtypes, so an object that works with
+any float at all returns `Set([AbstractFloat])`.
 
 """
 function floattypes end
 
 function floattypes(::A) where {FP <: AbstractFloat, A <: AbstractArray{FP}}
-    return Set([FP])
+    return Set{Type}([FP])
 end
 
 function floattypes(::T) where {T <: AbstractTypes}
-    return Set(subtypes(AbstractFloat))
+    return Set{Type}([AbstractFloat])
 end
 
 function floattypes(::P) where {P <: AbstractPartition}
-    return Set(subtypes(AbstractFloat))
+    return Set{Type}([AbstractFloat])
 end
 
 function floattypes(::M) where
     {FP, ARaw, AProcessed, Sim, Part,
      M <: AbstractMetacommunity{FP, ARaw, AProcessed, Sim, Part}}
-    return Set([FP])
+    return Set{Type}([FP])
 end
 
 """
@@ -309,7 +310,17 @@ Checks whether the types of a variety of Diversity-related objects
 have compatible types (using floattypes()).
 
 """
-typematch(args...) = length(mapreduce(floattypes, ∩, args)) ≥ 1
+# The intersection `typematch` needs, in which an abstract type stands for any of its subtypes:
+# {AbstractFloat} meets {Float64} at {Float64}, where a literal set intersection would find nothing
+# in common. Whichever type is the more specific survives, so the result is the set of float types
+# every argument can actually work with.
+function _floatmeet(a, b)
+    return Set{Type}(t
+                     for t in Iterators.flatten((a, b))
+                     if any(u -> t <: u, a) && any(u -> t <: u, b))
+end
+
+typematch(args...) = !isempty(mapreduce(floattypes, _floatmeet, args))
 
 """
     mcmatch(procm::AbstractArray, sim::AbstractTypes, part::AbstractPartition)

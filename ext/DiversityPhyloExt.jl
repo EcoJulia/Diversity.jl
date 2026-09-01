@@ -131,7 +131,7 @@ end
 import Diversity.API: _getdiversityname
 _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
 
-# The units here are branches, not species — this type is opinionated about that, and these are how
+# The units here are branches, not species - this type is opinionated about that, and these are how
 # a reader is told. The plural is spelled out because EcoBase's default is `"$(thingkind(x))s"`.
 import EcoBase: thingkind, thingkindplural
 thingkind(::PhyloBranches) = "branch"
@@ -141,11 +141,11 @@ thingkindplural(::PhyloBranches) = "branches"
 # only methods, because PD is meaningless without a phylogeny.
 #
 # PD is a *total branch length*, so it is the framework's q = 0 diversity multiplied back up by
-# the scale — the abundance-weighted mean root-to-tip distance that `_calcabundance` divided the
+# the scale - the abundance-weighted mean root-to-tip distance that `_calcabundance` divided the
 # branch abundances by. Without that factor you get Chao, Chiu and Jost's `⁰D̄(T)`, PD *per unit*
 # branch length, which is a different measure and is not abundance-independent as PD must be.
 # Checked against branch lengths summed directly from the tree, ultrametric and not, with types
-# absent and with abundances varied: `subcommunityDiversity` needs `ᾱ` (the subcommunity in
+# absent and with abundances varied: `subcommunityDiversity` needs `ᾱ` (the subcommunity in
 # isolation), not `Gamma`, whose subcommunity reading is a contribution rather than a diversity.
 import Diversity.Ecology: generalisedfaith_pd, faith_pd
 using Diversity: DiversityLevel, subcommunityDiversity, metacommunityDiversity

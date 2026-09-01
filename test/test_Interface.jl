@@ -26,8 +26,8 @@ manyweights /= sum(manyweights)
     @test startswith(long, "a, b, c")
     @test endswith(long, "f, g")
 
-    # Type names are not necessarily strings — `GeneralTypes(zmatrix)` numbers its types from the
-    # matrix axes — and showing such a metacommunity threw a `MethodError` until this worked.
+    # Type names are not necessarily strings - `GeneralTypes(zmatrix)` numbers its types from the
+    # matrix axes - and showing such a metacommunity threw a `MethodError` until this worked.
     @test createsummaryline([1, 2, 3]) == "1, 2, 3"
 end
 
@@ -58,7 +58,7 @@ end
     mc = Metacommunity(manyweights, UniqueTypes(species),
                        Subcommunities(communities))
 
-    # Asserted directly rather than left to incidental coverage from other files — these are the
+    # Asserted directly rather than left to incidental coverage from other files - these are the
     # package's public reading surface, and a file that happened to exercise them could move.
     @test counttypes(mc) == numspecies
     @test countsubcommunities(mc) == numcommunities

@@ -5,7 +5,7 @@ using Missings
 using EcoBase
 
 """
-    Metacommunity{FP, ARaw, AProcessed, Part, Sim}
+    Metacommunity{FP, ARaw, AProcessed, Sim, Part}
 
 Metacommunity type, representing a whole metacommunity containing a
 single community or a collection of subcommunities. The metacommunity
@@ -18,8 +18,8 @@ for similarity between individuals.
 # Constructor:
 
 Metacommunity(abundances::AbstractArray,
-              part::AbstractPartition,
-              types::AbstractTypes)
+              types::AbstractTypes,
+              part::AbstractPartition)
 
 # Members:
 
@@ -35,6 +35,15 @@ Metacommunity(abundances::AbstractArray,
   Partition. Should only be accessed through
   getordinariness!(::Metacommunity), which will populate the cache if
   it has not yet been calculated.
+
+- `weights` A cache of the subcommunity weights, accessed through
+  getweight(::Metacommunity).
+
+- `metaordinariness` A cache of the ordinariness of the metacommunity
+  as a whole, accessed through getmetaordinariness!(::Metacommunity).
+
+All three caches are populated on first use and never invalidated, so a
+metacommunity should not be mutated once it has been measured.
 """
 mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
                Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim,
@@ -45,6 +54,8 @@ mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
     types::Sim
     partition::Part
     ordinariness::Union{AProcessed, Missing}
+    weights::Union{Vector{FP}, Missing}
+    metaordinariness::Union{Vector{FP}, Missing}
 
     function Metacommunity{FP, ARaw, AProcessed,
                            Sim, Part}(abundances::ARaw,
@@ -60,7 +71,8 @@ mutable struct Metacommunity{FP, ARaw, AProcessed, Sim, Part} <:
         processedabundances, scale = _calcabundance(types, matrix)
         return new{FP, ARaw, AProcessed, Sim, Part}(abundances,
                                                     processedabundances, scale,
-                                                    types, part, missing)
+                                                    types, part, missing,
+                                                    missing, missing)
     end
 end
 
@@ -143,7 +155,7 @@ function Metacommunity(abundances::MU,
 end
 
 # Keep a partition that is already one of ours. A foreign `AbstractPlaces` is not an
-# `AbstractPartition` and cannot be, so rebuild one from its names instead — `placenames` is part of
+# `AbstractPartition` and cannot be, so rebuild one from its names instead - `placenames` is part of
 # EcoBase's own interface for `AbstractPlaces`, so it is always there to ask, and `collect` is what
 # turns whatever vector of strings it returns into the `Vector{String}` `Subcommunities` takes.
 _aspartition(part::AbstractPartition) = part
@@ -178,12 +190,46 @@ end
 
 import Diversity.API._getordinariness!
 function _getordinariness!(meta::Metacommunity)
-    if ismissing(meta.ordinariness)
-        meta.ordinariness = _calcordinariness(meta.types,
-                                              meta.processedabundances,
-                                              meta.scale)
+    # Bound to a local before the test and returned from the local, rather than re-read from the
+    # field: the field is declared `Union{AProcessed, Missing}`, so returning it directly infers as
+    # that union, while a local is narrowed by `ismissing` to the array alone.
+    ord = meta.ordinariness
+    if ismissing(ord)
+        ord = _calcordinariness(meta.types, meta.processedabundances,
+                                meta.scale)
+        meta.ordinariness = ord
     end
-    return meta.ordinariness
+    return ord
+end
+
+# The subcommunity weights and the metacommunity ordinariness are cached for the same reason the
+# ordinariness itself is: each is a full reduction over an ntypes x nplaces array -- 4.3 ms and
+# 4.9 ms respectively at 200 types x 200,000 places -- and *every* measure built over the
+# metacommunity asks for them, so `diversity` over the seven measures repeated both seven times.
+# Only the matrix case is cached here; where the raw abundances are a vector there is one
+# subcommunity, so the weight is `[1]` and the metacommunity ordinariness is the subcommunity
+# ordinariness, already cached. Those fall through to the defaults in `API.jl`.
+import Diversity.API._getweight
+function _getweight(meta::Metacommunity{FP, <:AbstractMatrix}) where {FP}
+    w = meta.weights
+    if ismissing(w)
+        summed = sum(_getabundance(meta, false), dims = 1)
+        w = reshape(summed, length(summed))
+        meta.weights = w
+    end
+    return w
+end
+
+import Diversity.API._getmetaordinariness!
+function _getmetaordinariness!(meta::Metacommunity{FP,
+                                                   <:AbstractMatrix}) where {FP}
+    mord = meta.metaordinariness
+    if ismissing(mord)
+        summed = sum(_getordinariness!(meta), dims = 2)
+        mord = reshape(summed, length(summed))
+        meta.metaordinariness = mord
+    end
+    return mord
 end
 
 import Diversity.API._getscale

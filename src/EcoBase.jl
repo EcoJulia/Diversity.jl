@@ -24,8 +24,8 @@ end
 
 import EcoBase: getcoords
 # EcoBase's fallback is `getcoords(plc::AbstractPlaces{Nothing}) = plc`, on the grounds that a
-# partition with no location data has no coordinates to give. Ours *does* — `coordinates` above makes
-# up a grid — so without this method the plot recipes hand Plots a partition object instead of a
+# partition with no location data has no coordinates to give. Ours *does* - `coordinates` above makes
+# up a grid - so without this method the plot recipes hand Plots a partition object instead of a
 # coordinate matrix, and plotting any metacommunity without real spatial data fails outright.
 getcoords(part::AbstractPartition{Nothing}) = coordinates(part)
 
@@ -44,7 +44,7 @@ things(mc::AbstractMetacommunity) = gettypes(mc)
 # "thing" and "place". EcoBase supplies these four hooks and defaults them on the *assemblage*; we
 # answer on the **types** and the **partition** instead, because the unit is a property of what is
 # being measured, not of the metacommunity that holds it. That is what lets `PhyloBranches` say
-# "branch" — its things really are branches, and the extension overrides these there.
+# "branch" - its things really are branches, and the extension overrides these there.
 import EcoBase: thingkind, thingkindplural, placekind, placekindplural
 
 thingkind(mc::AbstractMetacommunity) = thingkind(gettypes(mc))
@@ -136,7 +136,7 @@ import Diversity.API: _hassimilarity
 _hassimilarity(::AbstractThings) = false
 
 # The reverse bridge above is typed on EcoBase's supertypes, and Diversity's own abstract types are
-# subtypes of them — so without these guards a Diversity subtype that implements *neither* side
+# subtypes of them - so without these guards a Diversity subtype that implements *neither* side
 # recurses (the forward method calls the underscore API, which dispatches straight back to the
 # reverse method) until the stack overflows. These more specific methods break the cycle and say
 # what is actually missing instead. They must stay: any subtype that *does* implement the underscore
@@ -144,7 +144,7 @@ _hassimilarity(::AbstractThings) = false
 # implementation.
 
 # Reports the API function an incomplete implementation failed to provide, in place of whatever the
-# EcoBase fallback would otherwise have done silently — `why` says what that was.
+# EcoBase fallback would otherwise have done silently - `why` says what that was.
 function _notimplemented(fname, x,
                          why = "the EcoBase fallback cannot be used here " *
                                "because it would call back into this method")
@@ -164,7 +164,7 @@ _gettypenames(t::AbstractTypes, ::Bool) = _notimplemented("_gettypenames", t)
 
 # `_calcsimilarity` fails differently, and needs its own guard: the AbstractThings fallback above
 # does not recurse, it quietly returns an identity matrix. That is *right* for a type declaring it
-# has no similarity — which is why the fallback exists — but for one that claims similarity and
+# has no similarity - which is why the fallback exists - but for one that claims similarity and
 # never supplied the matrix it means silently wrong answers instead of an error. So make the claim,
 # not the omission, the thing that is refused. `_hassimilarity` is a trait with one method per type,
 # so the branch below is folded away during inference rather than tested at run time.

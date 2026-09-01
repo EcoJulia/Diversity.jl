@@ -25,8 +25,8 @@ shannon(community)
 richness(community)
 ```
 
-Two subcommunities can be compared with the Jaccard index, either directly or —
-since it is a special case of our general measures — through a `Metacommunity`,
+Two subcommunities can be compared with the Jaccard index, either directly or -
+since it is a special case of our general measures - through a `Metacommunity`,
 with or without a similarity matrix:
 
 ```@repl ecology
@@ -66,7 +66,7 @@ Diversity.Ecology.generalisedpielou(metacommunityDiversity, communitymat)
 exception on this
 page, in two ways. The measures above are the classical ones for wholly distinct
 types, and refuse to run when similarity is present; Faith's phylogenetic
-diversity is the opposite — it is meaningless without a tree, so it is defined
+diversity is the opposite - it is meaningless without a tree, so it is defined
 only for a metacommunity built over the `PhyloBranches` that the `Phylo`
 extension supplies, and therefore appears only once `Phylo` is loaded. See
 [Phylogenetic diversity](phylogenetics.md).

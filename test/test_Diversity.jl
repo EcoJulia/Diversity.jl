@@ -20,7 +20,7 @@ using Diversity.ShortNames
 end
 
 @testset "ShortNames" begin
-    # The unicode names are aliases, not separate implementations — if these ever diverge, the two
+    # The unicode names are aliases, not separate implementations - if these ever diverge, the two
     # spellings of the same measure would silently disagree.
     @test α ≡ RawAlpha
     @test ᾱ ≡ NormalisedAlpha
@@ -63,7 +63,7 @@ end
                               normalise = false, max_d = maximum(dist)) ≈
           exp.(-2 .* dist)
 
-    # The linear transform clamps at zero rather than going negative — a similarity below 0 would
+    # The linear transform clamps at zero rather than going negative - a similarity below 0 would
     # be rejected by `GeneralTypes` and is meaningless anyway.
     clamped = Diversity._dist2sim(dist; transform = :linear, k = 10,
                                   normalise = true, max_d = maximum(dist))
@@ -84,7 +84,7 @@ end
 end
 
 @testset "Genetic stubs" begin
-    # Both are declared method-less in the parent so the extensions can add the sole method — the
+    # Both are declared method-less in the parent so the extensions can add the sole method - the
     # "extensions add, never overwrite" rule. Without an extension loaded they exist but do nothing.
     @test Diversity.GeneticType isa Function
     @test Diversity.vcf_dataframe isa Function

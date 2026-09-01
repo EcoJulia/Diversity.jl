@@ -1,4 +1,4 @@
-# Blessed canonical results — regenerate with DIVERSITY_BLESS=true, and read
+# Blessed canonical results - regenerate with DIVERSITY_BLESS=true, and read
 # test/canonical/README.md before committing a change to this file.
 "measures/asymmetricz/Gamma/meta_q0" = 1.9725800515274199
 "measures/asymmetricz/Gamma/meta_q1" = 1.9572981340123796

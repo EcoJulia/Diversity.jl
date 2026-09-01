@@ -417,13 +417,13 @@ this is a genuinely *pairwise* index, so it needs a metacommunity of two subcomm
 
 #### Keyword arguments:
 
-- `countzeros`: which of the two published conventions to use, and **not a free choice** — it
+- `countzeros`: which of the two published conventions to use, and **not a free choice** - it
   selects the denominator. `true` divides by the total number of types, so types absent from both
   subcommunities still count; this is classic Gower (1971), and matches R vegan's `gower`. `false`
   divides only by the types actually present, matching vegan's `altGower`. Defaults to `false`.
 - `logscale`: take `log10` of the abundances first, so that differences are proportional rather than
   absolute. Defaults to `false`.
-- `normalise`: count each type as differing or not, rather than by how much it differs — a
+- `normalise`: count each type as differing or not, rather than by how much it differs - a
   presence/absence reading. Defaults to whatever `countzeros` is.
 
 #### Returns:
@@ -466,11 +466,11 @@ end
 """
     generalisedfaith_pd(level::DiversityLevel, mc::AbstractMetacommunity)
 
-Calculates Faith's phylogenetic diversity (PD) — the total length of the
-branches of the tree spanned by the types present — at the level requested.
+Calculates Faith's phylogenetic diversity (PD) - the total length of the
+branches of the tree spanned by the types present - at the level requested.
 
 Unlike the other measures here, this one needs a tree, and is defined only for a
-metacommunity built over the `PhyloBranches` supplied by the `Phylo` extension —
+metacommunity built over the `PhyloBranches` supplied by the `Phylo` extension -
 not for phylogenetic types in general, since the calculation relies on how that
 type in particular maps leaf abundances onto branches. It is therefore available
 only once `Phylo` is loaded.
@@ -480,7 +480,7 @@ profile to ask for, and PD depends on which types are present and not at all on
 their abundances.
 
 #### Arguments:
-- `level`: the diversity level to calculate at — `subcommunityDiversity` for the
+- `level`: the diversity level to calculate at - `subcommunityDiversity` for the
   PD of each subcommunity in isolation, `metacommunityDiversity` for the PD of
   the whole tree spanned by the metacommunity
 - `mc`: a metacommunity built over a `PhyloBranches`
@@ -494,7 +494,7 @@ function generalisedfaith_pd end
     faith_pd(mc::AbstractMetacommunity)
 
 Calculates Faith's phylogenetic diversity (PD) of each subcommunity of `mc` in
-isolation — the total length of the branches of the tree spanned by the types
+isolation - the total length of the branches of the tree spanned by the types
 present in it. See [`generalisedfaith_pd`](@ref) for the metacommunity as a
 whole, for why there is no `q` argument, and for why this needs a `PhyloBranches`
 specifically.

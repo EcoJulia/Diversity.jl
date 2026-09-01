@@ -82,16 +82,38 @@ function powermean(values::V1,
     return map(order -> powermean(values, order, weights), orders)
 end
 
+# Whether a subcommunity is empty, given the per-subcommunity weights if the caller had them to
+# hand. Without them every column has to find out for itself, by scanning.
+_isemptycolumn(::Nothing, ::Int) = false
+_isemptycolumn(colweights, col::Int) = iszero(colweights[col])
+
+# The answer for an empty subcommunity, shaped to match what a real column would have returned:
+# one number per order.
+_emptymean(::Type{FP}, ::Real) where {FP} = convert(FP, NaN)
+function _emptymean(::Type{FP}, orders::AbstractVector) where {FP}
+    return fill(convert(FP, NaN), length(orders))
+end
+
 # This is the next most simple case - matrices with subcommunities, and an order or orders
+#
+# `colweights` is optional, and is purely an optimisation: it is the weight of each subcommunity,
+# which a `Metacommunity` already caches and which the measures therefore have to hand. A
+# subcommunity of zero weight holds no individuals, so its diversity is NaN.
 function powermean(values::M1, orders,
-                   weights::M2 = fill!(similar(values), 1)) where
+                   weights::M2 = fill!(similar(values), 1),
+                   colweights = nothing) where
     {FP <: AbstractFloat, M1 <: AbstractMatrix{FP},
      M2 <: AbstractMatrix{FP}}
     size(values) == size(weights) ||
         throw(DimensionMismatch("powermean: Weight and value matrixes " *
                                 "must be the same size"))
-    @views map(col -> powermean(values[:, col], orders,
-                                weights[:, col]), 1:size(values, 2))
+    isnothing(colweights) || length(colweights) == size(values, 2) ||
+        throw(DimensionMismatch("powermean: There must be one column weight " *
+                                "per subcommunity"))
+    @views map(axes(values, 2)) do col
+        return _isemptycolumn(colweights, col) ? _emptymean(FP, orders) :
+               powermean(values[:, col], orders, weights[:, col])
+    end
 end
 
 """

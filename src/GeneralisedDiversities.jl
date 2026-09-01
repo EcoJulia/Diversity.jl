@@ -2,6 +2,8 @@
 
 using EcoBase: AbstractAssemblage
 using Diversity.ShortNames
+using DataFrames
+using Tables
 
 # The fourteen wrappers below each name one measure at one scale, so that a caller who knows what
 # they want to measure need not also know which DiversityMeasure and which of subdiv/metadiv
@@ -11,7 +13,7 @@ using Diversity.ShortNames
 """
     norm_sub_alpha(meta::AbstractAssemblage, qs)
 
-Calculates the similarity-sensitive diversity of each subcommunity in isolation — the diversity
+Calculates the similarity-sensitive diversity of each subcommunity in isolation - the diversity
 each subcommunity would have if it were the whole of the community.
 
 # Arguments:
@@ -23,6 +25,10 @@ each subcommunity would have if it were the whole of the community.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function norm_sub_alpha(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, ᾱ(meta), qs)
+end
+
 function norm_sub_alpha(meta::AbstractAssemblage, qs)
     return subdiv(ᾱ(meta), qs)
 end
@@ -30,7 +36,7 @@ end
 """
     raw_sub_alpha(meta::AbstractAssemblage, qs)
 
-Calculates the per-subcommunity estimate of naive-community metacommunity diversity — the diversity
+Calculates the per-subcommunity estimate of naive-community metacommunity diversity - the diversity
 of the metacommunity that this subcommunity alone would imply, if no type were shared with any
 other subcommunity. It is [`norm_sub_alpha`](@ref) per individual, rescaled by the size of the
 subcommunity.
@@ -44,6 +50,10 @@ subcommunity.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function raw_sub_alpha(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, α(meta), qs)
+end
+
 function raw_sub_alpha(meta::AbstractAssemblage, qs)
     return subdiv(α(meta), qs)
 end
@@ -64,6 +74,10 @@ high when a subcommunity is both distinctive and small, and is the reciprocal of
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function norm_sub_beta(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, β̄(meta), qs)
+end
+
 function norm_sub_beta(meta::AbstractAssemblage, qs)
     return subdiv(β̄(meta), qs)
 end
@@ -71,7 +85,7 @@ end
 """
     raw_sub_beta(meta::AbstractAssemblage, qs)
 
-Calculates the distinctiveness of individual subcommunities — how much of each subcommunity is
+Calculates the distinctiveness of individual subcommunities - how much of each subcommunity is
 unlike the rest of the metacommunity, whether through types found nowhere else or through low
 similarity to the types that are. It is the reciprocal of [`raw_sub_rho`](@ref).
 
@@ -84,6 +98,10 @@ similarity to the types that are. It is the reciprocal of [`raw_sub_rho`](@ref).
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function raw_sub_beta(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, β(meta), qs)
+end
+
 function raw_sub_beta(meta::AbstractAssemblage, qs)
     return subdiv(β(meta), qs)
 end
@@ -91,7 +109,7 @@ end
 """
     norm_sub_rho(meta::AbstractAssemblage, qs)
 
-Calculates the representativeness of individual subcommunities — how typical each subcommunity is
+Calculates the representativeness of individual subcommunities - how typical each subcommunity is
 of the metacommunity as a whole. A subcommunity holding a fixed fraction of equally abundant types
 has representativeness equal to that fraction.
 
@@ -104,6 +122,10 @@ has representativeness equal to that fraction.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function norm_sub_rho(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, ρ̄(meta), qs)
+end
+
 function norm_sub_rho(meta::AbstractAssemblage, qs)
     return subdiv(ρ̄(meta), qs)
 end
@@ -111,7 +133,7 @@ end
 """
     raw_sub_rho(meta::AbstractAssemblage, qs)
 
-Calculates the redundancy of individual subcommunities — the extent to which the diversity of the
+Calculates the redundancy of individual subcommunities - the extent to which the diversity of the
 metacommunity would survive the loss of each subcommunity. It takes its minimum of 1 when nothing
 resembling the subcommunity remains elsewhere.
 
@@ -124,6 +146,10 @@ resembling the subcommunity remains elsewhere.
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function raw_sub_rho(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, ρ(meta), qs)
+end
+
 function raw_sub_rho(meta::AbstractAssemblage, qs)
     return subdiv(ρ(meta), qs)
 end
@@ -144,6 +170,10 @@ subcommunity of a few very rare types contributes heavily however dull it looks 
 
 - A DataFrame of diversities, one row per subcommunity per order.
 """
+function sub_gamma(sink, meta::AbstractAssemblage, qs)
+    return subdiv(sink, Γ(meta), qs)
+end
+
 function sub_gamma(meta::AbstractAssemblage, qs)
     return subdiv(Γ(meta), qs)
 end
@@ -152,7 +182,7 @@ end
     norm_meta_alpha(meta::AbstractAssemblage, qs)
 
 Calculates the average similarity-sensitive diversity of the subcommunities, each taken in
-isolation. It is invariant under shattering — subdividing a subcommunity into identical parts does
+isolation. It is invariant under shattering - subdividing a subcommunity into identical parts does
 not change it.
 
 # Arguments:
@@ -164,6 +194,10 @@ not change it.
 
 - A DataFrame of diversities, one row per order.
 """
+function norm_meta_alpha(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, ᾱ(meta), qs)
+end
+
 function norm_meta_alpha(meta::AbstractAssemblage, qs)
     return metadiv(ᾱ(meta), qs)
 end
@@ -171,7 +205,7 @@ end
 """
     raw_meta_alpha(meta::AbstractAssemblage, qs)
 
-Calculates naive-community metacommunity diversity — the diversity the metacommunity would have if
+Calculates naive-community metacommunity diversity - the diversity the metacommunity would have if
 its subcommunities shared no types and no similarity. It is an upper bound on the true
 metacommunity diversity [`meta_gamma`](@ref).
 
@@ -184,6 +218,10 @@ metacommunity diversity [`meta_gamma`](@ref).
 
 - A DataFrame of diversities, one row per order.
 """
+function raw_meta_alpha(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, α(meta), qs)
+end
+
 function raw_meta_alpha(meta::AbstractAssemblage, qs)
     return metadiv(α(meta), qs)
 end
@@ -192,7 +230,7 @@ end
     norm_meta_beta(meta::AbstractAssemblage, qs)
 
 Calculates the effective number of distinct subcommunities. When they are completely distinct it
-reaches `qD(w, q)`, the Hill number of their weights — which is the number of subcommunities itself
+reaches `qD(w, q)`, the Hill number of their weights - which is the number of subcommunities itself
 only when they are also of equal size. It is invariant under shattering.
 
 # Arguments:
@@ -204,6 +242,10 @@ only when they are also of equal size. It is invariant under shattering.
 
 - A DataFrame of diversities, one row per order.
 """
+function norm_meta_beta(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, β̄(meta), qs)
+end
+
 function norm_meta_beta(meta::AbstractAssemblage, qs)
     return metadiv(β̄(meta), qs)
 end
@@ -223,6 +265,10 @@ between each subcommunity and the rest of the metacommunity.
 
 - A DataFrame of diversities, one row per order.
 """
+function raw_meta_beta(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, β(meta), qs)
+end
+
 function raw_meta_beta(meta::AbstractAssemblage, qs)
     return metadiv(β(meta), qs)
 end
@@ -241,6 +287,10 @@ Calculates the average representativeness of the subcommunities.
 
 - A DataFrame of diversities, one row per order.
 """
+function norm_meta_rho(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, ρ̄(meta), qs)
+end
+
 function norm_meta_rho(meta::AbstractAssemblage, qs)
     return metadiv(ρ̄(meta), qs)
 end
@@ -249,8 +299,8 @@ end
     raw_meta_rho(meta::AbstractAssemblage, qs)
 
 Calculates the average redundancy of the subcommunities. It takes its minimum of 1 when the
-subcommunities have nothing in common, and rises towards the *effective* number of subcommunities
-— the Hill number of their weights — as they become more alike, reaching the number of
+subcommunities have nothing in common, and rises towards the *effective* number of subcommunities -
+the Hill number of their weights - as they become more alike, reaching the number of
 subcommunities itself only when they are also of equal size.
 
 # Arguments:
@@ -262,6 +312,10 @@ subcommunities itself only when they are also of equal size.
 
 - A DataFrame of diversities, one row per order.
 """
+function raw_meta_rho(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, ρ(meta), qs)
+end
+
 function raw_meta_rho(meta::AbstractAssemblage, qs)
     return metadiv(ρ(meta), qs)
 end
@@ -269,7 +323,7 @@ end
 """
     meta_gamma(meta::AbstractAssemblage, qs)
 
-Calculates metacommunity similarity-sensitive diversity — the diversity of the metacommunity taken
+Calculates metacommunity similarity-sensitive diversity - the diversity of the metacommunity taken
 as a whole, ignoring how it is divided. It is the average of the subcommunity contributions
 [`sub_gamma`](@ref).
 
@@ -282,6 +336,10 @@ as a whole, ignoring how it is divided. It is the average of the subcommunity co
 
 - A DataFrame of diversities, one row per order.
 """
+function meta_gamma(sink, meta::AbstractAssemblage, qs)
+    return metadiv(sink, Γ(meta), qs)
+end
+
 function meta_gamma(meta::AbstractAssemblage, qs)
     return metadiv(Γ(meta), qs)
 end
@@ -302,7 +360,15 @@ repesented as one or a vector of qs.
 
 A vector containing all of the diversity levels of all of the requested diversities.
 """
+function diversity(sink, dls, dms, meta::AbstractAssemblage, qs)
+    # Each measure is built once and then asked for every level, because a measure holds an
+    # ntypes x nsubcommunities array of individual diversities that all the levels read. The columns
+    # are concatenated before materialising, so only one table is ever built.
+    parts = [Diversity._levelcolumns(dl, measure, qs)
+             for measure in map(dm -> dm(meta), dms) for dl in dls]
+    return Tables.materializer(sink)(Diversity._vcatcolumns(parts))
+end
+
 function diversity(dls, dms, meta::AbstractAssemblage, qs)
-    return mapreduce(measure -> mapreduce(dl -> dl(measure, qs), append!, dls),
-                     append!, map(dm -> dm(meta), dms))
+    return diversity(DataFrame, dls, dms, meta, qs)
 end

@@ -1,12 +1,140 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 using DataFrames
+using Tables
 import EcoBase: AbstractAssemblage
 
 """
 ### Enumeration of levels that can exist / be calculated for a metacommunity.
 """
 @enum DiversityLevel individualDiversity subcommunityDiversity communityDiversity typeDiversity typeCollectionDiversity metacommunityDiversity
+
+# The seven measures, in the order every "all measures" call has always produced them. A function
+# rather than a const because the structs are defined further down this file.
+function _allmeasures()
+    return (RawAlpha, NormalisedAlpha, RawBeta, NormalisedBeta,
+            RawRho, NormalisedRho, Gamma)
+end
+
+# Seven of a result's eight columns are repeated patterns - only `diversity` is unpredictable data.
+#
+# Held as rules instead they cost nothing, and nothing downstream has to know. `Tables.materializer`
+# decides: `DataFrame` copies its columns by default, and `copy` of an `AbstractVector` goes through
+# `similar` and `copyto!`, so a caller asking for a DataFrame gets ordinary `Vector`s exactly as
+# before.
+#
+# A result covering several orders, measures or levels is built as one part per combination, and
+# `_chaincolumn` joins those by holding them with their cumulative bounds rather than by copying, so
+# the rules survive the join too.
+
+# One value, repeated for every row.
+struct ConstantColumn{T} <: AbstractVector{T}
+    value::T
+    len::Int
+end
+
+Base.size(col::ConstantColumn) = (col.len,)
+Base.IndexStyle(::Type{<:ConstantColumn}) = IndexLinear()
+Base.@propagate_inbounds Base.getindex(col::ConstantColumn, ::Int) = col.value
+
+# A short list cycled to fill a column, replacing `repeat`. `runlength` is how many consecutive rows
+# share an entry before the next is used -- 1 for the type names, which cycle fastest, and ntypes
+# for the subcommunity names, which change once per block -- so this covers `repeat(v, outer = k)`
+# and `repeat(v, inner = k)` alike.
+#
+# The inner constructor copies, so the column can never alias the names it was built from. That is
+# free relative to what it replaces: the list is ntypes or nplaces long where the column is their
+# product.
+struct RepeatedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
+    values::V
+    runlength::Int
+    len::Int
+
+    function RepeatedColumn(values::V, runlength::Int,
+                            len::Int) where {T, V <: AbstractVector{T}}
+        return new{T, V}(copy(values), runlength, len)
+    end
+end
+
+Base.size(col::RepeatedColumn) = (col.len,)
+Base.IndexStyle(::Type{<:RepeatedColumn}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(col::RepeatedColumn, i::Int)
+    return col.values[mod1(cld(i, col.runlength), length(col.values))]
+end
+
+# The columns of a result, as a NamedTuple of equal-length vectors. That is already a Tables source,
+# so it can be handed to `Tables.materializer(sink)` for any table type the caller asks for -- a
+# DataFrame by default, but equally an Arrow table, a CSV sink or anything else implementing the
+# interface. Building the columns whole rather than a row at a time is also what makes this cheap;
+# see the performance notes in CLAUDE.md.
+#
+# `addedoutputcols` lets a types object contribute extra columns (the Phylo extension adds
+# `:treename`), merged in here rather than inserted afterwards, since a NamedTuple is immutable and
+# a sink may not support insertion at all.
+function _addedcolumns(measure, columns, n)
+    cols = addedoutputcols(_getmeta(measure))
+    isempty(cols) && return columns
+    data = getaddedoutput(_getmeta(measure))
+    extra = NamedTuple(col => ConstantColumn(data[col], n)
+                       for col in keys(cols))
+    return merge(columns, extra)
+end
+
+# Which set of columns a DiversityLevel asks for. The counterpart of `getPartitionFunction`, but
+# returning the columns rather than a materialised table, so that a caller wanting several levels at
+# once builds only one.
+function _levelcolumns(level::DiversityLevel, measure, qs)
+    level == individualDiversity && return _inddiv_columns(measure, qs)
+    level == subcommunityDiversity && return _subdiv_columns(measure, qs)
+    level == metacommunityDiversity && return _metadiv_columns(measure, qs)
+    return error("Can't calculate diversity for $level")
+end
+
+# Several columns presented as one, replacing the `vcat` that used to join them. Asking for more
+# than one order, measure or level builds one part per combination, and concatenating those parts
+# materialised every rule the parts held -- precisely when the result is largest. Chained instead,
+# the parts are kept and indexed through, so a `DataFrame` still materialises exactly once, in its
+# own copy, and a streaming sink still materialises nothing.
+#
+# `bounds` is cumulative -- `bounds[k]` is the number of rows in parts 1 through k -- so finding the
+# part holding row `i` is a search over `bounds`, not over the parts.
+struct ChainedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
+    parts::Vector{V}
+    bounds::Vector{Int}
+
+    function ChainedColumn(parts::Vector{V}) where {T, V <: AbstractVector{T}}
+        return new{T, V}(parts, cumsum(length.(parts)))
+    end
+end
+
+function Base.size(col::ChainedColumn)
+    return (isempty(col.bounds) ? 0 : last(col.bounds),)
+end
+Base.IndexStyle(::Type{<:ChainedColumn}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(col::ChainedColumn, i::Int)
+    part = searchsortedfirst(col.bounds, i)
+    before = part == 1 ? 0 : col.bounds[part - 1]
+    return col.parts[part][i - before]
+end
+
+# Chain a column's parts when they share a concrete type, and copy them when they do not. Parts are
+# mixed only when one call asks for levels whose name columns are held differently -- individual
+# results cycle their type names where subcommunity results repeat one -- and a chain over an
+# abstract element type would dispatch dynamically on every row, costing more than the copy it
+# saves.
+function _chaincolumn(cols)
+    isconcretetype(eltype(cols)) || return reduce(vcat, cols)
+    return ChainedColumn(cols)
+end
+
+# Concatenate several results' columns, which is what asking for several orders, measures or levels
+# at once produces. Done on the columns so that only one table is ever materialised.
+function _vcatcolumns(parts)
+    length(parts) == 1 && return only(parts)
+    ks = keys(first(parts))
+    return NamedTuple{ks}(map(k -> _chaincolumn([part[k] for part in parts]),
+                              ks))
+end
 
 """
 ### Generates the function to calculate individual diversities
@@ -61,6 +189,38 @@ series of orders, represented as a vector of qs.
 """
 metacommunityDiversity
 
+# The individual diversities of a measure -- one number for every type in every subcommunity --
+# held as a rule for computing an element rather than as an array of them. Every one of the seven
+# measures is an elementwise combination of at most three things: the ordinariness of the
+# individuals of a type in a subcommunity, the ordinariness of that type in the metacommunity, and
+# the subcommunity's weight. Only the first is large, and the measure already has it -- the
+# metacommunity caches it -- so materialising the combination doubles the memory for no new
+# information.
+#
+# This is a trade, not a free win, and the direction is worth being plain about. Computing an
+# element reads exactly the same memory the array would have -- the ordinariness, either way -- but
+# adds one division, and saves storing the whole array.
+#
+# The rule is a closure so that each measure captures exactly the arrays it uses -- alpha and gamma
+# do not need both ordinarinesses, and forcing them to would compute one they have no use for.
+struct IndividualDiversities{FP <: AbstractFloat, F} <: AbstractMatrix{FP}
+    value::F
+    dims::Tuple{Int, Int}
+
+    function IndividualDiversities{FP}(value::F,
+                                       dims::Tuple{Int, Int}) where
+        {FP <: AbstractFloat, F}
+        return new{FP, F}(value, dims)
+    end
+end
+
+Base.size(divs::IndividualDiversities) = divs.dims
+Base.IndexStyle(::Type{<:IndividualDiversities}) = IndexCartesian()
+Base.@propagate_inbounds function Base.getindex(divs::IndividualDiversities,
+                                                i::Int, j::Int)
+    return divs.value(i, j)
+end
+
 """
     DiversityMeasure
 
@@ -87,8 +247,7 @@ Return the ASCII name of the DiversityMeasure
 - String containing simple ASCII name of DiversityMeasure
 """
 function getASCIIName(dm::DiversityMeasure)
-    s = replace(string(typeof(dm)), "Diversity." => "")
-    return replace(s, r"{.*}$" => "")
+    return string(nameof(typeof(dm)))
 end
 
 """
@@ -180,43 +339,47 @@ returns a DataFrame containing the individual diversities for those values.
 """
 function inddiv end
 
-@inline function inddiv(measure::DiversityMeasure, q::Real)
+function _inddiv_columns(measure::DiversityMeasure, q::Real)
     raw = inddiv_raw(measure, q)
     types = gettypenames(measure)
     scn = getsubcommunitynames(measure)
-    scs = reshape(scn, 1, length(scn))
-    dfs = broadcast((div, tn,
-                     pn) -> DataFrame(div_type = getdiversityname(measure),
-                                      measure = getASCIIName(measure),
-                                      q = q,
-                                      type_level = "type",
-                                      type_name = tn,
-                                      partition_level = "subcommunity",
-                                      partition_name = pn,
-                                      diversity = div),
-                    raw, types, scs)
-    df = reduce(append!, dfs)
-    cols = addedoutputcols(_getmeta(measure))
-    if length(cols) > 0
-        data = getaddedoutput(_getmeta(measure))
-        for col in keys(cols)
-            insertcols!(df, ncol(df) + 1, col => data[col])
-        end
-    end
-    return df
+    nt, ns = length(types), length(scn)
+    n = nt * ns
+    # The individual diversities are held as a rule rather than an array, so this is where they
+    # are materialised -- which has to happen anyway, since a column of the output is a vector.
+    divs = Matrix{eltype(raw)}(undef, nt, ns)
+    divs .= raw
+    # The row order `reduce(append!, ...)` over a column-major matrix used to produce: types
+    # cycling fastest within each subcommunity.
+    columns = (div_type = ConstantColumn(getdiversityname(measure), n),
+               measure = ConstantColumn(getASCIIName(measure), n),
+               q = ConstantColumn(q, n),
+               type_level = ConstantColumn("type", n),
+               type_name = RepeatedColumn(types, 1, n),
+               partition_level = ConstantColumn("subcommunity", n),
+               partition_name = RepeatedColumn(scn, nt, n),
+               diversity = vec(divs))
+    return _addedcolumns(measure, columns, n)
 end
 
-@inline function inddiv(measure::DiversityMeasure, qs::AbstractVector)
-    return mapreduce(q -> inddiv(measure, q), append!, qs)
+function _inddiv_columns(measure::DiversityMeasure, qs::AbstractVector)
+    return _vcatcolumns([_inddiv_columns(measure, q) for q in qs])
 end
 
-@inline function inddiv(meta::AbstractAssemblage, qs)
-    return mapreduce(dm -> inddiv(dm(meta), qs),
-                     append!,
-                     [RawAlpha, NormalisedAlpha,
-                         RawBeta, NormalisedBeta,
-                         RawRho, NormalisedRho, Gamma])
+function _inddiv_columns(meta::AbstractAssemblage, qs)
+    return _vcatcolumns([_inddiv_columns(dm(meta), qs) for dm in _allmeasures()])
 end
+
+@inline function inddiv(sink, measure::DiversityMeasure, qs)
+    return Tables.materializer(sink)(_inddiv_columns(measure, qs))
+end
+
+@inline function inddiv(sink, meta::AbstractAssemblage, qs)
+    return Tables.materializer(sink)(_inddiv_columns(meta, qs))
+end
+
+@inline inddiv(measure::DiversityMeasure, qs) = inddiv(DataFrame, measure, qs)
+@inline inddiv(meta::AbstractAssemblage, qs) = inddiv(DataFrame, meta, qs)
 
 @inline function inddiv_raw(measure::DiversityMeasure, ::Real)
     return measure.diversities
@@ -240,46 +403,50 @@ calculates and returns the subcommunity diversities for those values.
 """
 function subdiv end
 
-@inline function subdiv(measure::DiversityMeasure, q::Real)
+function _subdiv_columns(measure::DiversityMeasure, q::Real)
     raw = subdiv_raw(measure, q)
-    scs = getsubcommunitynames(measure)
-    dfs = broadcast((div, pn) -> DataFrame(div_type = getdiversityname(measure),
-                                           measure = getASCIIName(measure),
-                                           q = q,
-                                           type_level = "types", type_name = "",
-                                           partition_level = "subcommunity",
-                                           partition_name = pn,
-                                           diversity = div),
-                    raw, scs)
-    df = reduce(append!, dfs)
-    cols = addedoutputcols(_getmeta(measure))
-    if length(cols) > 0
-        data = getaddedoutput(_getmeta(measure))
-        for col in keys(cols)
-            insertcols!(df, ncol(df) + 1, col => data[col])
-        end
-    end
-    return df
+    scn = getsubcommunitynames(measure)
+    n = length(scn)
+    divs = Vector{eltype(raw)}(undef, n)
+    divs .= raw
+    columns = (div_type = ConstantColumn(getdiversityname(measure), n),
+               measure = ConstantColumn(getASCIIName(measure), n),
+               q = ConstantColumn(q, n),
+               type_level = ConstantColumn("types", n),
+               type_name = ConstantColumn("", n),
+               partition_level = ConstantColumn("subcommunity", n),
+               partition_name = copy(scn),
+               diversity = divs)
+    return _addedcolumns(measure, columns, n)
 end
 
-@inline function subdiv(measure::DiversityMeasure, qs::AbstractVector)
-    return mapreduce(q -> subdiv(measure, q), append!, qs)
+function _subdiv_columns(measure::DiversityMeasure, qs::AbstractVector)
+    return _vcatcolumns([_subdiv_columns(measure, q) for q in qs])
 end
 
-@inline function subdiv(meta::AbstractAssemblage, qs)
-    return mapreduce(dm -> subdiv(dm(meta), qs),
-                     append!,
-                     [RawAlpha, NormalisedAlpha,
-                         RawBeta, NormalisedBeta,
-                         RawRho, NormalisedRho, Gamma])
+function _subdiv_columns(meta::AbstractAssemblage, qs)
+    return _vcatcolumns([_subdiv_columns(dm(meta), qs) for dm in _allmeasures()])
 end
+
+@inline function subdiv(sink, measure::DiversityMeasure, qs)
+    return Tables.materializer(sink)(_subdiv_columns(measure, qs))
+end
+
+@inline function subdiv(sink, meta::AbstractAssemblage, qs)
+    return Tables.materializer(sink)(_subdiv_columns(meta, qs))
+end
+
+@inline subdiv(measure::DiversityMeasure, qs) = subdiv(DataFrame, measure, qs)
+@inline subdiv(meta::AbstractAssemblage, qs) = subdiv(DataFrame, meta, qs)
 
 @inline function subdiv_raw(measure::PowerMeanMeasure, q::Real)
-    return powermean(inddiv_raw(measure, q), one(q) - q, measure.abundances)
+    return powermean(inddiv_raw(measure, q), one(q) - q, measure.abundances,
+                     measure.weights)
 end
 
 @inline function subdiv_raw(measure::RelativeEntropyMeasure, q::Real)
-    return powermean(inddiv_raw(measure, q), q - one(q), measure.abundances)
+    return powermean(inddiv_raw(measure, q), q - one(q), measure.abundances,
+                     measure.weights)
 end
 
 """
@@ -301,35 +468,41 @@ calculates and returns the metacommunity diversities for those values.
 """
 function metadiv end
 
-@inline function metadiv(measure::DiversityMeasure, q::Real)
+function _metadiv_columns(measure::DiversityMeasure, q::Real)
     raw = metadiv_raw(measure, q)
-    df = DataFrame(div_type = getdiversityname(measure),
-                   measure = getASCIIName(measure), q = q,
-                   type_level = "types", type_name = "",
-                   partition_level = "metacommunity",
-                   partition_name = "",
-                   diversity = raw)
-    cols = addedoutputcols(_getmeta(measure))
-    if length(cols) > 0
-        data = getaddedoutput(_getmeta(measure))
-        for col in keys(cols)
-            insertcols!(df, ncol(df) + 1, col => data[col])
-        end
-    end
-    return df
+    # Held the same way a subcommunity result holds them, even though there is only one row: it
+    # costs nothing here, and it means the two levels' parts share a type when a single call asks
+    # for both, which is what lets `_chaincolumn` chain them rather than copy.
+    columns = (div_type = ConstantColumn(getdiversityname(measure), 1),
+               measure = ConstantColumn(getASCIIName(measure), 1),
+               q = ConstantColumn(q, 1),
+               type_level = ConstantColumn("types", 1),
+               type_name = ConstantColumn("", 1),
+               partition_level = ConstantColumn("metacommunity", 1),
+               partition_name = [""],
+               diversity = [raw])
+    return _addedcolumns(measure, columns, 1)
 end
 
-@inline function metadiv(measure::DiversityMeasure, qs::AbstractVector)
-    return mapreduce(q -> metadiv(measure, q), append!, qs)
+function _metadiv_columns(measure::DiversityMeasure, qs::AbstractVector)
+    return _vcatcolumns([_metadiv_columns(measure, q) for q in qs])
 end
 
-@inline function metadiv(meta::AbstractAssemblage, qs)
-    return mapreduce(dm -> metadiv(dm(meta), qs),
-                     append!,
-                     [RawAlpha, NormalisedAlpha,
-                         RawBeta, NormalisedBeta,
-                         RawRho, NormalisedRho, Gamma])
+function _metadiv_columns(meta::AbstractAssemblage, qs)
+    return _vcatcolumns([_metadiv_columns(dm(meta), qs)
+                         for dm in _allmeasures()])
 end
+
+@inline function metadiv(sink, measure::DiversityMeasure, qs)
+    return Tables.materializer(sink)(_metadiv_columns(measure, qs))
+end
+
+@inline function metadiv(sink, meta::AbstractAssemblage, qs)
+    return Tables.materializer(sink)(_metadiv_columns(meta, qs))
+end
+
+@inline metadiv(measure::DiversityMeasure, qs) = metadiv(DataFrame, measure, qs)
+@inline metadiv(meta::AbstractAssemblage, qs) = metadiv(DataFrame, meta, qs)
 
 @inline function metadiv_raw(measure::DiversityMeasure, q::Real)
     return powermean(subdiv_raw(measure, q), one(q) - q, measure.weights)
@@ -361,8 +534,8 @@ metacommunity, and caches them for subsequent analysis. This is a
 subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
-Per subcommunity, it is an estimate of naive-community metacommunity diversity
-— the diversity the whole metacommunity would have if this subcommunity shared
+Per subcommunity, it is an estimate of naive-community metacommunity diversity -
+the diversity the whole metacommunity would have if this subcommunity shared
 no types, and no similarity, with any other. Averaged over the subcommunities it
 gives naive-community metacommunity diversity itself, which is an upper bound on
 the true metacommunity diversity `Gamma`. It is `NormalisedAlpha` measured per
@@ -383,7 +556,9 @@ end
 function RawAlpha(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getordinariness!(meta) .^ -1
+    zp = getordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> inv(zp[i, j]),
+                                              size(ab))
     return RawAlpha{eltype(ab), typeof(ab),
                     typeof(value), M}(ab, ws, value, meta)
 end
@@ -400,7 +575,7 @@ subtype of PowerMeanMeasure, meaning that all composite diversity
 measures are simple powermeans of the individual measures.
 
 Per subcommunity, it is the similarity-sensitive diversity of that subcommunity
-in isolation — what its diversity would be if it were the whole community.
+in isolation - what its diversity would be if it were the whole community.
 Averaged over the subcommunities it gives their average diversity, which is
 invariant under shattering.
 
@@ -419,7 +594,9 @@ end
 function NormalisedAlpha(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = ws' ./ getordinariness!(meta)
+    zp = getordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> ws[j] / zp[i, j],
+                                              size(ab))
     return NormalisedAlpha{eltype(ab), typeof(ab),
                            typeof(value), M}(ab, ws, value, meta)
 end
@@ -460,7 +637,10 @@ end
 function RawBeta(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getordinariness!(meta) ./ getmetaordinariness!(meta)
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zp[i, j] / zP[i],
+                                              size(ab))
     return RawBeta{eltype(ab), typeof(ab),
                    typeof(value), M}(ab, ws, value, meta)
 end
@@ -484,8 +664,8 @@ composite types are powermeans of those measures.
 Per subcommunity, it is an estimate of the effective number of distinct
 subcommunities, and is high when a subcommunity is both distinctive and small.
 Averaged over the subcommunities it gives the effective number of distinct
-subcommunities itself, which is at most the number of subcommunities — reaching
-that maximum when they are completely distinct and of equal size — and which is
+subcommunities itself, which is at most the number of subcommunities - reaching
+that maximum when they are completely distinct and of equal size - and which is
 invariant under shattering. It is the reciprocal of `NormalisedRho`.
 
 #### Constructor arguments:
@@ -503,7 +683,11 @@ end
 function NormalisedBeta(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getordinariness!(meta) ./ (getmetaordinariness!(meta) .* ws')
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zp[i, j] /
+                                                        (zP[i] * ws[j]),
+                                              size(ab))
     return NormalisedBeta{eltype(ab), typeof(ab),
                           typeof(value), M}(ab, ws, value, meta)
 end
@@ -527,7 +711,7 @@ which the diversity of the metacommunity would be preserved if the subcommunity
 were lost. It takes its minimum of 1 when nothing resembling the subcommunity
 remains elsewhere, so that losing it would lose its diversity entirely. Averaged
 over the subcommunities it gives their average redundancy, which rises towards
-the *effective* number of subcommunities — the Hill number of their weights — as
+the *effective* number of subcommunities - the Hill number of their weights - as
 they become more alike, reaching the number of subcommunities itself only when
 they are also of equal size. It is the reciprocal of `RawBeta`.
 
@@ -546,7 +730,10 @@ end
 function RawRho(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = getmetaordinariness!(meta) ./ getordinariness!(meta)
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zP[i] / zp[i, j],
+                                              size(ab))
     return RawRho{eltype(ab), typeof(ab),
                   typeof(value), M}(ab, ws, value, meta)
 end
@@ -568,13 +755,13 @@ measures.
 
 Per subcommunity, it is the **representativeness** of that subcommunity: how
 typical it is of the metacommunity as a whole. Where all types are equally
-abundant, a subcommunity holding a fraction `r` of them has representativeness
-exactly `r` — whatever fraction of the *individuals* it holds, since being the
+abundant, a subcommunity holding a fraction `f` of them has representativeness
+exactly `f` - whatever fraction of the *individuals* it holds, since being the
 normalised measure it has the subcommunity's weight divided out. Averaged over
 the subcommunities it gives their average
 representativeness. In the naive-type case representativeness is at most 1,
 attained when the subcommunity has the same type distribution as the
-metacommunity — but that bound does **not** hold for a general similarity
+metacommunity - but that bound does **not** hold for a general similarity
 matrix. It is the reciprocal of `NormalisedBeta`.
 
 #### Constructor arguments:
@@ -592,7 +779,11 @@ end
 function NormalisedRho(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = (getmetaordinariness!(meta) .* ws') ./ getordinariness!(meta)
+    zp = getordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> zP[i] * ws[j] /
+                                                        zp[i, j],
+                                              size(ab))
     return NormalisedRho{eltype(ab), typeof(ab),
                          typeof(value), M}(ab, ws, value, meta)
 end
@@ -615,7 +806,7 @@ measures are simple powermeans of the individual measures.
 The two scales read differently here, and the difference matters. Per
 subcommunity, it is the contribution *per individual* toward metacommunity
 diversity, combining a subcommunity's own diversity with the rarity of its types
-in the metacommunity — so a subcommunity of a few very rare types contributes
+in the metacommunity - so a subcommunity of a few very rare types contributes
 heavily however dull it looks in isolation. Averaged over the subcommunities it
 gives the metacommunity's own similarity-sensitive diversity, the diversity of
 the whole taken without regard to how it is divided.
@@ -635,7 +826,8 @@ end
 function Gamma(meta::M) where {M <: AbstractAssemblage}
     ab = getabundance(meta)
     ws = getweight(meta)
-    value = fill!(similar(ws), 1)' ./ getmetaordinariness!(meta)
+    zP = getmetaordinariness!(meta)
+    value = IndividualDiversities{eltype(ab)}((i, j) -> inv(zP[i]), size(ab))
     return Gamma{eltype(ab), typeof(ab), typeof(value), M}(ab, ws, value, meta)
 end
 

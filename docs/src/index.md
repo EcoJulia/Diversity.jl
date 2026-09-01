@@ -3,7 +3,7 @@
 ## A package for measuring and partitioning diversity
 
 The main **Diversity** package measures the alpha, beta and gamma diversity of a metacommunity and of
-each of its subcommunities, for any notion of similarity between the individuals in it — taxonomic,
+each of its subcommunities, for any notion of similarity between the individuals in it - taxonomic,
 phylogenetic, genetic, functional or phenotypic.
 
 It provides numbers-equivalent diversity measures (Hill numbers),
@@ -16,7 +16,9 @@ not automatically exported (as we feel they are too short) and with
 matching longer ASCII names (e.g. `NormalisedAlpha()`), which are.
 We also provide functions to calculate appropriate
 `subdiv()` and `metadiv()` values for each measure, and a general
-`diversity()` function to extract any diversity measure at a series of scales.
+`diversity()` function to extract several measures at several scales and several
+orders in one call - which is the one to reach for on anything large, and is
+covered in [**Large metacommunities**](largescale.md).
 
 Accessing the main functionality in the package is simple:
 
@@ -33,7 +35,7 @@ whatever the scale, so results can be compared and concatenated directly. The
 `diversity` column holds the answer; the rest say what was calculated and for
 what.
 
-Adding a similarity matrix makes the measures similarity-sensitive — two types
+Adding a similarity matrix makes the measures similarity-sensitive - two types
 that resemble each other now contribute less diversity between them than two
 that do not:
 
@@ -44,7 +46,7 @@ subdiv(RawRho(meta_z), 2)
 ```
 
 Note that the abundances are relative to the **whole metacommunity** and must
-sum to one across it — not one per subcommunity. Counts are normalised for you,
+sum to one across it - not one per subcommunity. Counts are normalised for you,
 and floating point abundances that do not sum to one are corrected with a
 warning.
 

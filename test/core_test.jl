@@ -2,18 +2,18 @@
 #
 # The unit tests: every `test/test_*.jl`, which test the matching `src/*.jl`.
 #
-# Run this set on its own — everything the package computes, with none of the cross-validation:
+# Run this set on its own - everything the package computes, with none of the cross-validation:
 #
 #     julia --project -e 'using Pkg; Pkg.test(test_args = ["core_test.jl"])'
 #
 # That is the point of this file existing. Any *single* file could already be named
 # (`test_args = ["test_Metacommunity.jl"]`), but there was no way to say "all the unit tests and
-# nothing else" short of naming all of them — so the only alternative to one file was the whole
+# nothing else" short of naming all of them - so the only alternative to one file was the whole
 # suite, `extras_pkg.jl` and its R cross-validation included.
 #
 # Most of these files also run as bare scripts (`cd test && julia --project=.. test_Types.jl`),
 # because they need only the package's own dependencies. The exception is `test_EcoBase.jl`, which
-# needs `SpatialEcology` and `CSV` — `[extras]` in `Project.toml`'s `test` target, and so reachable
+# needs `SpatialEcology` and `CSV` - `[extras]` in `Project.toml`'s `test` target, and so reachable
 # only through `Pkg.test`.
 
 using Random
@@ -57,7 +57,7 @@ let filebase = String[]
     end
 
     # Seeded here rather than only in `runtests.jl`, or this file run on its own would not be
-    # reproducible — which is most of why it exists.
+    # reproducible - which is most of why it exists.
     Random.seed!(1234)
 
     @testset "Unit tests" begin

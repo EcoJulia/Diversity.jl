@@ -21,8 +21,8 @@ end
 
 if skipR
     # Say so in the test summary, not only in the log. Without this the file contributes *no* test
-    # results at all, so a run that skipped the entire R cross-validation — nine thousand assertions
-    # — looks exactly like one that passed it.
+    # results at all, so a run that skipped the entire R cross-validation - nine thousand assertions
+    # - looks exactly like one that passed it.
     @info "Skipping R cross-validation. Set JULIA_MUST_CROSSVALIDATE=1 to make this an error " *
           "rather than a skip."
     @testset "R cross-validation" begin

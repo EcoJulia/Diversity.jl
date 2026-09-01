@@ -1,5 +1,28 @@
 # NEWS
 
+- v0.6.2
+  - Make measurement dramatically faster and less memory-hungry fixing getASCIIName()
+  - Fix typematch() rejecting float types that are not direct subtypes of AbstractFloat
+  - Build the result DataFrame from whole columns rather than one single-row DataFrame per element
+  - Allow the caller to name a Tables.jl sink as an optional first argument, as CSV.read() does, so
+    results can go to CSV or Arrow without a DataFrame in between; DataFrame remains the default
+  - Hold each measure's individual diversities as a rule for computing an element rather than as an
+    array to remove the largest allocation in a measurement, at the cost of about a sixth of the
+    analysis time, since each element is recomputed rather than re-read every time it is used
+  - Cache the subcommunity weights and the metacommunity ordinariness on a Metacommunity, as the
+    ordinariness itself already was
+  - Complex diversity calculations can create huge outputs, so there are now generators for the
+    repeated columns since enormous storage costs until they are materialised (which isn't needed
+    if writing to disk)
+  - Recognise an empty subcommunity from its cached weight instead of by scanning its abundances,
+    so a metacommunity that is mostly empty costs very nearly what it would if those subcommunities
+    were not there at all
+  - Add a manual page on large metacommunities, covering what actually scales with the data, using
+    diversity() to ask for everything at once, sending results straight to a sink rather than
+    through a DataFrame, and why empty subcommunities are nearly free
+  - Document the notation convention on the framework page: a symbol's alphabet and case give its
+    level, lowercase Roman for individual values, lowercase Greek for subcommunity measures and
+    capital Roman for metacommunity ones
 - v0.6.1
   - Implement EcoBase's view() for metacommunities, returning a lazy SubAssemblage that aliases the
     parent's abundances; this also makes EcoBase's cooccurring() and SpatialEcology's groupsites()

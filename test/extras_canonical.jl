@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 #
-# Run the canonical suite — the blessed-result tests in `test/canonical/`.
+# Run the canonical suite - the blessed-result tests in `test/canonical/`.
 #
 # On its own:
 #
@@ -11,7 +11,7 @@
 #     DIVERSITY_BLESS=true julia --project -e 'using Pkg; Pkg.test(test_args = ["extras_canonical.jl"])'
 #
 # **Why this set exists at all, given the R cross-validation.** `pkg_RCall.jl` is a far stronger
-# check — it compares against an independent implementation of the same specification — but it only
+# check - it compares against an independent implementation of the same specification - but it only
 # runs where R is installed, which `testing.yaml` arranges on macOS alone. On Ubuntu and Windows
 # nothing otherwise notices that a number this package computes has changed. These blessed values are
 # cheap, need no R, and run everywhere.
@@ -34,12 +34,12 @@ using .Canonical
     files = sort(filter(f -> startswith(f, "test_") && endswith(f, ".jl"),
                         readdir(dir)))
     println()
-    @info "Running canonical tests" * (blessing() ? " — RE-BLESSING" : "")
+    @info "Running canonical tests" * (blessing() ? " - RE-BLESSING" : "")
     for f in files
         println("    * ", f, " ...")
         include(joinpath(dir, f))
     end
-    # Written once, after every file, and merged rather than replaced — see `writereference`.
+    # Written once, after every file, and merged rather than replaced - see `writereference`.
     writereference()
 end
 

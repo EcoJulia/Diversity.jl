@@ -2,7 +2,7 @@
 #
 # Canonical results for the **measures themselves**: a fixed abundance matrix and a fixed similarity
 # matrix in, every measure at every scale out. Nothing is read and nothing is random, so every number
-# here is a pure function of the arithmetic in `src/` — which makes this the file that isolates a
+# here is a pure function of the arithmetic in `src/` - which makes this the file that isolates a
 # change in a *measure* from a change in how a *type* builds its similarity matrix (`test_types.jl`).
 
 module CanonicalMeasures
@@ -20,8 +20,8 @@ const POP = [2.0 1.0 0.0
              1.0 3.0 1.0
              0.0 1.0 4.0]
 
-# **Asymmetric on purpose.** Similarity need not be symmetric — `run_rcall.jl` cross-validates
-# both cases against rdiversity — so blessing a symmetric matrix here would leave the asymmetric path
+# **Asymmetric on purpose.** Similarity need not be symmetric - `run_rcall.jl` cross-validates
+# both cases against rdiversity - so blessing a symmetric matrix here would leave the asymmetric path
 # unpinned, which is the one where a transposed index goes unnoticed.
 const ZASYM = [1.0 0.5 0.0
                0.2 1.0 0.4
@@ -41,7 +41,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
         meta = Metacommunity(POP, types)
 
         # Both scales are blessed, not just the metacommunity. They aggregate with *different*
-        # power-mean orders — opposite ones for the relative-entropy measures — so a subcommunity
+        # power-mean orders - opposite ones for the relative-entropy measures - so a subcommunity
         # vector can move while its metacommunity summary does not.
         for (mname, measure) in MEASURES
             dm = measure(meta)
@@ -58,7 +58,7 @@ const MEASURES = ["RawAlpha" => RawAlpha, "NormalisedAlpha" => NormalisedAlpha,
         w = getweight(meta)
         for q in QS
             # β̄ and ρ̄ are exact reciprocals individually, and the opposite aggregation orders carry
-            # that through to the subcommunity — but *not* to the metacommunity, where both use
+            # that through to the subcommunity - but *not* to the metacommunity, where both use
             # order 1 - q. Asserting the second would be wrong; asserting the first pins the design.
             @test subdiv(β̄(meta), q)[!, :diversity] .*
                   subdiv(ρ̄(meta), q)[!, :diversity] ≈ ones(3)

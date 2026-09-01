@@ -5,7 +5,7 @@
 #     julia --project -e 'using Pkg; Pkg.test(test_args = ["core_ext.jl"])'
 #
 # **Not** runnable as a bare script, and that is a dependency fact rather than an oversight: every
-# trigger package here — `AxisArrays`, `BioSequences`, `Phylo`, `PopGen` — is a `[weakdeps]` of the
+# trigger package here - `AxisArrays`, `BioSequences`, `Phylo`, `PopGen` - is a `[weakdeps]` of the
 # package and an `[extras]` of `Project.toml`'s `test` target, so only `Pkg.test` provisions them.
 # Loading each is what activates the extension under test in the first place.
 

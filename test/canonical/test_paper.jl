@@ -9,7 +9,7 @@
 # package has stopped implementing the specification or the specification has changed, and both are
 # findings rather than something to record and move past.
 #
-# Note: Examples are named rather than numbered — supplementary section numbers move between versions of
+# Note: Examples are named rather than numbered - supplementary section numbers move between versions of
 # a paper, and a pointer a reader cannot follow is worse than none.
 
 module CanonicalPaper
@@ -61,7 +61,7 @@ const QS = [0, 1, 2, Inf]
     @test all(>(1), norm_sub_rho(meta, 1)[!, :diversity])
     @test all(<(1), norm_sub_beta(meta, 1)[!, :diversity])
 
-    # Note: And it is not a pathological matrix — it satisfies the triangle inequality — so no weaker
+    # Note: And it is not a pathological matrix - it satisfies the triangle inequality - so no weaker
     # assumption than Z = I rescues those bounds.
     @test all(Z[i, j] * Z[j, k] ≤ Z[i, k] + eps()
               for i in 1:6, j in 1:6, k in 1:6)
@@ -93,7 +93,7 @@ end
         @test norm_meta_rho(allshared, q)[1, :diversity] ≈ 1
     end
 
-    # Note: Redundancy is the same measure without the normalisation, so it *does* see size — which is
+    # Note: Redundancy is the same measure without the normalisation, so it *does* see size - which is
     # the whole of the raw/normalised distinction. Both directions on the same two metacommunities:
     # with each type in two subcommunities everything survives the loss of any one, giving 2
     # regardless of the weights; but when all three are perfectly representative their redundancies
@@ -122,7 +122,7 @@ end
 
         # Reciprocity of beta and rho is asserted at *subcommunity* level only. The two classes
         # aggregate with opposite power-mean orders there, which is what preserves it, but with the
-        # same order from subcommunity to metacommunity — so it does not survive to `metadiv`.
+        # same order from subcommunity to metacommunity - so it does not survive to `metadiv`.
         @test raw_sub_beta(meta, q)[!, :diversity] ≈
               1 ./ raw_sub_rho(meta, q)[!, :diversity]
         @test norm_sub_beta(allshared, q)[!, :diversity] ≈
@@ -148,7 +148,7 @@ end
 
 @testset "paper: rarity does change gamma" begin
     # Two equally sized subcommunities, equally diverse in isolation, but the first one's types are
-    # three times rarer in the metacommunity — so it contributes three times as much per individual.
+    # three times rarer in the metacommunity - so it contributes three times as much per individual.
     P = [1 0 0; 1 0 0; 0 1 2; 0 1 2] ./ 8
     meta = Metacommunity(P)
     @test getweight(meta)[1] ≈ getweight(meta)[2]
@@ -191,7 +191,7 @@ end
     # Splitting a subcommunity into parts of identical composition creates no new subcommunity, so
     # the *normalised* metacommunity measures and gamma must not move. The paper demonstrates this
     # with a well-mixed metacommunity, where every subcommunity has the metacommunity's own
-    # composition — there the normalised measures do not depend on the weights `w` at all, while the
+    # composition - there the normalised measures do not depend on the weights `w` at all, while the
     # raw ones are functions of them.
     p = [0.5, 0.3, 0.2]
     w = [0.5, 0.3, 0.2]
@@ -206,12 +206,12 @@ end
         end
     end
 
-    # And the raw measures are in general *not* invariant — cutting a subcommunity in two genuinely does
+    # And the raw measures are in general *not* invariant - cutting a subcommunity in two genuinely does
     # create redundancy, so a measure that ignored it would be wrong.
     #
     # Asserted for finite `q` only, and that is a real limitation rather than laziness: at
     # `q = Inf` raw beta reduces to `min(w)`, so halving the *largest* subcommunity leaves it
-    # numerically unchanged. That is a coincidence of this example, not invariance — the paper claims
+    # numerically unchanged. That is a coincidence of this example, not invariance - the paper claims
     # only that the raw measures are not guaranteed to be invariant.
     for q in [0, 1, 2]
         for measure in (raw_meta_alpha, raw_meta_rho, raw_meta_beta)

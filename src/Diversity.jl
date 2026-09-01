@@ -192,7 +192,7 @@ export AbstractGenetic, GeneticType, vcf_dataframe
 
 # Convert a distance matrix into a similarity matrix, matching rdiversity's
 # dist2sim(): optionally normalise by the maximum distance, then apply a linear
-# (max(1 - k·d, 0)) or exponential (exp(-k·d)) transform.
+# (max(1 - k*d, 0)) or exponential (exp(-k*d)) transform.
 function _dist2sim(dist::AbstractMatrix; transform::Symbol, k::Real,
                    normalise::Bool, max_d::Real)
     sim = normalise && !iszero(max_d) ? dist ./ max_d : float.(dist)
@@ -217,7 +217,7 @@ import Diversity.API._calcsimilarity
 _calcsimilarity(g::AbstractGenetic, ::Real) = g.Zmatrix
 
 import Diversity.API.floattypes
-floattypes(::AbstractGenetic) = Set([Float64])
+floattypes(::AbstractGenetic) = Set{Type}([Float64])
 
 include("GeneralisedDiversities.jl")
 export diversity

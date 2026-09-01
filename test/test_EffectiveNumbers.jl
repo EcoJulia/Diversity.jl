@@ -83,4 +83,38 @@ end
     end
 end
 
+@testset "Empty subcommunities are recognised from their weights" begin
+    # A subcommunity of zero weight holds no individuals, so its power mean is NaN. The vector
+    # method discovers that by scanning the whole column; handing the matrix method the
+    # per-subcommunity weights lets it read the same fact off a number it already had. The two must
+    # agree exactly -- including the NaNs, hence `isequal` rather than `==`.
+    values = rand(6, 5) .+ 0.5
+    weights = rand(6, 5)
+    weights[:, 2] .= 0.0
+    weights[:, 5] .= 0.0
+    colweights = vec(sum(weights, dims = 1))
+    @test iszero(colweights[2]) && iszero(colweights[5])
+
+    for order in (0, 0.5, 1, 2, -1, Inf, -Inf)
+        scanned = powermean(values, order, weights)
+        told = powermean(values, order, weights, colweights)
+        @test isequal(scanned, told)
+        @test isnan(told[2]) && isnan(told[5])
+        @test !isnan(told[1])
+    end
+
+    # A vector of orders gives a vector per subcommunity, so an empty one has to come back the
+    # right shape as well as the right value.
+    orders = [0, 1, 2]
+    @test isequal(powermean(values, orders, weights),
+                  powermean(values, orders, weights, colweights))
+    told = powermean(values, orders, weights, colweights)
+    @test length(told[2]) == length(orders)
+    @test all(isnan, told[2])
+
+    # One weight per subcommunity, or say so here rather than failing on an index somewhere later.
+    @test_throws DimensionMismatch powermean(values, 1, weights,
+                                             colweights[1:3])
+end
+
 end

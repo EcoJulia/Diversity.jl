@@ -3,9 +3,9 @@
 Genetic diversity is provided by two lightweight extensions, so you only load
 what your data needs:
 
-- **sequences** — load `BioSequences` (`using Diversity, BioSequences`) to build a
+- **sequences** - load `BioSequences` (`using Diversity, BioSequences`) to build a
   `GeneticType` from a vector of aligned `BioSequence`s;
-- **VCF** — load `PopGen` (`using Diversity, PopGen`) to build a `GeneticType`
+- **VCF** - load `PopGen` (`using Diversity, PopGen`) to build a `GeneticType`
   from a `PopGen.PopData` object read from a VCF file.
 
 Similarity between types is derived from pairwise genetic distances, mirroring
@@ -40,7 +40,7 @@ metacommunity therefore holds rather less than three types' worth of diversity.
 ### VCF
 
 The example below reads the small biallelic VCF that ships with the package, and
-builds a similarity matrix using biallelic Manhattan distances — matching
+builds a similarity matrix using biallelic Manhattan distances - matching
 rdiversity's `gen2dist(vcf, biallelic = TRUE)`:
 
 ```@repl vcf
@@ -62,7 +62,7 @@ distances and the resulting similarity matrix are calculated.
 
 `vcf_dataframe(pd)` converts a `PopData` back into the VCF-body layout that
 rdiversity's `gen2dist()` consumes, so the same data can drive both the Julia
-and the R calculation — which is how the two are cross-validated against each
+and the R calculation - which is how the two are cross-validated against each
 other in `test/run_rcall.jl`.
 
 ```@contents

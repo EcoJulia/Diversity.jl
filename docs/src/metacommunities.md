@@ -2,9 +2,9 @@
 
 Everything this package computes starts from a `Metacommunity`, and it is made of three things:
 
-- **types** — what the individuals are, and how similar they are to each other;
-- **a partition** — how the whole is divided into subcommunities;
-- **abundances** — how much of each type is in each subcommunity.
+- **types** - what the individuals are, and how similar they are to each other;
+- **a partition** - how the whole is divided into subcommunities;
+- **abundances** - how much of each type is in each subcommunity.
 
 If you supply only abundances, the other two are inferred: types become
 [`UniqueTypes`](@ref) (all wholly distinct from one another), and the partition becomes one
@@ -27,7 +27,7 @@ nothing # hide
 | a similarity matrix as well | `Metacommunity(matrix, Z)` | `GeneralTypes` built from `Z` |
 | named types or subcommunities | `Metacommunity(matrix, types, partition)` | exactly what you passed |
 | a phylogeny, sequences or a VCF | `Metacommunity(matrix, PhyloBranches(tree))` etc. | see [Phylogenetic](phylogenetics.md) and [Genetic diversity](genetics.md) |
-| an `EcoBase` assemblage | `Metacommunity(assemblage)` | its occurrences and places, with `UniqueTypes` — or `GeneralTypes` holding its similarity, if it has any |
+| an `EcoBase` assemblage | `Metacommunity(assemblage)` | its occurrences and places, with `UniqueTypes` - or `GeneralTypes` holding its similarity, if it has any |
 | the same structure, new numbers | `Metacommunity(newabundances, oldmeta)` | reuses the types and partition |
 
 ```@repl building
@@ -65,7 +65,7 @@ julia> Metacommunity(percolumn);
 ```
 
 Abundances here are relative to the
-**whole metacommunity**, not to each subcommunity — the column sums are the subcommunity *weights*,
+**whole metacommunity**, not to each subcommunity - the column sums are the subcommunity *weights*,
 and normalising per column throws them away, making every subcommunity look the same size. If you
 see it, you should probably go back to the original data and normalise over the whole metacommunity.
 
@@ -73,7 +73,7 @@ see it, you should probably go back to the original data and normalise over the 
 
 Ten sites and nine species, built so you can predict what each measure will say:
 
-- **Sites 1–8** lie along a gradient, each holding two or three species, turning over as you move
+- **Sites 1-8** lie along a gradient, each holding two or three species, turning over as you move
   along it.
 - **Reference** holds all eight gradient species, evenly.
 - **Refuge** is tiny and holds a single species found nowhere else.
@@ -102,7 +102,7 @@ heatmap(sites, species, abundance, yflip = true, xrotation = 45, c = :Blues,
 
 The dark band down the diagonal is the gradient: each site shares species with its neighbours and
 none at all with the far end. *Reference* is the one column touching every gradient species, at lower
-abundance. *Refuge* is the single cell in a row of its own — nothing else is in that site, and that
+abundance. *Refuge* is the single cell in a row of its own - nothing else is in that site, and that
 species is nowhere else.
 
 Before running anything, decide what you expect. *Reference* should be the most diverse in isolation
@@ -113,7 +113,7 @@ distinctive, and should contribute most per individual. Now check:
 using DataFrames
 results = DataFrame(site = sites,
                     weight = round.(getweight(mc), digits = 3),
-                    ᾱ = round.(norm_sub_alpha(mc, 1).diversity, digits = 2),
+                    ᾱ = round.(norm_sub_alpha(mc, 1).diversity, digits = 2),
                     ρ̄ = round.(norm_sub_rho(mc, 1).diversity, digits = 2),
                     β = round.(raw_sub_beta(mc, 1).diversity, digits = 2),
                     γ = round.(sub_gamma(mc, 1).diversity, digits = 1))
@@ -122,9 +122,9 @@ results = DataFrame(site = sites,
 Two things worth reading off that table:
 
 - **Refuge scores `β = 1`, the maximum possible.** Distinctiveness is 1 exactly when nothing outside
-  the subcommunity resembles anything inside it — which is true here by construction. Its
+  the subcommunity resembles anything inside it - which is true here by construction. Its
   representativeness is correspondingly at *its* minimum, which is the subcommunity's own weight.
-- **Refuge has the lowest `ᾱ` and much the highest `γ`.** A single-species site is as dull as a
+- **Refuge has the lowest `ᾱ` and much the highest `γ`.** A single-species site is as dull as a
   site can be in isolation, yet each of its individuals contributes far more to the diversity of the
   whole than an individual from anywhere else. Alpha and beta alone would have told you to ignore it.
 
@@ -142,8 +142,8 @@ norm_sub_beta(undivided, 1).diversity
 norm_sub_rho(undivided, 1).diversity
 ```
 
-**Divided.** The gamma diversity of the whole is unchanged — dividing a community does not alter what
-is in it — but the beta measures now carry information:
+**Divided.** The gamma diversity of the whole is unchanged - dividing a community does not alter what
+is in it - but the beta measures now carry information:
 
 ```@repl building
 meta_gamma(undivided, 1).diversity
@@ -188,9 +188,10 @@ unstack(ind, :type_name, :partition_name, :diversity)
 ```
 
 The columns that identify a row are `div_type`, `measure`, `q`, `type_level`, `type_name`,
-`partition_level` and `partition_name`; `diversity` holds the answer. Selecting several orders at
-once and filtering afterwards is usually faster than repeated calls, because the individual
-diversities are computed once when the measure is built:
+`partition_level` and `partition_name`; `diversity` holds the answer. Asking for several orders at
+once and filtering afterwards is cheaper than repeated calls - not because the arithmetic changes,
+which it does not, but because one call builds one table where several calls build several and leave
+you to join them:
 
 ```@repl building
 profile = subdiv(NormalisedAlpha(mc), [0, 1, 2]);
@@ -200,7 +201,7 @@ filter(row -> row.partition_name == "Reference", profile)
 ## Now on real data
 
 The dataset above was built so you could check the measures against your own expectations. Real data
-is the other way round — you do not know the answer, which is the point of measuring. Here is the
+is the other way round - you do not know the answer, which is the point of measuring. Here is the
 same analysis on the European amphibian distributions that ship with
 [SpatialEcology](https://github.com/EcoJulia/SpatialEcology.jl): 73 species across 1010 grid cells.
 
@@ -222,7 +223,7 @@ extrema(gamma)
 ```
 
 Representativeness runs from 0.0015 to 0.76: some cells hold an assemblage much like Europe's as a
-whole, others almost nothing like it. Contribution per individual spans two orders of magnitude —
+whole, others almost nothing like it. Contribution per individual spans two orders of magnitude -
 the cells at the top are those holding species found almost nowhere else, which is exactly the
 "hidden diversity" the Refuge site showed in miniature.
 
@@ -235,8 +236,8 @@ plot(norm_sub_rho(amph, 1), amph, title = "Representativeness of European amphib
 ```
 
 Read that as a question about *reserve selection*: the dark cells are the ones whose amphibian
-fauna is least like Europe's overall. They are not necessarily the most species-rich — that is what
-`norm_sub_alpha` would show — and the difference between the two maps is precisely what the framework
+fauna is least like Europe's overall. They are not necessarily the most species-rich - that is what
+`norm_sub_alpha` would show - and the difference between the two maps is precisely what the framework
 was built to expose.
 
 ## Taking a view of part of one
@@ -261,7 +262,7 @@ object instead of a window.
 !!! warning
     `species` selects **things**, which is not always what the word suggests. For
     a phylogeny a thing is a *branch*, because `PhyloBranches` measures over
-    branches rather than over species — printing the metacommunity tells you what
+    branches rather than over species - printing the metacommunity tells you what
     it calls its units. The keyword names come from EcoBase.
 
     Restricting `species` on a phylogeny also gives up the tree: an arbitrary set
@@ -269,6 +270,47 @@ object instead of a window.
     corresponding similarity submatrix. It measures identically, but reports
     itself as arbitrary rather than phylogenetic. Restricting only `sites` leaves
     the phylogeny untouched.
+
+## Asking for several things at once
+
+[`diversity`](@ref Diversity.diversity) takes a collection of levels, a collection
+of measures and one or more values of `q`, and answers them all together:
+
+```@repl building
+using Diversity.ShortNames
+levels = [subcommunityDiversity, metacommunityDiversity];
+result = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2]);
+size(result)
+unique(result.measure)
+```
+
+This is worth preferring over separate calls, and the reason is the result rather
+than the arithmetic. Every route does the same power means; what differs is how
+many tables get built on the way. `diversity` assembles one, where six wrapper
+calls build six and you then have to `vcat` them. Measured over 200 types and
+200,000 subcommunities, for the call above: **165 MiB against 275 MiB**, for the
+same answer in the same time.
+
+It also saves you naming the same metacommunity six times, which matters more
+than it sounds - see [Large metacommunities](largescale.md) for what does and
+does not scale.
+
+## Getting something other than a DataFrame
+
+Every function that returns results takes an optional first argument saying what
+to return, in the same way as `CSV.read(file, DataFrame)`:
+
+```@repl building
+using Tables
+columns = subdiv(Tables.columntable, ᾱ(mc), 1);
+keys(columns)
+```
+
+Anything implementing the [Tables.jl](https://github.com/JuliaData/Tables.jl)
+interface will do, so results can go straight to a file with `CSV.write` or
+`Arrow.write` without a `DataFrame` in between. A `DataFrame` remains the default.
+That choice matters most when the result is large - see
+[Large metacommunities](largescale.md).
 
 ```@docs
 Diversity.view

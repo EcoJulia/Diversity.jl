@@ -24,7 +24,7 @@ const QS = [0, 1, 2, Inf]
 qlabel(q) = isinf(q) ? "qInf" : "q$(Int(q))"
 
 @testset "canonical: types" begin
-    # The tree is built explicitly rather than drawn with `rand(Nonultrametric(…))`. A blessed
+    # The tree is built explicitly rather than drawn with `rand(Nonultrametric(...))`. A blessed
     # value must be a pure function of the code; a random topology would re-bless to noise every run.
     @testset "PhyloBranches" begin
         species = ["Dog", "Human", "Cat"]
@@ -49,7 +49,7 @@ qlabel(q) = isinf(q) ? "qInf" : "q$(Int(q))"
                     metadiv(Γ(meta), q)[1, :diversity])
         end
 
-        # Raw types are the leaves, processed types the ancestral branches — the distinction the
+        # Raw types are the leaves, processed types the ancestral branches - the distinction the
         # whole `raw::Bool` argument exists for. Shape is asserted here because the blessed vectors
         # above are flat.
         @test gettypenames(ph, true) == species
