@@ -1,5 +1,10 @@
 # NEWS
 
+- v0.6.3
+  - Allow EcoBase 0.2, which reaches Diversity as coordinateorder() and cellanchor() on any
+    metacommunity built over gridded location data, and as the whole gridded interface -
+    xmin(), xrange(), indices() and the rest - answered by the metacommunity itself
+  - Allow SpatialEcology 0.11, which is the release that adopts EcoBase 0.2
 - v0.6.2
   - Make measurement dramatically faster and less memory-hungry fixing getASCIIName()
   - Fix typematch() rejecting float types that are not direct subtypes of AbstractFloat
