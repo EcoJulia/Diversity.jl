@@ -133,14 +133,15 @@ Base.@propagate_inbounds function Base.getindex(col::ChainedColumn, i::Int)
     return col.parts[part][i - before]
 end
 
-# Chain a column's parts when they share a concrete type, and copy them when they do not. Parts are
-# mixed only when one call asks for levels whose name columns are held differently -- individual
-# results cycle their type names where subcommunity results repeat one -- and a chain over an
-# abstract element type would dispatch dynamically on every row, costing more than the copy it
-# saves.
+# Chain a column's parts, held as a `Union` of their concrete types. Parts differ in type when one
+# call asks for levels whose columns are held differently -- individual results cycle their names,
+# subcommunity results read them in place, a metacommunity result holds one -- and the `Union` keeps
+# indexing through them cheap, where parts held as an abstract type would dispatch dynamically on
+# every row. Parts with different element types have no common element type to chain under, so
+# they are concatenated instead.
 function _chaincolumn(cols)
-    isconcretetype(eltype(cols)) || return reduce(vcat, cols)
-    return ChainedColumn(cols)
+    allequal(eltype.(cols)) || return reduce(vcat, cols)
+    return ChainedColumn(Vector{Union{unique(typeof.(cols))...}}(cols))
 end
 
 # Concatenate several results' columns, which is what asking for several orders, measures or levels

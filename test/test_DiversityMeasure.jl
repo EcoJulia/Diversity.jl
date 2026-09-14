@@ -400,15 +400,20 @@ end
     @test joined == ["x", "y", ""]
     @test length(joined) == 3
 
-    # Where the parts do not share a concrete type there is nothing to gain, so it falls back to
-    # copying. Individual results cycle their type names where subcommunity results repeat one, so
-    # asking for both is the case that reaches it -- and it must still be correct.
+    # Parts held as different column types are chained too. Individual results cycle their type
+    # names where subcommunity results repeat one, so asking for both is the case that reaches it.
     mixedtypes = [Diversity._inddiv_columns(chaindm, 1),
         Diversity._subdiv_columns(chaindm, 1)]
-    fellback = Diversity._chaincolumn([part[:type_name]
-                                       for part in mixedtypes])
-    @test !(fellback isa Diversity.ChainedColumn)
-    @test fellback == vcat(repeat(["a", "b", "c"], outer = 2), ["", ""])
+    mixed = Diversity._chaincolumn([part[:type_name] for part in mixedtypes])
+    want = vcat(repeat(["a", "b", "c"], outer = 2), ["", ""])
+    @test mixed isa Diversity.ChainedColumn{String}
+    @test mixed == want
+    @test all(mixed[i] == want[i] for i in eachindex(want))
+
+    # Parts with no common element type cannot be chained, so they are concatenated.
+    promoted = Diversity._chaincolumn(AbstractVector[[1, 2], [0.5]])
+    @test !(promoted isa Diversity.ChainedColumn)
+    @test promoted == [1.0, 2.0, 0.5]
 
     # And end to end: the whole result, over two levels and three orders, is what it was. Note the
     # ordering `diversity` produces -- level outer, order inner, so every subcommunity row for every
@@ -631,11 +636,8 @@ end
     # which stays under the bound. What this detects is each name being read.
     #
     @test _lazybytesperrow([subcommunityDiversity]) < 64
-    # Broken at two levels while parts with differently typed name columns are concatenated rather
-    # than chained. `@test_broken` errors once its check passes, which is the signal to make it a
-    # `@test`.
-    @test_broken _lazybytesperrow([subcommunityDiversity,
-                                      metacommunityDiversity]) < 64
+    @test _lazybytesperrow([subcommunityDiversity,
+                               metacommunityDiversity]) < 64
 
     # And the result is exactly what the same names held in a vector give.
     ab = [0.1 0.2 0.1; 0.2 0.1 0.1; 0.1 0.05 0.05]
