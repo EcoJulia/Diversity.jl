@@ -284,12 +284,12 @@ size(result)
 unique(result.measure)
 ```
 
-This is worth preferring over separate calls, and the reason is the result rather
-than the arithmetic. Every route does the same power means; what differs is how
-many tables get built on the way. `diversity` assembles one, where six wrapper
-calls build six and you then have to `vcat` them. Measured over 200 types and
-200,000 subcommunities, for the call above: **165 MiB against 275 MiB**, for the
-same answer in the same time.
+This is worth preferring over separate calls. Every route gives the same answer,
+but `diversity` assembles one table where six wrapper calls build six and you then
+have to `vcat` them, and it takes each metacommunity diversity from the
+subcommunity diversities it has already computed rather than computing them again.
+Measured over 200 types and 200,000 subcommunities, for the call above: **138 MiB
+against 261 MiB**, in about half the time.
 
 It also saves you naming the same metacommunity six times, which matters more
 than it sounds - see [Large metacommunities](largescale.md) for what does and

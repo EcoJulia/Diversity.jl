@@ -42,9 +42,8 @@ Base.@propagate_inbounds Base.getindex(col::ConstantColumn, ::Int) = col.value
 # for the subcommunity names, which change once per block -- so this covers `repeat(v, outer = k)`
 # and `repeat(v, inner = k)` alike.
 #
-# The inner constructor copies, so the column can never alias the names it was built from. That is
-# free relative to what it replaces: the list is ntypes or nplaces long where the column is their
-# product.
+# The list is read in place rather than copied, since it may be a partition's names computed on
+# demand, and the column has no `setindex!`, so it cannot be used to write to them.
 struct RepeatedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
     values::V
     runlength::Int
@@ -52,7 +51,7 @@ struct RepeatedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
 
     function RepeatedColumn(values::V, runlength::Int,
                             len::Int) where {T, V <: AbstractVector{T}}
-        return new{T, V}(copy(values), runlength, len)
+        return new{T, V}(values, runlength, len)
     end
 end
 
@@ -60,6 +59,23 @@ Base.size(col::RepeatedColumn) = (col.len,)
 Base.IndexStyle(::Type{<:RepeatedColumn}) = IndexLinear()
 Base.@propagate_inbounds function Base.getindex(col::RepeatedColumn, i::Int)
     return col.values[mod1(cld(i, col.runlength), length(col.values))]
+end
+
+# A vector read in place, with no way to write to it. A subcommunity result's name column is the
+# partition's own names held through this, so they are not copied and a returned table cannot be
+# used to change them.
+struct ReadOnlyColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
+    values::V
+
+    function ReadOnlyColumn(values::V) where {T, V <: AbstractVector{T}}
+        return new{T, V}(values)
+    end
+end
+
+Base.size(col::ReadOnlyColumn) = size(col.values)
+Base.IndexStyle(::Type{<:ReadOnlyColumn}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(col::ReadOnlyColumn, i::Int)
+    return col.values[i]
 end
 
 # The columns of a result, as a NamedTuple of equal-length vectors. That is already a Tables source,
@@ -82,11 +98,15 @@ end
 
 # Which set of columns a DiversityLevel asks for. The counterpart of `getPartitionFunction`, but
 # returning the columns rather than a materialised table, so that a caller wanting several levels at
-# once builds only one.
-function _levelcolumns(level::DiversityLevel, measure, qs)
+# once builds only one. `subraw(q)` supplies the subcommunity diversities of order `q` to the two
+# levels built from them.
+function _levelcolumns(level::DiversityLevel, measure, qs,
+                       subraw::Function = order -> subdiv_raw(measure, order))
     level == individualDiversity && return _inddiv_columns(measure, qs)
-    level == subcommunityDiversity && return _subdiv_columns(measure, qs)
-    level == metacommunityDiversity && return _metadiv_columns(measure, qs)
+    level == subcommunityDiversity &&
+        return _subdiv_columns(measure, qs, subraw)
+    level == metacommunityDiversity &&
+        return _metadiv_columns(measure, qs, subraw)
     return error("Can't calculate diversity for $level")
 end
 
@@ -117,14 +137,15 @@ Base.@propagate_inbounds function Base.getindex(col::ChainedColumn, i::Int)
     return col.parts[part][i - before]
 end
 
-# Chain a column's parts when they share a concrete type, and copy them when they do not. Parts are
-# mixed only when one call asks for levels whose name columns are held differently -- individual
-# results cycle their type names where subcommunity results repeat one -- and a chain over an
-# abstract element type would dispatch dynamically on every row, costing more than the copy it
-# saves.
+# Chain a column's parts, held as a `Union` of their concrete types. Parts differ in type when one
+# call asks for levels whose columns are held differently -- individual results cycle their names,
+# subcommunity results read them in place, a metacommunity result holds one -- and the `Union` keeps
+# indexing through them cheap, where parts held as an abstract type would dispatch dynamically on
+# every row. Parts with different element types have no common element type to chain under, so
+# they are concatenated instead.
 function _chaincolumn(cols)
-    isconcretetype(eltype(cols)) || return reduce(vcat, cols)
-    return ChainedColumn(cols)
+    allequal(eltype.(cols)) || return reduce(vcat, cols)
+    return ChainedColumn(Vector{Union{unique(typeof.(cols))...}}(cols))
 end
 
 # Concatenate several results' columns, which is what asking for several orders, measures or levels
@@ -403,8 +424,9 @@ calculates and returns the subcommunity diversities for those values.
 """
 function subdiv end
 
-function _subdiv_columns(measure::DiversityMeasure, q::Real)
-    raw = subdiv_raw(measure, q)
+function _subdiv_columns(measure::DiversityMeasure, q::Real,
+                         subraw::Function = order -> subdiv_raw(measure, order))
+    raw = subraw(q)
     scn = getsubcommunitynames(measure)
     n = length(scn)
     divs = Vector{eltype(raw)}(undef, n)
@@ -415,13 +437,14 @@ function _subdiv_columns(measure::DiversityMeasure, q::Real)
                type_level = ConstantColumn("types", n),
                type_name = ConstantColumn("", n),
                partition_level = ConstantColumn("subcommunity", n),
-               partition_name = copy(scn),
+               partition_name = ReadOnlyColumn(scn),
                diversity = divs)
     return _addedcolumns(measure, columns, n)
 end
 
-function _subdiv_columns(measure::DiversityMeasure, qs::AbstractVector)
-    return _vcatcolumns([_subdiv_columns(measure, q) for q in qs])
+function _subdiv_columns(measure::DiversityMeasure, qs::AbstractVector,
+                         subraw::Function = order -> subdiv_raw(measure, order))
+    return _vcatcolumns([_subdiv_columns(measure, q, subraw) for q in qs])
 end
 
 function _subdiv_columns(meta::AbstractAssemblage, qs)
@@ -468,11 +491,11 @@ calculates and returns the metacommunity diversities for those values.
 """
 function metadiv end
 
-function _metadiv_columns(measure::DiversityMeasure, q::Real)
-    raw = metadiv_raw(measure, q)
-    # Held the same way a subcommunity result holds them, even though there is only one row: it
-    # costs nothing here, and it means the two levels' parts share a type when a single call asks
-    # for both, which is what lets `_chaincolumn` chain them rather than copy.
+function _metadiv_columns(measure::DiversityMeasure, q::Real,
+                          subraw::Function = order -> subdiv_raw(measure,
+                                                                 order))
+    raw = metadiv_raw(measure, q, subraw(q))
+    # Held the same way a subcommunity result holds them, even though there is only one row.
     columns = (div_type = ConstantColumn(getdiversityname(measure), 1),
                measure = ConstantColumn(getASCIIName(measure), 1),
                q = ConstantColumn(q, 1),
@@ -484,8 +507,10 @@ function _metadiv_columns(measure::DiversityMeasure, q::Real)
     return _addedcolumns(measure, columns, 1)
 end
 
-function _metadiv_columns(measure::DiversityMeasure, qs::AbstractVector)
-    return _vcatcolumns([_metadiv_columns(measure, q) for q in qs])
+function _metadiv_columns(measure::DiversityMeasure, qs::AbstractVector,
+                          subraw::Function = order -> subdiv_raw(measure,
+                                                                 order))
+    return _vcatcolumns([_metadiv_columns(measure, q, subraw) for q in qs])
 end
 
 function _metadiv_columns(meta::AbstractAssemblage, qs)
@@ -504,8 +529,21 @@ end
 @inline metadiv(measure::DiversityMeasure, qs) = metadiv(DataFrame, measure, qs)
 @inline metadiv(meta::AbstractAssemblage, qs) = metadiv(DataFrame, meta, qs)
 
-@inline function metadiv_raw(measure::DiversityMeasure, q::Real)
-    return powermean(subdiv_raw(measure, q), one(q) - q, measure.weights)
+@inline function metadiv_raw(measure::DiversityMeasure, q::Real,
+                             subraw::AbstractVector = subdiv_raw(measure, q))
+    return powermean(subraw, one(q) - q, measure.weights)
+end
+
+# Where a measure's subcommunity diversities of each order come from, for a call asking for the
+# levels `dls`. The subcommunity and metacommunity levels are both built from them, so when both are
+# asked for each order's are computed once and kept for the other.
+function _subrawsource(measure::DiversityMeasure, dls)
+    subcommunityDiversity in dls && metacommunityDiversity in dls ||
+        return order -> subdiv_raw(measure, order)
+    computed = Dict{Real, Any}()
+    return order -> get!(computed, order) do
+        return subdiv_raw(measure, order)
+    end
 end
 
 function getPartitionFunction(measure::DiversityMeasure, level::DiversityLevel)
