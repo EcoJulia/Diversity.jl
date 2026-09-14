@@ -23,7 +23,7 @@ array of the same size, computed once and cached on the metacommunity.
 Everything else is proportional to the *answer* rather than to the data. The individual diversities
 of a measure are computed on demand rather than stored, so building a measure over a metacommunity
 you have already measured allocates nothing at all; a subcommunity-level result is one row per
-subcommunity, at about 88 bytes a row.
+subcommunity, at about 80 bytes a row.
 
 So for `nt` types and `np` subcommunities, in double precision:
 
@@ -33,12 +33,12 @@ So for `nt` types and `np` subcommunities, in double precision:
 | ordinariness, without similarity | 0 |
 | ordinariness, with similarity | `8 nt np` |
 | the similarity matrix itself | `8 nt^2` |
-| a `subdiv` result, per measure per order | `88 np` |
+| a `subdiv` result, per measure per order | `80 np` |
 | an `inddiv` result, per measure per order | `88 nt np` |
 
 A worked case: 2000 species on a 1 km grid over a box containing the UK is roughly 10^6 cells, so
 **16 GB** of abundances, or **32 GB** with a 2000 × 2000 similarity matrix - while a
-subcommunity-level result for one measure at one order is about 88 MB.
+subcommunity-level result for one measure at one order is about 80 MB.
 
 ## `inddiv` is the one that does not scale
 
@@ -71,14 +71,20 @@ result = diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2]);
 size(result)
 ```
 
-The arithmetic is the same as calling the wrappers one at a time - the power means still have to be
-taken. What changes is how much is built on the way: one table rather than six that you then have to
-join. Measured over 200 types and 200,000 subcommunities, for exactly that call:
+The answers are the same as calling the wrappers one at a time, but less is done on the way. One
+table is built rather than six that you then have to join, and each metacommunity diversity is taken
+from the subcommunity diversities already computed for the same measure and order, rather than
+computing them a second time. Measured over 200 types and 200,000 subcommunities, for exactly that
+call:
 
 | | time | memory |
 |---|---|---|
-| `diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2])` | 2035 ms | **165 MiB** |
-| the six wrapper calls, then `vcat` | 2133 ms | 275 MiB |
+| `diversity(levels, [ᾱ, ρ̄, Γ], mc, [0, 1, 2])` | **1011 ms** | **138 MiB** |
+| the six wrapper calls, then `vcat` | 1979 ms | 261 MiB |
+| the same `diversity` call, returning a `Tables.columntable` | 964 ms | 28 MiB |
+
+The last row returns a column table instead of a `DataFrame`, which is the subject of the next
+section.
 
 ## Do not build a table you are only going to write out
 
@@ -97,6 +103,10 @@ one value repeated for every row and two cycle a short list of names; only `dive
 are held as rules rather than arrays, and a column table keeps them that way, so `CSV.write` reads
 each column once and never materialises it. Asking for a `DataFrame` - the default - materialises
 them deliberately, so that what you get back is an ordinary mutable table.
+
+The subcommunity names are read from the partition as the column is read, too, so a partition may
+build each name only when it is asked for - labelling each grid cell from its extent, say - and a
+column table never holds them all at once.
 
 !!! note "Which sinks get their own treatment"
     The first argument is resolved through `Tables.materializer`, and only types that define a
