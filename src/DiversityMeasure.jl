@@ -98,11 +98,15 @@ end
 
 # Which set of columns a DiversityLevel asks for. The counterpart of `getPartitionFunction`, but
 # returning the columns rather than a materialised table, so that a caller wanting several levels at
-# once builds only one.
-function _levelcolumns(level::DiversityLevel, measure, qs)
+# once builds only one. `subraw(q)` supplies the subcommunity diversities of order `q` to the two
+# levels built from them.
+function _levelcolumns(level::DiversityLevel, measure, qs,
+                       subraw::Function = order -> subdiv_raw(measure, order))
     level == individualDiversity && return _inddiv_columns(measure, qs)
-    level == subcommunityDiversity && return _subdiv_columns(measure, qs)
-    level == metacommunityDiversity && return _metadiv_columns(measure, qs)
+    level == subcommunityDiversity &&
+        return _subdiv_columns(measure, qs, subraw)
+    level == metacommunityDiversity &&
+        return _metadiv_columns(measure, qs, subraw)
     return error("Can't calculate diversity for $level")
 end
 
@@ -420,8 +424,9 @@ calculates and returns the subcommunity diversities for those values.
 """
 function subdiv end
 
-function _subdiv_columns(measure::DiversityMeasure, q::Real)
-    raw = subdiv_raw(measure, q)
+function _subdiv_columns(measure::DiversityMeasure, q::Real,
+                         subraw::Function = order -> subdiv_raw(measure, order))
+    raw = subraw(q)
     scn = getsubcommunitynames(measure)
     n = length(scn)
     divs = Vector{eltype(raw)}(undef, n)
@@ -437,8 +442,9 @@ function _subdiv_columns(measure::DiversityMeasure, q::Real)
     return _addedcolumns(measure, columns, n)
 end
 
-function _subdiv_columns(measure::DiversityMeasure, qs::AbstractVector)
-    return _vcatcolumns([_subdiv_columns(measure, q) for q in qs])
+function _subdiv_columns(measure::DiversityMeasure, qs::AbstractVector,
+                         subraw::Function = order -> subdiv_raw(measure, order))
+    return _vcatcolumns([_subdiv_columns(measure, q, subraw) for q in qs])
 end
 
 function _subdiv_columns(meta::AbstractAssemblage, qs)
@@ -485,11 +491,11 @@ calculates and returns the metacommunity diversities for those values.
 """
 function metadiv end
 
-function _metadiv_columns(measure::DiversityMeasure, q::Real)
-    raw = metadiv_raw(measure, q)
-    # Held the same way a subcommunity result holds them, even though there is only one row: it
-    # costs nothing here, and it means the two levels' parts share a type when a single call asks
-    # for both, which is what lets `_chaincolumn` chain them rather than copy.
+function _metadiv_columns(measure::DiversityMeasure, q::Real,
+                          subraw::Function = order -> subdiv_raw(measure,
+                                                                 order))
+    raw = metadiv_raw(measure, q, subraw(q))
+    # Held the same way a subcommunity result holds them, even though there is only one row.
     columns = (div_type = ConstantColumn(getdiversityname(measure), 1),
                measure = ConstantColumn(getASCIIName(measure), 1),
                q = ConstantColumn(q, 1),
@@ -501,8 +507,10 @@ function _metadiv_columns(measure::DiversityMeasure, q::Real)
     return _addedcolumns(measure, columns, 1)
 end
 
-function _metadiv_columns(measure::DiversityMeasure, qs::AbstractVector)
-    return _vcatcolumns([_metadiv_columns(measure, q) for q in qs])
+function _metadiv_columns(measure::DiversityMeasure, qs::AbstractVector,
+                          subraw::Function = order -> subdiv_raw(measure,
+                                                                 order))
+    return _vcatcolumns([_metadiv_columns(measure, q, subraw) for q in qs])
 end
 
 function _metadiv_columns(meta::AbstractAssemblage, qs)
@@ -521,8 +529,21 @@ end
 @inline metadiv(measure::DiversityMeasure, qs) = metadiv(DataFrame, measure, qs)
 @inline metadiv(meta::AbstractAssemblage, qs) = metadiv(DataFrame, meta, qs)
 
-@inline function metadiv_raw(measure::DiversityMeasure, q::Real)
-    return powermean(subdiv_raw(measure, q), one(q) - q, measure.weights)
+@inline function metadiv_raw(measure::DiversityMeasure, q::Real,
+                             subraw::AbstractVector = subdiv_raw(measure, q))
+    return powermean(subraw, one(q) - q, measure.weights)
+end
+
+# Where a measure's subcommunity diversities of each order come from, for a call asking for the
+# levels `dls`. The subcommunity and metacommunity levels are both built from them, so when both are
+# asked for each order's are computed once and kept for the other.
+function _subrawsource(measure::DiversityMeasure, dls)
+    subcommunityDiversity in dls && metacommunityDiversity in dls ||
+        return order -> subdiv_raw(measure, order)
+    computed = Dict{Real, Any}()
+    return order -> get!(computed, order) do
+        return subdiv_raw(measure, order)
+    end
 end
 
 function getPartitionFunction(measure::DiversityMeasure, level::DiversityLevel)

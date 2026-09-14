@@ -639,6 +639,12 @@ end
     @test _lazybytesperrow([subcommunityDiversity,
                                metacommunityDiversity]) < 64
 
+    # The two levels are built from the same subcommunity diversities, so asking for both computes
+    # them once. Computing them again for the metacommunity level adds a vector of diversities, 8
+    # bytes a row.
+    @test _lazybytesperrow([subcommunityDiversity, metacommunityDiversity]) <
+          _lazybytesperrow([subcommunityDiversity]) + 4
+
     # And the result is exactly what the same names held in a vector give.
     ab = [0.1 0.2 0.1; 0.2 0.1 0.1; 0.1 0.05 0.05]
     lazy = Metacommunity(ab, UniqueTypes(3), LazyPartition(LazyNames(3)))

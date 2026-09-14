@@ -362,10 +362,16 @@ A vector containing all of the diversity levels of all of the requested diversit
 """
 function diversity(sink, dls, dms, meta::AbstractAssemblage, qs)
     # Each measure is built once and then asked for every level, because a measure holds an
-    # ntypes x nsubcommunities array of individual diversities that all the levels read. The columns
+    # ntypes x nsubcommunities array of individual diversities that all the levels read, and its
+    # subcommunity diversities are shared the same way by the two levels built from them. The columns
     # are concatenated before materialising, so only one table is ever built.
-    parts = [Diversity._levelcolumns(dl, measure, qs)
-             for measure in map(dm -> dm(meta), dms) for dl in dls]
+    parts = []
+    for dm in dms
+        measure = dm(meta)
+        subraw = Diversity._subrawsource(measure, dls)
+        append!(parts,
+                [Diversity._levelcolumns(dl, measure, qs, subraw) for dl in dls])
+    end
     return Tables.materializer(sink)(Diversity._vcatcolumns(parts))
 end
 
