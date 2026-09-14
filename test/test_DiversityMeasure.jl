@@ -577,4 +577,72 @@ end
                                           mc, 1)
 end
 
+# Subcommunity names computed at the index, as a partition over a large grid may hold them. Reading
+# one builds a formatted string, so a result that materialises the names costs far more per row than
+# anything else it builds.
+struct LazyNames <: AbstractVector{String}
+    n::Int
+end
+
+Base.size(names::LazyNames) = (names.n,)
+function Base.getindex(::LazyNames, i::Int)
+    return string("[", 0.5 * (i - 1), ", ", 0.5 * i, ")N x [0.0, 0.5)E")
+end
+
+# A partition whose subcommunity names are lazy.
+struct LazyPartition <: Diversity.API.AbstractPartition{Nothing}
+    names::LazyNames
+end
+
+Diversity.API._getsubcommunitynames(p::LazyPartition) = p.names
+Diversity.API._countsubcommunities(p::LazyPartition) = length(p.names)
+
+# Bytes per row that a `Tables.columntable` result allocates over a lazy-names partition, measured
+# as the growth between two numbers of subcommunities so that everything not proportional to them
+# cancels.
+function _lazybytesperrow(levels; nt = 5, sizes = (500, 2000))
+    measures, qs = [NormalisedAlpha, Gamma], [0, 1, 2]
+    bytes = map(sizes) do ns
+        mc = Metacommunity(fill(1 / (nt * ns), nt, ns), UniqueTypes(nt),
+                           LazyPartition(LazyNames(ns)))
+        call() = diversity(Tables.columntable, levels, measures, mc, qs)
+        call()
+        return minimum(@allocated(call()) for _ in 1:3)
+    end
+    rows = (sizes[2] - sizes[1]) * length(measures) * length(qs)
+    return (bytes[2] - bytes[1]) / rows
+end
+
+@testset "Lazy subcommunity names are not materialised" begin
+    # A result streamed through `Tables.columntable` never reads a name, so its allocation per row
+    # must be the diversities' alone - 16 bytes at one level, 25 at two - and not grow with the cost
+    # of reading a name, which here is about 1100 bytes.
+    #
+    # Not caught: copying names that already exist as strings costs one pointer a row, 8 bytes,
+    # which stays under the bound. What this detects is each name being read.
+    #
+    # Both are broken while the name column copies the partition's names, and at two levels also
+    # while parts with differently typed name columns are concatenated rather than chained.
+    # `@test_broken` errors once its check passes, which is the signal to make it a `@test`.
+    @test_broken _lazybytesperrow([subcommunityDiversity]) < 64
+    @test_broken _lazybytesperrow([subcommunityDiversity,
+                                      metacommunityDiversity]) < 64
+
+    # And the result is exactly what the same names held in a vector give.
+    ab = [0.1 0.2 0.1; 0.2 0.1 0.1; 0.1 0.05 0.05]
+    lazy = Metacommunity(ab, UniqueTypes(3), LazyPartition(LazyNames(3)))
+    held = Metacommunity(ab, UniqueTypes(3),
+                         Subcommunities(collect(LazyNames(3))))
+    levels = [subcommunityDiversity, metacommunityDiversity]
+    @test diversity(levels, [NormalisedAlpha, Gamma], lazy, [0, 1]) ==
+          diversity(levels, [NormalisedAlpha, Gamma], held, [0, 1])
+
+    # Individual diversities throw on a partition whose names are not a `Vector`: `RepeatedColumn`
+    # declares its field as the type of the names it is given, and `copy` of a lazy vector returns a
+    # `Vector` that cannot be converted back to it.
+    @test_broken diversity([individualDiversity], [NormalisedAlpha], lazy,
+                           1) ==
+                 diversity([individualDiversity], [NormalisedAlpha], held, 1)
+end
+
 end
