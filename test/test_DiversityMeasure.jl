@@ -323,13 +323,22 @@ end
     @test collect(subcols.type_name) == ["", ""]
     @test subcols.partition_name == ["x", "y"]
 
-    # A rule must not alias the names it was built from -- that is what the copy in the inner
-    # constructor is for, and it is invisible without a test.
+    # A rule reads the names it was built from in place, and offers no way to write to them, so a
+    # returned table cannot be used to change a metacommunity's names.
     names = ["a", "b", "c"]
     col = Diversity.RepeatedColumn(names, 1, 6)
-    names[1] = "changed"
-    @test col[1] == "a"
     @test collect(col) == repeat(["a", "b", "c"], outer = 2)
+    @test_throws CanonicalIndexError col[1]="changed"
+    @test names == ["a", "b", "c"]
+
+    # Likewise a subcommunity result's names, which are the partition's own. A single part is handed
+    # to the sink as it is, so this is the case where the column would otherwise be the partition's
+    # vector itself.
+    ct = subdiv(Tables.columntable, lazydm, 1)
+    @test ct.partition_name isa Diversity.ReadOnlyColumn
+    @test collect(ct.partition_name) == ["x", "y"]
+    @test_throws CanonicalIndexError ct.partition_name[1]="changed"
+    @test getsubcommunitynames(lazymc) == ["x", "y"]
 end
 
 @testset "The DataFrame a caller gets back is unchanged" begin
@@ -621,10 +630,10 @@ end
     # Not caught: copying names that already exist as strings costs one pointer a row, 8 bytes,
     # which stays under the bound. What this detects is each name being read.
     #
-    # Both are broken while the name column copies the partition's names, and at two levels also
-    # while parts with differently typed name columns are concatenated rather than chained.
-    # `@test_broken` errors once its check passes, which is the signal to make it a `@test`.
-    @test_broken _lazybytesperrow([subcommunityDiversity]) < 64
+    @test _lazybytesperrow([subcommunityDiversity]) < 64
+    # Broken at two levels while parts with differently typed name columns are concatenated rather
+    # than chained. `@test_broken` errors once its check passes, which is the signal to make it a
+    # `@test`.
     @test_broken _lazybytesperrow([subcommunityDiversity,
                                       metacommunityDiversity]) < 64
 
@@ -637,12 +646,10 @@ end
     @test diversity(levels, [NormalisedAlpha, Gamma], lazy, [0, 1]) ==
           diversity(levels, [NormalisedAlpha, Gamma], held, [0, 1])
 
-    # Individual diversities throw on a partition whose names are not a `Vector`: `RepeatedColumn`
-    # declares its field as the type of the names it is given, and `copy` of a lazy vector returns a
-    # `Vector` that cannot be converted back to it.
-    @test_broken diversity([individualDiversity], [NormalisedAlpha], lazy,
-                           1) ==
-                 diversity([individualDiversity], [NormalisedAlpha], held, 1)
+    # Individual diversities too, whose name column cycles the partition's names.
+    @test diversity([individualDiversity], [NormalisedAlpha], lazy,
+                    1) ==
+          diversity([individualDiversity], [NormalisedAlpha], held, 1)
 end
 
 end

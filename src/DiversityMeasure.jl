@@ -42,9 +42,8 @@ Base.@propagate_inbounds Base.getindex(col::ConstantColumn, ::Int) = col.value
 # for the subcommunity names, which change once per block -- so this covers `repeat(v, outer = k)`
 # and `repeat(v, inner = k)` alike.
 #
-# The inner constructor copies, so the column can never alias the names it was built from. That is
-# free relative to what it replaces: the list is ntypes or nplaces long where the column is their
-# product.
+# The list is read in place rather than copied, since it may be a partition's names computed on
+# demand, and the column has no `setindex!`, so it cannot be used to write to them.
 struct RepeatedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
     values::V
     runlength::Int
@@ -52,7 +51,7 @@ struct RepeatedColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
 
     function RepeatedColumn(values::V, runlength::Int,
                             len::Int) where {T, V <: AbstractVector{T}}
-        return new{T, V}(copy(values), runlength, len)
+        return new{T, V}(values, runlength, len)
     end
 end
 
@@ -60,6 +59,23 @@ Base.size(col::RepeatedColumn) = (col.len,)
 Base.IndexStyle(::Type{<:RepeatedColumn}) = IndexLinear()
 Base.@propagate_inbounds function Base.getindex(col::RepeatedColumn, i::Int)
     return col.values[mod1(cld(i, col.runlength), length(col.values))]
+end
+
+# A vector read in place, with no way to write to it. A subcommunity result's name column is the
+# partition's own names held through this, so they are not copied and a returned table cannot be
+# used to change them.
+struct ReadOnlyColumn{T, V <: AbstractVector{T}} <: AbstractVector{T}
+    values::V
+
+    function ReadOnlyColumn(values::V) where {T, V <: AbstractVector{T}}
+        return new{T, V}(values)
+    end
+end
+
+Base.size(col::ReadOnlyColumn) = size(col.values)
+Base.IndexStyle(::Type{<:ReadOnlyColumn}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(col::ReadOnlyColumn, i::Int)
+    return col.values[i]
 end
 
 # The columns of a result, as a NamedTuple of equal-length vectors. That is already a Tables source,
@@ -415,7 +431,7 @@ function _subdiv_columns(measure::DiversityMeasure, q::Real)
                type_level = ConstantColumn("types", n),
                type_name = ConstantColumn("", n),
                partition_level = ConstantColumn("subcommunity", n),
-               partition_name = copy(scn),
+               partition_name = ReadOnlyColumn(scn),
                diversity = divs)
     return _addedcolumns(measure, columns, n)
 end
