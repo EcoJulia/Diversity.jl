@@ -1,5 +1,13 @@
 # NEWS
 
+- v0.6.5
+  - make powermean public for downstream use (using Compat to handle Julia v1.10)
+- v0.6.4
+  - Fix inddiv(), and diversity() asking for individual diversities
+  - Reduce allocation when outputting diversity measurements
+  - Compute the subcommunity diversities once when diversity() asks for both the subcommunity and
+    metacommunity levels, halving the time of that call
+  - Update the measured figures in the manual to match
 - v0.6.3
   - Allow EcoBase 0.2, which reaches Diversity as coordinateorder() and cellanchor() on any
     metacommunity built over gridded location data, and as the whole gridded interface -

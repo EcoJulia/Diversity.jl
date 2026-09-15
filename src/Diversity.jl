@@ -25,6 +25,8 @@ extract any diversity measure at a series of scales.
 """
 module Diversity
 
+using Compat: @compat
+
 """
     Diversity.API submodule
 
@@ -89,6 +91,7 @@ export inddiv, subdiv, metadiv
 
 include("EffectiveNumbers.jl")
 export qD, qDZ
+@compat public powermean
 
 include("DiversityMeasure.jl")
 export DiversityLevel
