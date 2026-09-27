@@ -30,7 +30,7 @@ DiversityPopGenExt = "PopGen"
 [compat]
 AxisArrays = "0.4"
 BioSequences = "3"
-CSV = "0.10"
+CSV = "0.10, 1"
 Compat = "4.10"
 DataFrames = "0.21, 0.22, 1.0"
 Distances = "0.10"

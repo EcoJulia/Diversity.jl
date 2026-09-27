@@ -39,14 +39,14 @@ The package is registered in the `General` registry on v1.x and so can be
 installed with `add`. For example on Julia v1.10:
 
 ```julia
-(@v1.10) pkg> add Diversity
+(@v1.13) pkg> add Diversity
     Resolving package versions...
-    Updating `~/.julia/environments/v1.10/Project.toml`
-  [d3d5718d] + Diversity v0.6.0
-    Updating `~/.julia/environments/v1.10/Manifest.toml`
-  [d3d5718d] + Diversity v0.6.0
+    Updating `~/.julia/environments/v1.13/Project.toml`
+  [d3d5718d] + Diversity v0.6.5
+    Updating `~/.julia/environments/v1.13/Manifest.toml`
+  [d3d5718d] + Diversity v0.6.5
   
-(@v1.10) pkg>
+(@v1.13) pkg>
 ```
 
 ## Project Status
