@@ -173,6 +173,86 @@ end
                                                     OtherPhyloTypes()))
 end
 
+@testset "PhyloDistances" begin
+    # Dog and Human meet 1 below the tips, Cat meets them at the root, 2 below
+    species = ["Dog", "Human", "Cat"]
+    nt = RootedTree(species)
+    n = createnode!(nt)
+    createbranch!(nt, n, species[1], 1.0)
+    createbranch!(nt, n, species[2], 1.0)
+    r = createnode!(nt)
+    createbranch!(nt, r, n, 1.0)
+    createbranch!(nt, r, species[3], 2.0)
+    pd = PhyloDistances(nt)
+    @test pd isa Diversity.PhyloDistances <: Diversity.AbstractPhyloTypes
+    @test gettypenames(pd) == getleafnames(nt, preorder) ==
+          gettypenames(PhyloBranches(nt), true)
+    @test counttypes(pd) == 3
+    @test getdiversityname(pd) == "Phylogenetic Distance"
+
+    # Patristic distances 2 (Dog-Human) and 4, so the default is 1 - d / 4:
+    # on an ultrametric tree, the share of the root-to-tip path in common
+    order = indexin(species, gettypenames(pd))
+    @test calcsimilarity(pd, 1.0)[order, order] ≈
+          [1.0 0.5 0.0; 0.5 1.0 0.0; 0.0 0.0 1.0]
+    named = PhyloDistances(nt, species)
+    @test gettypenames(named) == species
+    @test calcsimilarity(named, 1.0) ≈ [1.0 0.5 0.0; 0.5 1.0 0.0; 0.0 0.0 1.0]
+    d = [0.0 2.0 4.0; 2.0 0.0 4.0; 4.0 4.0 0.0]
+    @test calcsimilarity(PhyloDistances(nt, species; transform = :exponential),
+                         1.0) ≈ exp.(-d ./ 4)
+    @test calcsimilarity(PhyloDistances(nt, species; k = 0.1,
+                                        normalise = false),
+                         1.0) ≈ 1 .- 0.1 .* d
+    @test calcsimilarity(PhyloDistances(nt, species; k = 0.5,
+                                        normalise = false),
+                         1.0) ≈ max.(1 .- 0.5 .* d, 0)
+
+    # Species are the types, so diversity is that of GeneralTypes with Z
+    Z = calcsimilarity(named, 1.0)
+    abund = [0.25 0.05; 0.15 0.05; 0.1 0.4]
+    mc = Metacommunity(abund, named)
+    byhand = Metacommunity(abund, GeneralTypes(Z, species))
+    @test counttypes(mc) == 3
+    @test getordinariness!(mc) ≈ Z * abund
+    for q in [0, 1, 2, Inf]
+        @test meta_gamma(mc, q).diversity ≈ meta_gamma(byhand, q).diversity
+        @test norm_sub_rho(mc, q).diversity ≈ norm_sub_rho(byhand, q).diversity
+    end
+    # and a subset of species keeps the similarity as it was
+    sub = view(mc, species = [1, 3])
+    @test calcsimilarity(gettypes(sub), 1.0) ≈ Z[[1, 3], [1, 3]]
+
+    # Any rooted tree: 1 - d / max d from the tree's own distances
+    for tree in (rand(Nonultrametric(20)), rand(Ultrametric(20)))
+        pdt = PhyloDistances(tree)
+        names = gettypenames(pdt)
+        dt = [distance(tree, a, b) for a in names, b in names]
+        @test calcsimilarity(pdt, 1.0) ≈ 1 .- dt ./ maximum(dt)
+    end
+
+    # From a TreeSet of one tree, with the tree named in the output
+    ts = PhyloDistances(TreeSet(Dict("tree" => nt)), species)
+    @test calcsimilarity(ts, 1.0) == Z
+    @test meta_gamma(Metacommunity(abund, ts), 1).treename == ["tree"]
+
+    # Every leaf exactly once, as for PhyloBranches
+    @test_throws ArgumentError PhyloDistances(nt, ["Dog", "Cat"])
+    @test_throws ArgumentError PhyloDistances(nt, ["Dog", "Dog", "Cat"])
+    @test_throws ArgumentError PhyloDistances(nt, [species; "Mouse"])
+    @test_throws ArgumentError PhyloDistances(TreeSet(Dict("tree" => nt)),
+                                              ["Dog", "Cat"])
+    @test_throws ArgumentError PhyloDistances(nt; transform = :cubic)
+    nolengths = RootedTree(species)
+    m = createnode!(nolengths)
+    createbranch!(nolengths, m, "Dog")
+    createbranch!(nolengths, m, "Human")
+    top = createnode!(nolengths)
+    createbranch!(nolengths, top, m)
+    createbranch!(nolengths, top, "Cat")
+    @test_throws "needs a length" PhyloDistances(nolengths)
+end
+
 @testset "view over branches" begin
     species = ["Dog", "Human", "Cat"]
     nt = RootedTree(species)
@@ -302,6 +382,25 @@ end
     @test_throws ArgumentError PhyloBranches(TreeSet(Dict("tree" => tree)),
                                              ["e", "a", "d", "b"])
     @test gettypenames(PhyloBranches(tree, split("e a d b c")), true) == order
+
+    # PhyloDistances takes its species order the same way, and by default the same order as
+    # PhyloBranches, so one abundance matrix means the same community under either type.
+    pd = PhyloDistances(tree)
+    @test gettypenames(pd) == gettypenames(ph, true)
+    pdre = PhyloDistances(tree, order)
+    @test gettypenames(pdre) == order
+    @test calcsimilarity(pdre, 1.0) ≈ calcsimilarity(pd, 1.0)[perm, perm]
+    mcd = Metacommunity(abund, pd)
+    mcdre = Metacommunity(abund[perm, :], pdre)
+    for q in [0, 1, 2, Inf]
+        @test meta_gamma(mcdre, q).diversity ≈ meta_gamma(mcd, q).diversity
+        @test norm_sub_beta(mcdre, q).diversity ≈
+              norm_sub_beta(mcd, q).diversity
+    end
+    tsd = PhyloDistances(TreeSet(Dict("tree" => tree)), order)
+    @test gettypenames(tsd) == order
+    @test calcsimilarity(tsd, 1.0) == calcsimilarity(pdre, 1.0)
+    @test gettypenames(PhyloDistances(tree, split("e a d b c"))) == order
 end
 
 end

@@ -101,6 +101,30 @@ faith_pd(Metacommunity([0.4 0.0; 0.1 0.2; 0.0 0.3], ph))[!,
                                                           :diversity]]
 ```
 
+
+## Species as types: `PhyloDistances`
+
+[`PhyloBranches`](@ref) measures diversity over the *branches* of the tree.
+[`PhyloDistances`](@ref) keeps the *species* as the types instead, and makes
+them more or less similar according to the distance between them along the
+tree - the analogue of rdiversity's `phy2dist()` followed by `dist2sim()`. By
+default the similarity is 1 - d / max d, which on an ultrametric tree is the
+fraction of the root-to-tip path that two species share; `transform`, `k` and
+`normalise` choose other conversions, as for the [genetic types](genetics.md).
+The species take the same order as for `PhyloBranches`: a preorder traversal of
+the tree by default, or the order of a `leaforder` naming every leaf once:
+
+```@repl phylo
+pd = PhyloDistances(tree, species)
+calcsimilarity(pd, 1.0)
+metadist = Metacommunity([0.4, 0.3, 0.3], pd)
+meta_gamma(metadist, [0, 1, 2])
+```
+
+Since the types are species, a view of some of them keeps their similarities
+as they are, and a metacommunity over thousands of species needs a similarity
+matrix over the species only, not over every species-branch pair.
+
 ```@contents
 ```
 

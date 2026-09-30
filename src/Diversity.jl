@@ -163,7 +163,44 @@ reaches its leaves.
 """
 abstract type PhyloBranches{Tree} <: Diversity.AbstractPhyloTypes{Tree} end
 
-export AbstractPhyloTypes, PhyloBranches #, PhyloDistances
+"""
+    PhyloDistances{Tree} <: AbstractPhyloTypes{Tree}
+    PhyloDistances(tree[, leaforder]; transform = :linear, k = 1,
+                   normalise = true)
+
+Phylogenetic types that keep the **species** (the leaves of the tree) as the
+types, with a similarity derived from the patristic distance between them - the
+length of the path joining them through the tree. Where
+[`PhyloBranches`](@ref) measures diversity over the branches, this measures it
+over species that are more or less similar, as `GeneralTypes` does for any
+other similarity; it is the analogue of rdiversity's `phy2dist()` followed by
+`dist2sim()`.
+
+The distances d are converted as for the genetic types: divided by the largest
+distance if `normalise` is true, then `max(1 - k * d, 0)` for
+`transform = :linear` or `exp(-k * d)` for `transform = :exponential`. For an
+ultrametric tree of height T whose root has two or more children, the default
+gives 1 - d / 2T: the fraction of the root-to-tip path that two species share.
+Every branch of the tree needs a length.
+
+Row `i` of the abundances given to a [`Metacommunity`](@ref) over
+`pd::PhyloDistances` is the species `gettypenames(pd)[i]`: the order of
+`leaforder`, or by default the order in which a preorder traversal of `tree`
+reaches its leaves - the same species order as [`PhyloBranches`](@ref) gives
+for the same arguments.
+
+- `tree`: a `Phylo` tree whose leaves are the species, or a `TreeSet` holding
+  one such tree
+- `leaforder`: the leaf names in the order the abundance rows give the species,
+  naming every leaf of the tree exactly once
+- `transform`, `k`, `normalise`: the conversion of distance to similarity
+
+The concrete type is supplied by the `DiversityPhyloExt` extension, so
+`PhyloDistances(tree)` works once `Phylo` is loaded.
+"""
+abstract type PhyloDistances{Tree} <: Diversity.AbstractPhyloTypes{Tree} end
+
+export AbstractPhyloTypes, PhyloBranches, PhyloDistances
 
 # From BioSequences / PopGen (genetic diversity extensions)
 """
