@@ -59,6 +59,28 @@ Diversity.Ecology.generalisedpielou(metacommunityDiversity, communitymat)
     `using Diversity.Ecology: generalisedpielou`). Every other measure on this
     page is exported by the submodule.
 
+## Similarity-sensitive dissimilarity between many subcommunities
+
+[`pairwisedissimilarity`](@ref Diversity.Ecology.pairwisedissimilarity)
+compares every pair of subcommunities at once and, unlike `jaccard` and
+`gower`, takes the similarity between types into account. It gives the
+similarity-based Jaccard, Sørensen, Ochiai and Sokal-Sneath dissimilarities of
+Pavoine & Ricotta (2014) and Rao's dissimilarity coefficient (DISC), each as a
+matrix over the subcommunities. All of them come from the ordinariness that the
+metacommunity already caches, so any types with a similarity work -
+`GeneralTypes`, `PhyloBranches`, genetic types:
+
+```@repl ecology
+sites = [3 0 1 2; 0 2 2 0; 1 1 0 4; 0 5 1 0]  # 4 types (rows), 4 subcommunities
+sites = sites ./ sum(sites)
+Z = [1.0 0.8 0.1 0.0; 0.8 1.0 0.2 0.1; 0.1 0.2 1.0 0.6; 0.0 0.1 0.6 1.0]
+d = pairwisedissimilarity(sites, Z)
+d.rao
+occupied = sites .> 0
+pairwisedissimilarity(occupied ./ sum(occupied)).jaccard  # classic Jaccard
+pairwisedissimilarity(sites; relative = true).sorensen  # Morisita-Horn
+```
+
 ## Faith's PD
 
 [`faith_pd`](@ref Diversity.Ecology.faith_pd) and

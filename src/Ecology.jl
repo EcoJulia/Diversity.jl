@@ -464,6 +464,146 @@ function gower(asm::AbstractAssemblage; countzeros::Bool = false,
 end
 
 """
+    PAIRWISE_FORMS
+
+The forms of [`pairwisedissimilarity`](@ref): `:jaccard`, `:sorensen`,
+`:ochiai`, `:sokalsneath` and `:rao`.
+"""
+const PAIRWISE_FORMS = (:jaccard, :sorensen, :ochiai, :sokalsneath, :rao)
+
+# The similarity of two subcommunities x and y in each form, from G = Pᵀ Z P
+_pairwisesim(::Val{:jaccard}, G, gx, gy) = G / (gx + gy - G)
+_pairwisesim(::Val{:sorensen}, G, gx, gy) = 2G / (gx + gy)
+_pairwisesim(::Val{:ochiai}, G, gx, gy) = G / sqrt(gx * gy)
+_pairwisesim(::Val{:sokalsneath}, G, gx, gy) = G / (2gx + 2gy - 3G)
+
+"""
+    pairwisedissimilarity(asm::AbstractAssemblage; forms = PAIRWISE_FORMS,
+                          relative::Bool = false, squareroot::Bool = false)
+    pairwisedissimilarity(proportions::AbstractMatrix[, Z::AbstractMatrix];
+                          kwargs...)
+    pairwisedissimilarity(proportions::AbstractMatrix, sim::AbstractTypes;
+                          kwargs...)
+
+Similarity-sensitive dissimilarity between every pair of subcommunities of
+`asm`, for each of `forms`. Unlike [`jaccard`](@ref) and [`gower`](@ref) this is
+not limited to two subcommunities, and it takes the similarity between types
+into account, so it works with any types that have one (`GeneralTypes`,
+`PhyloBranches`, genetic types, ...).
+
+Every form is a function of G = Pᵀ Z P, the type similarity `Z` summed over
+the pairs of individuals of two subcommunities (P holds the abundances of the
+subcommunities as columns), which comes from the ordinariness Z P that the
+metacommunity already caches. With g = diag(G), the dissimilarity between
+subcommunities x and y is d = 1 - s for
+
+  - `:jaccard`: s = G_xy / (g_x + g_y - G_xy)
+  - `:sorensen`: s = 2 G_xy / (g_x + g_y)
+  - `:ochiai`: s = G_xy / √(g_x g_y)
+  - `:sokalsneath`: s = G_xy / (2g_x + 2g_y - 3G_xy)
+
+(the similarity-based indices of Pavoine & Ricotta (2014), R adiv's
+`dsimcom`), and, always on relative abundances, `:rao`: Rao's dissimilarity
+coefficient (DISC) d = D_xy - ½(D_xx + D_yy), where D_xy = p_xᵀ Δ p_y is the
+mean dissimilarity Δ = 1 - Z between an individual of x and one of y, which is
+½(g_x + g_y) - G_xy.
+
+With `Z` the identity (`UniqueTypes`) and presence/absence data the first four
+are the classic Jaccard, Sørensen, Ochiai and Sokal-Sneath dissimilarities;
+with relative abundances Sørensen is Morisita-Horn.
+
+#### Arguments:
+
+- `asm`: an assemblage or metacommunity, of two or more subcommunities; or
+- `proportions`: the abundances of the subcommunities as columns, and
+- `Z` or `sim`: the similarity of the types (default: none, `UniqueTypes`)
+
+#### Keyword arguments:
+
+- `forms`: which dissimilarities to calculate, from [`PAIRWISE_FORMS`](@ref)
+- `relative`: use the relative abundances within each subcommunity rather than
+  the abundances as given, so that each subcommunity has the same total weight.
+  Defaults to `false`. `:rao` always uses relative abundances.
+- `squareroot`: return √d rather than d. For positive semi-definite `Z` this
+  makes each form Euclidean-embeddable (Pavoine & Ricotta 2014). Defaults to
+  `false`.
+
+#### Returns:
+
+- a NamedTuple keyed by form of symmetric dissimilarity matrices over the
+  subcommunities, in the order of `getsubcommunitynames(asm)`. Pairs involving
+  an empty subcommunity are `NaN`.
+
+A form that falls outside [0, 1] by rounding is clamped. A `Z` that is not
+positive semi-definite can push a form further out; that is clamped too, with a
+warning.
+
+#### References:
+
+- Pavoine, S. & Ricotta, C. (2014) Functional and phylogenetic similarity among
+  communities. Methods in Ecology and Evolution 5, 666-675.
+- Rao, C. R. (1982) Diversity and dissimilarity coefficients: a unified
+  approach. Theoretical Population Biology 21, 24-43.
+"""
+function pairwisedissimilarity end
+
+function pairwisedissimilarity(proportions::AbstractMatrix; kwargs...)
+    return pairwisedissimilarity(Metacommunity(proportions); kwargs...)
+end
+
+function pairwisedissimilarity(proportions::AbstractMatrix, Z::AbstractMatrix;
+                               kwargs...)
+    return pairwisedissimilarity(proportions, GeneralTypes(Z); kwargs...)
+end
+
+function pairwisedissimilarity(proportions::AbstractMatrix, sim::AbstractTypes;
+                               kwargs...)
+    return pairwisedissimilarity(Metacommunity(proportions, sim); kwargs...)
+end
+
+function pairwisedissimilarity(asm::AbstractAssemblage;
+                               forms = PAIRWISE_FORMS, relative::Bool = false,
+                               squareroot::Bool = false)
+    all(in(PAIRWISE_FORMS), forms) ||
+        throw(ArgumentError("forms must be among $PAIRWISE_FORMS, got $forms"))
+    n = countsubcommunities(asm)
+    n ≥ 2 || error("Need at least two subcommunities, got $n")
+
+    G = getabundance(asm, false)' * getordinariness!(asm)
+    isapprox(G, G', rtol = sqrt(eps(Float64))) ||
+        throw(ArgumentError("the similarity of " *
+                            "$(typeof(gettypes(asm))) is not symmetric"))
+    G = (G + G') / 2
+    w = getweight(asm)
+    Grel = G ./ (w * w')
+    occupied = w .> 0
+
+    ds = map(forms) do form
+        Gf = form === :rao || relative ? Grel : G
+        g = diag(Gf)
+        D = fill(NaN, n, n)
+        excess = 0.0
+        for j in 1:n, i in 1:j
+            (occupied[i] && occupied[j]) || continue
+            if i == j
+                D[i, i] = 0
+                continue
+            end
+            d = form === :rao ? (g[i] + g[j]) / 2 - Gf[i, j] :
+                1 - _pairwisesim(Val(form), Gf[i, j], g[i], g[j])
+            excess = max(excess, -d, d - 1)
+            d = clamp(d, 0, 1)
+            D[i, j] = D[j, i] = squareroot ? sqrt(d) : d
+        end
+        excess > sqrt(eps(Float64)) &&
+            @warn "$form: dissimilarity outside [0, 1] by up to $excess " *
+                  "before clamping (is Z positive semi-definite?)"
+        return D
+    end
+    return NamedTuple{Tuple(forms)}(ds)
+end
+
+"""
     generalisedfaith_pd(level::DiversityLevel, mc::AbstractMetacommunity)
 
 Calculates Faith's phylogenetic diversity (PD) - the total length of the
