@@ -45,6 +45,23 @@ counttypes(metaphylo, true)
 counttypes(metaphylo, false)
 ```
 
+## The order of the species
+
+Each row of the abundances belongs to the species at the same position in
+`gettypenames(metaphylo, true)`. By default that is the order in which a
+preorder traversal of the tree reaches its leaves, which need not be the order
+you named them in. To give the species in an order of your own, name every leaf
+once:
+
+```@repl phylo
+ph2 = PhyloBranches(tree, ["Cat", "Dog", "Human"]);
+gettypenames(ph2, true)
+meta_gamma(Metacommunity([0.3, 0.4, 0.3], ph2), 0)[!, :diversity]
+```
+
+These are the abundances of the first example in the new order, so the diversity
+is the same.
+
 ## Faith's PD
 
 Faith's phylogenetic diversity is the older, historical measure: the **total

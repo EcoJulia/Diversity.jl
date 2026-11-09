@@ -143,11 +143,23 @@ abstract type AbstractPhyloTypes{Tree} <:
 
 """
     PhyloBranches{Tree} <: AbstractPhyloTypes{Tree}
+    PhyloBranches(tree[, leaforder])
 
 Abstract supertype for phylogenetic types that expand a tree into the ancestral
 **branches** leading to each species, and measure diversity over those branches.
-The concrete type is supplied by the `DiversityPhyloExt` extension, so
-`PhyloBranches(tree)` works once `Phylo` is loaded.
+The concrete type is supplied by the `DiversityPhyloExt` extension, so the
+constructor works once `Phylo` is loaded.
+
+The species are the raw types and the branches the processed ones, grouped by
+species. Row `i` of the abundances given to a [`Metacommunity`](@ref) over
+`phy::PhyloBranches` is the species `gettypenames(phy, true)[i]`: the order of
+`leaforder`, or by default the order in which a preorder traversal of `tree`
+reaches its leaves.
+
+- `tree`: a `Phylo` tree whose leaves are the species, or a `TreeSet` holding
+  one such tree
+- `leaforder`: the leaf names in the order the abundance rows give the species,
+  naming every leaf of the tree exactly once
 """
 abstract type PhyloBranches{Tree} <: Diversity.AbstractPhyloTypes{Tree} end
 

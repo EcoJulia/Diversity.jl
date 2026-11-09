@@ -18,10 +18,11 @@ struct PhyloBranches{Tree <: AbstractTree} <: Diversity.PhyloBranches{Tree}
     ancestralmatrix::Matrix{Float64}
     Zmatrix::Matrix{Float64}
 
-    function PhyloBranches(tree::Tree) where {Tree <: AbstractTree}
-        leafnames = [getnodename(tree, node)
-                     for node in traversal(tree, preorder)
-                     if isleaf(tree, node)]
+    function PhyloBranches(tree::Tree,
+                           leaforder::AbstractVector{<:AbstractString} =
+                           getleafnames(tree, preorder)) where {Tree <:
+                                                                AbstractTree}
+        leafnames = _checkleaforder(tree, leaforder)
         nleaf = length(leafnames)
         nleaf > 0 || error("Too few species")
         leafinfo = Dict{String, Float64}()
@@ -71,10 +72,13 @@ struct PhyloBranches{Tree <: AbstractTree} <: Diversity.PhyloBranches{Tree}
                          ancestralnames, ancestralmatrix, Zmatrix)
     end
 
-    function PhyloBranches(treeset::TS) where {TS <: TreeSet}
+    function PhyloBranches(treeset::TS,
+                           leaforder::AbstractVector{<:AbstractString} =
+                           getleafnames(first(treeset), preorder)) where {TS <:
+                                                                          TreeSet}
         ntrees(treeset) == 1 ||
             error("Can currently only handle one tree in a PhyloSet")
-        pt = PhyloBranches(first(treeset))
+        pt = PhyloBranches(first(treeset), leaforder)
         return new{TS}(treeset, pt.nleaf, pt.nancestral,
                        pt.leafnames, pt.ancestralnames,
                        pt.ancestralmatrix, pt.Zmatrix)
@@ -173,6 +177,30 @@ function faith_pd(mc::M) where
     {FP, ARaw, AProcessed, Sim <: PhyloBranches,
      M <: Diversity.API.AbstractMetacommunity{FP, ARaw, AProcessed, Sim}}
     return generalisedfaith_pd(subcommunityDiversity, mc)
+end
+
+# Return `leaforder` as the species names of a `PhyloBranches` over `tree`, refusing it unless it
+# names every leaf of the tree exactly once - the position of each name is what pairs an abundance
+# row with its leaf.
+function _checkleaforder(tree::AbstractTree,
+                         leaforder::AbstractVector{<:AbstractString})
+    leafnames = String.(leaforder)
+    leaves = getleafnames(tree)
+    unknown = setdiff(leafnames, leaves)
+    isempty(unknown) ||
+        throw(ArgumentError("leaforder names $(join(unknown, ", ")), " *
+                            "which are not leaves of the tree"))
+    if !allunique(leafnames)
+        repeated = unique(name
+                          for name in leafnames
+                          if count(==(name), leafnames) > 1)
+        throw(ArgumentError("leaforder names $(join(repeated, ", ")) " *
+                            "more than once"))
+    end
+    absent = setdiff(leaves, leafnames)
+    isempty(absent) ||
+        throw(ArgumentError("leaforder leaves out $(join(absent, ", "))"))
+    return leafnames
 end
 
 end

@@ -1,5 +1,8 @@
 # NEWS
 
+- v0.6.6
+  - Add PhyloBranches(tree, leaforder), which takes a phylogeny's species in the caller's order
+    rather than the tree's
 - v0.6.5
   - make powermean public for downstream use (using Compat to handle Julia v1.10)
 - v0.6.4

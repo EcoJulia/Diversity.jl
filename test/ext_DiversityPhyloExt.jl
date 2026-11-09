@@ -243,4 +243,65 @@ end
     end
 end
 
+@testset "leaf order" begin
+    # Non-ultrametric, so every branch length matters, and its preorder (a, b, d, e, c) is not even
+    # the order the Newick string writes its leaves in.
+    tree = parsenewick("((a:1,b:2):1,(c:1,(d:0.5,e:3):1):2);")
+    ph = PhyloBranches(tree)
+    order = ["e", "a", "d", "b", "c"]
+    perm = [findfirst(==(leaf), gettypenames(ph, true)) for leaf in order]
+    reordered = PhyloBranches(tree, order)
+
+    # The species take the caller's order, and the branches follow them, grouped by species.
+    @test gettypenames(reordered, true) == order
+    @test sort(gettypenames(reordered)) == sort(gettypenames(ph))
+    owners = [first(split(name, " : ")) for name in gettypenames(reordered)]
+    @test issorted(owners, by = leaf -> findfirst(==(leaf), order))
+
+    # One community with its rows in either order measures the same: the rows here are in the
+    # tree's own order, and each subcommunity lacks a different species.
+    abund = [0.3 0.0 0.1;
+             0.1 0.2 0.0;
+             0.2 0.1 0.0;
+             0.1 0.0 0.3;
+             0.0 0.3 0.2]
+    abund ./= sum(abund)
+    mc = Metacommunity(abund, ph)
+    mcre = Metacommunity(abund[perm, :], reordered)
+    for q in [0, 1, 2, Inf]
+        @test meta_gamma(mcre, q).diversity ≈ meta_gamma(mc, q).diversity
+        @test norm_sub_alpha(mcre, q).diversity ≈
+              norm_sub_alpha(mc, q).diversity
+        @test norm_sub_beta(mcre, q).diversity ≈ norm_sub_beta(mc, q).diversity
+    end
+    @test faith_pd(mcre).diversity ≈ faith_pd(mc).diversity
+    # The same rows read in the tree's order are a different community.
+    @test !(faith_pd(Metacommunity(abund[perm, :], ph)).diversity ≈
+            faith_pd(mc).diversity)
+
+    # Naming the tree's own order is the default.
+    same = PhyloBranches(tree, gettypenames(ph, true))
+    @test gettypenames(same) == gettypenames(ph)
+    @test calcsimilarity(same, 1.0) == calcsimilarity(ph, 1.0)
+
+    tsre = PhyloBranches(TreeSet(Dict("tree" => tree)), order)
+    @test gettypenames(tsre, true) == order
+    @test gettypenames(tsre) == gettypenames(reordered)
+    @test calcsimilarity(tsre, 1.0) == calcsimilarity(reordered, 1.0)
+    tsmc = Metacommunity(abund[perm, :], tsre)
+    @test meta_gamma(tsmc, 1).diversity ≈ meta_gamma(mc, 1).diversity
+    @test meta_gamma(tsmc, 1).treename == ["tree"]
+
+    # Every leaf exactly once, and nothing else.
+    @test_throws ArgumentError PhyloBranches(tree, ["e", "a", "d", "b"])
+    @test_throws ArgumentError PhyloBranches(tree, [order; "f"])
+    @test_throws ArgumentError PhyloBranches(tree, [order; "a"])
+    @test_throws ArgumentError PhyloBranches(tree, ["e", "a", "d", "b", "b"])
+    internal = getnodename(tree, getparent(tree, "a"))
+    @test_throws ArgumentError PhyloBranches(tree, [order; internal])
+    @test_throws ArgumentError PhyloBranches(TreeSet(Dict("tree" => tree)),
+                                             ["e", "a", "d", "b"])
+    @test gettypenames(PhyloBranches(tree, split("e a d b c")), true) == order
+end
+
 end
