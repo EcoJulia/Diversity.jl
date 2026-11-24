@@ -426,6 +426,65 @@ if !skipR
         end
     end
 
+    # PhyloDistances against rdiversity's phy2dist() + dist2sim(): the species
+    # are the types, with a similarity from the patristic distances along the
+    # tree. rdiversity pairs abundance rows with the similarity by position, so
+    # its distances are put in this package's type order before conversion.
+    @testset "RCall - testing PhyloDistances with boydorr/rdiversity" begin
+        conversions = [(:linear, 1, true), (:exponential, 1, true),
+            (:linear, 0.1, false), (:exponential, 0.5, false)]
+        @testset "Random phylogeny $i" for i in 1:10
+            types = rand(2:(i * 5))
+            tree = rand(isodd(i) ? Nonultrametric(types) : Ultrametric(types))
+            sc = rand(2:(i * 10))
+            pops = rand(types, sc)
+            for j in 1:sc
+                pops[pops[:, j] .< median(pops[:, j]) / 2, j] .= 0.0
+            end
+            pops ./= sum(pops)
+            qs = sort([rand(7) * 10..., 0, 1, Inf])
+            @rput tree
+            @testset "$transform, k = $k, normalise = $normalise" for (transform,
+                                                                      k,
+                                                                      normalise) in conversions
+                pd = PhyloDistances(tree; transform, k, normalise)
+                jnames = gettypenames(pd)
+                rtransform = string(transform)
+                @rput jnames rtransform k normalise
+                r_sim = R"""
+                d <- phy2dist(tree)
+                d@distance <- d@distance[jnames, jnames]
+                dist2sim(d, rtransform, k = k, normalise = normalise)
+                """
+                @test calcsimilarity(pd, 1.0) ≈
+                      rcopy(rcall(:slot, r_sim, "similarity"))
+
+                meta = Metacommunity(pops, pd)
+                diversities = Dict(:raw_alpha => α(meta),
+                                   :norm_alpha => ᾱ(meta),
+                                   :raw_beta => β(meta),
+                                   :norm_beta => β̄(meta),
+                                   :raw_rho => ρ(meta),
+                                   :norm_rho => ρ̄(meta),
+                                   :raw_gamma => Γ(meta))
+                @rput pops
+                r_meta = R"""
+                rownames(pops) <- jnames
+                metacommunity(pops, $r_sim)
+                """
+                for (r_func, juliadiv) in diversities
+                    r_div = rcall(r_func, r_meta)
+                    # Check the metacommunity diversity
+                    @test metadiv(juliadiv, qs)[!, :diversity] ≈
+                          rcopy(rcall(:metadiv, r_div, qs)[:diversity])
+                    # and subcommunity diversity
+                    @test subdiv(juliadiv, qs)[!, :diversity] ≈
+                          rcopy(rcall(:subdiv, r_div, qs)[:diversity])
+                end
+            end
+        end
+    end
+
     # Run genetic (VCF) comparisons. For every VCF file in test/data, Julia reads
     # it with PopGen and builds a GeneticType with biallelic Manhattan distances,
     # which must match rdiversity's gen2dist(vcf, biallelic = TRUE) + dist2sim.
