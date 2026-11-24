@@ -1,5 +1,9 @@
 # NEWS
 
+- v0.6.7
+  - Add PhyloDistances(tree[, leaforder]), phylogenetic types that keep the species as the types,
+    with a similarity from the distances between them along the tree (rdiversity's phy2dist() and
+    dist2sim())
 - v0.6.6
   - Add PhyloBranches(tree, leaforder), which takes a phylogeny's species in the caller's order
     rather than the tree's

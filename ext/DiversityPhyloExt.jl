@@ -135,6 +135,60 @@ end
 import Diversity.API: _getdiversityname
 _getdiversityname(::PhyloBranches) = "Phylogenetic Branch"
 
+# The species themselves as types, with a similarity from the distances between
+# them along the tree
+struct PhyloDistances{Tree <: AbstractTree} <: Diversity.PhyloDistances{Tree}
+    tree::Tree
+    leafnames::Vector{String}
+    Zmatrix::Matrix{Float64}
+
+    function PhyloDistances(tree::Tree,
+                            leaforder::AbstractVector{<:AbstractString} =
+                            getleafnames(tree, preorder);
+                            transform::Symbol = :linear, k::Real = 1,
+                            normalise::Bool = true) where {Tree <: AbstractTree}
+        names, Z = _leafsimilarity(tree, leaforder, transform, k, normalise)
+        return new{Tree}(tree, names, Z)
+    end
+
+    function PhyloDistances(treeset::TS,
+                            leaforder::AbstractVector{<:AbstractString} =
+                            getleafnames(first(treeset), preorder);
+                            kwargs...) where {TS <: TreeSet}
+        ntrees(treeset) == 1 ||
+            error("Can currently only handle one tree in a TreeSet")
+        pd = PhyloDistances(first(treeset), leaforder; kwargs...)
+        return new{TS}(treeset, pd.leafnames, pd.Zmatrix)
+    end
+end
+
+# The similarity of the leaves of `tree`, in the order `leaforder` names them
+function _leafsimilarity(tree, leaforder, transform, k, normalise)
+    names = _checkleaforder(tree, leaforder)
+    isempty(names) && error("Too few species")
+    treenames = [getnodename(tree, leaf) for leaf in getleaves(tree)]
+    dist = distances(tree)  # over the leaves in the order of getleaves()
+    all(d -> d isa Real && !isnan(d), dist) ||
+        error("Every branch of the tree needs a length")
+    order = indexin(names, treenames)
+    D = Matrix{Float64}(dist)[order, order]
+    Z = Diversity._dist2sim(D; transform = transform, k = k,
+                            normalise = normalise, max_d = maximum(D))
+    return names, Z
+end
+
+function Diversity.PhyloDistances(args...; kwargs...)
+    return PhyloDistances(args...; kwargs...)
+end
+
+_gettypenames(pd::PhyloDistances, ::Bool) = pd.leafnames
+_counttypes(pd::PhyloDistances, ::Bool) = length(pd.leafnames)
+_calcsimilarity(pd::PhyloDistances, ::Real) = pd.Zmatrix
+_getdiversityname(::PhyloDistances) = "Phylogenetic Distance"
+
+import Diversity.API: floattypes
+floattypes(::PhyloDistances) = Set{Type}([Float64])
+
 # The units here are branches, not species - this type is opinionated about that, and these are how
 # a reader is told. The plural is spelled out because EcoBase's default is `"$(thingkind(x))s"`.
 import EcoBase: thingkind, thingkindplural
@@ -179,9 +233,9 @@ function faith_pd(mc::M) where
     return generalisedfaith_pd(subcommunityDiversity, mc)
 end
 
-# Return `leaforder` as the species names of a `PhyloBranches` over `tree`, refusing it unless it
-# names every leaf of the tree exactly once - the position of each name is what pairs an abundance
-# row with its leaf.
+# Return `leaforder` as the species names of a `PhyloBranches` or `PhyloDistances` over `tree`,
+# refusing it unless it names every leaf of the tree exactly once - the position of each name is
+# what pairs an abundance row with its leaf.
 function _checkleaforder(tree::AbstractTree,
                          leaforder::AbstractVector{<:AbstractString})
     leafnames = String.(leaforder)
