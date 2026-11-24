@@ -1,5 +1,9 @@
 # NEWS
 
+- v0.6.7
+  - Add pairwisedissimilarity(), similarity-sensitive dissimilarity between every pair of
+    subcommunities as matrices: the Jaccard, Sørensen, Ochiai and Sokal-Sneath forms of Pavoine &
+    Ricotta (2014) and Rao's DISC, from the cached ordinariness, for any types with a similarity
 - v0.6.6
   - Add PhyloBranches(tree, leaforder), which takes a phylogeny's species in the caller's order
     rather than the tree's

@@ -127,4 +127,68 @@ end
                                                                  GeneralTypes(sim)))
 end
 
+@testset "Pairwise dissimilarity" begin
+    # 6 types (rows) in 4 subcommunities, and a similarity from points in the
+    # plane: 1 - distance / maximum distance
+    ab = [3 0 1 2; 0 2 2 0; 1 1 0 4; 0 5 1 0; 2 0 0 1; 1 1 3 0]
+    xy = [0.1 0.3; 0.4 0.2; 0.9 0.7; 0.5 0.5; 0.2 0.9; 0.7 0.1]
+    dist = [sqrt(sum(abs2, xy[i, :] .- xy[j, :])) for i in 1:6, j in 1:6]
+    Z = 1 .- dist ./ maximum(dist)
+    # These check the definitions and the interface. The values are checked
+    # against other implementations in `pkg_Distances.jl` (Distances.jl) and
+    # `run_rcall.jl` (R's adiv, ade4 and vegan).
+
+    # Rao against its definition, and for distinct types
+    p = ab ./ sum(ab, dims = 1)
+    Δ = 1 .- Z
+    rao = [p[:, x]' * Δ * p[:, y] -
+           (p[:, x]' * Δ * p[:, x] + p[:, y]' * Δ * p[:, y]) / 2
+           for x in 1:4, y in 1:4]
+    @test pairwisedissimilarity(ab, Z).rao ≈ rao atol = 1e-12
+    @test pairwisedissimilarity(ab).rao ≈
+          [sum(abs2, p[:, x] - p[:, y]) / 2 for x in 1:4, y in 1:4] atol = 1e-12
+
+    # The same answer from proportions, types and a metacommunity; the
+    # abundances as given are only up to one common scale, and relative
+    # abundances ignore the scale of each subcommunity
+    d = pairwisedissimilarity(ab, Z)
+    @test pairwisedissimilarity(ab, GeneralTypes(Z)) == d
+    @test pairwisedissimilarity(Metacommunity(ab ./ sum(ab),
+                                              GeneralTypes(Z))) == d
+    @test all(pairwisedissimilarity(10 .* ab, Z)[f] ≈ d[f] for f in keys(d))
+    drel = pairwisedissimilarity(ab, Z; relative = true)
+    @test all(pairwisedissimilarity(ab .* [1 2 3 4], Z; relative = true)[f] ≈
+              drel[f] for f in keys(drel))
+
+    # Symmetric, zero on the diagonal, in [0, 1]; the square root on request
+    for D in d
+        @test D == D'
+        @test all(iszero, diag(D))
+        @test all(x -> 0 ≤ x ≤ 1, D)
+    end
+    dsq = pairwisedissimilarity(ab, Z; squareroot = true)
+    @test all(dsq[f] ≈ sqrt.(d[f]) for f in keys(d))
+
+    # A subset of forms, in the order asked for
+    @test keys(pairwisedissimilarity(ab, Z; forms = (:rao, :ochiai))) ==
+          (:rao, :ochiai)
+    @test pairwisedissimilarity(ab, Z; forms = (:ochiai,)).ochiai == d.ochiai
+
+    # An empty subcommunity is NaN, and leaves the other pairs as they were
+    ab0 = hcat(ab, zeros(Int, 6))
+    d0 = pairwisedissimilarity(ab0, Z)
+    @test all(isnan, d0.jaccard[:, 5]) && all(isnan, d0.jaccard[5, :])
+    @test d0.jaccard[1:4, 1:4] ≈ d.jaccard
+
+    @test_throws ArgumentError pairwisedissimilarity(ab, Z; forms = (:bray,))
+    @test_throws "at least two subcommunities" pairwisedissimilarity(ab[:, 1:1])
+    # A similarity that is not positive semi-definite can push s above 1
+    notpsd = [1.0 1.0 0.0; 1.0 1.0 1.0; 0.0 1.0 1.0]
+    @test_logs (:warn, r"outside \[0, 1\]") match_mode=:any pairwisedissimilarity([1 0;
+                                                                                   0 1;
+                                                                                   1 0],
+                                                                                  notpsd;
+                                                                                  forms = (:sorensen,))
+end
+
 end

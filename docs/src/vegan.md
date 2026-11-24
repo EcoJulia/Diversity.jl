@@ -46,15 +46,22 @@ hillnumber(community, [0, 1, 2]).diversity
 
 ## Dissimilarity between two communities
 
-These are the genuinely pairwise measures, and they behave as vegan's do - but they take exactly two
-subcommunities rather than returning a matrix over many.
+These are the genuinely pairwise measures, and they behave as vegan's do. `jaccard` and `gower` take
+exactly two subcommunities; `pairwisedissimilarity` returns a matrix over all of them, like
+`vegdist` (and also takes a similarity between types, which vegan does not).
 
 | vegan | here | |
 |---|---|---|
 | `vegdist(x, "jaccard")` | `jaccard(x)` | ✅ |
 | `vegdist(x, "gower")` (pre-2.7) | `gower(x, countzeros = true)` | ✅ |
 | `vegdist(x, "altGower")` | `gower(x, countzeros = false)` | ✅ |
+| `vegdist(x, "jaccard", binary = TRUE)` | `pairwisedissimilarity(x .> 0).jaccard` | ✅ |
+| `vegdist(x, "bray", binary = TRUE)` | `pairwisedissimilarity(x .> 0).sorensen` | ✅ |
+| `vegdist(x, "horn")` | `pairwisedissimilarity(x, relative = true).sorensen` | ✅ |
 | `vegdist` with other methods | not provided | |
+
+Note that `x` here has the subcommunities as columns, as everywhere in this package, where `vegdist`
+takes them as rows.
 
 ```@repl vegan
 two = [2 2; 2 0; 0 2] ./ 8
