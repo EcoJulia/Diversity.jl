@@ -8,9 +8,9 @@
 # **This is the set worth being able to name, and in this package it is not close.**
 # `pkg_RCall.jl` reaches `run_rcall.jl`, which is most of the suite's wall-clock on its own: seven
 # measures × two scales × random populations, phylogenies and every VCF in `test/data`, each
-# iteration crossing the Julia<->R boundary - and, on a cold machine, installing `ape`, `vegan` and
-# `rdiversity` from CRAN first. Naming `core_test.jl` instead of this file is the difference between
-# a few seconds and several minutes.
+# iteration crossing the Julia<->R boundary - and, on a cold machine, installing `ape`, `vegan`,
+# `rdiversity` and `adiv` from CRAN first. Naming `core_test.jl` instead of this file is the
+# difference between a few seconds and several minutes.
 #
 # **An extra rather than a core set, and the distinction is semantic**: the core sets test *this*
 # package against itself, while this one checks it against someone else's - a different question,

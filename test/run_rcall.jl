@@ -75,6 +75,23 @@ if !skipR && !rcopy(R"require(vegan)")
           "skipping R crossvalidation"
 end
 
+# adiv (which imports ade4) is needed only for pairwisedissimilarity(), so
+# failing to get it skips that comparison and not the rest
+global skipadiv = skipR
+if !skipadiv
+    # adiv imports rgl, which must not try to open a display
+    R"options(rgl.useNULL = TRUE)"
+    if !rcopy(R"suppressMessages(requireNamespace(\"adiv\", quietly = TRUE))")
+        rcall(Symbol(".libPaths"), libdir)
+        reval("install.packages(\"adiv\", lib=\"$libdir\", " *
+              "repos=\"http://cran.r-project.org\")")
+        global skipadiv = !rcopy(R"suppressMessages(requireNamespace(\"adiv\", lib.loc=c(\"$libdir\", .libPaths()), quietly = TRUE))") &&
+                          !mustCrossvalidate
+        skipadiv && @warn "adiv R package not installed and would not " *
+              "install, skipping its crossvalidation"
+    end
+end
+
 if !skipR
     # vegan >= 2.7 changed method = "gower" to range-standardise columns via
     # decostand() and drop zero-range (tied / double-zero) columns from the
@@ -171,6 +188,75 @@ if !skipR
             @test jg1 ≈ rg1
             @test jag ≈ rag
             @test jag1 ≈ rag1
+        end
+    end
+
+    # pairwisedissimilarity() against adiv's dsimcom() (the four forms of
+    # Pavoine & Ricotta 2014), ade4's disc() (Rao's DISC), and vegan's vegdist()
+    # for the classic indices they reduce to without a similarity between types
+    if !skipadiv
+        @testset "Pairwise dissimilarity from adiv, ade4 and vegan" begin
+            @testset "Random pop $i" for i in 1:10
+                types = rand(2:(i * 5))
+                sc = rand(2:(i * 3 + 2))
+                ab = rand(types, sc)
+                # Make sure not to remove all of the non-zeros from any column
+                for j in 1:sc
+                    ab[ab[:, j] .< median(ab[:, j]) / 2, j] .= 0.0
+                end
+                ab ./= sum(ab)
+                pa = Float64.(ab .> 0)
+                pa ./= sum(pa)
+                # dsimcom() needs a positive semi-definite similarity in
+                # [0, 1]: the cosines between nonnegative feature vectors
+                # A small feature of its own keeps every type distinct
+                nfeatures = rand(1:(2 * types))
+                F = hcat(0.1 .* ((1:types) .== (1:types)'),
+                         rand(types, nfeatures) .*
+                         (rand(types, nfeatures) .< 0.5))
+                F ./= sqrt.(sum(abs2, F, dims = 2))
+                Z = F * F'
+                Z = (Z + Z') / 2
+                for k in 1:types
+                    Z[k, k] = 1.0
+                end
+
+                @rput ab pa Z
+                R"""
+                comm <- t(ab)
+                dsim <- function(option) lapply(1:4, function(m)
+                    unname(as.matrix(adiv::dsimcom(comm, Z, method = m,
+                                                   option = option,
+                                                   type = "dissimilarity"))))
+                rabs <- dsim("absolute")
+                rrel <- dsim("relative")
+                rdisc <- unname(as.matrix(ade4::disc(as.data.frame(ab),
+                                                     as.dist(sqrt(2 * (1 - Z))))))
+                rbinj <- unname(as.matrix(vegdist(t(pa) > 0, method = "jaccard")))
+                rbinb <- unname(as.matrix(vegdist(t(pa) > 0, method = "bray")))
+                rhorn <- unname(as.matrix(vegdist(comm, method = "horn")))
+                """
+                @rget rabs rrel rdisc rbinj rbinb rhorn
+
+                # dsimcom()'s methods 1 to 4
+                forms = (:sokalsneath, :jaccard, :sorensen, :ochiai)
+                dabs = pairwisedissimilarity(ab, Z)
+                drel = pairwisedissimilarity(ab, Z; relative = true)
+                for (m, form) in enumerate(forms)
+                    @test dabs[form] ≈ rabs[m] atol = 1e-12
+                    @test drel[form] ≈ rrel[m] atol = 1e-12
+                end
+                # disc() squares the distances it is given, so √(2(1 - Z))
+                # makes its Δ twice ours, and it reports √DISC
+                @test sqrt.(2 .* dabs.rao) ≈ rdisc atol = 1e-12
+                # With no similarity between types: binary Jaccard and
+                # Bray-Curtis (Sørensen), and Morisita-Horn (relative Sørensen)
+                d01 = pairwisedissimilarity(pa)
+                @test d01.jaccard ≈ rbinj atol = 1e-12
+                @test d01.sorensen ≈ rbinb atol = 1e-12
+                @test pairwisedissimilarity(ab; relative = true).sorensen ≈
+                      rhorn atol = 1e-12
+            end
         end
     end
 

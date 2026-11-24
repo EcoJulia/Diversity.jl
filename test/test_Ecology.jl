@@ -134,58 +134,9 @@ end
     xy = [0.1 0.3; 0.4 0.2; 0.9 0.7; 0.5 0.5; 0.2 0.9; 0.7 0.1]
     dist = [sqrt(sum(abs2, xy[i, :] .- xy[j, :])) for i in 1:6, j in 1:6]
     Z = 1 .- dist ./ maximum(dist)
-    lower(D) = [D[i, j] for j in 1:4 for i in (j + 1):4]
-
-    # R adiv::dsimcom(t(ab), Z, type = "dissimilarity"), option "absolute"
-    # and "relative"
-    adiv = Dict((:sokalsneath, false) =>
-                    [0.630204062689044, 0.582711283093493,
-                        0.502273143713468, 0.402237249804308,
-                        0.629380700688380, 0.744182840732740],
-                (:jaccard, false) => [0.460071493514718, 0.411145080139611,
-                    0.335356972204401, 0.251750298819423,
-                    0.459194395558621, 0.592588527112461],
-                (:sorensen, false) => [0.298761592877308, 0.258768170082979,
-                    0.201458791227148, 0.144001339539437,
-                    0.298022277589717, 0.421048526694661],
-                (:ochiai, false) => [0.220053207952419, 0.243928811551166,
-                    0.200802053220079, 0.112678666476515,
-                    0.232453936301415, 0.413695152327061],
-                (:sokalsneath, true) => [0.555769380659253, 0.582711283093493,
-                    0.502273143713468, 0.337183100509364,
-                    0.564046714055179, 0.744182840732740],
-                (:jaccard, true) => [0.384820383404519, 0.411145080139611,
-                    0.335356972204401, 0.202778249735525,
-                    0.392802968993556, 0.592588527112461],
-                (:sorensen, true) => [0.238252377290183, 0.258768170082979,
-                    0.201458791227148, 0.112828731182273,
-                    0.244402497898829, 0.421048526694661],
-                (:ochiai, true) => [0.220053207952419, 0.243928811551166,
-                    0.200802053220079, 0.112678666476515,
-                    0.232453936301415, 0.413695152327061])
-    for relative in (false, true)
-        d = pairwisedissimilarity(ab, Z; relative)
-        for form in (:jaccard, :sorensen, :ochiai, :sokalsneath)
-            @test lower(d[form]) ≈ adiv[(form, relative)] atol = 1e-12
-        end
-    end
-
-    # R ade4::disc(as.data.frame(ab), as.dist(sqrt(2 * (1 - Z)))), which
-    # returns √DISC for Δ = dis², i.e. twice our Δ = 1 - Z
-    ade4 = [0.535141765573118, 0.551555371780899, 0.445172500440329,
-        0.402206155013214, 0.550920898578258, 0.715389039372716]
-    @test sqrt.(2 .* lower(pairwisedissimilarity(ab, Z).rao)) ≈ ade4 atol = 1e-12
-
-    # R vegan::vegdist(t(ab), ...): binary Jaccard and Bray-Curtis, and
-    # Morisita-Horn
-    d01 = pairwisedissimilarity(ab .> 0)
-    @test lower(d01.jaccard) ≈
-          [2 / 3, 2 / 3, 0.25, 0.4, 5 / 6, 5 / 6] atol = 1e-12
-    @test lower(d01.sorensen) ≈
-          [0.5, 0.5, 1 / 7, 0.25, 5 / 7, 5 / 7] atol = 1e-12
-    @test lower(pairwisedissimilarity(ab; relative = true).sorensen) ≈
-          [0.907827359180688, 0.6, 1 / 3, 0.446964155084126,
-        0.843478260869565, 0.888888888888889] atol = 1e-12
+    # These check the definitions and the interface. The values are checked
+    # against other implementations in `pkg_Distances.jl` (Distances.jl) and
+    # `run_rcall.jl` (R's adiv, ade4 and vegan).
 
     # Rao against its definition, and for distinct types
     p = ab ./ sum(ab, dims = 1)
